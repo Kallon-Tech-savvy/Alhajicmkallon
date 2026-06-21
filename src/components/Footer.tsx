@@ -1,102 +1,118 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Send, ExternalLink } from 'lucide-react';
-import { MediaKit } from './MediaKit';
+import { ArrowUpRight, Code, Send, Users, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 export const Footer = () => {
-  const [isMediaKitOpen, setIsMediaKitOpen] = useState(false);
+  const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    { name: 'Twitter', icon: <Send size={18} />, href: 'https://x.com/alhajikallon' },
+    { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhajikallon' },
+    { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/alhajikallon' },
+    { name: 'Email', icon: <Mail size={18} />, href: 'mailto:hello@alhajikallon.dev' },
+  ];
 
   return (
-    <footer id="contact" className="bg-midnight pt-24 pb-12 px-6 border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-24">
+    <footer id="contact" className="bg-midnight pt-32 pb-12 px-6 border-t border-white/5 relative overflow-hidden">
+      {/* Background Decorative Text */}
+      <div className="absolute bottom-0 right-0 text-white/[0.02] font-space text-[25vw] font-black leading-[0.7] pointer-events-none select-none translate-y-1/4">
+        AFRICA
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-32">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mb-12"
             >
-              <h2 className="text-4xl md:text-6xl font-space font-bold tracking-tighter mb-8 leading-tight">
-                Let's build the <br />
-                <span className="text-gold italic font-cormorant font-medium">future together.</span>
+              <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
+                Let&apos;s Collaborate
+              </span>
+              <h2 className="font-space text-5xl md:text-7xl font-bold tracking-tighter mb-12 leading-[0.9]">
+                Ready to build the <span className="text-gradient">future</span> together?
               </h2>
-              <p className="text-muted text-lg font-inter max-w-md leading-relaxed">
-                Whether you're looking for a partnership, a speaker, or just a conversation about
-                innovation in Africa, I'd love to hear from you.
-              </p>
-            </motion.div>
-
-            <div className="flex flex-wrap gap-4">
-              {[
-                { icon: <Mail size={20} />, label: "Email", href: "mailto:hello@alhajikallon.com" },
-                { icon: <Send size={20} />, label: "Substack", href: "https://substack.com/@alhajicmkallon" },
-              ].map((social, i) => (
-                <motion.a
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -5, backgroundColor: 'rgba(212, 175, 55, 0.1)' }}
-                  className="p-4 rounded-xl border border-white/5 flex items-center justify-center text-muted hover:text-gold transition-colors"
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-4 px-10 py-5 bg-gold text-midnight font-space font-black text-sm uppercase tracking-widest hover:bg-ivory transition-all duration-500 group"
+              >
+                Send a Message
+                <motion.span
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
                 >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </div>
+                  <ArrowUpRight size={20} />
+                </motion.span>
+              </Link>
+            </motion.div>
           </div>
 
-          <div>
-            <div className="glass p-8 md:p-12 rounded-3xl">
-              <h3 className="font-space text-2xl font-bold mb-6">Stay Informed</h3>
-              <p className="text-muted text-sm font-inter mb-8">
-                Join my monthly newsletter for insights on technology, innovation, and youth empowerment in Africa.
-              </p>
-
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full bg-navy/50 border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-gold/50 transition-colors font-inter text-ivory"
-                  />
-                  <button className="absolute right-2 top-2 bottom-2 bg-gold text-midnight px-6 rounded-lg font-space font-bold text-xs uppercase tracking-widest hover:bg-ivory transition-colors">
-                    Join
-                  </button>
-                </div>
-                <p className="text-[10px] text-muted text-center uppercase tracking-widest">
-                  Integrated with <a href="https://substack.com/@alhajicmkallon" className="text-gold underline" target="_blank" rel="noopener noreferrer">Substack</a>
-                </p>
-              </form>
+          <div className="grid grid-cols-2 gap-12">
+            <div className="space-y-8">
+              <h3 className="font-space text-gold text-[10px] font-bold uppercase tracking-[0.3em]">Navigation</h3>
+              <ul className="space-y-4 font-inter text-muted text-sm">
+                <li><Link href="/" className="hover:text-gold transition-colors">Home</Link></li>
+                <li><Link href="/work" className="hover:text-gold transition-colors">Work</Link></li>
+                <li><Link href="/about" className="hover:text-gold transition-colors">About</Link></li>
+                <li><Link href="/writing" className="hover:text-gold transition-colors">Writing</Link></li>
+                <li><Link href="/speaking" className="hover:text-gold transition-colors">Speaking</Link></li>
+              </ul>
+            </div>
+            <div className="space-y-8">
+              <h3 className="font-space text-gold text-[10px] font-bold uppercase tracking-[0.3em]">Social</h3>
+              <ul className="space-y-4 font-inter text-muted text-sm">
+                {socialLinks.map((social) => (
+                  <li key={social.name}>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-gold transition-colors flex items-center gap-2"
+                    >
+                      {social.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 gap-8">
-          <div className="text-xl font-space font-bold tracking-tighter">
-            AK<span className="text-gold">.</span>
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-4">
+            <div className="w-8 h-8 bg-gold flex items-center justify-center rounded-sm font-space font-black text-midnight text-sm">
+              A
+            </div>
+            <span className="font-space text-[10px] font-bold tracking-[0.2em] text-muted uppercase">
+              ALHAJI KALLON © {currentYear}
+            </span>
           </div>
 
-          <div className="flex gap-8 text-[10px] font-space font-bold uppercase tracking-[0.2em] text-muted">
-            <button className="hover:text-gold transition-colors">Download CV</button>
-            <button
-              onClick={() => setIsMediaKitOpen(true)}
-              className="hover:text-gold transition-colors"
-            >
-              Media Kit
-            </button>
-            <button className="hover:text-gold transition-colors">Privacy</button>
+          <div className="flex gap-6">
+            {socialLinks.map((social) => (
+              <motion.a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5, color: '#D4AF37' }}
+                className="text-muted transition-colors"
+                aria-label={social.name}
+              >
+                {social.icon}
+              </motion.a>
+            ))}
           </div>
 
-          <div className="text-[10px] font-space font-bold uppercase tracking-[0.2em] text-muted">
-            &copy; {new Date().getFullYear()} ALHAJI KALLON
+          <div className="font-space text-[8px] font-bold tracking-[0.2em] text-muted/50 uppercase">
+            Built with Passion in Sierra Leone
           </div>
         </div>
       </div>
-
-      <MediaKit isOpen={isMediaKitOpen} onClose={() => setIsMediaKitOpen(false)} />
     </footer>
   );
 };

@@ -1,0 +1,12 @@
+
+> temp-next-app@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 504ms
+
+ GET /about 200 in 715ms (next.js: 275ms, application-code: 440ms)
+[browser] Image with src "/images/kallon1.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[?25h

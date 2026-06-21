@@ -1,58 +1,47 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 
-const timelineEvents = [
-  { title: "Curiosity", year: "2010 - 2014", desc: "Early fascination with technology and the power of logic. Self-taught basics of programming while exploring the digital landscape." },
-  { title: "Learning", year: "2015 - 2018", desc: "Rigorous study of engineering principles and software development. Building the foundation of a 'Future Builder'." },
-  { title: "Building", year: "2019 - 2022", desc: "Launching high-impact digital solutions and consulting for emerging tech startups in West Africa." },
-  { title: "Empowering", year: "2023 - Present", desc: "Focusing on institutional growth, youth leadership, and creating sustainable innovation frameworks." },
-  { title: "Future", year: "2025 & Beyond", desc: "Architecting the infrastructure that will define the next century of African excellence and technological sovereignty." }
+const milestones = [
+  { year: '2021', title: 'Foundations', desc: 'Started building community-focused tech in Freetown.' },
+  { year: '2022', title: 'Design Systems', desc: 'Pioneered accessible design frameworks for public services.' },
+  { year: '2023', title: 'AI Integration', desc: 'Launched localized AI initiatives for African SMEs.' },
+  { year: '2024', title: 'Scaling Impact', desc: 'Expanding youth empowerment programs across the continent.' }
 ];
 
 export const Timeline = () => {
-  const targetRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-  });
-
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-65%"]);
-
   return (
-    <section ref={targetRef} className="relative h-[400vh] bg-navy">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <div className="px-6 md:px-12 absolute top-24 left-0 z-10">
-          <span className="font-space text-gold text-xs font-bold tracking-[0.3em] uppercase mb-4 block">
-            The Journey
-          </span>
-          <h2 className="font-space text-4xl md:text-5xl font-bold tracking-tighter">
-            Timeline of <span className="text-gold">Evolution</span>
-          </h2>
+    <section className="py-24 bg-midnight px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center gap-6 mb-20">
+          <h2 className="font-space text-2xl font-bold tracking-tighter uppercase italic text-muted">The Journey</h2>
+          <div className="flex-1 h-[1px] bg-white/10" />
         </div>
 
-        <motion.div style={{ x }} className="flex gap-12 px-12 md:px-24">
-          {timelineEvents.map((event, i) => (
-            <div key={i} className="flex-shrink-0 w-[300px] md:w-[500px] relative">
-              <div className="text-gold font-space text-[10rem] md:text-[15rem] font-black opacity-[0.03] absolute -top-32 -left-12 select-none">
-                0{i + 1}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          {milestones.map((m, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="relative"
+            >
+              <div className="font-space text-6xl font-black text-white/5 absolute -top-10 -left-4 select-none">
+                {m.year}
               </div>
-              <div className="glass p-8 md:p-16 rounded-3xl relative z-10 border border-white/5">
-                <div className="inline-block px-3 py-1 rounded-full border border-gold/30 bg-gold/5 text-gold text-[10px] font-bold font-space uppercase tracking-widest mb-6">
-                  {event.year}
+              <div className="relative z-10">
+                <div className="w-10 h-10 bg-gold/10 rounded-sm flex items-center justify-center text-gold font-space font-bold text-xs mb-6 border border-gold/20">
+                  0{i+1}
                 </div>
-                <h3 className="text-3xl md:text-5xl font-space font-bold mb-6 tracking-tight">{event.title}</h3>
-                <p className="text-muted text-lg leading-relaxed font-inter">
-                  {event.desc}
-                </p>
-                <div className="mt-10 w-12 h-[1px] bg-gold/30" />
+                <h3 className="font-space text-lg font-bold text-ivory mb-2 uppercase tracking-widest">{m.title}</h3>
+                <p className="text-muted text-sm font-inter leading-relaxed">{m.desc}</p>
               </div>
-              {i < timelineEvents.length - 1 && (
-                <div className="absolute top-1/2 -right-6 w-12 h-[1px] bg-gradient-to-r from-gold/30 to-transparent hidden md:block" />
-              )}
-            </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
