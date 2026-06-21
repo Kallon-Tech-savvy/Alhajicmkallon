@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+import { CustomCursor } from "@/components/CustomCursor";
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +23,7 @@ const cormorantGaramond = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Alhaji Kallon | The Future Builder",
-  description: "Building Technology. Empowering People. Shaping Africa's Future.",
+  description: "Design Engineer & Software Developer building Africa's innovation future.",
 };
 
 export default function RootLayout({
@@ -34,7 +36,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} ${cormorantGaramond.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-midnight text-ivory selection:bg-gold/30 selection:text-gold">
+      <body className="min-h-full flex flex-col bg-midnight text-ivory selection:bg-gold/30 selection:text-gold noise-bg">
+        <LoadingScreen />
+        <CustomCursor />
         {children}
       </body>
     </html>
