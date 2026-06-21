@@ -12,6 +12,17 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -100,14 +111,14 @@ export const Navbar = () => {
 
             <Link
               href="/contact"
-              className="ml-4 px-6 py-2 bg-gold text-midnight font-space font-bold text-[10px] uppercase tracking-[0.15em] rounded-sm hover:bg-ivory transition-colors flex items-center gap-2"
+              aria-label="Contact Alhaji" className="ml-4 px-6 py-2 bg-gold text-midnight font-space font-bold text-[10px] uppercase tracking-[0.15em] rounded-sm hover:bg-ivory transition-colors flex items-center gap-2"
             >
               Let&apos;s Build <ArrowUpRight size={14} />
             </Link>
           </div>
 
           {/* Mobile Toggle */}
-          <div className="lg:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-2" aria-label="Mobile Menu">
             <button
               onClick={() => setIsSearchOpen(true)}
               className="p-2 text-muted"

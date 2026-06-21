@@ -8,25 +8,25 @@ const impactAreas = [
   {
     title: "Technology",
     desc: "Building digital solutions that solve real-world problems through robust engineering.",
-    icon: <Cpu className="text-gold" size={24} />,
+    icon: <Cpu className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
     title: "Innovation",
     desc: "Designing systems and products that push the boundaries of what's possible.",
-    icon: <Lightbulb className="text-gold" size={24} />,
+    icon: <Lightbulb className="text-gold" size={24} aria-hidden="true" />,
     color: "from-yellow-500/10 to-transparent"
   },
   {
     title: "Leadership",
     desc: "Developing people and institutions to foster a culture of excellence and growth.",
-    icon: <Users className="text-gold" size={24} />,
+    icon: <Users className="text-gold" size={24} aria-hidden="true" />,
     color: "from-green-500/10 to-transparent"
   },
   {
     title: "Writing",
     desc: "Sharing ideas that inspire action and contribute to the global tech discourse.",
-    icon: <PenTool className="text-gold" size={24} />,
+    icon: <PenTool className="text-gold" size={24} aria-hidden="true" />,
     color: "from-purple-500/10 to-transparent"
   }
 ];
