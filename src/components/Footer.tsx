@@ -9,7 +9,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { name: 'Send', icon: <Send size={18} />, href: 'https://x.com/alhajikallon' },
+    { name: 'Twitter', icon: <Send size={18} />, href: 'https://x.com/alhajikallon' },
     { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhajikallon' },
     { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/alhajikallon' },
     { name: 'Email', icon: <Mail size={18} />, href: 'mailto:hello@alhajikallon.dev' },
