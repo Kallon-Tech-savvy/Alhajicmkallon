@@ -93,7 +93,7 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 gap-3">
                 {[
                   { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b', desc: 'Professional network & papers' },
-                  { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/alhajikallon', desc: 'Production-grade code repositories' },
+                  { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/Kallon-Tech-savvy', desc: 'Production-grade code repositories' },
                   { name: 'Substack', icon: <Book size={18} />, href: 'https://substack.com/@alhajicmkallon', desc: 'Thoughts on technology and society' },
                   { name: 'TikTok', icon: <Video size={18} />, href: 'https://tiktok.com/Zs9jMKdFNCeJ7-ypwTZ', desc: 'Short-form video content' },
                   { name: 'Facebook', icon: <Users size={18} />, href: 'https://www.facebook.com/profile.php?id=100072626448471', desc: 'Community and updates' }

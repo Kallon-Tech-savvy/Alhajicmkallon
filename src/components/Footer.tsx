@@ -2,10 +2,10 @@ import { ArrowUpRight, Terminal, Send, Users, Code, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 const SOCIAL_LINKS = [
-  {name: 'facebook', icon: <Users size={14} />, href: 'https://facebook.com/alhajikallon' },
-  { name: 'twitter', icon: <Send size={14} />, href: 'https://x.com/alhajikallon' },
-  { name: 'linkedin', icon: <Users size={14} />, href: 'https://linkedin.com/in/alhajikallon' },
-  { name: 'github', icon: <Code size={14} />, href: 'https://github.com/alhajikallon' },
+  {name: 'facebook', icon: <Users size={14} />, href: 'https://www.facebook.com/profile.php?id=100072626448471' },
+  { name: 'twitter', icon: <Send size={14} />, href: 'https://x.com/' },
+  { name: 'linkedin', icon: <Users size={14} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b'},
+  { name: 'github', icon: <Code size={14} />, href: 'https://github.com/Kallon-Tech-savvy' },
   { name: 'mail', icon: <Mail size={14} />, href: 'mailto:hello@alhajikallon.dev' },
 ];
 

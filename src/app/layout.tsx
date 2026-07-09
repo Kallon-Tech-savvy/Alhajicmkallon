@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
+import { ChatWidget } from "@/components/ChatWidget";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-midnight text-ivory">
         {children}
+        <ChatWidget />
       </body>
     </html>
   );
