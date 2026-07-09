@@ -1,189 +1,220 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlobalSearch } from './GlobalSearch';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+// Each nav link gets a shell-command label
+const NAV_LINKS = [
+  { name: 'home',       href: '/',         short: 'HOME'     },
+  { name: 'work',       href: '/work',      short: 'WORK'     },
+  { name: 'about',      href: '/about',     short: 'ABOUT'    },
+  { name: 'writing',  href: '/writing',   short: 'WRITING'  },
+  { name: 'contact', href: '/contact',   short: 'CONTACT'  },
+];
 
+export const Navbar = () => {
+  const [isScrolled, setIsScrolled]         = useState(false);
+  const [isMobileMenuOpen, setIsMobileOpen]  = useState(false);
+  const [isSearchOpen, setIsSearchOpen]      = useState(false);
+  const scrolledRef = useRef(false);
+  const pathname = usePathname();
+
+  // Scroll listener
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+    const onScroll = () => {
+      const next = window.scrollY > 50;
+      if (next !== scrolledRef.current) {
+        scrolledRef.current = next;
+        setIsScrolled(next);
+      }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Cmd+K search shortcut
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setIsSearchOpen(prev => !prev);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Work', href: '/work' },
-    { name: 'About', href: '/about' },
-    { name: 'Writing', href: '/writing' },
-    { name: 'Speaking', href: '/speaking' },
-    { name: 'Contact', href: '/contact' },
-  ];
-
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 1.5 }}
+      <nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-6 py-6 md:px-12',
-          isScrolled ? 'bg-midnight/80 backdrop-blur-xl py-4 border-b border-white/5' : 'bg-transparent'
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4 md:px-10',
+          isScrolled
+            ? 'bg-midnight/90 backdrop-blur-xl border-b border-[#2A2A2A]'
+            : 'bg-transparent'
         )}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="group flex items-center gap-3">
-            <motion.div
-              className="w-10 h-10 bg-gold flex items-center justify-center rounded-sm font-space font-black text-midnight text-xl relative overflow-hidden"
-              whileHover={{ scale: 1.05 }}
+
+          {/* ── Left: shell prompt ──────────────────────────────────── */}
+          <Link href="/" className="group flex items-center gap-2 select-none">
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold md:text-sm"
+                  style={{ color: '#006BFF' }}>
+              alhaji
+            </span>
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-pride-blue md:text-sm">
+              kallon
+            </span>
+            <span
+              className="cursor-text-blink font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold md:text-sm"
+              style={{ color: 'var(--color-pride-blue)' }}
             >
-              <motion.div
-                className="absolute inset-0 bg-ivory"
-                initial={{ y: "100%" }}
-                whileHover={{ y: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-              <span className="relative z-10">A</span>
-            </motion.div>
-            <div className="flex flex-col">
-              <span className="font-space font-bold text-sm tracking-tighter text-ivory group-hover:text-gold transition-colors">ALHAJI KALLON</span>
-              <span className="font-space text-[8px] font-bold tracking-[0.2em] text-muted uppercase">Design Engineer</span>
-            </div>
+              █
+            </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={cn(
-                  "px-4 py-2 text-[10px] font-space font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-sm relative group",
-                  pathname === link.href ? "text-gold" : "text-muted hover:text-ivory"
-                )}
-              >
-                {link.name}
-                {pathname === link.href && (
-                  <motion.div
-                    layoutId="nav-underline"
-                    className="absolute bottom-0 left-4 right-4 h-[1px] bg-gold"
-                  />
-                )}
-                <motion.div
-                  className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 rounded-sm -z-10"
-                  transition={{ duration: 0.3 }}
-                />
-              </Link>
-            ))}
+          {/* ── Desktop nav ─────────────────────────────────────────── */}
+          <div className="hidden lg:flex items-center gap-1">
+            {NAV_LINKS.map(link => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    'relative rounded-sm px-3 py-1.5 font-inter text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-200',
+                    isActive
+                      ? 'text-pride-blue'
+                      : 'text-[#9AA4B2] hover:text-ivory'
+                  )}
+                >
+                  {link.name}
+                  {isActive && (
+                    <div
+                      className="absolute bottom-0 left-2 right-2 h-[1px]"
+                      style={{ background: 'var(--color-pride-blue)' }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
 
-            <div className="h-4 w-[1px] bg-white/10 mx-4" />
+            <div className="h-4 w-px mx-3" style={{ background: '#2A2A2A' }} />
 
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-muted hover:text-gold transition-all duration-300 hover:scale-110"
-              aria-label="Search"
+              className="p-2 transition-colors duration-200"
+              style={{ color: '#6B7280' }}
+              aria-label="Search (⌘K)"
             >
-              <Search size={16} />
+              <Search size={14} />
             </button>
 
             <Link
               href="/contact"
-              aria-label="Contact Alhaji" className="ml-4 px-6 py-2 bg-gold text-midnight font-space font-bold text-[10px] uppercase tracking-[0.15em] rounded-sm hover:bg-ivory transition-colors flex items-center gap-2"
+              className="ml-3 rounded-full border px-4 py-1.5 font-inter text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-200"
+              style={{
+                color: '#F5F5F5',
+                background: 'rgba(0, 102, 255, 0.16)',
+                borderColor: 'rgba(0, 102, 255, 0.35)',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 16px rgba(0,107,255,0.4)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+              }}
             >
-              Let&apos;s Build <ArrowUpRight size={14} />
+              Let&apos;s talk
             </Link>
           </div>
 
-          {/* Mobile Toggle */}
-          <div className="lg:hidden flex items-center space-x-2" aria-label="Mobile Menu">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-muted"
-            >
-              <Search size={20} />
+          {/* ── Mobile toggles ─────────────────────────────────────── */}
+          <div className="lg:hidden flex items-center gap-2">
+            <button onClick={() => setIsSearchOpen(true)} style={{ color: '#6B7280' }}
+                    className="p-2">
+              <Search size={18} />
             </button>
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-muted relative z-[60]"
+              onClick={() => setIsMobileOpen(!isMobileMenuOpen)}
+              style={{ color: '#6B7280' }}
+              className="p-2 relative z-[60]"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
+      </nav>
 
-        {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-0 z-50 bg-midnight lg:hidden flex flex-col p-12 justify-center"
-            >
-              <div className="absolute top-0 left-0 w-full h-full bg-navy/20 -z-10" />
-              <div className="space-y-8">
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
+      {/* ── Mobile menu overlay ──────────────────────────────────────── */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-50 lg:hidden flex flex-col justify-center p-10 scanlines"
+            style={{ background: '#0A0A0A' }}
+          >
+            {/* Prompt header */}
+            <div className="mb-10 font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.4em] uppercase"
+                 style={{ color: '#6B7280' }}>
+              alhaji@kallon ~$
+            </div>
+
+            <div className="space-y-6">
+              {NAV_LINKS.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: 16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.07 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsMobileOpen(false)}
+                    className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold block transition-colors duration-200"
+                    style={{ color: pathname === link.href ? '#FFB000' : '#E0E0E0' }}
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "text-5xl font-space font-bold tracking-tighter block",
-                        pathname === link.href ? "text-gold" : "text-ivory hover:text-gold"
-                      )}
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
+                    <span style={{ color: '#6B7280', marginRight: 8 }}>&gt;</span>
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="mt-24 pt-12 border-t border-white/5"
-              >
-                <p className="text-muted text-sm font-inter mb-6">Connect with me</p>
-                <div className="flex gap-8 font-space font-bold text-xs uppercase tracking-widest text-ivory">
-                  <a href="#" className="hover:text-gold">Twitter</a>
-                  <a href="#" className="hover:text-gold">LinkedIn</a>
-                  <a href="#" className="hover:text-gold">GitHub</a>
-                </div>
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="mt-16 pt-8 border-t"
+              style={{ borderColor: '#2A2A2A' }}
+            >
+              <p className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-widest uppercase mb-5"
+                 style={{ color: '#6B7280' }}>
+                // social channels
+              </p>
+              <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
+                   style={{ color: '#6B7280' }}>
+                <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer"
+                   className="hover:text-[#006BFF] transition-colors">Twitter</a>
+                <a href="https://linkedin.com/in/alhajikallon" target="_blank" rel="noopener noreferrer"
+                   className="hover:text-[#006BFF] transition-colors">LinkedIn</a>
+                <a href="https://github.com/alhajikallon" target="_blank" rel="noopener noreferrer"
+                   className="hover:text-[#006BFF] transition-colors">GitHub</a>
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>

@@ -1,79 +1,109 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUpRight, Code, Send, Users, Mail } from 'lucide-react';
+import { ArrowUpRight, Terminal, Send, Users, Code, Mail } from 'lucide-react';
 import Link from 'next/link';
 
-export const Footer = () => {
-  const currentYear = new Date().getFullYear();
+const SOCIAL_LINKS = [
+  {name: 'facebook', icon: <Users size={14} />, href: 'https://facebook.com/alhajikallon' },
+  { name: 'twitter', icon: <Send size={14} />, href: 'https://x.com/alhajikallon' },
+  { name: 'linkedin', icon: <Users size={14} />, href: 'https://linkedin.com/in/alhajikallon' },
+  { name: 'github', icon: <Code size={14} />, href: 'https://github.com/alhajikallon' },
+  { name: 'mail', icon: <Mail size={14} />, href: 'mailto:hello@alhajikallon.dev' },
+];
 
-  const socialLinks = [
-    { name: 'Twitter', icon: <Send size={18} />, href: 'https://x.com/alhajikallon' },
-    { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhajikallon' },
-    { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/alhajikallon' },
-    { name: 'Email', icon: <Mail size={18} />, href: 'mailto:hello@alhajikallon.dev' },
-  ];
+const NAV_CMDS = [
+  { cmd: 'home', href: '/' },
+  { cmd: 'work', href: '/work' },
+  { cmd: 'about', href: '/about' },
+  { cmd: 'writing', href: '/writing' },
+];
+
+export const Footer = () => {
+  const year = new Date().getFullYear();
 
   return (
-    <footer id="contact" className="bg-midnight pt-32 pb-12 px-6 border-t border-white/5 relative overflow-hidden">
-      {/* Background Decorative Text */}
-      <div className="absolute bottom-0 right-0 text-white/[0.02] font-space text-[25vw] font-black leading-[0.7] pointer-events-none select-none translate-y-1/4">
+    <footer
+      id="contact"
+      className="relative overflow-hidden pt-24 pb-10 px-6"
+      style={{ background: '#0A0A0A', borderTop: '1px solid #2A2A2A' }}
+    >
+      <div
+        className="absolute bottom-0 right-0 pointer-events-none select-none leading-none"
+        style={{
+          fontFamily: 'var(--font-jetbrains-mono)',
+          fontSize: '22vw',
+          fontWeight: 900,
+          color: 'rgba(255,255,255,0.012)',
+          lineHeight: 0.75,
+        }}
+      >
         AFRICA
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-32">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-24">
+          <div className="reveal-in">
+            
+            <h2
+              className="mb-10 font-space font-semibold leading-[1.02] text-ivory"
+              style={{ fontSize: 'clamp(2rem, 4.6vw, 3.2rem)' }}
             >
-              <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
-                Let&apos;s Collaborate
-              </span>
-              <h2 className="font-space text-5xl md:text-7xl font-bold tracking-tighter mb-12 leading-[0.9]">
-                Ready to build the <span className="text-gradient">future</span> together?
-              </h2>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-4 px-10 py-5 bg-gold text-midnight font-space font-black text-sm uppercase tracking-widest hover:bg-ivory transition-all duration-500 group"
-              >
-                Send a Message
-                <motion.span
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <ArrowUpRight size={20} />
-                </motion.span>
-              </Link>
-            </motion.div>
+              Need a calmer, faster digital experience?
+            </h2>
+
+            <p className="mb-8 max-w-xl text-base leading-7 text-[#9AA4B2]">
+              I help teams turn complex ideas into thoughtful product systems that feel clear from the first click.
+            </p>
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-3 rounded-full bg-pride-blue px-6 py-3 font-inter text-[12px] font-semibold uppercase tracking-[0.24em] text-white transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              Start a conversation
+              <ArrowUpRight size={16} />
+            </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <h3 className="font-space text-gold text-[10px] font-bold uppercase tracking-[0.3em]">Navigation</h3>
-              <ul className="space-y-4 font-inter text-muted text-sm">
-                <li><Link href="/" className="hover:text-gold transition-colors">Home</Link></li>
-                <li><Link href="/work" className="hover:text-gold transition-colors">Work</Link></li>
-                <li><Link href="/about" className="hover:text-gold transition-colors">About</Link></li>
-                <li><Link href="/writing" className="hover:text-gold transition-colors">Writing</Link></li>
-                <li><Link href="/speaking" className="hover:text-gold transition-colors">Speaking</Link></li>
+          <div className="grid grid-cols-2 gap-10">
+            <div>
+              <p
+                className="mb-6 font-inter text-[10px] uppercase tracking-[0.32em]"
+                style={{ color: '#9AA4B2' }}
+              >
+                navigate
+              </p>
+              <ul className="space-y-3">
+                {NAV_CMDS.map(item => (
+                  <li key={item.cmd}>
+                    <Link
+                      href={item.href}
+                      className="font-inter text-sm transition-colors duration-150 hover:text-[var(--color-pride-blue)]"
+                      style={{ color: '#9AA4B2' }}
+                    >
+                      {item.cmd}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="space-y-8">
-              <h3 className="font-space text-gold text-[10px] font-bold uppercase tracking-[0.3em]">Social</h3>
-              <ul className="space-y-4 font-inter text-muted text-sm">
-                {socialLinks.map((social) => (
-                  <li key={social.name}>
+
+            <div>
+              <p
+                className="mb-6 font-inter text-[10px] uppercase tracking-[0.32em]"
+                style={{ color: '#9AA4B2' }}
+              >
+                channels
+              </p>
+              <ul className="space-y-3">
+                {SOCIAL_LINKS.map(s => (
+                  <li key={s.name}>
                     <a
-                      href={social.href}
+                      href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-gold transition-colors flex items-center gap-2"
+                      className="inline-flex items-center gap-2 font-inter text-sm transition-colors duration-150 hover:text-[var(--color-pride-blue)]"
+                      style={{ color: '#9AA4B2' }}
                     >
-                      {social.name}
+                      {s.icon}
+                      {s.name}
                     </a>
                   </li>
                 ))}
@@ -82,37 +112,60 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-gold flex items-center justify-center rounded-sm font-space font-black text-midnight text-sm">
-              A
-            </div>
-            <span className="font-space text-[10px] font-bold tracking-[0.2em] text-muted uppercase">
-              ALHAJI KALLON © {currentYear}
+        <div
+          className="pt-8 flex flex-col md:flex-row justify-between items-center gap-6"
+          style={{ borderTop: '1px solid #2A2A2A' }}
+        >
+          <div className="flex items-center gap-3">
+            
+            <span
+              className="font-inter text-[10px] uppercase tracking-[0.3em]"
+              style={{ color: '#9AA4B2' }}
+            >
+              ALHAJI KALLON (C) {year}
             </span>
           </div>
 
-          <div className="flex gap-6">
-            {socialLinks.map((social) => (
-              <motion.a
-                key={social.name}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5, color: '#D4AF37' }}
-                className="text-muted transition-colors"
-                aria-label={social.name}
-              >
-                {social.icon}
-              </motion.a>
-            ))}
+          <div className="flex items-center gap-2">
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{
+                background: 'var(--color-pride-blue)',
+                boxShadow: '0 0 6px var(--color-pride-blue)',
+              }}
+            />
+            <span
+              className="font-inter text-[10px] uppercase tracking-[0.24em]"
+              style={{ color: '#9AA4B2' }}
+            >
+              All systems operational
+            </span>
           </div>
 
-          <div className="font-space text-[8px] font-bold tracking-[0.2em] text-muted/50 uppercase">
-            Built with Passion in Sierra Leone
-          </div>
+          <span
+            className="font-inter text-[9px] uppercase tracking-[0.3em]"
+            style={{ color: 'rgba(107,114,128,0.5)' }}
+          >
+            Built with purpose / Sierra Leone / West Africa
+          </span>
         </div>
       </div>
     </footer>
   );
 };
+
+function StatusItem({ label, value, color }: { label: string; value: string; color: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span
+        className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] uppercase tracking-widest"
+        style={{ color: '#6B7280' }}
+      >
+        {label}:
+      </span>
+      <span className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] font-bold" style={{ color }}>
+        {value}
+      </span>
+    </div>
+  );
+}

@@ -1,94 +1,357 @@
 @import "tailwindcss";
 
-@theme {
-  --color-midnight: #070B14;
-  --color-navy: #0F172A;
-  --color-gold: #D4AF37;
-  --color-ivory: #FAF9F6;
-  --color-muted: #94A3B8;
+/* ─── Tailwind v4 theme tokens → utilities ───────────────────────────── */
+:root {
+  --color-midnight: #0A0A0A;
+  --color-surface:  #0F0F0F;
+  --color-navy:     #0D0D0D;
+  --color-gold:     #D4A574;
+  --color-ivory:    #F5F5F5;
+  --color-muted:    #9AA4B2;
+  --color-pride-blue: #0066FF;
+  --color-green:    #0066FF;
+  --color-magenta:  #FF2D55;
+  --color-blue:     #00D4FF;
+  --color-border:   #1A1A1A;
+  --color-accent:   #0066FF;
 
-  --font-space: var(--font-space-grotesk);
-  --font-inter: var(--font-inter);
-  --font-cormorant: var(--font-cormorant-garamond);
+  /* Font stacks — JS vars injected by layout.tsx */
+  --font-space:     var(--font-jetbrains-mono);
+  --font-inter:     var(--font-inter);
+  --font-cormorant: var(--font-space-mono);
 
   --background: var(--color-midnight);
   --foreground: var(--color-ivory);
+
+  /* Shared easing — "premium" cubic-bezier used across all motion */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-:root {
-  --background: #070B14;
-  --foreground: #FAF9F6;
-}
-
+/* ─── Base ───────────────────────────────────────────────────────────── */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), ui-sans-serif, system-ui;
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p, li {
+  max-width: 65ch;
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 102, 255, 0.15);
+  color: var(--color-pride-blue);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 6px; }
+::-webkit-scrollbar-track    { background: var(--color-midnight); }
+::-webkit-scrollbar-thumb    { background: var(--color-pride-blue); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #0052CC; }
+
+/* ─── Terminal panel ─────────────────────────────────────────────────── */
+.terminal-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  position: relative;
+}
+
+.terminal-panel::before {
+  content: "● ● ●   " attr(data-title);
+  display: block;
+  padding: 8px 16px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  color: var(--color-muted);
+  background: rgba(20, 20, 20, 0.5);
+  border-bottom: 1px solid var(--color-border);
+  letter-spacing: 2px;
+}
+
+/* ─── Glass (updated to surface palette) ───────────────────────────── */
 .glass {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.1);
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* ─── Frosted layering system ────────────────────────────────────────── */
+/* Heavier frost — for cards/panels that sit above busy or animated backgrounds */
+.glass-frost {
+  background: rgba(15, 15, 15, 0.55);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Lighter frost — for subtle inline surfaces (list rows, chips) */
+.glass-frost-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Frosted sticky bar (e.g. control strips, sub-nav) */
+.glass-frost-bar {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ─── Smooth Transitions ─────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from { 
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 12px rgba(0, 102, 255, 0.25);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.35);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.reveal-in {
+  animation: reveal-in 180ms ease-out both;
+}
+
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ─── Scroll-triggered entrance system ───────────────────────────────── */
+/* All variants animate ONLY transform + opacity — compositor thread only,
+   never triggers layout/paint on the main thread. Class toggle happens via
+   IntersectionObserver in components/Reveal.tsx, not React state. */
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-premium), transform 0.7s var(--ease-premium);
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform;
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+  transition-delay: var(--d, 0ms);
+}
+.reveal-fade.is-visible {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.6s var(--ease-premium), transform 0.6s var(--ease-premium);
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform;
+}
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  will-change: auto;
+}
+
+/* ─── Micro-interactions ─────────────────────────────────────────────── */
+.hover-lift {
+  transition: transform 0.35s var(--ease-premium), box-shadow 0.35s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+}
+
+.tap-scale {
+  transition: transform 0.15s ease;
+}
+.tap-scale:active {
+  transform: scale(0.97);
+}
+
+.underline-grow {
+  position: relative;
+}
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s var(--ease-premium);
+}
+.underline-grow:hover::after {
+  width: 100%;
+}
+
+/* ─── Performance: defer offscreen render cost ───────────────────────── */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
+/* ─── Text gradient (pride blue → ivory) ────────────────────────── */
 .text-gradient {
-  background: linear-gradient(to right, #FAF9F6, #D4AF37);
+  background: linear-gradient(90deg, #E0E0E0 0%, var(--color-pride-blue) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.text-reveal {
+/* ─── Scanline overlay ───────────────────────────────────────────────── */
+.scanlines {
   position: relative;
-  overflow: hidden;
 }
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-midnight);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-gold);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #b8972e;
-}
-
-/* High energy animations */
-@keyframes noise {
-  0% { transform: translate(0,0) }
-  10% { transform: translate(-5%,-5%) }
-  20% { transform: translate(-10%,5%) }
-  30% { transform: translate(5%,-10%) }
-  40% { transform: translate(-5%,15%) }
-  50% { transform: translate(-10%,5%) }
-  60% { transform: translate(15%,0) }
-  70% { transform: translate(0,10%) }
-  80% { transform: translate(-15%,0) }
-  90% { transform: translate(10%,5%) }
-  100% { transform: translate(5%,0) }
-}
-
-.noise-bg::after {
+.scanlines::after {
   content: "";
-  position: fixed;
-  top: -100%;
-  left: -100%;
-  right: -100%;
-  bottom: -100%;
-  width: 300%;
-  height: 300%;
-  background: url('https://grainy-gradients.vercel.app/noise.svg');
-  opacity: 0.05;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 107, 255, 0.012) 3px,
+    rgba(0, 107, 255, 0.012) 4px
+  );
   pointer-events: none;
-  z-index: 9999;
-  animation: noise 8s steps(10) infinite;
+  z-index: 10;
+}
+
+/* ─── Blinking cursor ────────────────────────────────────────────────── */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: var(--color-pride-blue);
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+.cursor-text-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ─── Glitch hero headline ───────────────────────────────────────────── */
+@keyframes glitch-entry {
+  0%   { text-shadow: -4px 0 #FF2D55, 4px 0 #00D4FF; transform: translateX(-3px); }
+  6%   { text-shadow:  4px 0 #FF2D55,-4px 0 #00D4FF; transform: translateX(3px); }
+  12%  { text-shadow: -2px 0 #00D4FF, 2px 0 #FF2D55; transform: translateX(-1px); }
+  18%  { text-shadow:  2px 0 #FF2D55,-2px 0 #00D4FF; transform: translateX(1px); }
+  24%, 100% { text-shadow: none; transform: translateX(0); }
+}
+
+@keyframes glitch-ambient {
+  0%, 87%, 100% { text-shadow: none; }
+  88%  { text-shadow: -2px 0 #FF2D55, 2px 0 #00D4FF; }
+  90%  { text-shadow:  2px 0 #00D4FF,-2px 0 #FF2D55; }
+  92%  { text-shadow: -1px 0 #FF2D55, 1px 0 #00D4FF; }
+  94%  { text-shadow: none; }
+}
+
+.glitch-entry {
+  animation: glitch-entry 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.glitch-ambient {
+  animation: glitch-ambient 6s step-end infinite;
+  animation-delay: 2s;
+}
+
+/* ─── Typewriter line ────────────────────────────────────────────────── */
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@keyframes show-cursor {
+  from { border-right-color: var(--color-pride-blue); }
+  to   { border-right-color: transparent; }
+}
+.typewriter-line {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--color-pride-blue);
+  animation:
+    typewriter 1.4s steps(40, end) forwards,
+    show-cursor 0.75s step-end infinite;
+}
+
+/* ─── prefers-reduced-motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal-up, .reveal-fade, .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }

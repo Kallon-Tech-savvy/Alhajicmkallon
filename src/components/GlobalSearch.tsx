@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
 import { PROJECTS, ARTICLES } from '@/lib/content';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -79,7 +78,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       {[
                         { icon: <Code size={18} />, label: 'Case Studies', href: '/work', color: 'text-blue-400' },
                         { icon: <FileText size={18} />, label: 'Writing', href: '/writing', color: 'text-purple-400' },
-                        { icon: <Map size={18} />, label: 'Speaking', href: '/speaking', color: 'text-green-400' },
+                        { icon: <Map size={18} />, label: 'Speaking', href: '/speaking', color: 'text-blue-400' },
                         { icon: <ArrowRight size={18} />, label: 'About Alhaji', href: '/about', color: 'text-gold' },
                       ].map((item, i) => (
                         <Link
@@ -88,7 +87,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                           onClick={onClose}
                           className="flex items-center p-4 rounded-xl hover:bg-white/5 text-left transition-all duration-300 group border border-transparent hover:border-white/5"
                         >
-                          <div className={cn("p-2 bg-white/5 rounded-lg mr-4 group-hover:scale-110 transition-transform", item.color)}>
+                          <div className="p-2 bg-white/5 rounded-lg mr-4 group-hover:scale-110 transition-transform">
                             {item.icon}
                           </div>
                           <div className="text-sm font-space font-bold text-ivory uppercase tracking-widest">{item.label}</div>

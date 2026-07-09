@@ -13,18 +13,17 @@ I design and build digital solutions at the intersection of technology,
 innovation, and youth empowerment. Based in Sierra Leone, working across
 Africa to equip the next generation with tools, knowledge, and opportunity.
 
-- 🔭 **Currently building:** SalioneAI - Localized AI for Sierra Leonean businesses
-- 🌱 **Currently learning:** Advanced Computer Vision & Large Language Models
+- 🔭 **Currently building:** 
+- 🌱 **Currently learning:** 
 - 💬 **Ask me about:** Design Engineering, AI for Development, Youth Innovation in Africa
 - 📫 **Reach me at:** hello@alhajikallon.dev
-- ⚡ **Fun fact:** I can debug code while playing traditional African drums.
+- ⚡ **Fun fact:** 
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Languages
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -43,7 +42,6 @@ Africa to equip the next generation with tools, knowledge, and opportunity.
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
@@ -51,42 +49,7 @@ Africa to equip the next generation with tools, knowledge, and opportunity.
 
 ## 📌 Featured Projects
 
-### SalioneAI
-*AI-powered platform for local business automation in SL*
-
-![Stars](https://img.shields.io/github/stars/alhajikallon/salione-ai?style=social)
-![Language](https://img.shields.io/github/languages/top/alhajikallon/salione-ai)
-
-Built with: Python, React, TensorFlow
-**Key feature:** Real-time speech-to-text for Krio
-**Impact:** Reached 5,000+ users in 6 months
-
-[View Repository →](https://github.com/alhajikallon/salione-ai)
-
----
-
-### Freetown Design System
-*Scalable design framework for public service digital products*
-
-![Stars](https://img.shields.io/github/stars/alhajikallon/freetown-ds?style=social)
-![Language](https://img.shields.io/github/languages/top/alhajikallon/freetown-ds)
-
-Built with: Design Tokens, Storybook, React
-**Key feature:** High-accessibility contrast modes for low-light devices
-**Impact:** Reduced design-to-development time by 40%
-
-[View Repository →](https://github.com/alhajikallon/freetown-ds)
-
----
-
 ## ✍️ Recent Writing
-
-- **How Design Thinking Transforms Development** — Exploring human-centered approaches in Freetown (Oct 2023 | 5 min read)
-- **The AI Revolution in Africa** — Why localized LLMs are the key to unlocking productivity (Sep 2023 | 7 min read)
-
-[Read all articles →](https://alhajikallon.dev/writing)
-
----
 
 ## 🌍 What Drives Me
 

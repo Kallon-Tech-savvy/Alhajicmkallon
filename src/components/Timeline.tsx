@@ -4,10 +4,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const milestones = [
-  { year: '2021', title: 'Foundations', desc: 'Started building community-focused tech in Freetown.' },
-  { year: '2022', title: 'Design Systems', desc: 'Pioneered accessible design frameworks for public services.' },
-  { year: '2023', title: 'AI Integration', desc: 'Launched localized AI initiatives for African SMEs.' },
-  { year: '2024', title: 'Scaling Impact', desc: 'Expanding youth empowerment programs across the continent.' }
+  { year: '2020', title: 'Introduced to Computer Science', desc: 'After two years of back and forth comparison and research on Civil Engineering and Computer Science - I finally decided to go with Computer Science.' },
+  { year: '2022', title: 'Foundation', desc: 'Enrolled in Computer Science program at Central University Sierra Leone and performed exceptional well. Aided other students with guidance on project and to clearly understand core subject areas' },
+  { year: '2024', title: 'Drop Out', desc: 'Droput of University after a serious finacial scrambles and personal decisions to follow a self-learning path'},
+  { year: '2026', title: 'Professional', desc: 'fully started developing projects from ideas to meaningful real world problem'}
 ];
 
 export const Timeline = () => {

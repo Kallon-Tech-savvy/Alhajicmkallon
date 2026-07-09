@@ -3,97 +3,164 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
+const GREEN   = '#006BFF';
+const MAGENTA = '#FF2D55';
+
 export const CustomCursor = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible]  = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 250 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+  const spring = { damping: 28, stiffness: 300 };
+  const x = useSpring(cursorX, spring);
+  const y = useSpring(cursorY, spring);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
+    const onMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.classList.contains('cursor-pointer')
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
+    const onOver = (e: MouseEvent) => {
+      const t = e.target as HTMLElement;
+      setIsHovering(
+        t.tagName === 'A' ||
+        t.tagName === 'BUTTON' ||
+        !!t.closest('a') ||
+        !!t.closest('button') ||
+        t.classList.contains('cursor-pointer')
+      );
     };
 
-    window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mouseover', handleMouseOver);
-
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseover', onOver);
     return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseover', onOver);
     };
   }, [cursorX, cursorY, isVisible]);
 
   if (!isVisible) return null;
 
+  const color = isHovering ? MAGENTA : GREEN;
+  const glow  = isHovering
+    ? '0 0 10px rgba(255,45,85,0.8)'
+    : '0 0 8px rgba(0,107,255,0.7)';
+
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999] hidden md:block">
-      {/* Main Cursor Dot */}
+      {/* Crosshair container */}
       <motion.div
         style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
+          x,
+          y,
           translateX: '-50%',
           translateY: '-50%',
+          position: 'absolute',
         }}
-        animate={{
-          scale: isHovering ? 2.5 : 1,
-          backgroundColor: isHovering ? 'rgba(214, 175, 55, 0.2)' : 'rgba(214, 175, 55, 1)',
-        }}
-        className="w-3 h-3 rounded-full border border-gold backdrop-blur-[2px]"
-      />
+      >
+        {/* Horizontal arm — left */}
+        <motion.div
+          animate={{ width: isHovering ? 14 : 10, opacity: 1 }}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: '54%',
+            height: 1,
+            background: color,
+            boxShadow: glow,
+            transformOrigin: 'right center',
+            marginTop: -0.5,
+          }}
+          transition={{ duration: 0.15 }}
+        />
 
-      {/* Outer Ring */}
-      <motion.div
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        animate={{
-          scale: isHovering ? 1.5 : 0.6,
-          opacity: isHovering ? 0.3 : 0.1,
-          borderColor: '#D4AF37',
-        }}
-        className="w-12 h-12 rounded-full border border-gold"
-      />
+        {/* Horizontal arm — right */}
+        <motion.div
+          animate={{ width: isHovering ? 14 : 10, opacity: 1 }}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '54%',
+            height: 1,
+            background: color,
+            boxShadow: glow,
+            marginTop: -0.5,
+          }}
+          transition={{ duration: 0.15 }}
+        />
 
-      {/* Trailing effect */}
-      <motion.div
-        style={{
-          x: cursorX,
-          y: cursorY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        animate={{
-          scale: isHovering ? 4 : 0,
-          opacity: isHovering ? 0.1 : 0,
-        }}
-        className="w-20 h-20 rounded-full bg-gold blur-2xl"
-      />
+        {/* Vertical arm — top */}
+        <motion.div
+          animate={{ height: isHovering ? 14 : 10, opacity: 1 }}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '54%',
+            width: 1,
+            background: color,
+            boxShadow: glow,
+            marginLeft: -0.5,
+          }}
+          transition={{ duration: 0.15 }}
+        />
+
+        {/* Vertical arm — bottom */}
+        <motion.div
+          animate={{ height: isHovering ? 14 : 10, opacity: 1 }}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '54%',
+            width: 1,
+            background: color,
+            boxShadow: glow,
+            marginLeft: -0.5,
+          }}
+          transition={{ duration: 0.15 }}
+        />
+
+        {/* Center dot */}
+        <motion.div
+          animate={{
+            width:  isHovering ? 3 : 2,
+            height: isHovering ? 3 : 2,
+          }}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            background: color,
+            boxShadow: glow,
+            borderRadius: 0,
+            transform: 'translate(-50%, -50%)',
+          }}
+          transition={{ duration: 0.15 }}
+        />
+
+        {/* Corner brackets (outer reticle) */}
+        {[
+          { top: -14, left: -14, borderTop: `1px solid ${color}`, borderLeft: `1px solid ${color}` },
+          { top: -14, right: -14, borderTop: `1px solid ${color}`, borderRight: `1px solid ${color}` },
+          { bottom: -14, left: -14, borderBottom: `1px solid ${color}`, borderLeft: `1px solid ${color}` },
+          { bottom: -14, right: -14, borderBottom: `1px solid ${color}`, borderRight: `1px solid ${color}` },
+        ].map((s, i) => (
+          <motion.div
+            key={i}
+            animate={{ opacity: isHovering ? 0.8 : 0.35, scale: isHovering ? 1.6 : 1 }}
+            style={{
+              position: 'absolute',
+              width: 7,
+              height: 7,
+              ...s,
+            }}
+            transition={{ duration: 0.15 }}
+          />
+        ))}
+      </motion.div>
     </div>
   );
 };

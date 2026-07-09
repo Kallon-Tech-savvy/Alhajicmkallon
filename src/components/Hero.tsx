@@ -1,152 +1,116 @@
-'use client';
-
-import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
 
-export const Hero = () => {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -150]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+const METRICS = [
+  { label: 'Systems shipped', value: '12+' },
+  { label: 'Latency target', value: '<100ms' },
+  { label: 'Uptime posture', value: '99.99%' },
+  { label: 'Base · timezone', value: 'SL · WAT' },
+];
 
-  return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-32 overflow-hidden bg-midnight">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.05),transparent_70%)]" />
-        <motion.div
-          style={{ y: y1 }}
-          className="absolute -top-[20%] -right-[10%] w-[60vw] h-[60vw] bg-gold/5 rounded-full blur-[120px]"
-        />
-        <motion.div
-          style={{ y: y2 }}
-          className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] bg-navy/20 rounded-full blur-[100px]"
-        />
-      </div>
+export const Hero = () => (
+  <section className="relative flex min-h-screen flex-col overflow-hidden bg-midnight">
+    <div className="pointer-events-none absolute inset-0 select-none">
+      <div
+        className="absolute right-0 top-0 h-[72%] w-[48%]"
+        style={{
+          background: 'radial-gradient(ellipse 100% 90% at 85% 0%, rgba(0, 102, 255, 0.08) 0%, transparent 65%)',
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(26, 26, 26, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(26, 26, 26, 0.15) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(ellipse 100% 100% at 50% 0%, black 0%, transparent 65%)',
+        }}
+      />
+    </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.8 }}
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-[1px] bg-gold" />
-                <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase">
-                  Design Engineer & Software Developer
-                </span>
-              </div>
-
-              <h1 className="font-space text-6xl md:text-8xl xl:text-9xl font-black tracking-tighter mb-10 leading-[0.85]">
-                BUILDING <br />
-                <span className="text-gradient">AFRICA&apos;S</span> <br />
-                FUTURE.
-              </h1>
-
-              <p className="text-muted text-lg md:text-xl max-w-xl mb-12 font-inter leading-relaxed">
-                Designing and building digital solutions at the intersection of technology,
-                innovation, and youth empowerment. Based in <span className="text-ivory font-medium">Sierra Leone</span>.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                <Link href="/work" className="w-full sm:w-auto">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-10 py-5 bg-gold text-midnight font-space font-black text-xs uppercase tracking-widest hover:bg-ivory transition-all duration-300 w-full shadow-[0_20px_50px_rgba(212,175,55,0.15)] flex items-center justify-center gap-3"
-                  >
-                    View My Work <ArrowUpRight size={18} />
-                  </motion.button>
-                </Link>
-                <Link href="/writing" className="w-full sm:w-auto">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-10 py-5 border border-gold/30 text-gold font-space font-black text-xs uppercase tracking-widest hover:bg-gold/5 transition-all duration-300 w-full flex items-center justify-center gap-3"
-                  >
-                    Read Writing
-                  </motion.button>
-                </Link>
-              </div>
-            </motion.div>
+    <div className="relative z-10 flex flex-1 items-center px-6 pb-10 pt-28 md:px-8 lg:px-10">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
+        <div className="reveal-in flex flex-col justify-center lg:col-span-7">
+          <div className="mb-7 flex items-center gap-2 text-[11px] uppercase tracking-[0.32em] text-muted">
+            <span className="inline-flex h-2 w-2 rounded-full bg-pride-blue" />
+            <span>Design engineer · Sierra Leone</span>
           </div>
 
-          <div className="lg:col-span-5 relative hidden lg:block">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 1.2, delay: 2.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10"
+          <h1
+            className="mb-6 font-space font-black leading-[0.92] tracking-[-0.03em] text-ivory"
+            style={{ fontSize: 'clamp(2.8rem, 6.2vw, 6.5rem)' }}
+          >
+            <span className="block">Designing digital</span>
+            <span className="block text-pride-blue">experiences that feel</span>
+            <span className="block">effortless.</span>
+          </h1>
+
+          <p className="mb-8 max-w-[46ch] text-[1rem] leading-7 text-[#9aa4b2] md:text-[1.05rem]">
+            I design and build calm, high-performing product experiences for founders, teams, and communities who need clarity from day one.
+          </p>
+
+          <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
+            <Link
+              href="/work"
+              className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:-translate-y-0.5 hover:bg-pride-blue/20"
             >
-              {/* Main Image Container */}
-              <div className="relative w-full aspect-[4/5] rounded-sm overflow-hidden border border-white/5 shadow-2xl group">
-                <Image
-                  src="/images/kallon1.png"
-                  alt="Alhaji Kallon"
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-transparent to-transparent" />
+              View selected work
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
+            >
+              Start a conversation
+            </Link>
+          </div>
 
-                {/* Floating Badge */}
-                <div className="absolute bottom-8 left-8 right-8">
-                  <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 3 }}
-                    className="glass p-6 border-l-2 border-l-gold backdrop-blur-md"
-                  >
-                    <div className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold mb-2">Current Mission</div>
-                    <div className="text-sm font-inter text-ivory leading-relaxed">
-                      Equipping the next generation of African innovators with tools for impact.
-                    </div>
-                  </motion.div>
-                </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-pride-blue" />
+              Available for select projects
+            </span>
+          </div>
+        </div>
+
+        <div className="relative hidden lg:col-span-5 lg:block" style={{ height: '500px' }}>
+          <div className="reveal-in absolute inset-0" style={{ animationDelay: '0.12s' }}>
+            <div className="absolute inset-0 overflow-hidden rounded-[1.5rem] border border-white/10 bg-surface shadow-[0_20px_80px_rgba(0,0,0,0.2)]">
+              <Image
+                src="/assets/kallon1.png"
+                alt="Alhaji C.M. Kallon"
+                fill
+                priority
+                className="object-cover"
+                style={{ filter: 'grayscale(70%) contrast(1.08)' }}
+              />
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(0, 102, 255, 0.12) 0%, transparent 50%)' }}
+              />
+            </div>
+            <div className="absolute inset-x-4 top-4 flex items-center justify-between rounded-full border border-white/10 bg-black/20 px-3 py-2 backdrop-blur-sm">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-pride-blue" />
+                <span className="text-[10px] uppercase tracking-[0.28em] text-muted">Profile</span>
               </div>
-
-              {/* Decorative Elements */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute -top-12 -right-12 w-32 h-32 border border-gold/20 rounded-full flex items-center justify-center -z-10"
-              >
-                <div className="w-24 h-24 border border-gold/10 rounded-full" />
-              </motion.div>
-
-              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-gold/5 blur-3xl -z-10" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        style={{ opacity }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
-        <span className="text-[9px] text-gold font-space font-bold uppercase tracking-[0.4em]">Scroll to explore</span>
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-[1px] h-16 bg-gradient-to-b from-gold to-transparent"
-        />
-      </motion.div>
-
-      {/* Vertical Side Text */}
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:block">
-        <span className="font-space text-[10px] font-bold text-muted uppercase tracking-[0.8em] vertical-text transform rotate-180">
-          DESIGN • ENGINEERING • INNOVATION
-        </span>
+    <div className="relative z-10 border-t border-border/80">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-0 px-6 lg:grid-cols-4 lg:px-8">
+        {METRICS.map((m, i) => (
+          <div
+            key={m.label}
+            className="flex flex-col gap-2 border-r border-border/80 px-4 py-6 last:border-r-0"
+          >
+            <span className="font-space text-lg font-semibold text-ivory">{m.value}</span>
+            <span className="text-[10px] uppercase tracking-[0.24em] text-[#9aa4b2]">{m.label}</span>
+          </div>
+        ))}
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
