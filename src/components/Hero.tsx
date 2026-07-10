@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const METRICS = [
   { label: 'Systems shipped', value: '12+' },
@@ -46,28 +49,32 @@ export const Hero = () => (
           </h1>
 
           <p className="mb-8 max-w-[46ch] text-[1rem] leading-7 text-[#9aa4b2] md:text-[1.05rem]">
-            I design and build calm, high-performing product experiences for founders, teams, and communities who need clarity from day one.
+            I design premium digital experiences that turn attention into momentum for founders, teams, and ambitious brands who want clarity from day one.
           </p>
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
-            <Link
-              href="/work"
-              className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:-translate-y-0.5 hover:bg-pride-blue/20"
-            >
-              View selected work
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
-            >
-              Start a conversation
-            </Link>
+            <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:bg-pride-blue/20"
+              >
+                Book a discovery call
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
+              <Link
+                href="/work"
+                className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
+              >
+                View selected work
+              </Link>
+            </motion.div>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
             <span className="inline-flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-pride-blue" />
-              Available for select projects
+              Fast response · premium execution · thoughtful collaboration
             </span>
           </div>
         </div>
@@ -101,14 +108,16 @@ export const Hero = () => (
 
     <div className="relative z-10 border-t border-border/80">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-0 px-6 lg:grid-cols-4 lg:px-8">
-        {METRICS.map((m, i) => (
-          <div
+        {METRICS.map((m) => (
+          <motion.div
             key={m.label}
+            whileHover={{ y: -3, scale: 1.01 }}
+            transition={{ duration: 0.2 }}
             className="flex flex-col gap-2 border-r border-border/80 px-4 py-6 last:border-r-0"
           >
             <span className="font-space text-lg font-semibold text-ivory">{m.value}</span>
             <span className="text-[10px] uppercase tracking-[0.24em] text-[#9aa4b2]">{m.label}</span>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

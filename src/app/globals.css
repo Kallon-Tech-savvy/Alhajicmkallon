@@ -46,6 +46,11 @@ a {
   text-decoration: none;
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-pride-blue);
+  outline-offset: 3px;
+}
+
 p, li {
   max-width: 65ch;
 }
@@ -115,6 +120,44 @@ h1, h2, h3, h4 {
   background: rgba(10, 10, 10, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+/* Gallery masonry layout */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.gallery-grid article:nth-child(3n + 2) {
+  transform: translateY(1.5rem);
+}
+
+.gallery-grid article:nth-child(3n + 3) {
+  transform: translateY(3rem);
+}
+
+@media (max-width: 1279px) {
+  .gallery-grid article:nth-child(3n + 2),
+  .gallery-grid article:nth-child(3n + 3) {
+    transform: none;
+  }
+}
+
+.gallery-grid article {
+  will-change: transform, opacity;
 }
 
 /* ─── Smooth Transitions ─────────────────────────────────────────────── */

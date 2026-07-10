@@ -11,6 +11,24 @@ interface ChatMessage {
 
 const MAX_MESSAGE_LENGTH = 800;
 
+function CairoIllustration() {
+  return (
+    <div className="relative mx-auto flex h-24 w-24 items-center justify-center">
+      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_55%)]" />
+      <div className="absolute bottom-0 h-16 w-16 rounded-[40%_40%_45%_45%] bg-gradient-to-b from-[#8fd6ff] via-[#4f86ff] to-[#2149a8] shadow-[0_12px_30px_rgba(15,23,42,0.35)]" />
+      <div className="absolute bottom-5 h-8 w-10 rounded-full border border-white/60 bg-[#fef7ed] shadow-inner" />
+      <div className="absolute bottom-8 h-3 w-3 rounded-full bg-slate-900" />
+      <div className="absolute bottom-8 left-[43px] h-3 w-3 rounded-full bg-slate-900" />
+      <div className="absolute bottom-5 left-[18px] h-2.5 w-2.5 rounded-full bg-[#ffb9b9]" />
+      <div className="absolute bottom-5 right-[18px] h-2.5 w-2.5 rounded-full bg-[#ffb9b9]" />
+      <div className="absolute top-2 h-7 w-9 rounded-full bg-white/80" />
+      <div className="absolute top-4 h-2.5 w-3 rounded-full bg-slate-900/80" />
+      <div className="absolute right-4 top-3 h-8 w-8 rounded-full border border-white/50 bg-white/20 backdrop-blur-sm" />
+      <div className="absolute -right-1 top-1/2 h-5 w-5 -translate-y-1/2 rotate-45 rounded bg-[#ffd166]" />
+    </div>
+  );
+}
+
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -55,7 +73,7 @@ export function ChatWidget() {
     const trimmed = input.trim();
     if (!trimmed || loading) return;
     if (trimmed.length > MAX_MESSAGE_LENGTH) {
-      setError(`Message is too long (max ${MAX_MESSAGE_LENGTH} characters).`);
+      setError(`Message is too long. Please keep it under ${MAX_MESSAGE_LENGTH} characters.`);
       return;
     }
 
@@ -72,23 +90,30 @@ export function ChatWidget() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: trimmed,
-          history: priorMessages, // server appends the new message itself
-          company: honeypot, // should always be empty for real users
+          history: priorMessages,
+          company: honeypot,
         }),
       });
 
       const data = await res.json().catch(() => null);
 
-      if (!res.ok || !data?.reply) {
-        setError(data?.error ?? 'Something went wrong. Please try again.');
-        setMessages(priorMessages); // roll back the optimistic add on failure
+      if (!res.ok) {
+        const fallbackMessage = data?.reply ?? 'I am currently unavailable, but I can still help. Please try again in a moment or contact Alhaji directly.';
+        setMessages([...nextMessages, { role: 'assistant', content: fallbackMessage }]);
+        setError(data?.error ?? 'The chat service is currently unavailable. Please try again shortly.');
+        return;
+      }
+
+      if (!data?.reply) {
+        setError('The reply was empty. Please try again.');
+        setMessages(priorMessages);
         return;
       }
 
       setMessages([...nextMessages, { role: 'assistant', content: data.reply }]);
     } catch {
-      setError('Network error. Please check your connection and try again.');
-      setMessages(priorMessages);
+      setMessages([...nextMessages, { role: 'assistant', content: 'I hit a connection issue. Please try again in a moment.' }]);
+      setError('The chat was unable to reach the service. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
@@ -138,13 +163,15 @@ export function ChatWidget() {
             <div className="text-[10px] text-muted mt-0.5">Usually answers instantly</div>
           </div>
 
-          {/* Messages — plain text only; React escapes this automatically,
-              so nothing the model or a visitor sends can inject markup. */}
           <div ref={scrollRef} role="log" aria-live="polite" className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
             {messages.length === 0 && (
-              <p className="text-muted text-sm font-inter leading-relaxed">
-                Ask me about Alhaji&apos;s work, skills, or how to get in touch.
-              </p>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-4 py-6 text-center">
+                <CairoIllustration />
+                <h3 className="mt-3 text-sm font-semibold text-ivory">Hi, I&apos;m Cairo</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">
+                  Ask me about Alhaji&apos;s work, skills, or how to get in touch.
+                </p>
+              </div>
             )}
             {messages.map((m, i) => (
               <div

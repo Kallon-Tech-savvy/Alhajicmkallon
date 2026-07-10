@@ -1,20 +1,6 @@
 export const PROJECTS = [
   {
-    id: 'salione-ai',
-    title: 'SalioneAI',
-    role: 'Design Engineer & Lead Developer',
-    timeline: 'Jan 2023 - Present',
-    tech: ['Python', 'React', 'TensorFlow', 'AWS'],
-    description: 'A localized AI platform for small businesses and public services in Sierra Leone.',
-    problem: 'Small teams needed practical automation, but limited infrastructure and fragmented workflows made adoption difficult.',
-    approach: 'I combined conversational interfaces with mobile-first design and lightweight automation to make complex systems usable in everyday work.',
-    solution: 'Built a multi-step platform for inventory support, customer communication, and operational insights with a calm, accessible experience.',
-    impact: ['5,000+ users reached', 'Reduced manual admin work by 30%', 'Supported multilingual workflows'],
-    image: '/images/project1.jpg',
-    links: { live: '#', github: '#', caseStudy: '#' }
-  },
-  {
-    id: 'freetown-design-system',
+    id: '',
     title: 'Freetown Design System',
     role: 'Design Systems Architect',
     timeline: 'Jun 2022 - Dec 2022',
@@ -41,21 +27,4 @@ export const ARTICLES = [
   }
 ];
 
-export const SPEAKING = [
-  {
-    title: 'Building calm digital systems for emerging markets',
-    organization: 'Africa Tech Summit',
-    year: '2024'
-  },
-  {
-    title: 'Designing for trust in high-velocity product teams',
-    organization: 'UNDP',
-    year: '2023'
-  },
-  {
-    title: 'The future of African product leadership',
-    organization: 'Global AI Forum',
-    year: '2022'
-  }
-];
 

@@ -8,6 +8,7 @@ import { Reveal } from '@/components/Reveal';
 
 export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
   const [selectedIntent, setSelectedIntent] = useState<string>('');
   const [formData, setFormData] = useState({
     name: '',
@@ -22,12 +23,31 @@ export default function ContactPage() {
     "Strategic Consulting"
   ];
 
+  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
+    setStatusMessage('');
+
+    if (!formspreeId) {
+      const subject = `Inquiry: ${selectedIntent || 'General'}`;
+      const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`;
+      const mailtoLink = `mailto:hello@alhajikallon.dev?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      if (typeof window !== 'undefined') {
+        window.location.href = mailtoLink;
+      }
+
+      setStatus('success');
+      setStatusMessage('Your email app should open with your message ready. If it does not, email hello@alhajikallon.dev directly.');
+      setFormData({ name: '', email: '', message: '' });
+      setSelectedIntent('');
+      return;
+    }
 
     try {
-      const response = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+      const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, subject: `Inquiry: ${selectedIntent || 'General'}` })
@@ -35,13 +55,16 @@ export default function ContactPage() {
 
       if (response.ok) {
         setStatus('success');
+        setStatusMessage('Thanks — your message is on its way. I will reply with a thoughtful next step soon.');
         setFormData({ name: '', email: '', message: '' });
         setSelectedIntent('');
       } else {
         setStatus('error');
+        setStatusMessage('The message did not send on the first try. Please email hello@alhajikallon.dev directly instead.');
       }
     } catch {
       setStatus('error');
+      setStatusMessage('The message did not send on the first try. Please email hello@alhajikallon.dev directly instead.');
     }
   };
 
@@ -62,7 +85,7 @@ export default function ContactPage() {
               Get in <span className="text-ivory/80">touch.</span>
             </h1>
             <p className="text-base md:text-lg text-muted max-w-2xl leading-relaxed">
-              Whether you need a product experience, a thoughtful system, or a sharp digital launch, I’m open to thoughtful collaborations.
+              Whether you need a premium product experience, a thoughtful system, or a sharp digital launch, I’m open to thoughtful collaborations that move quickly and feel effortless.
             </p>
           </Reveal>
         </div>
@@ -123,6 +146,16 @@ export default function ContactPage() {
           {/* Optimized Interactive Form Container — frosted panel */}
           <Reveal variant="up" delay={120} className="lg:col-span-7">
             <div className="glass-frost p-8 md:p-12 rounded-sm shadow-2xl">
+              <div className="mb-8 rounded-2xl border border-pride-blue/20 bg-pride-blue/10 p-4 text-sm text-[#dfeafe]">
+                <p className="mb-2 font-space text-[10px] font-black uppercase tracking-[0.3em] text-pride-blue">
+                  what to expect
+                </p>
+                <ul className="space-y-2 text-sm leading-7 text-[#dfeafe]">
+                  <li>• A short discovery conversation tailored to your goals.</li>
+                  <li>• A clear recommendation for the best next step.</li>
+                  <li>• A thoughtful, premium experience from first reply to final delivery.</li>
+                </ul>
+              </div>
               {status !== 'success' ? (
                 <form onSubmit={handleSubmit} className="space-y-8">
                   
@@ -193,13 +226,13 @@ export default function ContactPage() {
                     className="w-full rounded-xl py-4 bg-pride-blue text-white font-space font-semibold text-xs uppercase tracking-[0.25em] transition-all duration-300 flex items-center justify-center gap-3 hover:bg-pride-blue/90 disabled:opacity-50 tap-scale"
                   >
                     {status === 'loading' ? 'Transmitting Data...' : (
-                      <>Initiate Consultation <Send size={14} /></>
+                      <>Request a discovery call <Send size={14} /></>
                     )}
                   </button>
 
                   {status === 'error' && (
                     <p className="text-red-400 font-space text-[11px] font-bold uppercase tracking-[0.2em] text-center animate-pulse">
-                      Transmission failed. Please check parameters and retry.
+                      {statusMessage || 'Transmission failed. Please check parameters and retry.'}
                     </p>
                   )}
                 </form>
@@ -211,7 +244,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-space text-2xl font-bold text-ivory uppercase tracking-tight">Message received</h3>
                     <p className="text-muted font-inter text-sm mt-2 max-w-xs leading-relaxed">
-                      Your note has been received. I’ll follow up within a day or two with a thoughtful response.
+                      {statusMessage || 'Your note has been received. I’ll follow up within a day or two with a thoughtful response.'}
                     </p>
                   </div>
                   <button

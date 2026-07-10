@@ -45,7 +45,15 @@ export default function RootLayout({
       className={`${jetbrainsMono.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-midnight text-ivory">
-        {children}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-pride-blue focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        >
+          Skip to content
+        </a>
+        <div id="main-content" tabIndex={-1} className="flex-1">
+          {children}
+        </div>
         <ChatWidget />
       </body>
     </html>
