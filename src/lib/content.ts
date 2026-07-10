@@ -1,16 +1,16 @@
 export const PROJECTS = [
   {
     id: '',
-    title: 'Freetown Design System',
-    role: 'Design Systems Architect',
-    timeline: 'Jun 2022 - Dec 2022',
-    tech: ['Figma', 'Design Tokens', 'Storybook', 'React'],
+    title: '',
+    role: '',
+    timeline: '',
+    tech: [''],
     description: 'A scalable design system for public-facing digital services in Sierra Leone.',
     problem: 'Government and civic products were inconsistent, hard to maintain, and difficult for users to navigate.',
     approach: 'I mapped recurring patterns and built a practical token and component system around accessibility and low-bandwidth use cases.',
     solution: 'Delivered reusable UI foundations that helped teams ship faster while keeping experiences coherent and understandable.',
     impact: ['Cut design-to-dev time by 40%', 'Used across 12 digital services', 'Raised accessibility quality significantly'],
-    image: '/images/project2.jpg',
+    image: '',
     links: { live: '#', github: '#', caseStudy: '#' }
   }
 ];
