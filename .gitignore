@@ -40,3 +40,4 @@ prod_server.log
 # Generated files
 *.local
 .next/
+.env*
