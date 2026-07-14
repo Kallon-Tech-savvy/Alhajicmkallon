@@ -146,16 +146,6 @@ export default function ContactPage() {
           {/* Optimized Interactive Form Container — frosted panel */}
           <Reveal variant="up" delay={120} className="lg:col-span-7">
             <div className="glass-frost p-8 md:p-12 rounded-sm shadow-2xl">
-              <div className="mb-8 rounded-2xl border border-pride-blue/20 bg-pride-blue/10 p-4 text-sm text-[#dfeafe]">
-                <p className="mb-2 font-space text-[10px] font-black uppercase tracking-[0.3em] text-pride-blue">
-                  what to expect
-                </p>
-                <ul className="space-y-2 text-sm leading-7 text-[#dfeafe]">
-                  <li>• A short discovery conversation tailored to your goals.</li>
-                  <li>• A clear recommendation for the best next step.</li>
-                  <li>• A thoughtful, premium experience from first reply to final delivery.</li>
-                </ul>
-              </div>
               {status !== 'success' ? (
                 <form onSubmit={handleSubmit} className="space-y-8">
                   

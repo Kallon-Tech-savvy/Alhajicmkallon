@@ -1,15 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { FormEvent, KeyboardEvent } from 'react';
+import type { FormEvent, KeyboardEvent, ReactNode } from 'react';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { MAX_MESSAGE_LENGTH, CLIENT_HISTORY_LIMIT } from '@/lib/Chatconstant';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
 }
-
-const MAX_MESSAGE_LENGTH = 800;
 
 function CairoIllustration() {
   return (
@@ -27,6 +26,25 @@ function CairoIllustration() {
       <div className="absolute -right-1 top-1/2 h-5 w-5 -translate-y-1/2 rotate-45 rounded bg-[#ffd166]" />
     </div>
   );
+}
+
+/**
+ * Renders **bold** markers as actual bold text. Plain string splitting and
+ * JSX construction only — no dangerouslySetInnerHTML, so this carries no
+ * more XSS risk than the plain-text rendering it replaces.
+ */
+function renderMessageContent(content: string): ReactNode[] {
+  const parts = content.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return (
+        <strong key={i} className="font-semibold text-ivory">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
 }
 
 export function ChatWidget() {
@@ -84,13 +102,18 @@ export function ChatWidget() {
     setError(null);
     setLoading(true);
 
+    // Trim before sending so the request payload doesn't grow unbounded
+    // over a long conversation — the server trims too, but there's no
+    // reason to ship the whole history over the wire either.
+    const historyToSend = priorMessages.slice(-CLIENT_HISTORY_LIMIT);
+
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: trimmed,
-          history: priorMessages,
+          history: historyToSend,
           company: honeypot,
         }),
       });
@@ -98,7 +121,14 @@ export function ChatWidget() {
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        const fallbackMessage = data?.reply ?? 'I am currently unavailable, but I can still help. Please try again in a moment or contact Alhaji directly.';
+        // Was previously `data?.reply ?? '...unavailable...'`, which
+        // skipped straight to the generic fallback for every 400-level
+        // response that only sets `error` (bad origin, honeypot trip,
+        // moderation flag, message-too-long, etc). Checking `data?.error`
+        // first means a real visitor who trips moderation, for example,
+        // sees the actually useful message instead of a generic outage notice.
+        const fallbackMessage =
+          data?.reply ?? data?.error ?? 'I am currently unavailable, but I can still help. Please try again in a moment or contact Alhaji directly.';
         setMessages([...nextMessages, { role: 'assistant', content: fallbackMessage }]);
         setError(data?.error ?? 'The chat service is currently unavailable. Please try again shortly.');
         return;
@@ -182,7 +212,7 @@ export function ChatWidget() {
                     : 'mr-auto bg-white/[0.04] text-ivory/90 border border-white/5'
                 }`}
               >
-                {m.content}
+                {renderMessageContent(m.content)}
               </div>
             ))}
             {loading && (

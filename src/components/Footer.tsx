@@ -13,7 +13,7 @@ const NAV_CMDS = [
   { cmd: 'home', href: '/' },
   { cmd: 'work', href: '/work' },
   { cmd: 'about', href: '/about' },
-  { cmd: 'writing', href: '/writing' },
+  { cmd: 'Contact', href: '/contact' },
 ];
 
 export const Footer = () => {

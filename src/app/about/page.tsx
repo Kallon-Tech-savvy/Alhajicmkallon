@@ -210,7 +210,7 @@ export default function AboutPage() {
                 className="font-space text-[10px] font-black uppercase tracking-[0.4em] mb-6"
                 style={{ color: 'var(--color-gold)' }}
               >
-                The Short Version
+                Who is he?
               </h2>
               <p
                 className="text-3xl md:text-4xl font-inter font-light leading-snug tracking-tight"
@@ -226,7 +226,7 @@ export default function AboutPage() {
                 >
                   Sierra Leonean
                 </span>{' '}
-                design engineer, software developer, entrepreneur, and writer committed
+                design engineer, software developer, AI native builder, entrepreneur committed
                 to advancing innovation and building solutions that create lasting impact.
               </p>
             </div>
@@ -238,7 +238,7 @@ export default function AboutPage() {
               <p>
                 As a design engineer and software developer, I build digital solutions
                 that address real-world challenges. My work spans software engineering,
-                product development, artificial intelligence, and systems design.
+                product development, and systems design.
               </p>
               <p>
                 But technology alone is never the answer. The real work is bridging the
@@ -304,7 +304,7 @@ export default function AboutPage() {
               className="font-space text-[10px] font-black uppercase tracking-[0.5em]"
               style={{ color: 'var(--color-pride-blue)' }}
             >
-              The Full Story
+              Alhaji C M Kallon&apos;s Story
             </h2>
             <div
               className="flex-1 h-[1px]"
@@ -318,9 +318,9 @@ export default function AboutPage() {
           >
             <p>
               I grew up fascinated by how ideas become reality. Not just in theory,
-              but in practice — how a thought transforms into a sketch, a sketch into
-              a prototype, and a prototype into something that changes how people live
-              and work.
+              but in practice — this curiosity has evolved into a lifelong pursuit of understanding systems,solving problems
+              and designing solution that create meaningful impact. What began as a passion has grown into a broader 
+              mission.
             </p>
             <p>
               Beyond technology, I&apos;m deeply committed to youth empowerment and
@@ -355,8 +355,8 @@ export default function AboutPage() {
             </div>
 
             <p>
-              I believe that ideas have the power to shape societies, and that sharing
-              knowledge is one of the most effective ways to create positive change.
+              I believe  ideas have the power to shape societies, and
+              knowledge sharing is one of the most effective ways to create positive change.
               Through technology, innovation, and education, I&apos;m working to play a
               role in building that future.
             </p>
