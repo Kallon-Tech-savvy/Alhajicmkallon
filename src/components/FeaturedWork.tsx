@@ -31,8 +31,7 @@ export const FeaturedWork = () => {
             className="max-w-md"
           >
             <p className="text-muted text-lg font-inter leading-relaxed mb-8">
-              A selection of digital products and systems designed to solve complex
-              problems in low-resource environments.
+              Selected case studies will be published here once project details and supporting evidence are ready to share.
             </p>
             <Link href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
               View All Projects <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -41,7 +40,12 @@ export const FeaturedWork = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-32">
-          {PROJECTS.map((project, _i) => (
+          {PROJECTS.length === 0 ? (
+            <div className="border border-white/10 p-8 md:p-12">
+              <h3 className="font-space text-2xl font-bold mb-4">Case studies coming when ready</h3>
+              <p className="max-w-2xl text-muted leading-relaxed">This section will feature verified projects rather than placeholder work or unsubstantiated impact claims.</p>
+            </div>
+          ) : PROJECTS.map((project, _i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 50 }}
@@ -83,7 +87,7 @@ export const FeaturedWork = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-10">
-                  {project.tech.map(t => (
+                  {project.technologies.map(t => (
                     <span key={t} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-space font-bold text-muted uppercase tracking-wider">
                       {t}
                     </span>

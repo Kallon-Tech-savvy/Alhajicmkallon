@@ -24,6 +24,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://alhajicmkallon.vercel.app"),
   title: "Alhaji Kallon | Design Engineer",
   description:
     "Design Engineer & Software Developer building Africa's innovation future from Sierra Leone.",

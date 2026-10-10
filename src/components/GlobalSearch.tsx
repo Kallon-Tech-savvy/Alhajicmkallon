@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
-import { PROJECTS, ARTICLES } from '@/lib/content';
+import { searchPublishedContent } from '@/lib/content';
 import Link from 'next/link';
 
 export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -13,7 +13,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        onClose(); // This logic needs to be handled by parent state ideally
+        return; // Navbar owns the open/close shortcut state.
       }
       if (e.key === 'Escape') onClose();
     };
@@ -21,15 +21,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  const filteredProjects = query === '' ? [] : PROJECTS.filter(p =>
-    p.title.toLowerCase().includes(query.toLowerCase()) ||
-    p.description.toLowerCase().includes(query.toLowerCase())
-  );
-
-  const filteredArticles = query === '' ? [] : ARTICLES.filter(a =>
-    a.title.toLowerCase().includes(query.toLowerCase()) ||
-    a.excerpt.toLowerCase().includes(query.toLowerCase())
-  );
+  const { projects: filteredProjects, articles: filteredArticles } = searchPublishedContent(query);
 
   return (
     <AnimatePresence>
@@ -105,7 +97,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                         {filteredProjects.map(p => (
                           <Link key={p.id} href={`/work#${p.id}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
                             <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{p.title}</div>
-                            <div className="text-xs text-muted mt-1">{p.description}</div>
+                            <div className="text-xs text-muted mt-1">{p.summary}</div>
                           </Link>
                         ))}
                       </div>
@@ -117,7 +109,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Articles</h3>
                       <div className="space-y-2">
                         {filteredArticles.map(a => (
-                          <Link key={a.slug} href={`/writing/${a.slug}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
+                          <Link key={a.slug} href={a.kind === 'knowledge' ? `/knowledge/${a.slug}` : `/writing/${a.slug}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
                             <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{a.title}</div>
                             <div className="text-xs text-muted mt-1">{a.excerpt}</div>
                           </Link>
