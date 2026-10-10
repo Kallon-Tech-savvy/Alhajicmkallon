@@ -4,7 +4,6 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 // import { PROJECTS } from '@/lib/content'; // Assumed static dataset
 import {Reveal} from '@/components/Reveal';
-import { UnicornBackground } from '@/components/UnicornBackground';
 import { MagneticButton } from '@/components/MagneticButton';
 
 export default function WorkPage() {
@@ -14,11 +13,6 @@ export default function WorkPage() {
 
       {/* Header */}
       <section className="pt-48 pb-24 px-6 relative overflow-hidden">
-        <UnicornBackground
-          projectId="YOUR_UNICORN_STUDIO_PROJECT_ID"
-          fallbackClassName="bg-gradient-to-bl from-[var(--color-pride-blue)]/8 via-transparent to-transparent"
-        />
-
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal variant="fade" as="span" className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
             highlights of core work this year
