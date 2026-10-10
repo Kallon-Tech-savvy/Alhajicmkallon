@@ -1,21 +1,40 @@
 import { spawnSync } from "node:child_process";
-import { unlinkSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { readdirSync, unlinkSync, writeFileSync } from "node:fs";
+import { resolve, join } from "node:path";
 
+const sourceRoot = resolve("src");
 const probePath = resolve("src/packages/example/tests/boundary-probe.ts");
-const args = ["--yes", "--package=dependency-cruiser@17.3.7", "depcruise", "--config", ".dependency-cruiser.cjs", "--output-type", "err-long", "src"];
+const sourceExtensions = /\\.(?:[cm]?[jt]sx?)$/;
+
+function collectSourceFiles(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return collectSourceFiles(path);
+    return entry.isFile() && sourceExtensions.test(entry.name) ? [path] : [];
+  });
+}
 
 function runBoundaries(label) {
+  const files = collectSourceFiles(sourceRoot);
+  if (files.length === 0) throw new Error("Boundary scan found no source files under src/.");
+  const args = [
+    "--yes",
+    "--package=dependency-cruiser@17.3.7",
+    "depcruise",
+    "--config", ".dependency-cruiser.cjs",
+    "--output-type", "err-long",
+    ...files,
+  ];
   const result = spawnSync("npx", args, {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });
   const output = `${result.stdout ?? ""}${result.stderr ?? ""}`;
-  console.log(`\n--- ${label} (exit ${result.status ?? "spawn error"}) ---\n${output}`);
+  console.log(`\\n--- ${label} (scanned ${files.length} source files; exit ${result.status ?? "spawn error"}) ---\\n${output}`);
 
   if (result.error) throw result.error;
-  if (!output.includes("modules,") || /\(0 modules, 0 dependencies cruised\)/.test(output)) {
-    throw new Error("Dependency-cruiser scanned zero modules. Check the CLI invocation and source root.");
+  if (/\\(0 modules, 0 dependencies cruised\\)/.test(output)) {
+    throw new Error("Dependency-cruiser scanned zero modules despite explicit source-file inputs.");
   }
   return { status: result.status, output };
 }
@@ -28,7 +47,7 @@ if (cleanBefore.status !== 0) {
 try {
   writeFileSync(
     probePath,
-    'import { buildGreeting } from "../lib/impl";\nvoid buildGreeting;\n',
+    'import { buildGreeting } from "../lib/impl";\\nvoid buildGreeting;\\n',
     { flag: "wx" },
   );
 
@@ -54,4 +73,4 @@ if (cleanAfter.status !== 0) {
   throw new Error("Boundary check still fails after removing the deliberate violation.");
 }
 
-console.log("\nDeep-module boundary proof passed: pass → expected failure → pass.");
+console.log("\\nDeep-module boundary proof passed: pass → expected failure → pass.");
