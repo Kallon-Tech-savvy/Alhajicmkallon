@@ -22,11 +22,13 @@ function runBoundaries(label) {
   console.log(`\n--- ${label} (exit ${result.status ?? "spawn error"}) ---\n${output}`);
 
   if (result.error) throw result.error;
-  return { status: result.status, output };
+  const moduleCountMatch = output.match(/\((\d+) modules?, \d+ dependencies cruised\)/);
+  const moduleCount = moduleCountMatch ? Number(moduleCountMatch[1]) : 0;
+  return { status: result.status, output, moduleCount };
 }
 
 const cleanBefore = runBoundaries("1/3 clean tree must pass");
-if (cleanBefore.status !== 0) {
+if (cleanBefore.status !== 0 || cleanBefore.moduleCount === 0) {
   throw new Error("Boundary check failed on the clean tree.");
 }
 
@@ -40,6 +42,7 @@ try {
   const deliberateViolation = runBoundaries("2/3 deliberate deep import must fail");
   if (
     deliberateViolation.status === 0 ||
+    deliberateViolation.moduleCount === 0 ||
     !deliberateViolation.output.includes("tests-through-entrypoints")
   ) {
     throw new Error(
@@ -55,7 +58,7 @@ try {
 }
 
 const cleanAfter = runBoundaries("3/3 restored tree must pass");
-if (cleanAfter.status !== 0) {
+if (cleanAfter.status !== 0 || cleanAfter.moduleCount === 0) {
   throw new Error("Boundary check still fails after removing the deliberate violation.");
 }
 
