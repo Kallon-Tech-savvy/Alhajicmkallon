@@ -31,12 +31,12 @@ export default function WorkPage() {
           {PROJECTS.length ? PROJECTS.map((project) => (
             <article key={project.id} id={project.id} className="border border-white/10 p-8 rounded-sm">
               <p className="text-gold text-xs uppercase tracking-widest mb-4">{project.role}</p>
-              <h2 className="font-space text-3xl font-bold mb-4">{project.title}</h2>
+              <h2 className="font-space text-3xl font-bold mb-4"><Link href={`/work/${project.slug}`} className="hover:text-gold transition-colors">{project.title}</Link></h2>
               <p className="text-muted leading-relaxed mb-6">{project.summary}</p>
               <div className="flex flex-wrap gap-2 mb-6">{project.technologies.map((technology) => <span key={technology} className="text-xs border border-white/10 px-3 py-1 rounded-full">{technology}</span>)}</div>
               {project.body && <p className="text-muted leading-relaxed whitespace-pre-wrap mb-6">{project.body}</p>}
               {project.links?.live && <a href={project.links.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-gold">Open project <ArrowUpRight size={14} /></a>}
-              <Link href={`/work#${project.id}`} className="sr-only">View {project.title}</Link>
+              <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-2 text-gold">View case study <ArrowUpRight size={14} /></Link>
             </article>
           )) : (
             <div className="md:col-span-2 border border-white/10 p-8 md:p-12">
