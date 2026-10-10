@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
-import { unlinkSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { readdirSync, statSync, unlinkSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 
 const probePath = resolve("src/packages/example/tests/boundary-probe.ts");
 const args = [
@@ -10,11 +10,20 @@ const args = [
   ".dependency-cruiser.cjs",
   "--output-type",
   "err-long",
-  "src",
 ];
 
+function collectSourceFiles(directory) {
+  return readdirSync(directory).flatMap((name) => {
+    const path = join(directory, name);
+    if (statSync(path).isDirectory()) return collectSourceFiles(path);
+    return /\\.(?:[cm]?[jt]sx?)$/.test(path) ? [path] : [];
+  });
+}
+
 function runBoundaries(label) {
-  const result = spawnSync("npx", args, {
+  const sourceFiles = collectSourceFiles("src");
+  if (sourceFiles.length === 0) throw new Error("No source files found under src/.");
+  const result = spawnSync("npx", [...args, ...sourceFiles], {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });
