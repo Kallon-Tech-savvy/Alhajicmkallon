@@ -40,8 +40,10 @@ export interface Article {
   kind: 'journal' | 'knowledge';
 }
 
-const projectCatalogue: Project[] = [];
-const articleCatalogue: Article[] = [];
+import { generatedArticles, generatedProjects } from './generated-content';
+
+const projectCatalogue: Project[] = generatedProjects;
+const articleCatalogue: Article[] = generatedArticles;
 
 function assertUniqueSlugs<T extends { slug: string }>(entries: T[], type: string) {
   const seen = new Set<string>();
