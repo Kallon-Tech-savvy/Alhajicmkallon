@@ -3,7 +3,15 @@ import { unlinkSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const probePath = resolve("src/packages/example/tests/boundary-probe.ts");
-const args = ["--yes", "dependency-cruiser@17.3.7", "src"];
+const args = [
+  "--yes",
+  "dependency-cruiser@17.3.7",
+  "--config",
+  ".dependency-cruiser.cjs",
+  "--output-type",
+  "err-long",
+  "src",
+];
 
 function runBoundaries(label) {
   const result = spawnSync("npx", args, {
