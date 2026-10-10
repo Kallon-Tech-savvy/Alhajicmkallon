@@ -35,7 +35,7 @@ test('indexes Markdown and MDX-compatible editorial files but exports published 
       '---',
       '',
       'A **published** note.',
-    ].join('\\n'));
+    ].join('\n'));
     await writeFile(path.join(projectRoot, 'content', 'journal', 'draft.md'), [
       '---',
       'slug: private-draft',
@@ -49,7 +49,7 @@ test('indexes Markdown and MDX-compatible editorial files but exports published 
       '---',
       '',
       'Private draft body.',
-    ].join('\\n'));
+    ].join('\n'));
     await writeFile(path.join(projectRoot, 'content', 'projects', 'verified-project.md'), [
       '---',
       'slug: verified-project',
@@ -63,7 +63,7 @@ test('indexes Markdown and MDX-compatible editorial files but exports published 
       '---',
       '',
       'Documented project body.',
-    ].join('\\n'));
+    ].join('\n'));
     const outputPath = path.join(projectRoot, 'src', 'lib', 'generated-content.ts');
     const counts = await buildContentIndex({ projectRoot, destination: outputPath });
     const generated = await readFile(outputPath, 'utf8');
@@ -82,8 +82,8 @@ test('rejects duplicate slugs across content types', async () => {
   try {
     await mkdir(path.join(projectRoot, 'content', 'journal'), { recursive: true });
     await mkdir(path.join(projectRoot, 'content', 'projects'), { recursive: true });
-    const article = ['---','slug: shared-slug','title: Article','category: Notes','topics: []','date: "2026-10-10"','excerpt: Article summary','status: published','kind: journal','---','','Article body'].join('\\n');
-    const project = ['---','slug: shared-slug','title: Project','role: Builder','summary: Project summary','topics: []','technologies: []','status: published','publishedAt: "2026-10-10"','---','','Project body'].join('\\n');
+    const article = ['---','slug: shared-slug','title: Article','category: Notes','topics: []','date: "2026-10-10"','excerpt: Article summary','status: published','kind: journal','---','','Article body'].join('\n');
+    const project = ['---','slug: shared-slug','title: Project','role: Builder','summary: Project summary','topics: []','technologies: []','status: published','publishedAt: "2026-10-10"','---','','Project body'].join('\n');
     await writeFile(path.join(projectRoot, 'content', 'journal', 'article.md'), article);
     await writeFile(path.join(projectRoot, 'content', 'projects', 'project.md'), project);
     await assert.rejects(buildContentIndex({ projectRoot, destination: path.join(projectRoot, 'generated.ts') }), /Duplicate content slug/);
