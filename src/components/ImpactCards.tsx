@@ -6,26 +6,26 @@ import { Cpu, Lightbulb, Users, PenTool } from 'lucide-react';
 
 const impactAreas = [
   {
-    title: "Technology",
-    desc: "Building digital solutions that matters, solving real-world problems through robust engineering.",
+    title: "Problem discovery",
+    desc: "Examining how people work today, where friction appears, and which problems are worth understanding more deeply.",
     icon: <Cpu className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
-    title: "Innovation",
-    desc: "Designing systems and products that push the boundaries of what's possible.",
+    title: "Product thinking",
+    desc: "Turning early ideas into clearer propositions, testing assumptions, and deciding what a useful first version should do.",
     icon: <Lightbulb className="text-gold" size={24} aria-hidden="true" />,
     color: "from-yellow-500/10 to-transparent"
   },
   {
-    title: "Leadership",
-    desc: "Developing people and institutions to foster a culture of excellence and growth.",
+    title: "Experience design",
+    desc: "Organising information and interactions so people can understand a product and complete important tasks with less friction.",
     icon: <Users className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
-    title: "Writing",
-    desc: "Sharing ideas that inspire action and contribute to the global tech discourse.",
+    title: "Engineering",
+    desc: "Building and refining the working product, with attention to maintainability, reliability, performance, and real constraints.",
     icon: <PenTool className="text-gold" size={24} aria-hidden="true" />,
     color: "from-purple-500/10 to-transparent"
   }
@@ -41,11 +41,11 @@ export const ImpactCards = () => {
               What I focus on
             </span>
             <h2 className="font-space text-3xl font-semibold tracking-[-0.02em] text-ivory md:text-4xl">
-              Clear thinking. <span className="text-[#9AA4B2]">Real systems.</span>
+              From the right question. <span className="text-[#9AA4B2]">To a working product.</span>
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-[#9AA4B2]">
-            I work at the intersection of strategy, product, and design to create experiences that feel sharp, calm, and easy to use.
+            I connect problem discovery, product decisions, experience design, and engineering—so the work is grounded in a real need, not just a polished interface.
           </p>
         </div>
 
