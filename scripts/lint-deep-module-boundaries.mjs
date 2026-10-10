@@ -3,7 +3,7 @@ import { readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const sourceRoot = resolve("src");
-const sourceExtensions = /\\.(?:[cm]?[jt]sx?)$/;
+const sourceExtensions = /\.(?:[cm]?[jt]sx?)$/;
 
 function collectSourceFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

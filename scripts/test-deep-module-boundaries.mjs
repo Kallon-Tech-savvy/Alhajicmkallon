@@ -4,7 +4,7 @@ import { resolve, join } from "node:path";
 
 const sourceRoot = resolve("src");
 const probePath = resolve("src/packages/example/tests/boundary-probe.ts");
-const sourceExtensions = /\\.(?:[cm]?[jt]sx?)$/;
+const sourceExtensions = /\.(?:[cm]?[jt]sx?)$/;
 
 function collectSourceFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -17,6 +17,7 @@ function collectSourceFiles(directory) {
 function runBoundaries(label) {
   const files = collectSourceFiles(sourceRoot);
   if (files.length === 0) throw new Error("Boundary scan found no source files under src/.");
+
   const args = [
     "--yes",
     "--package=dependency-cruiser@17.3.7",
@@ -30,10 +31,10 @@ function runBoundaries(label) {
     stdio: ["ignore", "pipe", "pipe"],
   });
   const output = `${result.stdout ?? ""}${result.stderr ?? ""}`;
-  console.log(`\\n--- ${label} (scanned ${files.length} source files; exit ${result.status ?? "spawn error"}) ---\\n${output}`);
+  console.log(`\n--- ${label} (scanned ${files.length} source files; exit ${result.status ?? "spawn error"}) ---\n${output}`);
 
   if (result.error) throw result.error;
-  if (/\\(0 modules, 0 dependencies cruised\\)/.test(output)) {
+  if (/\(0 modules, 0 dependencies cruised\)/.test(output)) {
     throw new Error("Dependency-cruiser scanned zero modules despite explicit source-file inputs.");
   }
   return { status: result.status, output };
@@ -47,7 +48,7 @@ if (cleanBefore.status !== 0) {
 try {
   writeFileSync(
     probePath,
-    'import { buildGreeting } from "../lib/impl";\\nvoid buildGreeting;\\n',
+    'import { buildGreeting } from "../lib/impl";\nvoid buildGreeting;\n',
     { flag: "wx" },
   );
 
@@ -73,4 +74,4 @@ if (cleanAfter.status !== 0) {
   throw new Error("Boundary check still fails after removing the deliberate violation.");
 }
 
-console.log("\\nDeep-module boundary proof passed: pass → expected failure → pass.");
+console.log("\nDeep-module boundary proof passed: pass → expected failure → pass.");
