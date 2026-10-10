@@ -3,8 +3,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const contentRoot = path.join(root, 'content');
-const outputPath = path.join(root, 'src/lib/generated-content.ts');
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -77,17 +75,19 @@ async function walk(directory) {
     const fullPath = path.join(directory, entry.name);
     if (entry.isDirectory()) files.push(...await walk(fullPath));
     else if (entry.isFile() && entry.name.endsWith('.md')) files.push(fullPath);
-    else if (entry.isFile() && entry.name.endsWith('.mdx')) throw new Error(fullPath + ': MDX is not enabled yet; use Markdown (.md)');
+    else if (entry.isFile() && entry.name.endsWith('.mdx')) files.push(fullPath);
   }
   return files;
 }
-export async function buildContentIndex() {
+export async function buildContentIndex({ projectRoot = root, destination = path.join(projectRoot, 'src/lib/generated-content.ts') } = {}) {
+  const contentRoot = path.join(projectRoot, 'content');
+  const outputPath = destination;
   const articles = [];
   const projects = [];
   const slugs = new Set();
   for (const [folder, type] of [['journal', 'article'], ['knowledge', 'article'], ['projects', 'project']]) {
     for (const filePath of await walk(path.join(contentRoot, folder))) {
-      const relative = path.relative(root, filePath);
+      const relative = path.relative(projectRoot, filePath);
       const parsed = parseDocument(await readFile(filePath, 'utf8'), relative);
       const { metadata, body } = parsed;
       const common = validateCommon(metadata, relative, type);
@@ -95,6 +95,7 @@ export async function buildContentIndex() {
       if (slugs.has(common.slug)) throw new Error('Duplicate content slug across content types: "' + common.slug + '"');
       slugs.add(common.slug);
       if (!body) throw new Error(relative + ': Markdown body must not be empty');
+      if (common.status !== 'published') continue;
       if (type === 'article') articles.push({
         slug: common.slug, title: common.title, category: metadata.category, topics: common.topics,
         date: metadata.date, readTime: metadata.readTime, excerpt: common.summary, content: body,
