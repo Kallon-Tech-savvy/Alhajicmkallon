@@ -16,7 +16,7 @@ function collectSourceFiles(directory) {
   return readdirSync(directory).flatMap((name) => {
     const path = join(directory, name);
     if (statSync(path).isDirectory()) return collectSourceFiles(path);
-    return /\\.(?:[cm]?[jt]sx?)$/.test(path) ? [path] : [];
+    return /\.(?:[cm]?[jt]sx?)$/.test(path) ? [path] : [];
   });
 }
 
