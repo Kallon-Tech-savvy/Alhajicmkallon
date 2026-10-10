@@ -36,9 +36,16 @@ function runBoundaries(label) {
   return { status: result.status, output, moduleCount };
 }
 
-const cleanBefore = runBoundaries("1/3 clean tree must pass");
-if (cleanBefore.status !== 0 || cleanBefore.moduleCount === 0) {
-  throw new Error("Boundary check failed on the clean tree.");
+let failure;
+let probeCreated = false;
+
+try {
+  const cleanBefore = runBoundaries("1/3 clean tree must pass");
+  if (cleanBefore.status !== 0 || cleanBefore.moduleCount === 0) {
+    throw new Error("Boundary check failed on the clean tree.");
+  }
+} catch (error) {
+  failure = error;
 }
 
 try {
@@ -47,6 +54,7 @@ try {
     'import { buildGreeting } from "../lib/impl";\nvoid buildGreeting;\n',
     { flag: "wx" },
   );
+  probeCreated = true;
 
   const deliberateViolation = runBoundaries("2/3 deliberate deep import must fail");
   if (
@@ -58,17 +66,26 @@ try {
       "The deliberate deep import did not fail specifically with tests-through-entrypoints.",
     );
   }
+} catch (error) {
+  failure ??= error;
 } finally {
-  try {
-    unlinkSync(probePath);
-  } catch (error) {
-    if (error.code !== "ENOENT") throw error;
+  if (probeCreated) {
+    try {
+      unlinkSync(probePath);
+    } catch (error) {
+      failure ??= error;
+    }
   }
 }
 
-const cleanAfter = runBoundaries("3/3 restored tree must pass");
-if (cleanAfter.status !== 0 || cleanAfter.moduleCount === 0) {
-  throw new Error("Boundary check still fails after removing the deliberate violation.");
+try {
+  const cleanAfter = runBoundaries("3/3 restored tree must pass");
+  if (cleanAfter.status !== 0 || cleanAfter.moduleCount === 0) {
+    throw new Error("Boundary check still fails after removing the deliberate violation.");
+  }
+} catch (error) {
+  failure ??= error;
 }
 
+if (failure) throw failure;
 console.log("\nDeep-module boundary proof passed: pass → expected failure → pass.");
