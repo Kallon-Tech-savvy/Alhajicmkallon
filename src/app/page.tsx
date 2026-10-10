@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { LoadingScreen } from '@/components/LoadingScreen';
-import { CustomCursor } from '@/components/CustomCursor';
 
 // 1. Dynamic Imports: Defers loading of below-the-fold Client Components
 const ImpactCards = dynamic(() => import('@/components/ImpactCards').then(mod => mod.ImpactCards));
@@ -50,7 +49,6 @@ export default function Home() {
     <main className="relative min-h-screen">
       <Navbar />
       <LoadingScreen />
-      <CustomCursor />
       <Hero />
       <ImpactCards />
       <Timeline />
