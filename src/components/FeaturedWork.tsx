@@ -55,16 +55,16 @@ export const FeaturedWork = () => {
               className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center group"
             >
               <div className={cn(
-                "lg:col-span-7 relative aspect-video overflow-hidden bg-navy rounded-sm",
+                "lg:col-span-7 relative aspect-video overflow-hidden bg-navy rounded-sm border border-white/10",
                 _i % 2 === 1 ? "lg:order-2" : ""
               )}>
-                <div className="absolute inset-0 bg-gold/10 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-700 z-10" />
-                <div className="w-full h-full relative transform group-hover:scale-105 transition-transform duration-1000">
-                   {/* Placeholder for project image */}
-                   <div className="absolute inset-0 flex items-center justify-center font-space text-8xl font-black text-white/5 select-none">
-                    {project.title.split(' ')[0]}
-                   </div>
-                </div>
+                {project.image ? (
+                  <img src={project.image} alt={project.title} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
+                    <span className="font-space text-2xl md:text-4xl font-bold text-white/30">{project.title}</span>
+                  </div>
+                )}
               </div>
 
               <div className={cn(
@@ -73,13 +73,13 @@ export const FeaturedWork = () => {
               )}>
                 <div className="flex items-center gap-4 mb-6">
                   <span className="font-space text-gold text-[10px] font-black uppercase tracking-[0.3em]">
-                    Project {_i + 1}
+                    {project.role}
                   </span>
                   <div className="h-[1px] w-8 bg-gold/30" />
                 </div>
 
                 <h3 className="font-space text-4xl md:text-5xl font-bold tracking-tighter mb-6 group-hover:text-gold transition-colors">
-                  {project.title}
+                  <Link href={`/work/${project.slug}`}>{project.title}</Link>
                 </h3>
 
                 <p className="text-muted text-lg font-inter mb-8 leading-relaxed">
@@ -94,7 +94,7 @@ export const FeaturedWork = () => {
                   ))}
                 </div>
 
-                <Link href={`/work#${project.id}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
+                <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
                   Case Study <ArrowUpRight size={14} />
                 </Link>
               </div>
