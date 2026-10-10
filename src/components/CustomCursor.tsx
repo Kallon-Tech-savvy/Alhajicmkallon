@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
-const GREEN   = '#006BFF';
+const GREEN = '#006BFF';
 const MAGENTA = '#FF2D55';
 
 export const CustomCursor = () => {
-  const [isVisible, setIsVisible]  = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
   const cursorX = useMotionValue(-100);
@@ -18,41 +18,69 @@ export const CustomCursor = () => {
   const y = useSpring(cursorY, spring);
 
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+    // The animated cursor is decorative: don't run it on touch/coarse pointers
+    // or for visitors who have requested reduced motion.
+    const preferences = window.matchMedia(
+      '(pointer: fine) and (prefers-reduced-motion: no-preference)'
+    );
+
+    let removePointerListeners: (() => void) | undefined;
+
+    const syncCursor = () => {
+      removePointerListeners?.();
+      removePointerListeners = undefined;
+
+      if (!preferences.matches) {
+        setIsVisible(false);
+        setIsHovering(false);
+        return;
+      }
+
+      const onMove = (event: MouseEvent) => {
+        cursorX.set(event.clientX);
+        cursorY.set(event.clientY);
+        setIsVisible(true);
+      };
+
+      const onOver = (event: MouseEvent) => {
+        const target = event.target;
+        if (!(target instanceof Element)) {
+          setIsHovering(false);
+          return;
+        }
+
+        setIsHovering(
+          target.closest('a, button, .cursor-pointer') !== null
+        );
+      };
+
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseover', onOver);
+
+      removePointerListeners = () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseover', onOver);
+      };
     };
 
-    const onOver = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      setIsHovering(
-        t.tagName === 'A' ||
-        t.tagName === 'BUTTON' ||
-        !!t.closest('a') ||
-        !!t.closest('button') ||
-        t.classList.contains('cursor-pointer')
-      );
-    };
+    syncCursor();
+    preferences.addEventListener('change', syncCursor);
 
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseover', onOver);
     return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseover', onOver);
+      preferences.removeEventListener('change', syncCursor);
+      removePointerListeners?.();
     };
-  }, [cursorX, cursorY, isVisible]);
+  }, [cursorX, cursorY]);
 
   if (!isVisible) return null;
 
   const color = isHovering ? MAGENTA : GREEN;
-  const glow  = isHovering
+  const glow = isHovering
     ? '0 0 10px rgba(255,45,85,0.8)'
     : '0 0 8px rgba(0,107,255,0.7)';
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9999] hidden md:block">
-      {/* Crosshair container */}
+    <div className="fixed inset-0 pointer-events-none z-[9999] hidden md:block" aria-hidden="true">
       <motion.div
         style={{
           x,
@@ -62,7 +90,6 @@ export const CustomCursor = () => {
           position: 'absolute',
         }}
       >
-        {/* Horizontal arm — left */}
         <motion.div
           animate={{ width: isHovering ? 14 : 10, opacity: 1 }}
           style={{
@@ -78,7 +105,6 @@ export const CustomCursor = () => {
           transition={{ duration: 0.15 }}
         />
 
-        {/* Horizontal arm — right */}
         <motion.div
           animate={{ width: isHovering ? 14 : 10, opacity: 1 }}
           style={{
@@ -93,7 +119,6 @@ export const CustomCursor = () => {
           transition={{ duration: 0.15 }}
         />
 
-        {/* Vertical arm — top */}
         <motion.div
           animate={{ height: isHovering ? 14 : 10, opacity: 1 }}
           style={{
@@ -108,7 +133,6 @@ export const CustomCursor = () => {
           transition={{ duration: 0.15 }}
         />
 
-        {/* Vertical arm — bottom */}
         <motion.div
           animate={{ height: isHovering ? 14 : 10, opacity: 1 }}
           style={{
@@ -123,10 +147,9 @@ export const CustomCursor = () => {
           transition={{ duration: 0.15 }}
         />
 
-        {/* Center dot */}
         <motion.div
           animate={{
-            width:  isHovering ? 3 : 2,
+            width: isHovering ? 3 : 2,
             height: isHovering ? 3 : 2,
           }}
           style={{
@@ -141,21 +164,20 @@ export const CustomCursor = () => {
           transition={{ duration: 0.15 }}
         />
 
-        {/* Corner brackets (outer reticle) */}
         {[
           { top: -14, left: -14, borderTop: `1px solid ${color}`, borderLeft: `1px solid ${color}` },
           { top: -14, right: -14, borderTop: `1px solid ${color}`, borderRight: `1px solid ${color}` },
           { bottom: -14, left: -14, borderBottom: `1px solid ${color}`, borderLeft: `1px solid ${color}` },
           { bottom: -14, right: -14, borderBottom: `1px solid ${color}`, borderRight: `1px solid ${color}` },
-        ].map((s, i) => (
+        ].map((corner, index) => (
           <motion.div
-            key={i}
+            key={index}
             animate={{ opacity: isHovering ? 0.8 : 0.35, scale: isHovering ? 1.6 : 1 }}
             style={{
               position: 'absolute',
               width: 7,
               height: 7,
-              ...s,
+              ...corner,
             }}
             transition={{ duration: 0.15 }}
           />
