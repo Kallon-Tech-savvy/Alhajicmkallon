@@ -3,7 +3,7 @@ import { unlinkSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const probePath = resolve("src/packages/example/tests/boundary-probe.ts");
-const args = ["--yes", "dependency-cruiser@17.3.7", "src"];
+const args = ["--yes", "--package=dependency-cruiser@17.3.7", "depcruise", "--config", ".dependency-cruiser.cjs", "--output-type", "err-long", "src"];
 
 function runBoundaries(label) {
   const result = spawnSync("npx", args, {
@@ -14,6 +14,9 @@ function runBoundaries(label) {
   console.log(`\n--- ${label} (exit ${result.status ?? "spawn error"}) ---\n${output}`);
 
   if (result.error) throw result.error;
+  if (!output.includes("modules,") || /\(0 modules, 0 dependencies cruised\)/.test(output)) {
+    throw new Error("Dependency-cruiser scanned zero modules. Check the CLI invocation and source root.");
+  }
   return { status: result.status, output };
 }
 
