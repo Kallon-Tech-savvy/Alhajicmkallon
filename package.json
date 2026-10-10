@@ -70,7 +70,8 @@
     "lint:fix": "eslint --fix",
     "predev": "node scripts/build-content-index.mjs",
     "prebuild": "node scripts/build-content-index.mjs",
-    "test:content": "node --test scripts/build-content-index.test.mjs"
+    "test:content": "node --test scripts/build-content-index.test.mjs",
+    "lint:boundaries": "npx --yes dependency-cruiser@17.3.7 src"
   },
   "dependencies": {
     "clsx": "^2.1.1",
