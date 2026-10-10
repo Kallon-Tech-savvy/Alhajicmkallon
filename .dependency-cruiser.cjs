@@ -63,9 +63,10 @@ module.exports = {
     },
     {
       name: "no-circular",
-      comment: "No dependency cycles. Scope to the packages root to allow cycles elsewhere.",
+      comment:
+        "No dependency cycles within the deep-module packages. Scope to the packages root so unrelated application modules do not fail this package-boundary check.",
       severity: "error",
-      from: {},
+      from: { path: `^${R}/` },
       to: { circular: true },
     },
   ],
