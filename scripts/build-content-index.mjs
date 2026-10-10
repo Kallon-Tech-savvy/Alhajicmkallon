@@ -21,7 +21,7 @@ function parseScalar(raw) {
 }
 
 export function parseDocument(source, filePath = '<content>') {
-  const normalized = source.replace(/^\uFEFF/, '');
+  // Git checkouts and editors may use CRLF; normalize before parsing frontmatter.\n  const normalized = source.replace(/^\uFEFF/, '').replace(/\\r\\n?/g, '\\n');
   if (!normalized.startsWith('---\n')) throw new Error(filePath + ': document must start with YAML frontmatter (---)');
   const end = normalized.indexOf('\n---', 4);
   if (end < 0) throw new Error(filePath + ': missing closing frontmatter delimiter');
