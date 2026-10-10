@@ -6,7 +6,6 @@ import { ARTICLES } from '@/lib/content'; // Assumed static dataset
 import { ArrowUpRight, Search, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
-import { UnicornBackground } from '@/components/UnicornBackground';
 
 export default function WritingPage() {
   const categories = Array.from(new Set(ARTICLES.map(a => a.category)));
@@ -17,12 +16,6 @@ export default function WritingPage() {
       
       {/* Header */}
       <section className="pt-48 pb-24 px-6 relative overflow-hidden">
-        {/* Subtle animated backdrop — replace projectId with your unicorn.studio scene */}
-        <UnicornBackground
-          projectId="YOUR_UNICORN_STUDIO_PROJECT_ID"
-          fallbackClassName="bg-gradient-to-br from-[var(--color-pride-blue)]/8 via-transparent to-transparent"
-        />
-
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal variant="fade" as="span" className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
             Knowledge & Reflections
