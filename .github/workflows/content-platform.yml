@@ -23,7 +23,7 @@ jobs:
         run: npm run test:content
       - name: Lint
         run: npm run lint
-      - name: Enforce deep-module boundaries
-        run: npm run lint:boundaries
+      - name: Prove deep-module boundaries (pass, fail, pass)
+        run: npm run test:boundaries
       - name: Production build
         run: npm run build
