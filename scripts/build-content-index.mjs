@@ -102,7 +102,7 @@ export async function buildContentIndex() {
       });
       else projects.push({
         id: common.slug, slug: common.slug, title: common.title, role: metadata.role, summary: common.summary,
-        description: body, topics: common.topics, technologies: requireStringArray(metadata, 'technologies', relative),
+        description: body, body, topics: common.topics, technologies: requireStringArray(metadata, 'technologies', relative),
         status: common.status, publishedAt: metadata.publishedAt, image: metadata.image, links: metadata.links,
       });
     }

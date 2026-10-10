@@ -18,7 +18,7 @@ function renderInline(source: string): InlinePart[] {
       if (!link) parts.push(token);
       else {
         const [, label, href] = link;
-        if (/^https:\/\//i.test(href) || href.startsWith('/')) {
+        if (/^https:\/\//i.test(href) || href.startsWith('/') && !href.startsWith('//')) {
           parts.push(<a key={match.index} href={href} className="text-gold underline underline-offset-4" rel={href.startsWith('https://') ? 'noreferrer noopener' : undefined}>{label}</a>);
         } else parts.push(label);
       }
