@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getArticleBySlug, KNOWLEDGE_ENTRIES } from '@/lib/content';
+import { MarkdownContent } from '@/components/MarkdownContent';
 
 interface PageProps { params: Promise<{ slug: string }> }
 
@@ -38,7 +39,7 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
           <Reveal variant="up"><p className="text-gold text-xs uppercase tracking-widest mb-5">{entry.category}</p><h1 className="font-space text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-7">{entry.title}</h1><p className="text-muted text-lg leading-relaxed">{entry.excerpt}</p></Reveal>
         </div>
       </section>
-      <section className="px-6 py-14"><article className="max-w-3xl mx-auto prose prose-invert font-inter text-base md:text-lg leading-relaxed whitespace-pre-wrap">{entry.content}</article></section>
+      <section className="px-6 py-14"><article className="max-w-3xl mx-auto font-inter text-base md:text-lg"><MarkdownContent source={entry.content} /></article></section>
       <Footer />
     </main>
   );

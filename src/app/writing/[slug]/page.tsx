@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getArticleBySlug, ARTICLES } from '@/lib/content';
+import { MarkdownContent } from '@/components/MarkdownContent';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -49,7 +50,7 @@ export default async function ArticleTemplate({ params }: PageProps) {
         </div>
       </section>
       <section className="py-16 px-6">
-        <article className="max-w-3xl mx-auto prose prose-invert prose-gold font-inter text-base md:text-lg leading-relaxed whitespace-pre-wrap">{article.content}</article>
+        <article className="max-w-3xl mx-auto font-inter text-base md:text-lg"><MarkdownContent source={article.content} /></article>
       </section>
       <Footer />
     </main>
