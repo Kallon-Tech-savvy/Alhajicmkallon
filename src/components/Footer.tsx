@@ -1,4 +1,4 @@
-import { ArrowUpRight, Terminal, Send, Users, Code, Mail } from 'lucide-react';
+import { ArrowUpRight, Send, Users, Code, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 const SOCIAL_LINKS = [
@@ -41,7 +41,6 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-24">
           <div className="reveal-in">
-            
             <h2
               className="mb-10 font-space font-semibold leading-[1.02] text-ivory"
               style={{ fontSize: 'clamp(2rem, 4.6vw, 3.2rem)' }}
@@ -117,7 +116,6 @@ export const Footer = () => {
           style={{ borderTop: '1px solid #2A2A2A' }}
         >
           <div className="flex items-center gap-3">
-            
             <span
               className="font-inter text-[10px] uppercase tracking-[0.3em]"
               style={{ color: '#9AA4B2' }}
@@ -153,19 +151,3 @@ export const Footer = () => {
     </footer>
   );
 };
-
-function StatusItem({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      <span
-        className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] uppercase tracking-widest"
-        style={{ color: '#6B7280' }}
-      >
-        {label}:
-      </span>
-      <span className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] font-bold" style={{ color }}>
-        {value}
-      </span>
-    </div>
-  );
-}
