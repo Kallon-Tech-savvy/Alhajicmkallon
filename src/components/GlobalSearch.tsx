@@ -11,10 +11,6 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        return; // Navbar owns the open/close shortcut state.
-      }
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
