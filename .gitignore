@@ -41,3 +41,6 @@ prod_server.log
 *.local
 .next/
 .env*
+
+# Vercel project metadata and local link configuration
+.vercel/

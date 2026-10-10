@@ -25,5 +25,7 @@ jobs:
         run: npm run lint
       - name: Prove deep-module boundaries (pass, fail, pass)
         run: npm run test:boundaries
+      - name: Check deployment wizard shell syntax
+        run: bash -n scripts/wizard-vercel-deployment.sh
       - name: Production build
         run: npm run build
