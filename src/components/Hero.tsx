@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const METRICS = [
-  { label: 'Systems shipped', value: '12+' },
-  { label: 'Latency target', value: '<100ms' },
-  { label: 'Uptime posture', value: '99.99%' },
-  { label: 'Base · timezone', value: 'SL · WAT' },
+  { label: '01 · Understand', value: 'Discover' },
+  { label: '02 · Decide', value: 'Define' },
+  { label: '03 · Shape', value: 'Design' },
+  { label: '04 · Deliver', value: 'Build' },
 ];
 
 export const Hero = () => (
@@ -43,13 +43,13 @@ export const Hero = () => (
             className="mb-6 font-space font-black leading-[0.92] tracking-[-0.03em] text-ivory"
             style={{ fontSize: 'clamp(2.8rem, 6.2vw, 6.5rem)' }}
           >
-            <span className="block">Designing digital</span>
-            <span className="block text-pride-blue">experiences that feel</span>
-            <span className="block">effortless.</span>
+            <span className="block">Good products</span>
+            <span className="block text-pride-blue">begin with better</span>
+            <span className="block">questions.</span>
           </h1>
 
           <p className="mb-8 max-w-[46ch] text-[1rem] leading-7 text-[#9aa4b2] md:text-[1.05rem]">
-            I design premium digital experiences that turn attention into momentum for founders, teams, and ambitious brands who want clarity from day one.
+            I investigate problems, clarify product opportunities, and build digital solutions from the ground up—connecting critical thinking, user experience, and engineering.
           </p>
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
@@ -58,7 +58,7 @@ export const Hero = () => (
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:bg-pride-blue/20"
               >
-                Book a discovery call
+                Discuss an idea
               </Link>
             </motion.div>
             <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
@@ -74,7 +74,7 @@ export const Hero = () => (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
             <span className="inline-flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-pride-blue" />
-              Fast response · premium execution · thoughtful collaboration
+              Problem discovery · product thinking · engineering
             </span>
           </div>
         </div>
