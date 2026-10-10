@@ -71,7 +71,7 @@
     "predev": "node scripts/build-content-index.mjs",
     "prebuild": "node scripts/build-content-index.mjs",
     "test:content": "node --test scripts/build-content-index.test.mjs",
-    "lint:boundaries": "npx --yes dependency-cruiser@17.3.7 src",
+    "lint:boundaries": "node scripts/lint-deep-module-boundaries.mjs",
     "test:boundaries": "node scripts/test-deep-module-boundaries.mjs"
   },
   "dependencies": {
