@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ChatWidgetLoader } from "@/components/ChatWidgetLoader";
 
@@ -15,12 +15,6 @@ const inter = Inter({
   display: "swap",
 });
 
-const spaceMono = Space_Mono({
-  subsets: ["latin"],
-  variable: "--font-space-mono",
-  weight: ["400", "700"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://alhajicmkallon.vercel.app"),
@@ -71,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jetbrainsMono.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
+      className={`${jetbrainsMono.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-midnight text-ivory">
         <script
