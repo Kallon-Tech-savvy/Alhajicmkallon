@@ -8,9 +8,7 @@ export const FeaturedWork = () => {
     <section id="work" className="py-32 bg-midnight px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-          <div
-
-          >
+          <div>
             <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
               Portfolio
             </span>
@@ -19,10 +17,7 @@ export const FeaturedWork = () => {
             </h2>
           </div>
 
-          <div
-
-            className="max-w-md"
-          >
+          <div className="max-w-md">
             <p className="text-muted text-lg font-inter leading-relaxed mb-8">
               A closer look at the decisions behind a working product: the problem, the trade-offs, what shipped, and what still needs to be measured.
             </p>
@@ -41,7 +36,6 @@ export const FeaturedWork = () => {
           ) : PROJECTS.map((project, _i) => (
             <div
               key={project.id}
-
               className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center group"
             >
               <div className={cn(
