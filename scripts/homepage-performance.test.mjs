@@ -119,3 +119,16 @@ test('root layout exposes canonical URL and truthful Person/WebSite structured d
   assert.match(layoutSource, /JSON\.stringify\(structuredData\)/);
   assert.match(layoutSource, /addressCountry:\s*"SL"/);
 });
+
+const chatWidgetSource = await readFile(new URL('../src/components/ChatWidget.tsx', import.meta.url), 'utf8');
+const chatLoaderSource = await readFile(new URL('../src/components/ChatWidgetLoader.tsx', import.meta.url), 'utf8');
+
+test('chat conversation UI is dynamically loaded only after the visitor opens chat', () => {
+  assert.match(layoutSource, /ChatWidgetLoader/);
+  assert.doesNotMatch(layoutSource, /import \{ ChatWidget \} from/);
+  assert.match(chatLoaderSource, /dynamic\(/);
+  assert.match(chatLoaderSource, /import\('\.\/ChatWidget'\)/);
+  assert.match(chatLoaderSource, /\{open && <ChatWidgetPanel initialOpen showLauncher=\{false\} onClose=\{closeChat\} \/>\}/);
+  assert.match(chatWidgetSource, /showLauncher && <button/);
+  assert.match(chatWidgetSource, /if \(!open && initialOpen\) onClose\?\.\(\)/);
+});
