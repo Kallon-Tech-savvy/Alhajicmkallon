@@ -46,4 +46,56 @@ jobs:
             --only-categories=performance \
             --output=json \
             --output-path=./lighthouse-report.json
-          node -e "const r = require('./lighthouse-report.json'); const s = r.categories.performance.score; console.log('Lighthouse performance score:', Math.round(s * 100)); if (s < 0.75) process.exit(1)"
+          node <<'NODE'
+          const fs = require('node:fs');
+          const reportPath = './lighthouse-report.json';
+          if (!fs.existsSync(reportPath)) {
+            console.error('Lighthouse did not produce a report.');
+            process.exit(1);
+          }
+
+          const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+          const score = report.categories.performance.score;
+          const metrics = [
+            'first-contentful-paint',
+            'largest-contentful-paint',
+            'speed-index',
+            'total-blocking-time',
+            'cumulative-layout-shift',
+            'interactive',
+          ];
+
+          console.log(`Lighthouse performance score: ${Math.round(score * 100)}`);
+          console.log('Core performance metrics:');
+          for (const id of metrics) {
+            const audit = report.audits[id];
+            if (audit) console.log(`- ${audit.title}: ${audit.displayValue ?? audit.score}`);
+          }
+
+          const failures = Object.values(report.audits)
+            .filter((audit) => audit.score !== null && audit.score < 1)
+            .sort((a, b) =>
+              (b.details?.overallSavingsMs ?? 0) - (a.details?.overallSavingsMs ?? 0)
+            )
+            .slice(0, 10);
+
+          console.log('Highest-impact audits needing attention:');
+          for (const audit of failures) {
+            const savings = audit.details?.overallSavingsMs;
+            const suffix = Number.isFinite(savings) ? ` (potential savings: ${Math.round(savings)} ms)` : '';
+            console.log(`- [${audit.score}] ${audit.title}: ${audit.displayValue ?? 'Needs review'}${suffix}`);
+          }
+
+          if (score < 0.75) {
+            console.error('Performance budget failed: expected at least 75/100.');
+            process.exit(1);
+          }
+          NODE
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-performance-report
+          path: lighthouse-report.json
+          if-no-files-found: warn
+          retention-days: 7
