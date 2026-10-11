@@ -108,3 +108,14 @@ test('AI discovery guide links to canonical public pages and avoids invented evi
   assert.match(llmsRouteSource, /Distinguish documented facts from interpretation/);
   assert.match(llmsRouteSource, /Cache-Control/);
 });
+
+const layoutSource = await readFile(new URL('../src/app/layout.tsx', import.meta.url), 'utf8');
+
+test('root layout exposes canonical URL and truthful Person/WebSite structured data', () => {
+  assert.match(layoutSource, /alternates:\s*\{\s*canonical:\s*"\/"\s*\}/);
+  assert.match(layoutSource, /"@context":\s*"https:\/\/schema\.org"/);
+  assert.match(layoutSource, /"@type":\s*"Person"/);
+  assert.match(layoutSource, /"@type":\s*"WebSite"/);
+  assert.match(layoutSource, /JSON\.stringify\(structuredData\)/);
+  assert.match(layoutSource, /addressCountry:\s*"SL"/);
+});
