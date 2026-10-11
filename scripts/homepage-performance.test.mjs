@@ -81,3 +81,18 @@ test('below-the-fold sections do not pull Framer Motion into the homepage bundle
     assert.doesNotMatch(source, /<motion\./, file);
   }
 });
+
+
+test('homepage omits the decorative regional map section', async () => {
+  const homepage = await readFile(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
+  assert.doesNotMatch(homepage, /VisionMap|components\/VisionMap/);
+});
+
+test('Lighthouse enforces the agreed performance and discoverability acceptance criteria', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/content-platform.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /--only-categories=performance,seo/);
+  assert.match(workflow, /score < 0\.8/);
+  assert.match(workflow, /seoScore < 1/);
+  assert.match(workflow, /expected at least 80\/100/);
+  assert.match(workflow, /expected 100\/100/);
+});
