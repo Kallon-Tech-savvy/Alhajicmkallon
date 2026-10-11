@@ -22,3 +22,17 @@ test('featured work stays server-rendered without Framer Motion client runtime',
   assert.doesNotMatch(featuredWorkSource, /from ['"]framer-motion['"]/);
   assert.doesNotMatch(featuredWorkSource, /<motion\./);
 });
+
+const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
+
+test('work page communicates product thinking and the project evidence journey', () => {
+  assert.match(workPageSource, /FROM QUESTIONS/);
+  assert.match(workPageSource, /TO PRODUCTS/);
+  assert.match(workPageSource, /decisions, trade-offs, and implementation/);
+});
+
+test('work page keeps case-study and live-project paths distinct and safe', () => {
+  assert.match(workPageSource, /Read case study/);
+  assert.match(workPageSource, /Visit live project/);
+  assert.match(workPageSource, /target="_blank" rel="noopener noreferrer"/);
+});
