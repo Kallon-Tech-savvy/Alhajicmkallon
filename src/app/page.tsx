@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
-import { LoadingScreen } from '@/components/LoadingScreen';
 import { VisitorPath } from '@/components/VisitorPath';
 
 // 1. Dynamic Imports: Defers loading of below-the-fold Client Components
@@ -17,7 +16,6 @@ export default function Home() {
   return (
     <main className="relative min-h-screen">
       <Navbar />
-      <LoadingScreen />
       <Hero />
       <ImpactCards />
       <Timeline />
