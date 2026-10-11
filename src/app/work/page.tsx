@@ -20,7 +20,7 @@ export default function WorkPage() {
             CRAFTING <br /><span className="text-gradient">SOLUTIONS</span>
           </Reveal>
           <p className="max-w-2xl text-muted text-lg font-inter leading-relaxed">
-            A portfolio of projects will appear here as approved case studies are ready to share.
+            A growing collection of work, starting with a case study on making an organisation’s activities, reports, and ways to get involved easier to discover.
           </p>
         </div>
         <div aria-hidden="true" className="absolute top-1/2 right-0 text-white/[0.01] font-space text-[30vw] font-black leading-none pointer-events-none select-none">WORK</div>
