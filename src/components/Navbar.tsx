@@ -168,7 +168,7 @@ export const Navbar = () => {
             {NAV_LINKS.map((link, i) => (
               <div
                 key={link.href}
-                style={{ animation: 'nav-menu-item-in 240ms ease-out both', animationDelay: `${i * 45}ms` }}
+                style={{ animation: 'slide-up 240ms ease-out both', animationDelay: `${i * 45}ms` }}
               >
                 <Link
                   href={link.href}
@@ -185,7 +185,7 @@ export const Navbar = () => {
 
           <div
             className="mt-16 pt-8 border-t"
-            style={{ borderColor: '#2A2A2A', animation: 'nav-menu-item-in 240ms ease-out both', animationDelay: '300ms' }}
+            style={{ borderColor: '#2A2A2A', animation: 'slide-up 240ms ease-out both', animationDelay: '300ms' }}
           >
             <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
                  style={{ color: '#6B7280' }}>
