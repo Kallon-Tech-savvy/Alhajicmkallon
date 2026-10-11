@@ -18,8 +18,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
   const { projects: filteredProjects, articles: filteredArticles } = searchPublishedContent(query);
 
-  return (
-    {isOpen && (
+  return isOpen ? (
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4">
           <div
             className="fixed inset-0 bg-midnight/95 backdrop-blur-xl"
@@ -126,6 +125,5 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             </div>
           </div>
         </div>
-    )}
-  );
+  ) : null;
 };
