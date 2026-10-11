@@ -32,7 +32,7 @@ export const FeaturedWork = () => {
             className="max-w-md"
           >
             <p className="text-muted text-lg font-inter leading-relaxed mb-8">
-              Selected case studies will be published here once project details and supporting evidence are ready to share.
+              A closer look at the decisions behind a working product: the problem, the trade-offs, what shipped, and what still needs to be measured.
             </p>
             <Link href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
               View All Projects <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
