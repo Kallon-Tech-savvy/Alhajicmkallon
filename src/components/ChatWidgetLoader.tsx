@@ -19,10 +19,10 @@ export function ChatWidgetLoader() {
       <button
         type="button"
         data-chat-launcher
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen((current) => !current)}
         aria-expanded={open}
         aria-controls="chat-panel"
-        aria-label="Ask a question about Alhaji"
+        aria-label={open ? "Close chat" : "Ask a question about Alhaji"}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[var(--color-pride-blue)] text-white flex items-center justify-center shadow-2xl tap-scale hover-lift transition-transform duration-300"
       >
         <MessageCircle size={22} />
