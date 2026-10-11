@@ -1,8 +1,3 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
-
 const milestones = [
   { year: '2020', title: 'Introduced to Computer Science', desc: 'After two years of back and forth comparison and research on Civil Engineering and Computer Science - I finally decided to go with Computer Science.' },
   { year: '2022', title: 'Foundation', desc: 'Enrolled in Computer Science program at Central University Sierra Leone and performed exceptional well. Aided other students with guidance on project and to clearly understand core subject areas' },
@@ -21,12 +16,8 @@ export const Timeline = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {milestones.map((m, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+            <div
+              key={i}    
               className="relative"
             >
               <div className="font-space text-6xl font-black text-white/5 absolute -top-10 -left-4 select-none">
@@ -39,7 +30,7 @@ export const Timeline = () => {
                 <h3 className="font-space text-lg font-bold text-ivory mb-2 uppercase tracking-widest">{m.title}</h3>
                 <p className="text-muted text-sm font-inter leading-relaxed">{m.desc}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
