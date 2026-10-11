@@ -1,8 +1,3 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
-
 export const VisionMap = () => {
   return (
     <section className="py-32 bg-navy relative overflow-hidden border-t border-white/5">
@@ -10,43 +5,33 @@ export const VisionMap = () => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+          <span  
             className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase block mb-6"
           >
             Regional Impact
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          </span>
+          <h2  
             className="font-space text-5xl md:text-7xl font-bold tracking-tighter"
           >
             BEYOND <span className="text-muted">BORDERS.</span>
-          </motion.h2>
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
           <div className="relative aspect-square md:aspect-auto md:h-[600px] flex items-center justify-center">
              {/* Abstract Africa Map SVG or Placeholder */}
              <div className="w-full h-full bg-white/[0.02] border border-white/5 rounded-full flex items-center justify-center relative">
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-                  transition={{ duration: 10, repeat: Infinity }}
+                <div  
                   className="w-3/4 h-3/4 border-2 border-gold/20 rounded-full flex items-center justify-center italic font-cormorant text-gold/40 text-4xl"
                 >
                   AFRICA
-                </motion.div>
+                </div>
 
                 {/* Hotspots */}
-                <motion.div
-                   animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                   transition={{ duration: 3, repeat: Infinity }}
+                <div  
                    className="absolute top-1/4 right-1/3 w-4 h-4 bg-gold rounded-full"
                 />
-                <motion.div
-                   animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                   transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                <div  
                    className="absolute bottom-1/2 left-1/4 w-3 h-3 bg-gold/50 rounded-full"
                 />
              </div>
