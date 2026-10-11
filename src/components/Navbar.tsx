@@ -1,9 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { Search, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GlobalSearch } from './GlobalSearch';
+const GlobalSearch = dynamic(
+  () => import('./GlobalSearch').then((module) => module.GlobalSearch),
+  { ssr: false }
+);
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -200,7 +204,7 @@ export const Navbar = () => {
         </div>
       )}
 
-      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      {isSearchOpen && <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />}
     </>
   );
 };
