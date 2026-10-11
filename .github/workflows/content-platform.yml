@@ -25,3 +25,23 @@ jobs:
         run: npm run lint
       - name: Production build
         run: npm run build
+      - name: Start production server for performance audit
+        run: |
+          npm run start > /tmp/portfolio-next.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then
+              echo "Production server is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/portfolio-next.log
+          exit 1
+      - name: Run Lighthouse performance audit
+        run: |
+          npx --yes lighthouse http://127.0.0.1:3000/ \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --only-categories=performance \
+            --output=json \
+            --output-path=./lighthouse-report.json
+          node -e "const r = require('./lighthouse-report.json'); const s = r.categories.performance.score; console.log('Lighthouse performance score:', Math.round(s * 100)); if (s < 0.75) process.exit(1)"
