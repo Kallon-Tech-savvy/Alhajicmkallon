@@ -17,10 +17,10 @@ export default function WorkPage() {
             Selected work
           </Reveal>
           <Reveal variant="up" delay={100} as="h1" className="font-space text-6xl md:text-9xl font-black tracking-tighter mb-12 leading-[0.85] uppercase">
-            CRAFTING <br /><span className="text-gradient">SOLUTIONS</span>
+            FROM QUESTIONS <br /><span className="text-gradient">TO PRODUCTS</span>
           </Reveal>
           <p className="max-w-2xl text-muted text-lg font-inter leading-relaxed">
-            A growing collection of work, starting with a case study on making an organisation’s activities, reports, and ways to get involved easier to discover.
+            Each project starts with a problem to understand. Explore the decisions, trade-offs, and implementation behind work designed to make a practical difference.
           </p>
         </div>
         <div aria-hidden="true" className="absolute top-1/2 right-0 text-white/[0.01] font-space text-[30vw] font-black leading-none pointer-events-none select-none">WORK</div>
