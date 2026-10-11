@@ -143,3 +143,14 @@ test('font setup avoids an unused font family and preserves the generated Inter 
   assert.doesNotMatch(globalCssSource, /--font-cormorant:/);
   assert.match(layoutSource, /Inter, JetBrains_Mono/);
 });
+
+
+const navbarSourceForIcons = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');
+const chatLauncherSourceForIcons = await readFile(new URL('../src/components/ChatWidgetLoader.tsx', import.meta.url), 'utf8');
+
+test('initial navigation and chat launcher do not import the icon package into the client shell', () => {
+  assert.doesNotMatch(navbarSourceForIcons, /from ['"]lucide-react['"]/);
+  assert.doesNotMatch(chatLauncherSourceForIcons, /from ['"]lucide-react['"]/);
+  assert.match(navbarSourceForIcons, /function NavIcon/);
+  assert.match(chatLauncherSourceForIcons, /<svg/);
+});
