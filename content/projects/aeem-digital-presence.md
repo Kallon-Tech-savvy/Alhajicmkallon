@@ -1,0 +1,59 @@
+---
+slug: aeem-digital-presence
+title: Making AEEM's work easier to discover and inspect
+role: Product thinking, UX, content design & web development
+summary: A working organisational website shaped around a practical problem: making AEEM's activities, reports, and ways to get involved easier to find.
+topics: ["product thinking", "information architecture", "UX design", "nonprofit", "web development"]
+technologies: ["Web design", "Content architecture", "Frontend development"]
+status: published
+publishedAt: 2026-10-11
+---
+
+## The context
+
+AEEM needed a clearer digital home for its work. Reports and activity updates were being shared through social media, but information was not always easy to revisit. People interested in volunteering could struggle to find the next step, while prospective partners had to piece together the organisation's work from separate posts and documents.
+
+The opportunity was not simply to make the website look better. It was to make the organisation's work easier to discover and inspect.
+
+## My role
+
+I initiated the website direction and worked across the journey from ideas and content through UX, design, implementation, deployment, and maintenance. I later volunteered as Chief Operating Officer. The project was built for an organisation whose mission and activities I understood, which helped me identify gaps in how its work was presented.
+
+## Key decisions
+
+I prioritised clearer pathways and evidence over adding pages for their own sake.
+
+- **Make the organisation understandable.** Develop a more comprehensive About page to explain AEEM's purpose and work.
+- **Make participation easier to navigate.** Clarify routes for people interested in volunteering, partnering, or supporting the organisation.
+- **Give documented activities a home.** Present impact information in a central place rather than relying only on social posts.
+- **Preserve the substance of reports.** Adapt existing reporting material for the web, making it easier to scan while retaining the important message and supporting detail.
+
+## What was implemented
+
+The website includes organisational information, ways to get involved, and an impact area presenting documented activities and beneficiaries. Activity pages can provide context, photographs, participant experiences, and reported findings.
+
+One example is the **“I am Somebody Initiative”**, part of the programme themed **“Everyone In, No One Out.”** The documented activity took place in Freetown on 29 January 2025 and involved 42 participants from six schools. The website gives this activity a dedicated report page rather than leaving its story only in a social post.
+
+## What the evidence supports
+
+The website is working and has been used. The core team reviewed pages and navigation, gave feedback, and responded positively. I also attended an occasion where the website was used with volunteers.
+
+That is useful implementation and early internal feedback—not proof of increased public trust, more volunteer applications, stronger partner engagement, or increased funding. I have not yet tracked those outcomes systematically, and I have not completed a follow-up evaluation.
+
+## What I would measure next
+
+To understand whether the website solves the original problem, I would establish a small baseline and track:
+
+- Whether visitors can find a relevant activity report without assistance.
+- Visits to activity and report pages, including referral sources.
+- Clicks on volunteer, partner, and support pathways.
+- Completed enquiries or sign-ups attributable to the website.
+- Feedback from volunteers and prospective partners about what remains difficult to find or verify.
+
+These measures would help distinguish a website that is merely available from one that meaningfully improves discovery and participation.
+
+## Reflection
+
+The central lesson is that a digital presence is not automatically evidence of impact. The website creates a more coherent place to explain and inspect AEEM's work; whether that changes trust or participation needs to be tested.
+
+My next step would be to evaluate the key journeys with people outside the core team, instrument the relevant actions, and improve the pages based on observed friction rather than assuming the redesign has already achieved its intended outcomes.
