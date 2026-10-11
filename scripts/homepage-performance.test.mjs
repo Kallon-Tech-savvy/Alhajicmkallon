@@ -10,9 +10,11 @@ test('homepage hero stays server-rendered without Framer Motion client runtime',
   assert.doesNotMatch(heroSource, /<motion\./);
 });
 
-test('homepage portrait remains prioritized for Largest Contentful Paint', () => {
+test('homepage portrait avoids unnecessary mobile preloading and selects responsive image sizes', () => {
   assert.match(heroSource, /src=["']\/assets\/kallon1\.png["']/);
-  assert.match(heroSource, /priority/);
+  assert.match(heroSource, /loading="lazy"/);
+  assert.match(heroSource, /sizes="\(min-width: 1024px\) 42vw, 1px"/);
+  assert.doesNotMatch(heroSource, /\n\s*priority\s*\n/);
 });
 
 const featuredWorkSource = await readFile(new URL('../src/components/FeaturedWork.tsx', import.meta.url), 'utf8');
