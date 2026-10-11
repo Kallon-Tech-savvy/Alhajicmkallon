@@ -44,3 +44,15 @@ test('navigation avoids loading Framer Motion for the mobile menu', () => {
   assert.doesNotMatch(navbarSource, /<AnimatePresence|<motion\./);
   assert.match(navbarSource, /isMobileMenuOpen &&/);
 });
+
+const globalSearchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
+
+test('global search avoids the Framer Motion runtime', () => {
+  assert.doesNotMatch(globalSearchSource, /from ['"]framer-motion['"]/);
+  assert.doesNotMatch(globalSearchSource, /<AnimatePresence|<motion\\./);
+});
+
+test('global search is split out until a visitor opens it', () => {
+  assert.match(navbarSource, /dynamic\\([\\s\\S]*import\\('./GlobalSearch'\\)/);
+  assert.match(navbarSource, /isSearchOpen && <GlobalSearch/);
+});
