@@ -7,7 +7,7 @@ import { Mail, Code, Send, Users, CheckCircle2, ArrowRight, Book, Video } from '
 import { Reveal } from '@/components/Reveal';
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'fallback'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
   const [selectedIntent, setSelectedIntent] = useState<string>('');
   const [formData, setFormData] = useState({
@@ -18,9 +18,10 @@ export default function ContactPage() {
 
   // Pre-configured intents reduce typing overhead and guide the user
   const intentOptions = [
-    "Software Architecture",
-    "Product Design / UI",
-    "Strategic Consulting"
+    "Clarify a product idea",
+    "Design and build a product",
+    "Improve an existing product",
+    "Something else"
   ];
 
   const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
@@ -39,10 +40,8 @@ export default function ContactPage() {
         window.location.href = mailtoLink;
       }
 
-      setStatus('success');
-      setStatusMessage('Your email app should open with your message ready. If it does not, email hello@alhajikallon.dev directly.');
-      setFormData({ name: '', email: '', message: '' });
-      setSelectedIntent('');
+      setStatus('fallback');
+      setStatusMessage('Your email app should open with a draft. This does not confirm delivery, so please send the draft or email hello@alhajikallon.dev directly. Your message remains in this form until you confirm it has been sent.');
       return;
     }
 
@@ -79,13 +78,13 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal variant="up" className="max-w-3xl">
             <p className="font-space text-xs uppercase tracking-[0.35em] text-pride-blue mb-5">
-              Let&apos;s build something clear
+              Let’s find the right next step
             </p>
             <h1 className="font-space text-4xl md:text-6xl lg:text-7xl font-black tracking-[-0.03em] mb-4 leading-[0.95]">
               Get in <span className="text-ivory/80">touch.</span>
             </h1>
             <p className="text-base md:text-lg text-muted max-w-2xl leading-relaxed">
-              Whether you need a premium product experience, a thoughtful system, or a sharp digital launch, I’m open to thoughtful collaborations that move quickly and feel effortless.
+              Have a product idea, a problem to solve, or a digital product to improve? Tell me what you’re trying to achieve. We can work out the next useful step together.
             </p>
           </Reveal>
         </div>
@@ -152,7 +151,7 @@ export default function ContactPage() {
                   {/* Step 1: Cognitive Ease Intent Selection */}
                   <div className="space-y-4">
                     <label className="font-space text-[10px] font-black uppercase tracking-[0.3em] text-pride-blue block">
-                      What are we engineering?
+                      What would you like help with?
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {intentOptions.map((option) => (
@@ -175,38 +174,49 @@ export default function ContactPage() {
                   {/* Input Fields Stack */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-1">
-                      <label className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">Your Name</label>
+                      <label htmlFor="contact-name" className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">Your name</label>
                       <input
+                        id="contact-name"
+                        name="name"
+                        autoComplete="name"
                         type="text"
+                        maxLength={120}
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 font-inter text-sm text-ivory outline-none transition-colors duration-300 focus:border-pride-blue/40"
-                        placeholder="e.g., Cairo Kallon"
+                        placeholder="Your name"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">Your Email</label>
+                      <label htmlFor="contact-email" className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">Your email</label>
                       <input
+                        id="contact-email"
+                        name="email"
+                        autoComplete="email"
                         type="email"
+                        maxLength={254}
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 font-inter text-sm text-ivory outline-none transition-colors duration-300 focus:border-pride-blue/40"
-                        placeholder="e.g., cairo@company.com"
+                        placeholder="you@company.com"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">Project Blueprint / Message</label>
+                    <label htmlFor="contact-message" className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">What are you trying to achieve?</label>
                     <textarea
                       required
+                      id="contact-message"
+                      name="message"
                       rows={5}
+                      maxLength={5000}
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
                       className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 font-inter text-sm text-ivory outline-none transition-colors duration-300 resize-none focus:border-pride-blue/40"
-                      placeholder="Outline your milestones, challenges, or baseline parameters..."
+                      placeholder="Share the problem, who it affects, and what you have tried so far. It is fine if the idea is still taking shape."
                     />
                   </div>
 
@@ -215,14 +225,14 @@ export default function ContactPage() {
                     disabled={status === 'loading'}
                     className="w-full rounded-xl py-4 bg-pride-blue text-white font-space font-semibold text-xs uppercase tracking-[0.25em] transition-all duration-300 flex items-center justify-center gap-3 hover:bg-pride-blue/90 disabled:opacity-50 tap-scale"
                   >
-                    {status === 'loading' ? 'Transmitting Data...' : (
-                      <>Request a discovery call <Send size={14} /></>
+                    {status === 'loading' ? 'Sending message…' : (
+                      <>Send message <Send size={14} /></>
                     )}
                   </button>
 
-                  {status === 'error' && (
-                    <p className="text-red-400 font-space text-[11px] font-bold uppercase tracking-[0.2em] text-center animate-pulse">
-                      {statusMessage || 'Transmission failed. Please check parameters and retry.'}
+                  {(status === 'error' || status === 'fallback') && (
+                    <p role="status" aria-live="polite" className={`font-inter text-sm text-center leading-relaxed ${status === 'error' ? 'text-red-300' : 'text-amber-200'}`}>
+                      {statusMessage || 'The message could not be sent. Please try again or email hello@alhajikallon.dev directly.'}
                     </p>
                   )}
                 </form>
@@ -238,7 +248,7 @@ export default function ContactPage() {
                     </p>
                   </div>
                   <button
-                    onClick={() => setStatus('idle')}
+                    onClick={() => { setStatus('idle'); setStatusMessage(''); }}
                     className="rounded-full px-6 py-3 border border-white/10 text-muted font-space font-bold text-[10px] uppercase tracking-[0.25em] hover:border-pride-blue hover:text-pride-blue transition-colors duration-300 tap-scale"
                   >
                     Send Additional Message
