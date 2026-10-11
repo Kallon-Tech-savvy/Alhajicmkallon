@@ -34,8 +34,10 @@ export default function WorkPage() {
               <h2 className="font-space text-3xl font-bold mb-4"><Link href={`/work/${project.slug}`} className="hover:text-gold transition-colors">{project.title}</Link></h2>
               <p className="text-muted leading-relaxed mb-6">{project.summary}</p>
               <div className="flex flex-wrap gap-2 mb-6">{project.technologies.map((technology) => <span key={technology} className="text-xs border border-white/10 px-3 py-1 rounded-full">{technology}</span>)}</div>
-              {project.links?.live && <a href={project.links.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-gold">Open project <ArrowUpRight size={14} /></a>}
-              <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-2 text-gold">View case study <ArrowUpRight size={14} /></Link>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-2 text-gold underline underline-offset-4 hover:text-ivory transition-colors">Read case study <ArrowUpRight size={14} /></Link>
+                {project.links?.live && <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-muted underline underline-offset-4 hover:text-ivory transition-colors">Visit live project <ArrowUpRight size={14} /></a>}
+              </div>
             </article>
           )) : (
             <div className="md:col-span-2 border border-white/10 p-8 md:p-12">
