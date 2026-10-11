@@ -132,3 +132,12 @@ test('chat conversation UI is dynamically loaded only after the visitor opens ch
   assert.match(chatWidgetSource, /showLauncher && <button/);
   assert.match(chatWidgetSource, /if \(!open && initialOpen\) onClose\?\.\(\)/);
 });
+
+const globalCssSource = await readFile(new URL('../src/app/globals.css', import.meta.url), 'utf8');
+
+test('font setup avoids an unused font family and preserves the generated Inter variable', () => {
+  assert.doesNotMatch(layoutSource, /Space_Mono|spaceMono\.variable/);
+  assert.doesNotMatch(globalCssSource, /--font-inter:\s*var\(--font-inter\)/);
+  assert.doesNotMatch(globalCssSource, /--font-cormorant:/);
+  assert.match(layoutSource, /Inter, JetBrains_Mono/);
+});
