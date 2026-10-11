@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
-import { ChatWidget } from "@/components/ChatWidget";
+import { ChatWidgetLoader } from "@/components/ChatWidgetLoader";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -87,7 +87,7 @@ export default function RootLayout({
         <div id="main-content" tabIndex={-1} className="flex-1">
           {children}
         </div>
-        <ChatWidget />
+        <ChatWidgetLoader />
       </body>
     </html>
   );
