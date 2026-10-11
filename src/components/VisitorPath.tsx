@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
 
 const onboardingOptions = [
   {
@@ -69,15 +68,10 @@ export function VisitorPath() {
             })}
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFlow.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.18, ease: 'easeOut' }}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-6"
-            >
+          <div
+            key={activeFlow.id}
+            className="animate-[slide-up_180ms_ease-out_both] rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+          >
               <p className="mb-2 font-[family-name:var(--font-jetbrains-mono)] text-[10px] uppercase tracking-[0.24em] text-pride-blue">
                 {activeFlow.title}
               </p>
@@ -88,8 +82,7 @@ export function VisitorPath() {
               >
                 {activeFlow.cta}
               </Link>
-            </motion.div>
-          </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>
