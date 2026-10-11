@@ -8,7 +8,6 @@ const ImpactCards = dynamic(() => import('@/components/ImpactCards').then(mod =>
 const Timeline = dynamic(() => import('@/components/Timeline').then(mod => mod.Timeline));
 const FeaturedWork = dynamic(() => import('@/components/FeaturedWork').then(mod => mod.FeaturedWork));
 const ThoughtLeadership = dynamic(() => import('@/components/ThoughtLeadership').then(mod => mod.ThoughtLeadership));
-const VisionMap = dynamic(() => import('@/components/VisionMap').then(mod => mod.VisionMap));
 const NewsletterCTA = dynamic(() => import('@/components/NewsletterCTA').then(mod => mod.NewsletterCTA));
 const Footer = dynamic(() => import('@/components/Footer').then(mod => mod.Footer));
 
@@ -21,7 +20,6 @@ export default function Home() {
       <Timeline />
       <FeaturedWork />
       <ThoughtLeadership />
-      <VisionMap />
 
       {/* ── Terminal Quote Section ──────────────────────────────────── */}
       <section className="py-48 px-6 relative overflow-hidden bg-[#0A0A0A] border-t border-[#2A2A2A]">
