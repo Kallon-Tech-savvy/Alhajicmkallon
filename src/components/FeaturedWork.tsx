@@ -84,9 +84,21 @@ export const FeaturedWork = () => {
                   ))}
                 </div>
 
-                <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
-                  Case Study <ArrowUpRight size={14} />
-                </Link>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
+                    Read Case Study <ArrowUpRight size={14} />
+                  </Link>
+                  {project.links?.live && (
+                    <a
+                      href={project.links.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 py-4 text-muted hover:text-ivory font-space font-bold text-[10px] uppercase tracking-widest transition-colors"
+                    >
+                      Visit Live Project <ArrowUpRight size={14} />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           ))}
