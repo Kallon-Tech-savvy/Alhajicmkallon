@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { PROJECTS } from '@/lib/content';
 import { ArrowUpRight } from 'lucide-react';
@@ -59,7 +60,13 @@ export const FeaturedWork = () => {
                 _i % 2 === 1 ? "lg:order-2" : ""
               )}>
                 {project.image ? (
-                  <img src={project.image} alt={project.title} className="h-full w-full object-cover" />
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 58vw"
+                    className="object-cover"
+                  />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
                     <span className="font-space text-2xl md:text-4xl font-bold text-white/30">{project.title}</span>
