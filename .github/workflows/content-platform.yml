@@ -23,6 +23,8 @@ jobs:
         run: npm run test:content
       - name: Test contact form fallback
         run: npm run test:contact
+      - name: Test homepage performance boundary
+        run: npm run test:homepage-performance
       - name: Lint
         run: npm run lint
       - name: Production build
