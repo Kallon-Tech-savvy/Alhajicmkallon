@@ -23,6 +23,14 @@ test('featured work stays server-rendered without Framer Motion client runtime',
   assert.doesNotMatch(featuredWorkSource, /<motion\./);
 });
 
+const visitorPathSource = await readFile(new URL('../src/components/VisitorPath.tsx', import.meta.url), 'utf8');
+
+test('visitor path avoids shipping a separate animation runtime', () => {
+  assert.doesNotMatch(visitorPathSource, /from ['"]framer-motion['"]/);
+  assert.doesNotMatch(visitorPathSource, /<AnimatePresence|<motion\\./);
+  assert.match(visitorPathSource, /animate-\\[slide-up_180ms_ease-out_both\\]/);
+});
+
 const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
 
 test('work page communicates product thinking and the project evidence journey', () => {
