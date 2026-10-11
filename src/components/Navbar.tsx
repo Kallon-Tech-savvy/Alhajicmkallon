@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { Search, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 const GlobalSearch = dynamic(
   () => import('./GlobalSearch').then((module) => module.GlobalSearch),
@@ -12,6 +11,28 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 // Each nav link gets a shell-command label
+function NavIcon({ name, size }: { name: 'search' | 'menu' | 'close'; size: number }) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    'aria-hidden': true as const,
+  };
+
+  if (name === 'search') {
+    return <svg {...common}><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>;
+  }
+  if (name === 'close') {
+    return <svg {...common}><path d="m18 6-12 12M6 6l12 12" /></svg>;
+  }
+  return <svg {...common}><path d="M4 6h16M4 12h16M4 18h16" /></svg>;
+}
+
 const NAV_LINKS = [
   { name: 'home',       href: '/',         short: 'HOME'     },
   { name: 'about',      href: '/about',     short: 'ABOUT'    },
@@ -118,7 +139,7 @@ export const Navbar = () => {
               style={{ color: '#6B7280' }}
               aria-label="Search (⌘K)"
             >
-              <Search size={14} />
+              <NavIcon name="search" size={14} />
             </button>
 
             <Link
@@ -144,14 +165,14 @@ export const Navbar = () => {
           <div className="lg:hidden flex items-center gap-2">
             <button onClick={() => setIsSearchOpen(true)} style={{ color: '#6B7280' }}
                     className="p-2">
-              <Search size={18} />
+              <NavIcon name="search" size={18} />
             </button>
             <button
               onClick={() => setIsMobileOpen(!isMobileMenuOpen)}
               style={{ color: '#6B7280' }}
               className="p-2 relative z-[60]"
             >
-              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {isMobileMenuOpen ? <NavIcon name="close" size={22} /> : <NavIcon name="menu" size={22} />}
             </button>
           </div>
         </div>
