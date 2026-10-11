@@ -1,4 +1,4 @@
-import { ArrowUpRight, Terminal, Send, Users, Code, Mail } from 'lucide-react';
+import { ArrowUpRight, Send, Users, Code, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 const SOCIAL_LINKS = [
@@ -154,18 +154,3 @@ export const Footer = () => {
   );
 };
 
-function StatusItem({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      <span
-        className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] uppercase tracking-widest"
-        style={{ color: '#6B7280' }}
-      >
-        {label}:
-      </span>
-      <span className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] font-bold" style={{ color }}>
-        {value}
-      </span>
-    </div>
-  );
-}
