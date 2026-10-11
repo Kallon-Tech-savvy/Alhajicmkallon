@@ -83,7 +83,8 @@ export const Hero = () => (
                 src="/assets/kallon1.png"
                 alt="Alhaji C.M. Kallon"
                 fill
-                priority
+                loading="lazy"
+                sizes="(min-width: 1024px) 42vw, 1px"
                 className="object-cover"
                 style={{ filter: 'grayscale(70%) contrast(1.08)' }}
               />
