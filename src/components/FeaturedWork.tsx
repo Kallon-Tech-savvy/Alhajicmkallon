@@ -90,7 +90,7 @@ export const FeaturedWork = () => {
                 </h3>
 
                 <p className="text-muted text-lg font-inter mb-8 leading-relaxed">
-                  {project.description}
+                  {project.summary}
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-10">
