@@ -47,8 +47,14 @@ function renderMessageContent(content: string): ReactNode[] {
   });
 }
 
-export function ChatWidget() {
-  const [open, setOpen] = useState(false);
+interface ChatWidgetProps {
+  initialOpen?: boolean;
+  showLauncher?: boolean;
+  onClose?: () => void;
+}
+
+export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }: ChatWidgetProps) {
+  const [open, setOpen] = useState(initialOpen);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -62,6 +68,10 @@ export function ChatWidget() {
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+
+  useEffect(() => {
+    if (!open && initialOpen) onClose?.();
+  }, [open, initialOpen, onClose]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -164,7 +174,7 @@ export function ChatWidget() {
   return (
     <>
       {/* Launcher */}
-      <button
+      {showLauncher && <button
         type="button"
         data-chat-launcher
         onClick={() => setOpen((v) => !v)}
@@ -174,7 +184,7 @@ export function ChatWidget() {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[var(--color-pride-blue)] text-white flex items-center justify-center shadow-2xl tap-scale hover-lift transition-transform duration-300"
       >
         {open ? <X size={22} /> : <MessageCircle size={22} />}
-      </button>
+      </button>}
 
       {/* Panel */}
       {open && (
