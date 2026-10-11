@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
 import { searchPublishedContent } from '@/lib/content';
 import Link from 'next/link';
@@ -20,22 +19,14 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const { projects: filteredProjects, articles: filteredArticles } = searchPublishedContent(query);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
+    {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             className="fixed inset-0 bg-midnight/95 backdrop-blur-xl"
             onClick={onClose}
           />
 
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          <div
             className="relative w-full max-w-2xl bg-navy/50 border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl"
           >
             <div className="p-6 border-b border-white/5 flex items-center space-x-4">
@@ -133,9 +124,8 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <div className="w-1 h-1 rounded-full bg-current" />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-      )}
-    </AnimatePresence>
+    )}
   );
 };
