@@ -46,6 +46,30 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             <p className="text-gold text-xs uppercase tracking-widest mb-5">{project.role}</p>
             <h1 className="font-space text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-7">{project.title}</h1>
             <p className="text-muted text-lg md:text-xl leading-relaxed">{project.summary}</p>
+            {(project.links?.live || project.links?.source) && (
+              <div className="flex flex-wrap gap-5 mt-8">
+                {project.links?.live && (
+                  <a
+                    href={project.links.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-gold text-midnight px-5 py-3 text-xs font-bold uppercase tracking-widest hover:bg-ivory transition-colors"
+                  >
+                    Visit live project <ArrowUpRight size={14} />
+                  </a>
+                )}
+                {project.links?.source && (
+                  <a
+                    href={project.links.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 border border-white/20 px-5 py-3 text-xs font-bold uppercase tracking-widest text-ivory hover:border-gold hover:text-gold transition-colors"
+                  >
+                    View source code <ArrowUpRight size={14} />
+                  </a>
+                )}
+              </div>
+            )}
             {project.technologies.length > 0 && (
               <ul className="flex flex-wrap gap-2 mt-7" aria-label="Technologies">
                 {project.technologies.map((technology) => (
@@ -59,20 +83,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       <section className="px-6 py-14">
         <article className="max-w-3xl mx-auto font-inter text-base md:text-lg">
           <MarkdownContent source={project.body ?? project.description} />
-          {project.links?.live && (
-            <p className="mt-10">
-              <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gold underline underline-offset-4">
-                Visit project <ArrowUpRight size={14} />
-              </a>
-            </p>
-          )}
-          {project.links?.source && (
-            <p className="mt-4">
-              <a href={project.links.source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gold underline underline-offset-4">
-                View source code <ArrowUpRight size={14} />
-              </a>
-            </p>
-          )}
         </article>
       </section>
       <Footer />
