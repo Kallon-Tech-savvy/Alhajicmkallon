@@ -1,8 +1,4 @@
-'use client';
-
-import React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { PROJECTS } from '@/lib/content';
 import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
@@ -12,10 +8,8 @@ export const FeaturedWork = () => {
     <section id="work" className="py-32 bg-midnight px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+          <div
+
           >
             <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
               Portfolio
@@ -23,12 +17,10 @@ export const FeaturedWork = () => {
             <h2 className="font-space text-5xl md:text-7xl font-bold tracking-tighter leading-none">
               FEATURED <br /><span className="text-muted">PROJECTS</span>
             </h2>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+          <div
+
             className="max-w-md"
           >
             <p className="text-muted text-lg font-inter leading-relaxed mb-8">
@@ -37,7 +29,7 @@ export const FeaturedWork = () => {
             <Link href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
               View All Projects <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
-          </motion.div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-32">
@@ -47,12 +39,9 @@ export const FeaturedWork = () => {
               <p className="max-w-2xl text-muted leading-relaxed">This section will feature verified projects rather than placeholder work or unsubstantiated impact claims.</p>
             </div>
           ) : PROJECTS.map((project, _i) => (
-            <motion.div
+            <div
               key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
+
               className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center group"
             >
               <div className={cn(
@@ -105,7 +94,7 @@ export const FeaturedWork = () => {
                   Case Study <ArrowUpRight size={14} />
                 </Link>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
