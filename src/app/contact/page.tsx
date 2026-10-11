@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Mail, Code, Send, Users, CheckCircle2, ArrowRight, Book, Video } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { buildContactMailto } from '@/lib/contact-form.mjs';
 
 export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'fallback'>('idle');
@@ -32,9 +33,10 @@ export default function ContactPage() {
     setStatusMessage('');
 
     if (!formspreeId) {
-      const subject = `Inquiry: ${selectedIntent || 'General'}`;
-      const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`;
-      const mailtoLink = `mailto:hello@alhajikallon.dev?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const mailtoLink = buildContactMailto({
+        ...formData,
+        intent: selectedIntent,
+      });
 
       if (typeof window !== 'undefined') {
         window.location.href = mailtoLink;
@@ -59,11 +61,11 @@ export default function ContactPage() {
         setSelectedIntent('');
       } else {
         setStatus('error');
-        setStatusMessage('The message did not send on the first try. Please email hello@alhajikallon.dev directly instead.');
+        setStatusMessage('The message was not accepted. You can try again or open an email draft with your message preserved.');
       }
     } catch {
       setStatus('error');
-      setStatusMessage('The message did not send on the first try. Please email hello@alhajikallon.dev directly instead.');
+      setStatusMessage('The message could not be sent. Check your connection, try again, or open an email draft with your message preserved.');
     }
   };
 
@@ -159,6 +161,7 @@ export default function ContactPage() {
                           key={option}
                           type="button"
                           onClick={() => setSelectedIntent(option)}
+                          aria-pressed={selectedIntent === option}
                           className={`rounded-full px-4 py-2 text-xs font-space font-semibold tracking-[0.2em] uppercase transition-all duration-200 border tap-scale ${
                             selectedIntent === option
                               ? 'bg-pride-blue text-white border-pride-blue'
@@ -231,9 +234,25 @@ export default function ContactPage() {
                   </button>
 
                   {(status === 'error' || status === 'fallback') && (
-                    <p role="status" aria-live="polite" className={`font-inter text-sm text-center leading-relaxed ${status === 'error' ? 'text-red-300' : 'text-amber-200'}`}>
-                      {statusMessage || 'The message could not be sent. Please try again or email hello@alhajikallon.dev directly.'}
-                    </p>
+                    <div role="status" aria-live="polite" className="space-y-3 text-center">
+                      <p className={`font-inter text-sm leading-relaxed ${status === 'error' ? 'text-red-300' : 'text-amber-200'}`}>
+                        {statusMessage || 'The message could not be sent. Please try again or use the email draft fallback.'}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          window.location.href = buildContactMailto({
+                            ...formData,
+                            intent: selectedIntent,
+                          });
+                          setStatus('fallback');
+                          setStatusMessage('Your email app should open with a draft. This does not confirm delivery; send the draft to complete the message.');
+                        }}
+                        className="rounded-full border border-white/15 px-4 py-2 text-xs font-semibold text-ivory transition-colors hover:border-pride-blue hover:text-pride-blue"
+                      >
+                        Open email draft instead
+                      </button>
+                    </div>
                   )}
                 </form>
               ) : (
