@@ -1,7 +1,3 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
 import { Cpu, Lightbulb, Users, PenTool } from 'lucide-react';
 
 const impactAreas = [
@@ -51,13 +47,8 @@ export const ImpactCards = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {impactAreas.map((area, i) => (
-            <motion.div
-              key={area.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -10 }}
+            <div
+              key={area.title}     
               className="glass p-8 rounded-2xl group relative overflow-hidden"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${area.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
@@ -68,7 +59,7 @@ export const ImpactCards = () => {
               <p className="font-inter text-sm leading-7 text-[#9AA4B2]">
                 {area.desc}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
