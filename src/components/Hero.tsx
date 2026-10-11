@@ -1,8 +1,5 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 const METRICS = [
   { label: '01 · Understand', value: 'Discover' },
@@ -53,22 +50,22 @@ export const Hero = () => (
           </p>
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
-            <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
+            <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:bg-pride-blue/20"
               >
                 Discuss an idea
               </Link>
-            </motion.div>
-            <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
+            </div>
+            <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
               <Link
                 href="/work"
                 className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
               >
                 View selected work
               </Link>
-            </motion.div>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
@@ -109,15 +106,13 @@ export const Hero = () => (
     <div className="relative z-10 border-t border-border/80">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-0 px-6 lg:grid-cols-4 lg:px-8">
         {METRICS.map((m) => (
-          <motion.div
+          <div
             key={m.label}
-            whileHover={{ y: -3, scale: 1.01 }}
-            transition={{ duration: 0.2 }}
             className="flex flex-col gap-2 border-r border-border/80 px-4 py-6 last:border-r-0"
           >
             <span className="font-space text-lg font-semibold text-ivory">{m.value}</span>
             <span className="text-[10px] uppercase tracking-[0.24em] text-[#9aa4b2]">{m.label}</span>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
