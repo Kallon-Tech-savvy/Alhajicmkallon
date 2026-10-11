@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
@@ -96,11 +97,13 @@ export default function GalleryPage() {
                 style={{ animationDelay: `${index * 70}ms` }}
               >
                 <div className="overflow-hidden rounded-[1.5rem] bg-black">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.title}
+                    width={1200}
+                    height={800}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
                   />
                 </div>
                 <div className="p-6">
