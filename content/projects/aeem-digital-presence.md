@@ -7,6 +7,7 @@ topics: ["product thinking", "information architecture", "UX design", "nonprofit
 technologies: ["Web design", "Content architecture", "Frontend development"]
 status: published
 publishedAt: 2026-10-11
+links: {"live":"https://aeem-w.vercel.app"}
 ---
 
 ## The context
