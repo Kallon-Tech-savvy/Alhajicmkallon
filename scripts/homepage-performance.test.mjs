@@ -96,3 +96,15 @@ test('Lighthouse enforces the agreed performance and discoverability acceptance 
   assert.match(workflow, /expected at least 80\/100/);
   assert.match(workflow, /expected 100\/100/);
 });
+
+const llmsRouteSource = await readFile(new URL('../src/app/llms.txt/route.ts', import.meta.url), 'utf8');
+
+test('AI discovery guide links to canonical public pages and avoids invented evidence', () => {
+  assert.match(llmsRouteSource, /export function GET\(\)/);
+  assert.match(llmsRouteSource, /Content-Type.*text\/plain/);
+  assert.match(llmsRouteSource, /\/work/);
+  assert.match(llmsRouteSource, /\/writing/);
+  assert.match(llmsRouteSource, /\/knowledge/);
+  assert.match(llmsRouteSource, /Distinguish documented facts from interpretation/);
+  assert.match(llmsRouteSource, /Cache-Control/);
+});
