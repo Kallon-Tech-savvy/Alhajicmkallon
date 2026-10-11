@@ -41,7 +41,7 @@ export default function WorkPage() {
           )) : (
             <div className="md:col-span-2 border border-white/10 p-8 md:p-12">
               <h2 className="font-space text-2xl md:text-3xl font-bold mb-4">More case studies will follow</h2>
-              <p className="max-w-2xl text-muted leading-relaxed">This portfolio will show projects when their descriptions and supporting details are ready to publish. No placeholder projects or unsupported impact claims are shown.</p>
+              <p className="max-w-2xl text-muted leading-relaxed">This portfolio grows as project decisions and supporting details are ready to share. The aim is to show the work honestly, including what has not yet been validated.</p>
             </div>
           )}
         </div>
