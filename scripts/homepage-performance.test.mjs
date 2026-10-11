@@ -28,7 +28,7 @@ const visitorPathSource = await readFile(new URL('../src/components/VisitorPath.
 test('visitor path avoids shipping a separate animation runtime', () => {
   assert.doesNotMatch(visitorPathSource, /from ['"]framer-motion['"]/);
   assert.doesNotMatch(visitorPathSource, /<AnimatePresence|<motion\\./);
-  assert.match(visitorPathSource, /animate-\\[slide-up_180ms_ease-out_both\\]/);
+  assert.ok(visitorPathSource.includes('animate-[slide-up_180ms_ease-out_both]'));
 });
 
 const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
