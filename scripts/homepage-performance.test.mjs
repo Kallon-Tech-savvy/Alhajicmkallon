@@ -36,3 +36,11 @@ test('work page keeps case-study and live-project paths distinct and safe', () =
   assert.match(workPageSource, /Visit live project/);
   assert.match(workPageSource, /target="_blank" rel="noopener noreferrer"/);
 });
+
+const navbarSource = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');
+
+test('navigation avoids loading Framer Motion for the mobile menu', () => {
+  assert.doesNotMatch(navbarSource, /from ['"]framer-motion['"]/);
+  assert.doesNotMatch(navbarSource, /<AnimatePresence|<motion\./);
+  assert.match(navbarSource, /isMobileMenuOpen &&/);
+});
