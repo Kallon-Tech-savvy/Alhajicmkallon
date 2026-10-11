@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { ChatWidget } from "@/components/ChatWidget";
-import { CustomCursor } from "@/components/CustomCursor";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -57,7 +56,6 @@ export default function RootLayout({
           {children}
         </div>
         <ChatWidget />
-        <CustomCursor />
       </body>
     </html>
   );
