@@ -201,7 +201,7 @@ export const Navbar = () => {
             >
               <p className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-widest uppercase mb-5"
                  style={{ color: '#6B7280' }}>
-                // social channels
+                {/* social channels */}
               </p>
               <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
                    style={{ color: '#6B7280' }}>
