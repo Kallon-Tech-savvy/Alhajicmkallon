@@ -21,6 +21,8 @@ jobs:
         run: npm ci
       - name: Test content parser
         run: npm run test:content
+      - name: Test contact form fallback
+        run: npm run test:contact
       - name: Lint
         run: npm run lint
       - name: Production build
