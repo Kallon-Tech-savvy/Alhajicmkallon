@@ -71,7 +71,8 @@
     "predev": "node scripts/build-content-index.mjs",
     "prebuild": "node scripts/build-content-index.mjs",
     "test:content": "node --test scripts/build-content-index.test.mjs",
-    "test:contact": "node --test scripts/contact-form.test.mjs"
+    "test:contact": "node --test scripts/contact-form.test.mjs",
+    "test:homepage-performance": "node --test scripts/homepage-performance.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
