@@ -64,3 +64,20 @@ test('global search is split out until a visitor opens it', () => {
   assert.ok(navbarSource.includes('dynamic(') && navbarSource.includes("import('./GlobalSearch')"));
   assert.ok(navbarSource.includes('isSearchOpen && <GlobalSearch'));
 });
+
+
+const belowFoldMotionFiles = [
+  '../src/components/ImpactCards.tsx',
+  '../src/components/Timeline.tsx',
+  '../src/components/ThoughtLeadership.tsx',
+  '../src/components/VisionMap.tsx',
+  '../src/components/NewsletterCTA.tsx',
+];
+
+test('below-the-fold sections do not pull Framer Motion into the homepage bundle', async () => {
+  for (const file of belowFoldMotionFiles) {
+    const source = await readFile(new URL(file, import.meta.url), 'utf8');
+    assert.doesNotMatch(source, /from ['"]framer-motion['"]/, file);
+    assert.doesNotMatch(source, /<motion\./, file);
+  }
+});
