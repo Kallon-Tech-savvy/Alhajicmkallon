@@ -23,6 +23,9 @@ export const generatedProjects: Project[] = [
       "Frontend development"
     ],
     "status": "published",
-    "publishedAt": "2026-10-11"
+    "publishedAt": "2026-10-11",
+    "links": {
+      "live": "https://aeem-w.vercel.app"
+    }
   }
 ];
