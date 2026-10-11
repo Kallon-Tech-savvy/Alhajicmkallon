@@ -45,7 +45,7 @@ jobs:
         run: |
           npx --yes lighthouse http://127.0.0.1:3000/ \
             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
-            --only-categories=performance \
+            --only-categories=performance,seo \
             --output=json \
             --output-path=./lighthouse-report.json
           node <<'NODE'
@@ -58,6 +58,7 @@ jobs:
 
           const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
           const score = report.categories.performance.score;
+          const seoScore = report.categories.seo.score;
           const metrics = [
             'first-contentful-paint',
             'largest-contentful-paint',
@@ -68,6 +69,7 @@ jobs:
           ];
 
           console.log(`Lighthouse performance score: ${Math.round(score * 100)}`);
+          console.log(`Lighthouse SEO score: ${Math.round(seoScore * 100)}`);
           console.log('Core performance metrics:');
           for (const id of metrics) {
             const audit = report.audits[id];
@@ -88,9 +90,13 @@ jobs:
             console.log(`- [${audit.score}] ${audit.title}: ${audit.displayValue ?? 'Needs review'}${suffix}`);
           }
 
-          if (score < 0.75) {
-            console.error('Performance budget failed: expected at least 75/100.');
-            process.exit(1);
+          if (score < 0.8) {
+            console.error('Performance budget failed: expected at least 80/100.');
+            process.exitCode = 1;
+          }
+          if (seoScore < 1) {
+            console.error('SEO / discoverability budget failed: expected 100/100.');
+            process.exitCode = 1;
           }
           NODE
       - name: Upload Lighthouse report
