@@ -6,6 +6,11 @@ on:
   push:
     branches: [main, feat/content-platform-foundation]
 
+# Avoid overlapping audits on successive commits; contention makes Lighthouse noisy.
+concurrency:
+  group: content-platform-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-latest
