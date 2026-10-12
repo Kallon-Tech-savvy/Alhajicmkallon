@@ -97,6 +97,8 @@ test('Lighthouse enforces the agreed performance and discoverability acceptance 
   assert.match(workflow, /seoScore < 1/);
   assert.match(workflow, /expected at least 80\/100/);
   assert.match(workflow, /expected 100\/100/);
+  assert.match(workflow, /concurrency:\s*\\n\\s+group: content-platform-\\$\\{\\{\\s*github\\.ref\\s*\\}\\}/);
+  assert.match(workflow, /cancel-in-progress:\s*true/);
 });
 
 const llmsRouteSource = await readFile(new URL('../src/app/llms.txt/route.ts', import.meta.url), 'utf8');
