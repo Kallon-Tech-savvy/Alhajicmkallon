@@ -24,33 +24,33 @@ const MARQUEE_ITEMS = [
 const VALUES = [
   {
     num: '01',
-    title: 'Innovation',
-    desc: 'Embracing creativity, experimentation, and continuous improvement to solve meaningful challenges.',
+    title: 'Evidence before claims',
+    desc: 'Separate what is known from what is assumed. Describe outcomes only as strongly as the available evidence allows.',
   },
   {
     num: '02',
-    title: 'Excellence',
-    desc: 'Maintaining high standards of quality, professionalism, and integrity in every endeavor.',
+    title: 'Clarity before scope',
+    desc: 'Define the problem and the intended outcome before adding features or committing to a solution.',
   },
   {
     num: '03',
-    title: 'Lifelong Learning',
-    desc: 'Remaining curious, adaptable, and committed to personal and professional growth.',
+    title: 'Useful over impressive',
+    desc: 'Choose the simplest approach that serves the real need, and improve it when evidence shows where it falls short.',
   },
   {
     num: '04',
-    title: 'Empowerment',
-    desc: 'Creating pathways for individuals and communities to realize their full potential.',
+    title: 'People in context',
+    desc: 'Design around people’s goals, constraints, and environment—not an imagined ideal user.',
   },
   {
     num: '05',
-    title: 'Collaboration',
-    desc: 'Believing that the most impactful solutions emerge through collective effort.',
+    title: 'Work in the open',
+    desc: 'Explain trade-offs, invite useful feedback, and make room to change direction when the reasoning calls for it.',
   },
   {
     num: '06',
-    title: 'Service',
-    desc: 'Using skills and knowledge to contribute positively to society.',
+    title: 'Keep learning',
+    desc: 'Treat every release as a chance to learn what works, what does not, and what deserves attention next.',
   },
 ];
 
