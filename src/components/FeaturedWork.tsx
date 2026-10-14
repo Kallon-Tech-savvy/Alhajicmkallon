@@ -10,19 +10,19 @@ export const FeaturedWork = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
           <div>
             <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
-              Portfolio
+              Selected work
             </span>
             <h2 className="font-space text-5xl md:text-7xl font-bold tracking-tighter leading-none">
-              FEATURED <br /><span className="text-muted">PROJECTS</span>
+              WORK <br /><span className="text-muted">IN CONTEXT</span>
             </h2>
           </div>
 
           <div className="max-w-md">
             <p className="text-muted text-lg font-inter leading-relaxed mb-8">
-              A closer look at the decisions behind a working product: the problem, the trade-offs, what shipped, and what still needs to be measured.
+              These case studies show the problem, the decisions I made, what I built, and what the available evidence can—and cannot—tell us.
             </p>
             <Link href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
-              View All Projects <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              Explore all work <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
           </div>
         </div>
@@ -30,8 +30,8 @@ export const FeaturedWork = () => {
         <div className="grid grid-cols-1 gap-32">
           {PROJECTS.length === 0 ? (
             <div className="border border-white/10 p-8 md:p-12">
-              <h3 className="font-space text-2xl font-bold mb-4">Case studies coming when ready</h3>
-              <p className="max-w-2xl text-muted leading-relaxed">This section will feature verified projects rather than placeholder work or unsubstantiated impact claims.</p>
+              <h3 className="font-space text-2xl font-bold mb-4">Evidence before claims</h3>
+              <p className="max-w-2xl text-muted leading-relaxed">I publish work when there is enough substance to explain the decisions, implementation, and what has been learned.</p>
             </div>
           ) : PROJECTS.map((project, _i) => (
             <div

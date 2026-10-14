@@ -3,25 +3,25 @@ import { Cpu, Lightbulb, Users, PenTool } from 'lucide-react';
 const impactAreas = [
   {
     title: "Problem discovery",
-    desc: "Examining how people work today, where friction appears, and which problems are worth understanding more deeply.",
+    desc: "Understand the people, context, and current workarounds before deciding what deserves to be solved.",
     icon: <Cpu className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
     title: "Product thinking",
-    desc: "Turning early ideas into clearer propositions, testing assumptions, and deciding what a useful first version should do.",
+    desc: "Turn a broad idea into a clearer value proposition, surface risky assumptions, and define a useful first version.",
     icon: <Lightbulb className="text-gold" size={24} aria-hidden="true" />,
     color: "from-yellow-500/10 to-transparent"
   },
   {
     title: "Experience design",
-    desc: "Organising information and interactions so people can understand a product and complete important tasks with less friction.",
+    desc: "Shape the information, flows, and interfaces around what people need to understand and do.",
     icon: <Users className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
     title: "Engineering",
-    desc: "Building and refining the working product, with attention to maintainability, reliability, performance, and real constraints.",
+    desc: "Build and improve the product with attention to usability, performance, reliability, and the constraints the team actually has.",
     icon: <PenTool className="text-gold" size={24} aria-hidden="true" />,
     color: "from-purple-500/10 to-transparent"
   }
@@ -34,14 +34,14 @@ export const ImpactCards = () => {
         <div className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="mb-4 block font-space text-[11px] font-semibold uppercase tracking-[0.3em] text-pride-blue">
-              What I focus on
+              How I work
             </span>
             <h2 className="font-space text-3xl font-semibold tracking-[-0.02em] text-ivory md:text-4xl">
-              From the right question. <span className="text-[#9AA4B2]">To a working product.</span>
+              From the right question. <span className="text-[#9AA4B2]">To a product people can use.</span>
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-[#9AA4B2]">
-            I connect problem discovery, product decisions, experience design, and engineering—so the work is grounded in a real need, not just a polished interface.
+            I work across the decisions that shape a product: what problem matters, what the first version needs to do, how people will use it, and how to build it reliably.
           </p>
         </div>
 

@@ -18,14 +18,14 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://alhajicmkallon.vercel.app"),
-  title: "Alhaji Kallon | Design Engineer",
+  title: "Alhaji Kallon | Digital Product Design & Engineering",
   description:
-    "Design Engineer & Software Developer building Africa's innovation future from Sierra Leone.",
-  keywords: ["design engineer", "software developer", "Sierra Leone", "Africa", "innovation"],
+    "I help founders, businesses, and organisations clarify product ideas, shape user experiences, and build useful digital products from Sierra Leone.",
+  keywords: ["digital product development", "product design", "software development", "design engineer", "Sierra Leone"],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Alhaji Kallon | Design Engineer",
-    description: "Design Engineer building Africa's innovation future.",
+    title: "Alhaji Kallon | Digital Product Design & Engineering",
+    description: "From product questions to working digital products. Explore Alhaji Kallon's approach, projects, and product thinking.",
     type: "website",
   },
 };
@@ -38,9 +38,9 @@ const structuredData = {
       "@id": "https://alhajicmkallon.vercel.app/#person",
       name: "Alhaji C. M. Kallon",
       url: "https://alhajicmkallon.vercel.app",
-      jobTitle: "Design Engineer",
+      jobTitle: "Design Engineer and Software Developer",
       description:
-        "Design engineer and software developer focused on clarifying business ideas and building digital products.",
+        "Helps founders, businesses, and organisations clarify product ideas, design digital experiences, and build useful digital products.",
       address: {
         "@type": "PostalAddress",
         addressCountry: "SL",
@@ -50,7 +50,7 @@ const structuredData = {
       "@type": "WebSite",
       "@id": "https://alhajicmkallon.vercel.app/#website",
       url: "https://alhajicmkallon.vercel.app",
-      name: "Alhaji Kallon | Design Engineer",
+      name: "Alhaji Kallon | Digital Product Design & Engineering",
       inLanguage: "en",
       publisher: { "@id": "https://alhajicmkallon.vercel.app/#person" },
     },

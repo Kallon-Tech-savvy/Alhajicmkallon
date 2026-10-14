@@ -48,6 +48,8 @@ jobs:
           done
           cat /tmp/portfolio-next.log
           exit 1
+      - name: Test production crawl and AI discovery endpoints
+        run: node --test scripts/discovery-endpoints.test.mjs
       - name: Run Lighthouse performance audit
         run: |
           npx --yes lighthouse http://127.0.0.1:3000/ \

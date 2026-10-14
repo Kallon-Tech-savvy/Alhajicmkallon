@@ -10,11 +10,11 @@ test('homepage hero stays server-rendered without Framer Motion client runtime',
   assert.doesNotMatch(heroSource, /<motion\./);
 });
 
-test('homepage portrait remains prioritized for Largest Contentful Paint with responsive sizing', () => {
+test('desktop-only homepage portrait is not preloaded on mobile viewports', () => {
   assert.match(heroSource, /src=["']\/assets\/kallon1\.png["']/);
-  assert.match(heroSource, /priority/);
+  assert.doesNotMatch(heroSource, /\bpriority\b/);
   assert.match(heroSource, /sizes="\(min-width: 1024px\) 42vw, 1px"/);
-  assert.doesNotMatch(heroSource, /loading="lazy"/);
+  assert.match(heroSource, /loading="lazy"/);
 });
 
 const featuredWorkSource = await readFile(new URL('../src/components/FeaturedWork.tsx', import.meta.url), 'utf8');
@@ -27,18 +27,24 @@ test('featured work stays server-rendered without Framer Motion client runtime',
 
 const visitorPathSource = await readFile(new URL('../src/components/VisitorPath.tsx', import.meta.url), 'utf8');
 
-test('visitor path avoids shipping a separate animation runtime', () => {
+test('visitor path is server-rendered and exposes all three journeys without client state', () => {
+  assert.doesNotMatch(visitorPathSource, /^['"]use client['"];?/m);
   assert.doesNotMatch(visitorPathSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(visitorPathSource, /<AnimatePresence|<motion\\./);
-  assert.ok(visitorPathSource.includes('animate-[slide-up_180ms_ease-out_both]'));
+  assert.doesNotMatch(visitorPathSource, /useState|useEffect|onClick=/);
+  assert.match(visitorPathSource, /Clarify a product idea/);
+  assert.match(visitorPathSource, /Explore the work/);
+  assert.match(visitorPathSource, /Read the thinking/);
+  assert.match(visitorPathSource, /href: '\/contact'/);
+  assert.match(visitorPathSource, /href: '\/work'/);
+  assert.match(visitorPathSource, /href: '\/writing'/);
 });
 
 const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
 
 test('work page communicates product thinking and the project evidence journey', () => {
-  assert.match(workPageSource, /FROM QUESTIONS/);
-  assert.match(workPageSource, /TO PRODUCTS/);
-  assert.match(workPageSource, /decisions, trade-offs, and implementation/);
+  assert.match(workPageSource, /FROM PROBLEM/);
+  assert.match(workPageSource, /TO PRODUCT/);
+  assert.match(workPageSource, /context, the choices, what I built, and what the evidence says so far/);
 });
 
 test('work page keeps case-study and live-project paths distinct and safe', () => {
@@ -155,4 +161,49 @@ test('initial navigation and chat launcher do not import the icon package into t
   assert.doesNotMatch(chatLauncherSourceForIcons, /from ['"]lucide-react['"]/);
   assert.match(navbarSourceForIcons, /function NavIcon/);
   assert.match(chatLauncherSourceForIcons, /<svg/);
+});
+
+
+const llmsFullRouteSource = await readFile(new URL('../src/app/llms-full.txt/route.ts', import.meta.url), 'utf8');
+
+test('full AI discovery feed contains only published portfolio content and source URLs', () => {
+  assert.match(llmsFullRouteSource, /import \{ ARTICLES, PROJECTS \} from ['"]@\/lib\/content['"]/);
+  assert.match(llmsFullRouteSource, /PROJECTS\.map/);
+  assert.match(llmsFullRouteSource, /ARTICLES\.map/);
+  assert.match(llmsFullRouteSource, /project\.body \?\? project\.description/);
+  assert.match(llmsFullRouteSource, /article\.content/);
+  assert.match(llmsFullRouteSource, /Content-Type.*text\/plain/);
+  assert.match(llmsFullRouteSource, /Cache-Control/);
+  assert.match(llmsFullRouteSource, /canonical HTML pages remain the source of truth/);
+});
+
+test('AI discovery index exposes individual published entries and the full-text feed', () => {
+  assert.match(llmsRouteSource, /PROJECTS\.flatMap/);
+  assert.match(llmsRouteSource, /ARTICLES\.filter\(\(article\) => article\.kind === 'journal'\)/);
+  assert.match(llmsRouteSource, /ARTICLES\.filter\(\(article\) => article\.kind === 'knowledge'\)/);
+  assert.match(llmsRouteSource, /\/llms-full\.txt/);
+  assert.match(llmsRouteSource, /\/sitemap\.xml/);
+});
+
+
+const jsonLdHelperSource = await readFile(new URL('../src/lib/serialize-json-ld.ts', import.meta.url), 'utf8');
+const projectDetailSource = await readFile(new URL('../src/app/work/[slug]/page.tsx', import.meta.url), 'utf8');
+const writingDetailSource = await readFile(new URL('../src/app/writing/[slug]/page.tsx', import.meta.url), 'utf8');
+const knowledgeDetailSource = await readFile(new URL('../src/app/knowledge/[slug]/page.tsx', import.meta.url), 'utf8');
+
+test('JSON-LD helper escapes less-than characters before embedding content', () => {
+  assert.ok(jsonLdHelperSource.includes('JSON.stringify(value)'));
+  assert.ok(jsonLdHelperSource.includes('replace'));
+});
+
+test('published project, writing, and knowledge pages expose typed structured data', () => {
+  assert.ok(projectDetailSource.includes("'@type': 'CreativeWork'"));
+  assert.ok(writingDetailSource.includes("'@type': 'Article'"));
+  assert.ok(knowledgeDetailSource.includes("'@type': 'LearningResource'"));
+  for (const source of [projectDetailSource, writingDetailSource, knowledgeDetailSource]) {
+    assert.ok(source.includes('serializeJsonLd'));
+    assert.ok(source.includes('application/ld+json'));
+    assert.ok(source.includes('#person'));
+    assert.ok(source.includes('#website'));
+  }
 });

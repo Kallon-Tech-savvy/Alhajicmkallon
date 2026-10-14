@@ -1,8 +1,8 @@
 const milestones = [
-  { year: '2020', title: 'Introduced to Computer Science', desc: 'After two years of back and forth comparison and research on Civil Engineering and Computer Science - I finally decided to go with Computer Science.' },
-  { year: '2022', title: 'Foundation', desc: 'Enrolled in Computer Science program at Central University Sierra Leone and performed exceptional well. Aided other students with guidance on project and to clearly understand core subject areas' },
-  { year: '2024', title: 'Drop Out', desc: 'Droput of University after a serious finacial scrambles and personal decisions to follow a self-learning path'},
-  { year: '2026', title: 'Professional', desc: 'fully started developing projects from ideas to meaningful real world problem'}
+  { year: '2020', title: 'Choosing a direction', desc: 'After exploring Civil Engineering and Computer Science, I chose to pursue the field that best matched my interest in how systems work and how ideas become real.' },
+  { year: '2022', title: 'Building foundations', desc: 'Started a Computer Science programme at Central University Sierra Leone and helped fellow students work through projects and core concepts.' },
+  { year: '2024', title: 'A different learning path', desc: 'Financial pressure and personal decisions led me to leave university and continue learning independently through focused study and practical work.'},
+  { year: '2026', title: 'Building for real use', desc: 'Focused on taking projects from early ideas through product decisions, design, implementation, and practical use.'}
 ];
 
 export const Timeline = () => {
@@ -10,7 +10,7 @@ export const Timeline = () => {
     <section className="py-24 bg-midnight px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-6 mb-20">
-          <h2 className="font-space text-2xl font-bold tracking-tighter uppercase italic text-muted">The Journey</h2>
+          <h2 className="font-space text-2xl font-bold tracking-tighter uppercase italic text-muted">The path so far</h2>
           <div className="flex-1 h-[1px] bg-white/10" />
         </div>
 

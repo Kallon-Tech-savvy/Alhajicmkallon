@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getProjectBySlug, PROJECTS } from '@/lib/content';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -36,6 +37,18 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-gold/30">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        name: project.title,
+        headline: project.title,
+        description: project.summary,
+        url: `https://alhajicmkallon.vercel.app/work/${project.slug}`,
+        creator: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
+        keywords: project.topics,
+        genre: project.role,
+        isPartOf: { '@id': 'https://alhajicmkallon.vercel.app/#website' },
+      }) }} />
       <Navbar />
       <section className="pt-40 pb-14 px-6 border-b border-white/5">
         <div className="max-w-4xl mx-auto">

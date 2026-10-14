@@ -19,9 +19,9 @@ export default function ContactPage() {
 
   // Pre-configured intents reduce typing overhead and guide the user
   const intentOptions = [
-    "Clarify a product idea",
+    "Clarify an idea",
     "Design and build a product",
-    "Improve an existing product",
+    "Improve a product",
     "Something else"
   ];
 
@@ -56,7 +56,7 @@ export default function ContactPage() {
 
       if (response.ok) {
         setStatus('success');
-        setStatusMessage('Thanks — your message is on its way. I will reply with a thoughtful next step soon.');
+        setStatusMessage('Thanks — your message has been sent. I’ll review it and reply with a useful next step.');
         setFormData({ name: '', email: '', message: '' });
         setSelectedIntent('');
       } else {
@@ -80,13 +80,13 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto relative z-10">
           <Reveal variant="up" className="max-w-3xl">
             <p className="font-space text-xs uppercase tracking-[0.35em] text-pride-blue mb-5">
-              Let’s find the right next step
+              Start with the problem
             </p>
             <h1 className="font-space text-4xl md:text-6xl lg:text-7xl font-black tracking-[-0.03em] mb-4 leading-[0.95]">
-              Get in <span className="text-ivory/80">touch.</span>
+              Let’s make the <span className="text-ivory/80">next step clear.</span>
             </h1>
             <p className="text-base md:text-lg text-muted max-w-2xl leading-relaxed">
-              Have a product idea, a problem to solve, or a digital product to improve? Tell me what you’re trying to achieve. We can work out the next useful step together.
+              Have an early idea, a business problem, or an existing product that needs work? Tell me what you want to achieve and what you know so far. You do not need a finished brief—we can clarify the problem together.
             </p>
           </Reveal>
         </div>
@@ -99,7 +99,7 @@ export default function ContactPage() {
           {/* Social Channels & Credentials */}
           <Reveal variant="up" delay={60} className="lg:col-span-5 space-y-12">
             <div>
-              <h2 className="font-space text-gold text-xs font-black uppercase tracking-[0.3em] mb-6">Direct Line</h2>
+              <h2 className="font-space text-gold text-xs font-black uppercase tracking-[0.3em] mb-6">Email me directly</h2>
               <div className="p-6 glass-frost-light rounded-sm flex items-center gap-4 group hover-lift">
                 <div className="p-3 bg-gold/10 text-gold rounded-sm group-hover:bg-gold group-hover:text-midnight transition-colors duration-300">
                   <Mail size={20} />
@@ -116,11 +116,11 @@ export default function ContactPage() {
             <div>
               <div className="grid grid-cols-1 gap-3">
                 {[
-                  { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b', desc: 'Professional network & papers' },
-                  { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/Kallon-Tech-savvy', desc: 'Production-grade code repositories' },
-                  { name: 'Substack', icon: <Book size={18} />, href: 'https://substack.com/@alhajicmkallon', desc: 'Thoughts on technology and society' },
-                  { name: 'TikTok', icon: <Video size={18} />, href: 'https://tiktok.com/Zs9jMKdFNCeJ7-ypwTZ', desc: 'Short-form video content' },
-                  { name: 'Facebook', icon: <Users size={18} />, href: 'https://www.facebook.com/profile.php?id=100072626448471', desc: 'Community and updates' }
+                  { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b', desc: 'Professional background and updates' },
+                  { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/Kallon-Tech-savvy', desc: 'Code, experiments, and project work' },
+                  { name: 'Substack', icon: <Book size={18} />, href: 'https://substack.com/@alhajicmkallon', desc: 'Writing on technology and society' },
+                  { name: 'TikTok', icon: <Video size={18} />, href: 'https://tiktok.com/Zs9jMKdFNCeJ7-ypwTZ', desc: 'Short videos and updates' },
+                  { name: 'Facebook', icon: <Users size={18} />, href: 'https://www.facebook.com/profile.php?id=100072626448471', desc: 'Community updates' }
                 ].map((social, i) => (
                   <Reveal key={social.name} variant="up" delay={i * 50}>
                     <a
@@ -153,7 +153,7 @@ export default function ContactPage() {
                   {/* Step 1: Cognitive Ease Intent Selection */}
                   <div className="space-y-4">
                     <label className="font-space text-[10px] font-black uppercase tracking-[0.3em] text-pride-blue block">
-                      What would you like help with?
+                      What would you like to work on?
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {intentOptions.map((option) => (
@@ -209,7 +209,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="contact-message" className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">What are you trying to achieve?</label>
+                    <label htmlFor="contact-message" className="font-space text-[10px] font-bold uppercase tracking-widest text-muted">What would you like to change or achieve?</label>
                     <textarea
                       required
                       id="contact-message"
@@ -219,7 +219,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
                       className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 font-inter text-sm text-ivory outline-none transition-colors duration-300 resize-none focus:border-pride-blue/40"
-                      placeholder="Share the problem, who it affects, and what you have tried so far. It is fine if the idea is still taking shape."
+                      placeholder="What is happening now, who does it affect, and what would a better outcome look like? Share whatever you know; it is fine if the idea is still taking shape."
                     />
                   </div>
 

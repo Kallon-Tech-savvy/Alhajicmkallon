@@ -11,19 +11,19 @@ export const NewsletterCTA = () => (
     <div className="max-w-4xl mx-auto text-center relative z-10">
       <div   >
         <span className="font-space text-midnight text-xs font-black tracking-[0.4em] uppercase mb-8 block">
-          Notes & Ideas
+          Notes from the work
         </span>
         <h2 className="font-space text-4xl md:text-6xl font-black tracking-tighter text-midnight mb-8 leading-tight">
-          THOUGHTFUL WORK. <br />USEFUL IDEAS.
+          THINK CLEARLY. <br />BUILD USEFULLY.
         </h2>
         <p className="text-midnight/70 text-lg md:text-xl font-medium font-inter mb-12 max-w-2xl mx-auto">
-          Read writing on design, technology, and building useful digital systems. A newsletter will be announced when a real subscription service is available.
+          Notes on product decisions, technology, and building digital products—written to make the reasoning behind the work more useful and reusable.
         </p>
         <Link
           href="/writing"
           className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-midnight text-ivory font-space font-black text-xs uppercase tracking-[0.2em] hover:bg-ivory hover:text-midnight transition-colors duration-300"
         >
-          Explore the writing <ArrowRight size={16} />
+          Read the notes <ArrowRight size={16} />
         </Link>
       </div>
     </div>

@@ -40,13 +40,13 @@ export const Hero = () => (
             className="mb-6 font-space font-black leading-[0.92] tracking-[-0.03em] text-ivory"
             style={{ fontSize: 'clamp(2.8rem, 6.2vw, 6.5rem)' }}
           >
-            <span className="block">Good products</span>
-            <span className="block text-pride-blue">begin with better</span>
+            <span className="block">Useful products</span>
+            <span className="block text-pride-blue">start with better</span>
             <span className="block">questions.</span>
           </h1>
 
           <p className="mb-8 max-w-[46ch] text-[1rem] leading-7 text-[#9aa4b2] md:text-[1.05rem]">
-            I investigate problems, clarify product opportunities, and build digital solutions from the ground up—connecting critical thinking, user experience, and engineering.
+            I help founders, businesses, and organisations turn unclear ideas into useful digital products—from defining the problem and choosing what to build to designing the experience and engineering the solution.
           </p>
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
@@ -55,7 +55,7 @@ export const Hero = () => (
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:bg-pride-blue/20"
               >
-                Discuss an idea
+                Talk through your idea
               </Link>
             </div>
             <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
@@ -63,7 +63,7 @@ export const Hero = () => (
                 href="/work"
                 className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
               >
-                View selected work
+                Explore the work
               </Link>
             </div>
           </div>
@@ -71,7 +71,7 @@ export const Hero = () => (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
             <span className="inline-flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-pride-blue" />
-              Problem discovery · product thinking · engineering
+              Discovery · product decisions · design · engineering
             </span>
           </div>
         </div>
@@ -83,7 +83,7 @@ export const Hero = () => (
                 src="/assets/kallon1.png"
                 alt="Alhaji C.M. Kallon"
                 fill
-                priority
+                loading="lazy"
                 sizes="(min-width: 1024px) 42vw, 1px"
                 className="object-cover"
                 style={{ filter: 'grayscale(70%) contrast(1.08)' }}

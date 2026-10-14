@@ -45,18 +45,18 @@ export const Footer = () => {
               className="mb-10 font-space font-semibold leading-[1.02] text-ivory"
               style={{ fontSize: 'clamp(2rem, 4.6vw, 3.2rem)' }}
             >
-              Need a calmer, faster digital experience?
+              Have an idea that needs a clearer path?
             </h2>
 
             <p className="mb-8 max-w-xl text-base leading-7 text-[#9AA4B2]">
-              I help teams turn complex ideas into thoughtful product systems that feel clear from the first click.
+              I help founders and teams clarify the problem, decide what to build, and turn the right idea into a working digital product.
             </p>
 
             <Link
               href="/contact"
               className="inline-flex items-center gap-3 rounded-full bg-pride-blue px-6 py-3 font-inter text-[12px] font-semibold uppercase tracking-[0.24em] text-white transition-transform duration-200 hover:-translate-y-0.5"
             >
-              Start a conversation
+              Talk through your idea
               <ArrowUpRight size={16} />
             </Link>
           </div>
@@ -67,7 +67,7 @@ export const Footer = () => {
                 className="mb-6 font-inter text-[10px] uppercase tracking-[0.32em]"
                 style={{ color: '#9AA4B2' }}
               >
-                navigate
+                explore
               </p>
               <ul className="space-y-3">
                 {NAV_CMDS.map(item => (
@@ -89,7 +89,7 @@ export const Footer = () => {
                 className="mb-6 font-inter text-[10px] uppercase tracking-[0.32em]"
                 style={{ color: '#9AA4B2' }}
               >
-                channels
+                elsewhere
               </p>
               <ul className="space-y-3">
                 {SOCIAL_LINKS.map(s => (
@@ -136,7 +136,7 @@ export const Footer = () => {
               className="font-inter text-[10px] uppercase tracking-[0.24em]"
               style={{ color: '#9AA4B2' }}
             >
-              All systems operational
+              Available for thoughtful projects
             </span>
           </div>
 

@@ -17,10 +17,10 @@ export default function WorkPage() {
             Selected work
           </Reveal>
           <Reveal variant="up" delay={100} as="h1" className="font-space text-6xl md:text-9xl font-black tracking-tighter mb-12 leading-[0.85] uppercase">
-            FROM QUESTIONS <br /><span className="text-gradient">TO PRODUCTS</span>
+            FROM PROBLEM <br /><span className="text-gradient">TO PRODUCT</span>
           </Reveal>
           <p className="max-w-2xl text-muted text-lg font-inter leading-relaxed">
-            Each project starts with a problem to understand. Explore the decisions, trade-offs, and implementation behind work designed to make a practical difference.
+            I look beyond the interface to the problem behind it. These case studies explain the context, the choices, what I built, and what the evidence says so far—including what still needs testing.
           </p>
         </div>
         <div aria-hidden="true" className="absolute top-1/2 right-0 text-white/[0.01] font-space text-[30vw] font-black leading-none pointer-events-none select-none">WORK</div>
@@ -41,8 +41,8 @@ export default function WorkPage() {
             </article>
           )) : (
             <div className="md:col-span-2 border border-white/10 p-8 md:p-12">
-              <h2 className="font-space text-2xl md:text-3xl font-bold mb-4">More case studies will follow</h2>
-              <p className="max-w-2xl text-muted leading-relaxed">This portfolio grows as project decisions and supporting details are ready to share. The aim is to show the work honestly, including what has not yet been validated.</p>
+              <h2 className="font-space text-2xl md:text-3xl font-bold mb-4">The work comes first</h2>
+              <p className="max-w-2xl text-muted leading-relaxed">I add case studies when there is enough substance to explain the work honestly. I would rather show the limits of the evidence than claim results I have not measured.</p>
             </div>
           )}
         </div>
@@ -50,9 +50,9 @@ export default function WorkPage() {
 
       <section className="py-32 bg-navy/10 px-6 text-center border-t border-white/5 relative overflow-hidden">
         <Reveal variant="scale" className="max-w-3xl mx-auto space-y-8 relative z-10 p-10 md:p-14 rounded-sm glass-frost">
-          <h2 className="font-space text-4xl md:text-6xl font-bold tracking-tighter uppercase leading-none">Have an <span className="text-gradient">Idea?</span></h2>
-          <p className="text-muted text-lg font-inter max-w-xl mx-auto font-light">I&apos;m open to discussing new projects, digital product development, or thoughtful collaborations.</p>
-          <MagneticButton href="/contact" className="inline-flex px-10 py-5 bg-gold text-midnight font-space font-black text-xs uppercase tracking-widest hover:bg-ivory transition-colors duration-300 shadow-xl rounded-sm">Start a Conversation</MagneticButton>
+          <h2 className="font-space text-4xl md:text-6xl font-bold tracking-tighter uppercase leading-none">Have a <span className="text-gradient">problem?</span></h2>
+          <p className="text-muted text-lg font-inter max-w-xl mx-auto font-light">Bring an early idea, a product that needs improving, or a problem you are not sure how to solve. We can work out the most useful next step together.</p>
+          <MagneticButton href="/contact" className="inline-flex px-10 py-5 bg-gold text-midnight font-space font-black text-xs uppercase tracking-widest hover:bg-ivory transition-colors duration-300 shadow-xl rounded-sm">Talk through the problem</MagneticButton>
         </Reveal>
       </section>
       <Footer />
