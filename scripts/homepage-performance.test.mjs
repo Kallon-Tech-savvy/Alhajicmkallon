@@ -27,10 +27,16 @@ test('featured work stays server-rendered without Framer Motion client runtime',
 
 const visitorPathSource = await readFile(new URL('../src/components/VisitorPath.tsx', import.meta.url), 'utf8');
 
-test('visitor path avoids shipping a separate animation runtime', () => {
+test('visitor path is server-rendered and exposes all three journeys without client state', () => {
+  assert.doesNotMatch(visitorPathSource, /^['"]use client['"];?/m);
   assert.doesNotMatch(visitorPathSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(visitorPathSource, /<AnimatePresence|<motion\\./);
-  assert.ok(visitorPathSource.includes('animate-[slide-up_180ms_ease-out_both]'));
+  assert.doesNotMatch(visitorPathSource, /useState|useEffect|onClick=/);
+  assert.match(visitorPathSource, /Clarify a product idea/);
+  assert.match(visitorPathSource, /Explore the work/);
+  assert.match(visitorPathSource, /Read the thinking/);
+  assert.match(visitorPathSource, /href: '\/contact'/);
+  assert.match(visitorPathSource, /href: '\/work'/);
+  assert.match(visitorPathSource, /href: '\/writing'/);
 });
 
 const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
