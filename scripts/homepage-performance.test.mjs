@@ -184,3 +184,26 @@ test('AI discovery index exposes individual published entries and the full-text 
   assert.match(llmsRouteSource, /\/llms-full\.txt/);
   assert.match(llmsRouteSource, /\/sitemap\.xml/);
 });
+
+
+const jsonLdHelperSource = await readFile(new URL('../src/lib/serialize-json-ld.ts', import.meta.url), 'utf8');
+const projectDetailSource = await readFile(new URL('../src/app/work/[slug]/page.tsx', import.meta.url), 'utf8');
+const writingDetailSource = await readFile(new URL('../src/app/writing/[slug]/page.tsx', import.meta.url), 'utf8');
+const knowledgeDetailSource = await readFile(new URL('../src/app/knowledge/[slug]/page.tsx', import.meta.url), 'utf8');
+
+test('JSON-LD helper escapes less-than characters before embedding content', () => {
+  assert.ok(jsonLdHelperSource.includes('JSON.stringify(value)'));
+  assert.ok(jsonLdHelperSource.includes('replace'));
+});
+
+test('published project, writing, and knowledge pages expose typed structured data', () => {
+  assert.ok(projectDetailSource.includes("'@type': 'CreativeWork'"));
+  assert.ok(writingDetailSource.includes("'@type': 'Article'"));
+  assert.ok(knowledgeDetailSource.includes("'@type': 'LearningResource'"));
+  for (const source of [projectDetailSource, writingDetailSource, knowledgeDetailSource]) {
+    assert.ok(source.includes('serializeJsonLd'));
+    assert.ok(source.includes('application/ld+json'));
+    assert.ok(source.includes('#person'));
+    assert.ok(source.includes('#website'));
+  }
+});
