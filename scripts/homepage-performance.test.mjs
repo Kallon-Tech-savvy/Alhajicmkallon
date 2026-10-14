@@ -162,3 +162,25 @@ test('initial navigation and chat launcher do not import the icon package into t
   assert.match(navbarSourceForIcons, /function NavIcon/);
   assert.match(chatLauncherSourceForIcons, /<svg/);
 });
+
+
+const llmsFullRouteSource = await readFile(new URL('../src/app/llms-full.txt/route.ts', import.meta.url), 'utf8');
+
+test('full AI discovery feed contains only published portfolio content and source URLs', () => {
+  assert.match(llmsFullRouteSource, /import \{ ARTICLES, PROJECTS \} from ['"]@\/lib\/content['"]/);
+  assert.match(llmsFullRouteSource, /PROJECTS\.map/);
+  assert.match(llmsFullRouteSource, /ARTICLES\.map/);
+  assert.match(llmsFullRouteSource, /project\.body \?\? project\.description/);
+  assert.match(llmsFullRouteSource, /article\.content/);
+  assert.match(llmsFullRouteSource, /Content-Type.*text\/plain/);
+  assert.match(llmsFullRouteSource, /Cache-Control/);
+  assert.match(llmsFullRouteSource, /canonical HTML pages remain the source of truth/);
+});
+
+test('AI discovery index exposes individual published entries and the full-text feed', () => {
+  assert.match(llmsRouteSource, /PROJECTS\.flatMap/);
+  assert.match(llmsRouteSource, /ARTICLES\.filter\(\(article\) => article\.kind === 'journal'\)/);
+  assert.match(llmsRouteSource, /ARTICLES\.filter\(\(article\) => article\.kind === 'knowledge'\)/);
+  assert.match(llmsRouteSource, /\/llms-full\.txt/);
+  assert.match(llmsRouteSource, /\/sitemap\.xml/);
+});
