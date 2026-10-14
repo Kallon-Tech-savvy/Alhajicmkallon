@@ -42,9 +42,9 @@ test('visitor path is server-rendered and exposes all three journeys without cli
 const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
 
 test('work page communicates product thinking and the project evidence journey', () => {
-  assert.match(workPageSource, /FROM QUESTIONS/);
-  assert.match(workPageSource, /TO PRODUCTS/);
-  assert.match(workPageSource, /decisions, trade-offs, and implementation/);
+  assert.match(workPageSource, /FROM PROBLEM/);
+  assert.match(workPageSource, /TO PRODUCT/);
+  assert.match(workPageSource, /context, the choices, what I built, and what the evidence says so far/);
 });
 
 test('work page keeps case-study and live-project paths distinct and safe', () => {
