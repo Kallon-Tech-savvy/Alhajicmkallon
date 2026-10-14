@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getArticleBySlug, ARTICLES } from '@/lib/content';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -35,6 +36,18 @@ export default async function ArticleTemplate({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-gold/30">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: article.excerpt,
+        url: `https://alhajicmkallon.vercel.app/writing/${article.slug}`,
+        author: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
+        publisher: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
+        keywords: article.topics,
+        inLanguage: 'en',
+        isPartOf: { '@id': 'https://alhajicmkallon.vercel.app/#website' },
+      }) }} />
       <Navbar />
       <section className="pt-40 pb-16 px-6 border-b border-white/5">
         <div className="max-w-4xl mx-auto">
