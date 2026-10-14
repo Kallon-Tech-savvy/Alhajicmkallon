@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   keywords: ["digital product development", "product design", "software development", "design engineer", "Sierra Leone"],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Alhaji Kallon | Design Engineer",
+    title: "Alhaji Kallon | Digital Product Design & Engineering",
     description: "From product questions to working digital products. Explore Alhaji Kallon's approach, projects, and product thinking.",
     type: "website",
   },
@@ -50,7 +50,7 @@ const structuredData = {
       "@type": "WebSite",
       "@id": "https://alhajicmkallon.vercel.app/#website",
       url: "https://alhajicmkallon.vercel.app",
-      name: "Alhaji Kallon | Design Engineer",
+      name: "Alhaji Kallon | Digital Product Design & Engineering",
       inLanguage: "en",
       publisher: { "@id": "https://alhajicmkallon.vercel.app/#person" },
     },
