@@ -361,7 +361,7 @@ export default function AboutPage() {
                   WebkitTextStroke: '1px #2A2A2A',
                 }}
               >
-                VALUES
+                WORK
               </span>
             </h2>
           </div>
