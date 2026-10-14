@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { getArticleBySlug, KNOWLEDGE_ENTRIES } from '@/lib/content';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
 interface PageProps { params: Promise<{ slug: string }> }
 
@@ -32,6 +33,18 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
   if (!entry || entry.kind !== 'knowledge') notFound();
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-gold/30">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
+        '@context': 'https://schema.org',
+        '@type': 'LearningResource',
+        name: entry.title,
+        description: entry.excerpt,
+        url: `https://alhajicmkallon.vercel.app/knowledge/${entry.slug}`,
+        creator: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
+        learningResourceType: 'Knowledge note',
+        keywords: entry.topics,
+        inLanguage: 'en',
+        isPartOf: { '@id': 'https://alhajicmkallon.vercel.app/#website' },
+      }) }} />
       <Navbar />
       <section className="pt-40 pb-14 px-6 border-b border-white/5">
         <div className="max-w-4xl mx-auto">
