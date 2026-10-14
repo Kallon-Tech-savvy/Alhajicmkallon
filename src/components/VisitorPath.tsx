@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 
 const onboardingOptions = [
@@ -27,10 +24,11 @@ const onboardingOptions = [
   },
 ] as const;
 
+/**
+ * Static server-rendered visitor routes keep the homepage journey useful
+ * without shipping client-side state just to reveal one of three links.
+ */
 export function VisitorPath() {
-  const [selectedFlow, setSelectedFlow] = useState<(typeof onboardingOptions)[number]['id']>('launch');
-  const activeFlow = onboardingOptions.find((option) => option.id === selectedFlow) ?? onboardingOptions[0];
-
   return (
     <section className="border-t border-[#2A2A2A] bg-[#0A0A0A] px-6 py-20 md:px-8 lg:px-10">
       <div className="mx-auto max-w-7xl">
@@ -42,47 +40,30 @@ export function VisitorPath() {
             What brings you here?
           </h2>
           <p className="mt-3 text-sm leading-7 text-[#9aa4b2]">
-            Choose what you need. I’ll point you to the most useful next step.
+            Choose the path that matches what you need. Each option takes you directly to a useful next step.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="flex flex-wrap gap-2" aria-label="Choose your next step">
-            {onboardingOptions.map((option) => {
-              const isActive = option.id === selectedFlow;
-              return (
-                <button
-                  key={option.id}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setSelectedFlow(option.id)}
-                  className={`rounded-full border px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors duration-200 ${
-                    isActive
-                      ? 'border-pride-blue bg-pride-blue/16 text-pride-blue'
-                      : 'border-white/10 bg-white/[0.03] text-muted hover:border-pride-blue/35 hover:text-ivory'
-                  }`}
-                >
-                  {option.title}
-                </button>
-              );
-            })}
-          </div>
-
-          <div
-            key={activeFlow.id}
-            className="animate-[slide-up_180ms_ease-out_both] rounded-2xl border border-white/10 bg-white/[0.03] p-6"
-          >
-              <p className="mb-2 font-[family-name:var(--font-jetbrains-mono)] text-[10px] uppercase tracking-[0.24em] text-pride-blue">
-                {activeFlow.title}
+        <div className="grid gap-4 md:grid-cols-3">
+          {onboardingOptions.map((option) => (
+            <article
+              key={option.id}
+              className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-200 hover:border-pride-blue/35"
+            >
+              <h3 className="mb-3 font-space text-lg font-bold text-ivory">
+                {option.title}
+              </h3>
+              <p className="mb-6 flex-1 text-sm leading-7 text-[#9aa4b2]">
+                {option.summary}
               </p>
-              <p className="mb-5 text-sm leading-7 text-[#9aa4b2]">{activeFlow.summary}</p>
               <Link
-                href={activeFlow.href}
-                className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-pride-blue transition-colors duration-200 hover:bg-pride-blue/20"
+                href={option.href}
+                className="inline-flex w-fit items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-pride-blue transition-colors duration-200 hover:bg-pride-blue/20"
               >
-                {activeFlow.cta}
+                {option.cta}
               </Link>
-          </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
