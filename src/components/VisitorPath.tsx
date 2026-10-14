@@ -4,22 +4,22 @@ const onboardingOptions = [
   {
     id: 'launch',
     title: 'Clarify a product idea',
-    summary: 'For an early idea that needs a clearer problem, value proposition, or first set of features.',
-    cta: 'Talk through an idea',
+    summary: 'For an idea that needs a sharper problem, a clearer value proposition, or a sensible first version.',
+    cta: 'Discuss your idea',
     href: '/contact',
   },
   {
     id: 'explore',
     title: 'Explore the work',
-    summary: 'See how product decisions, experience design, and engineering come together in a working project.',
-    cta: 'View selected work',
+    summary: 'Explore the problem, decisions, and implementation behind real projects.',
+    cta: 'Read the case studies',
     href: '/work',
   },
   {
     id: 'read',
     title: 'Read the thinking',
-    summary: 'Explore notes on product decisions, technology, and building useful digital products.',
-    cta: 'Read the writing',
+    summary: 'Read practical notes on product thinking, technology, and how useful digital products get made.',
+    cta: 'Explore the writing',
     href: '/writing',
   },
 ] as const;
@@ -34,13 +34,13 @@ export function VisitorPath() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 max-w-3xl">
           <p className="mb-3 font-[family-name:var(--font-jetbrains-mono)] text-[10px] uppercase tracking-[0.35em] text-pride-blue">
-            Find your next step
+            Start where you are
           </p>
           <h2 className="font-space text-2xl font-black tracking-[-0.02em] text-ivory md:text-3xl">
-            What brings you here?
+            What are you working through?
           </h2>
           <p className="mt-3 text-sm leading-7 text-[#9aa4b2]">
-            Choose the path that matches what you need. Each option takes you directly to a useful next step.
+            Whether you have an early idea, want to see how I work, or are here to learn, start with the path that fits.
           </p>
         </div>
 
