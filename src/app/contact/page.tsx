@@ -99,7 +99,7 @@ export default function ContactPage() {
           {/* Social Channels & Credentials */}
           <Reveal variant="up" delay={60} className="lg:col-span-5 space-y-12">
             <div>
-              <h2 className="font-space text-gold text-xs font-black uppercase tracking-[0.3em] mb-6">Direct Line</h2>
+              <h2 className="font-space text-gold text-xs font-black uppercase tracking-[0.3em] mb-6">Email me directly</h2>
               <div className="p-6 glass-frost-light rounded-sm flex items-center gap-4 group hover-lift">
                 <div className="p-3 bg-gold/10 text-gold rounded-sm group-hover:bg-gold group-hover:text-midnight transition-colors duration-300">
                   <Mail size={20} />
