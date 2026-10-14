@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
 import { searchPublishedContent } from '@/lib/content';
 import Link from 'next/link';
@@ -21,6 +21,12 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      previouslyFocused?.focus();
+    };
   }, [isOpen, onClose]);
 
   const { projects: filteredProjects, articles: filteredArticles } = searchPublishedContent(query);
@@ -34,6 +40,10 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
           />
 
           <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="global-search-title"
             className="relative w-full max-w-2xl bg-navy/50 border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl"
           >
             <div className="p-6 border-b border-white/5 flex items-center space-x-4">
