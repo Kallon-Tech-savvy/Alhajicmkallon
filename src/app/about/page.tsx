@@ -68,7 +68,7 @@ export default function AboutPage() {
             className="font-space text-[10px] font-black tracking-[0.5em] uppercase mb-8 block"
             style={{ color: 'var(--color-gold)' }}
           >
-            The Architect of Impact
+            Product thinker & design engineer
           </span>
 
           {/* Headline + small portrait in header */}
@@ -210,13 +210,13 @@ export default function AboutPage() {
                 className="font-space text-[10px] font-black uppercase tracking-[0.4em] mb-6"
                 style={{ color: 'var(--color-gold)' }}
               >
-                Who is he?
+                What I do
               </h2>
               <p
                 className="text-3xl md:text-4xl font-inter font-light leading-snug tracking-tight"
                 style={{ color: '#E0E0E0' }}
               >
-                Alhaji C.M. Kallon is a{' '}
+                I’m Alhaji C. M. Kallon, a 
                 <span
                   style={{
                     color: 'var(--color-gold)',
@@ -226,8 +226,7 @@ export default function AboutPage() {
                 >
                   Sierra Leonean
                 </span>{' '}
-                design engineer, software developer, AI native builder, entrepreneur committed
-                to advancing innovation and building solutions that create lasting impact.
+                design engineer and software developer. I help turn business and organisational problems into digital products—from clarifying the idea to designing and building the solution.
               </p>
             </div>
 
@@ -236,15 +235,10 @@ export default function AboutPage() {
               style={{ color: '#475569' }}
             >
               <p>
-                As a design engineer and software developer, I build digital solutions
-                that address real-world challenges. My work spans software engineering,
-                product development, and systems design.
+                My work connects product discovery, experience design, and software engineering. I help make the problem clearer, choose what is worth building, and turn that decision into a working product.
               </p>
               <p>
-                But technology alone is never the answer. The real work is bridging the
-                gap between what&apos;s possible and what&apos;s needed — ensuring that
-                innovation remains accessible, relevant, and impactful for the people
-                it&apos;s meant to serve.
+                A good implementation starts before the code. It means understanding who the product is for, what they need to do, and what constraints matter. The goal is not technology for its own sake; it is a useful solution people can understand and use.
               </p>
             </div>
 
@@ -254,9 +248,9 @@ export default function AboutPage() {
               style={{ borderColor: '#141414' }}
             >
               {[
-                { val: '2+', label: 'Years building' },
-                { val: '12+', label: 'Systems shipped' },
-                { val: '∞', label: 'Ideas in motion' },
+                { val: '01', label: 'Understand' },
+                { val: '02', label: 'Decide' },
+                { val: '03', label: 'Build' },
               ].map((s, i) => (
                 <div
                   key={s.label}
@@ -317,16 +311,10 @@ export default function AboutPage() {
             style={{ color: 'rgba(224,224,224,0.7)' }}
           >
             <p>
-              I grew up fascinated by how ideas become reality. Not just in theory,
-              but in practice — this curiosity has evolved into a lifelong pursuit of understanding systems,solving problems
-              and designing solution that create meaningful impact. What began as a passion has grown into a broader 
-              mission.
+              I’m interested in the gap between an idea and something that works in the real world. How do you know which problem matters? What should be built first? How can the experience make sense to the people who use it? Those questions shape how I approach product work.
             </p>
             <p>
-              Beyond technology, I&apos;m deeply committed to youth empowerment and
-              capacity building. I&apos;ve worked with youth-focused organizations and
-              innovation ecosystems that equip young people with the skills, mindset,
-              and opportunities they need to thrive.
+              I also care about youth opportunity and access to useful knowledge. My work with youth-focused organisations has kept me close to the practical challenges institutions face when they need to explain their work, reach people, and make participation easier.
             </p>
 
             {/* Pull quote — upgraded typographically */}
@@ -341,12 +329,7 @@ export default function AboutPage() {
                 className="font-space font-black leading-tight tracking-tight"
                 style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)', color: '#E0E0E0' }}
               >
-                &ldquo;My mission is to leverage technology, innovation, and
-                human-centered design to{' '}
-                <span style={{ color: 'var(--color-pride-blue)' }}>
-                  empower individuals
-                </span>{' '}
-                and strengthen institutions across Africa.&rdquo;
+                &ldquo;Start with the problem. Make the choices clear. Build something useful—and be honest about what the evidence shows.&rdquo;
               </p>
               <div
                 className="mt-6 h-[2px] w-12"
@@ -355,10 +338,7 @@ export default function AboutPage() {
             </div>
 
             <p>
-              I believe  ideas have the power to shape societies, and
-              knowledge sharing is one of the most effective ways to create positive change.
-              Through technology, innovation, and education, I&apos;m working to play a
-              role in building that future.
+              I share what I learn because good decisions improve when the reasoning is visible. This site brings together selected projects, notes, and lessons from the work—what I tried, why I chose it, and what I would investigate next.
             </p>
           </div>
         </div>
@@ -374,7 +354,7 @@ export default function AboutPage() {
               className="font-space font-black tracking-tighter uppercase leading-none"
               style={{ fontSize: 'clamp(3rem, 8vw, 8rem)', color: '#E0E0E0' }}
             >
-              CORE{' '}
+              HOW I{' '}
               <span
                 style={{
                   color: 'transparent',
@@ -445,7 +425,7 @@ export default function AboutPage() {
               className="font-space font-black tracking-tighter uppercase leading-none"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw, 5.5rem)', color: '#E0E0E0' }}
             >
-              READY TO
+              HAVE AN IDEA?
               <br />
               <span
                 style={{
@@ -453,10 +433,10 @@ export default function AboutPage() {
                   textShadow: '0 0 28px rgba(0,107,255,0.3)',
                 }}
               >
-                EXECUTE
+                MAKE IT CLEAR
               </span>
               <br />
-              YOUR VISION?
+              AND BUILD IT.
             </h2>
           </div>
 
@@ -465,8 +445,7 @@ export default function AboutPage() {
               className="text-lg font-inter font-light leading-relaxed"
               style={{ color: '#475569' }}
             >
-              Let&apos;s combine high-performance software architecture with
-              human-centered product development.
+              If you have an early idea, an existing product, or a problem that is difficult to define, we can work out the next useful step together.
             </p>
             <div>
               <Link
@@ -478,7 +457,7 @@ export default function AboutPage() {
                   boxShadow: '0 0 24px rgba(255,176,0,0.2)',
                 }}
               >
-                Start a Conversation <ArrowRight size={14} />
+                Talk through your idea <ArrowRight size={14} />
               </Link>
             </div>
           </div>
