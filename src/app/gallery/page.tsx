@@ -96,14 +96,14 @@ export default function GalleryPage() {
                 className="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0D0D0D] shadow-[0_35px_100px_rgba(0,0,0,0.15)] transition-transform duration-300 hover:-translate-y-2"
                 style={{ animationDelay: `${index * 70}ms` }}
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-black">
+                <div className="overflow-hidden rounded-[1.5rem] bg-black">
                   <Image
                     src={item.image}
                     alt={item.title}
-                    fill
-                    sizes="(max-width: 767px) calc(100vw - 3rem), (max-width: 1279px) calc((100vw - 4.75rem) / 2), 384px"
-                    quality={75}
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    width={1200}
+                    height={800}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-6">

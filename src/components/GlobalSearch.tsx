@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
 import { searchPublishedContent } from '@/lib/content';
 import Link from 'next/link';
@@ -20,64 +19,21 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     inputRef.current?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onClose();
-        return;
-      }
-
-      if (e.key !== 'Tab' || !dialogRef.current) return;
-
-      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
-      if (focusable.length === 0) {
-        e.preventDefault();
-        return;
-      }
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      previouslyFocused?.focus();
+      if (e.key === 'Escape') onClose();
     };
   }, [isOpen, onClose]);
 
   const { projects: filteredProjects, articles: filteredArticles } = searchPublishedContent(query);
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
+  return isOpen ? (
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             className="fixed inset-0 bg-midnight/95 backdrop-blur-xl"
             onClick={onClose}
             aria-hidden="true"
           />
 
-          <motion.div
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="global-search-title"
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          <div
             className="relative w-full max-w-2xl bg-navy/50 border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl"
           >
             <div className="p-6 border-b border-white/5 flex items-center space-x-4">
@@ -137,8 +93,8 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                     <div>
                       <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Projects</h3>
                       <div className="space-y-2">
-                        {filteredProjects.map((p) => (
-                          <Link key={p.id} href={`/work#${p.id}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
+                        {filteredProjects.map(p => (
+                          <Link key={p.id} href={`/work/${p.slug}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
                             <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{p.title}</div>
                             <div className="text-xs text-muted mt-1">{p.summary}</div>
                           </Link>
@@ -180,9 +136,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <div className="w-1 h-1 rounded-full bg-current" />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-      )}
-    </AnimatePresence>
-  );
+  ) : null;
 };

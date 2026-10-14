@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { ARTICLES, KNOWLEDGE_ENTRIES } from '@/lib/content';
+import { ARTICLES, KNOWLEDGE_ENTRIES, PROJECTS } from '@/lib/content';
 
 const siteUrl = 'https://alhajicmkallon.vercel.app';
 
@@ -9,6 +9,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteUrl}${route}`,
     changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
     priority: route === '' ? 1 : 0.7,
+  }));
+  const projectPages = PROJECTS.map((project) => ({
+    url: `${siteUrl}/work/${project.slug}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
   }));
   const writingPages = ARTICLES.filter((entry) => entry.kind === 'journal').map((entry) => ({
     url: `${siteUrl}/writing/${entry.slug}`,
@@ -20,5 +25,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
-  return [...staticPages, ...writingPages, ...knowledgePages];
+  return [...staticPages, ...projectPages, ...writingPages, ...knowledgePages];
 }

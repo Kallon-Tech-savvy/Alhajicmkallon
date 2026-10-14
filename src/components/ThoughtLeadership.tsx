@@ -1,7 +1,3 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
 import { JOURNAL_ENTRIES } from '@/lib/content';
 import { ArrowUpRight, BookOpen } from 'lucide-react';
 import Link from 'next/link';
@@ -29,12 +25,8 @@ export const ThoughtLeadership = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {JOURNAL_ENTRIES.length ? JOURNAL_ENTRIES.map((article, i) => (
-            <motion.div
-              key={article.slug}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+            <div
+              key={article.slug}    
               className="glass p-8 rounded-sm group relative flex flex-col h-full hover:border-gold/30 transition-colors duration-500"
             >
               <div className="flex items-center justify-between mb-8">
@@ -63,7 +55,7 @@ export const ThoughtLeadership = () => {
 
               {/* Decorative corner */}
               <div className="absolute top-0 right-0 w-8 h-8 bg-gold opacity-0 group-hover:opacity-10 transition-opacity" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
-            </motion.div>
+            </div>
           )) : (
             <div className="md:col-span-3 border border-white/10 p-8 md:p-12">
               <h3 className="font-space text-2xl font-bold mb-3">Writing will appear here when ready</h3>

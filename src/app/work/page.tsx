@@ -17,10 +17,10 @@ export default function WorkPage() {
             Selected work
           </Reveal>
           <Reveal variant="up" delay={100} as="h1" className="font-space text-6xl md:text-9xl font-black tracking-tighter mb-12 leading-[0.85] uppercase">
-            CRAFTING <br /><span className="text-gradient">SOLUTIONS</span>
+            FROM QUESTIONS <br /><span className="text-gradient">TO PRODUCTS</span>
           </Reveal>
           <p className="max-w-2xl text-muted text-lg font-inter leading-relaxed">
-            A portfolio of projects will appear here as approved case studies are ready to share.
+            Each project starts with a problem to understand. Explore the decisions, trade-offs, and implementation behind work designed to make a practical difference.
           </p>
         </div>
         <div aria-hidden="true" className="absolute top-1/2 right-0 text-white/[0.01] font-space text-[30vw] font-black leading-none pointer-events-none select-none">WORK</div>
@@ -31,17 +31,18 @@ export default function WorkPage() {
           {PROJECTS.length ? PROJECTS.map((project) => (
             <article key={project.id} id={project.id} className="border border-white/10 p-8 rounded-sm">
               <p className="text-gold text-xs uppercase tracking-widest mb-4">{project.role}</p>
-              <h2 className="font-space text-3xl font-bold mb-4">{project.title}</h2>
+              <h2 className="font-space text-3xl font-bold mb-4"><Link href={`/work/${project.slug}`} className="hover:text-gold transition-colors">{project.title}</Link></h2>
               <p className="text-muted leading-relaxed mb-6">{project.summary}</p>
               <div className="flex flex-wrap gap-2 mb-6">{project.technologies.map((technology) => <span key={technology} className="text-xs border border-white/10 px-3 py-1 rounded-full">{technology}</span>)}</div>
-              {project.body && <p className="text-muted leading-relaxed whitespace-pre-wrap mb-6">{project.body}</p>}
-              {project.links?.live && <a href={project.links.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-gold">Open project <ArrowUpRight size={14} /></a>}
-              <Link href={`/work#${project.id}`} className="sr-only">View {project.title}</Link>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-2 text-gold underline underline-offset-4 hover:text-ivory transition-colors">Read case study <ArrowUpRight size={14} /></Link>
+                {project.links?.live && <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-muted underline underline-offset-4 hover:text-ivory transition-colors">Visit live project <ArrowUpRight size={14} /></a>}
+              </div>
             </article>
           )) : (
             <div className="md:col-span-2 border border-white/10 p-8 md:p-12">
-              <h2 className="font-space text-2xl md:text-3xl font-bold mb-4">No public case studies yet</h2>
-              <p className="max-w-2xl text-muted leading-relaxed">This portfolio will show projects when their descriptions and supporting details are ready to publish. No placeholder projects or unsupported impact claims are shown.</p>
+              <h2 className="font-space text-2xl md:text-3xl font-bold mb-4">More case studies will follow</h2>
+              <p className="max-w-2xl text-muted leading-relaxed">This portfolio grows as project decisions and supporting details are ready to share. The aim is to show the work honestly, including what has not yet been validated.</p>
             </div>
           )}
         </div>

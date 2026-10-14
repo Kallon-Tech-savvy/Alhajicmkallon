@@ -17,8 +17,6 @@
 
   /* Font stacks — JS vars injected by layout.tsx */
   --font-space:     var(--font-jetbrains-mono);
-  --font-inter:     var(--font-inter);
-  --font-cormorant: var(--font-space-mono);
 
   --background: var(--color-midnight);
   --foreground: var(--color-ivory);

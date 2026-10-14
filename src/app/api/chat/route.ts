@@ -146,11 +146,7 @@ export async function POST(req: NextRequest) {
   } catch (err: unknown) {
     console.error('OpenAI Moderation check failed:', err);
     // If the account is explicitly restricted (403 Forbidden), intercept and short-circuit right here
-    const status =
-      typeof err === "object" && err !== null && "status" in err
-        ? err.status
-        : undefined;
-    if (status === 403) {
+    if (typeof err === 'object' && err !== null && 'status' in err && err.status === 403) {
       return NextResponse.json(
         { reply: FALLBACK_REPLY, error: 'Upstream gateway clearance exception.' },
         { status: 500 }

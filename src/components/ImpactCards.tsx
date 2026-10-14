@@ -1,31 +1,27 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
 import { Cpu, Lightbulb, Users, PenTool } from 'lucide-react';
 
 const impactAreas = [
   {
-    title: "Technology",
-    desc: "Building digital solutions that matters, solving real-world problems through robust engineering.",
+    title: "Problem discovery",
+    desc: "Examining how people work today, where friction appears, and which problems are worth understanding more deeply.",
     icon: <Cpu className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
-    title: "Innovation",
-    desc: "Designing systems and products that push the boundaries of what's possible.",
+    title: "Product thinking",
+    desc: "Turning early ideas into clearer propositions, testing assumptions, and deciding what a useful first version should do.",
     icon: <Lightbulb className="text-gold" size={24} aria-hidden="true" />,
     color: "from-yellow-500/10 to-transparent"
   },
   {
-    title: "Leadership",
-    desc: "Developing people and institutions to foster a culture of excellence and growth.",
+    title: "Experience design",
+    desc: "Organising information and interactions so people can understand a product and complete important tasks with less friction.",
     icon: <Users className="text-gold" size={24} aria-hidden="true" />,
     color: "from-blue-500/10 to-transparent"
   },
   {
-    title: "Writing",
-    desc: "Sharing ideas that inspire action and contribute to the global tech discourse.",
+    title: "Engineering",
+    desc: "Building and refining the working product, with attention to maintainability, reliability, performance, and real constraints.",
     icon: <PenTool className="text-gold" size={24} aria-hidden="true" />,
     color: "from-purple-500/10 to-transparent"
   }
@@ -41,23 +37,18 @@ export const ImpactCards = () => {
               What I focus on
             </span>
             <h2 className="font-space text-3xl font-semibold tracking-[-0.02em] text-ivory md:text-4xl">
-              Clear thinking. <span className="text-[#9AA4B2]">Real systems.</span>
+              From the right question. <span className="text-[#9AA4B2]">To a working product.</span>
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-[#9AA4B2]">
-            I work at the intersection of strategy, product, and design to create experiences that feel sharp, calm, and easy to use.
+            I connect problem discovery, product decisions, experience design, and engineering—so the work is grounded in a real need, not just a polished interface.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {impactAreas.map((area, i) => (
-            <motion.div
-              key={area.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -10 }}
+            <div
+              key={area.title}     
               className="glass p-8 rounded-2xl group relative overflow-hidden"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${area.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
@@ -68,7 +59,7 @@ export const ImpactCards = () => {
               <p className="font-inter text-sm leading-7 text-[#9AA4B2]">
                 {area.desc}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

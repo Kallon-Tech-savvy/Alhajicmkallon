@@ -1,14 +1,11 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 const METRICS = [
-  { label: 'Systems shipped', value: '12+' },
-  { label: 'Latency target', value: '<100ms' },
-  { label: 'Uptime posture', value: '99.99%' },
-  { label: 'Base · timezone', value: 'SL · WAT' },
+  { label: '01 · Understand', value: 'Discover' },
+  { label: '02 · Decide', value: 'Define' },
+  { label: '03 · Shape', value: 'Design' },
+  { label: '04 · Deliver', value: 'Build' },
 ];
 
 export const Hero = () => (
@@ -43,38 +40,38 @@ export const Hero = () => (
             className="mb-6 font-space font-black leading-[0.92] tracking-[-0.03em] text-ivory"
             style={{ fontSize: 'clamp(2.8rem, 6.2vw, 6.5rem)' }}
           >
-            <span className="block">Designing digital</span>
-            <span className="block text-pride-blue">experiences that feel</span>
-            <span className="block">effortless.</span>
+            <span className="block">Good products</span>
+            <span className="block text-pride-blue">begin with better</span>
+            <span className="block">questions.</span>
           </h1>
 
           <p className="mb-8 max-w-[46ch] text-[1rem] leading-7 text-[#9aa4b2] md:text-[1.05rem]">
-            I design premium digital experiences that turn attention into momentum for founders, teams, and ambitious brands who want clarity from day one.
+            I investigate problems, clarify product opportunities, and build digital solutions from the ground up—connecting critical thinking, user experience, and engineering.
           </p>
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
-            <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
+            <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:bg-pride-blue/20"
               >
-                Book a discovery call
+                Discuss an idea
               </Link>
-            </motion.div>
-            <motion.div whileHover={{ y: -3, scale: 1.01 }} transition={{ duration: 0.2 }}>
+            </div>
+            <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
               <Link
                 href="/work"
                 className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
               >
                 View selected work
               </Link>
-            </motion.div>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
             <span className="inline-flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-pride-blue" />
-              Fast response · premium execution · thoughtful collaboration
+              Problem discovery · product thinking · engineering
             </span>
           </div>
         </div>
@@ -87,6 +84,7 @@ export const Hero = () => (
                 alt="Alhaji C.M. Kallon"
                 fill
                 priority
+                sizes="(min-width: 1024px) 42vw, 1px"
                 className="object-cover"
                 style={{ filter: 'grayscale(70%) contrast(1.08)' }}
               />
@@ -109,15 +107,13 @@ export const Hero = () => (
     <div className="relative z-10 border-t border-border/80">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-0 px-6 lg:grid-cols-4 lg:px-8">
         {METRICS.map((m) => (
-          <motion.div
+          <div
             key={m.label}
-            whileHover={{ y: -3, scale: 1.01 }}
-            transition={{ duration: 0.2 }}
             className="flex flex-col gap-2 border-r border-border/80 px-4 py-6 last:border-r-0"
           >
             <span className="font-space text-lg font-semibold text-ivory">{m.value}</span>
             <span className="text-[10px] uppercase tracking-[0.24em] text-[#9aa4b2]">{m.label}</span>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>

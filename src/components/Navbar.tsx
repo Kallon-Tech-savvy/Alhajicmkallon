@@ -1,14 +1,38 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Menu, X } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
-import { GlobalSearch } from './GlobalSearch';
+const GlobalSearch = dynamic(
+  () => import('./GlobalSearch').then((module) => module.GlobalSearch),
+  { ssr: false }
+);
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 // Each nav link gets a shell-command label
+function NavIcon({ name, size }: { name: 'search' | 'menu' | 'close'; size: number }) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    'aria-hidden': true as const,
+  };
+
+  if (name === 'search') {
+    return <svg {...common}><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>;
+  }
+  if (name === 'close') {
+    return <svg {...common}><path d="m18 6-12 12M6 6l12 12" /></svg>;
+  }
+  return <svg {...common}><path d="M4 6h16M4 12h16M4 18h16" /></svg>;
+}
+
 const NAV_LINKS = [
   { name: 'home',       href: '/',         short: 'HOME'     },
   { name: 'about',      href: '/about',     short: 'ABOUT'    },
@@ -115,7 +139,7 @@ export const Navbar = () => {
               style={{ color: '#6B7280' }}
               aria-label="Search (⌘K)"
             >
-              <Search size={14} />
+              <NavIcon name="search" size={14} />
             </button>
 
             <Link
@@ -141,83 +165,67 @@ export const Navbar = () => {
           <div className="lg:hidden flex items-center gap-2">
             <button onClick={() => setIsSearchOpen(true)} style={{ color: '#6B7280' }}
                     className="p-2">
-              <Search size={18} />
+              <NavIcon name="search" size={18} />
             </button>
             <button
               onClick={() => setIsMobileOpen(!isMobileMenuOpen)}
               style={{ color: '#6B7280' }}
               className="p-2 relative z-[60]"
             >
-              {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {isMobileMenuOpen ? <NavIcon name="close" size={22} /> : <NavIcon name="menu" size={22} />}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* ── Mobile menu overlay ──────────────────────────────────────── */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-50 lg:hidden flex flex-col justify-center p-10 scanlines"
-            style={{ background: '#0A0A0A' }}
-          >
-            {/* Prompt header */}
-            <div className="mb-10 font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.4em] uppercase"
-                 style={{ color: '#6B7280' }}>
-              alhaji@kallon ~$
-            </div>
+      {/* Mobile menu is conditionally rendered without a motion runtime. */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-center p-10 scanlines"
+          style={{ background: '#0A0A0A' }}
+        >
+          <div className="mb-10 font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.4em] uppercase"
+               style={{ color: '#6B7280' }}>
+            alhaji@kallon ~$
+          </div>
 
-            <div className="space-y-6">
-              {NAV_LINKS.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, x: 16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.07 }}
+          <div className="space-y-6">
+            {NAV_LINKS.map((link, i) => (
+              <div
+                key={link.href}
+                style={{ animation: 'slide-up 240ms ease-out both', animationDelay: `${i * 45}ms` }}
+              >
+                <Link
+                  href={link.href}
+                  onClick={() => setIsMobileOpen(false)}
+                  className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold block transition-colors duration-200"
+                  style={{ color: pathname === link.href ? '#FFB000' : '#E0E0E0' }}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsMobileOpen(false)}
-                    className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold block transition-colors duration-200"
-                    style={{ color: pathname === link.href ? '#FFB000' : '#E0E0E0' }}
-                  >
-                    <span style={{ color: '#6B7280', marginRight: 8 }}>&gt;</span>
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mt-16 pt-8 border-t"
-              style={{ borderColor: '#2A2A2A' }}
-            >
-              <p className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-widest uppercase mb-5"
-                 style={{ color: '#6B7280' }}>
-                {"// social channels"}
-              </p>
-              <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
-                   style={{ color: '#6B7280' }}>
-                <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer"
-                   className="hover:text-[#006BFF] transition-colors">Twitter</a>
-                <a href="https://linkedin.com/in/alhajikallon" target="_blank" rel="noopener noreferrer"
-                   className="hover:text-[#006BFF] transition-colors">LinkedIn</a>
-                <a href="https://github.com/alhajikallon" target="_blank" rel="noopener noreferrer"
-                   className="hover:text-[#006BFF] transition-colors">GitHub</a>
+                  <span style={{ color: '#6B7280', marginRight: 8 }}>&gt;</span>
+                  {link.name}
+                </Link>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+          </div>
 
-      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+          <div
+            className="mt-16 pt-8 border-t"
+            style={{ borderColor: '#2A2A2A', animation: 'slide-up 240ms ease-out both', animationDelay: '300ms' }}
+          >
+            <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
+                 style={{ color: '#6B7280' }}>
+              <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer"
+                 className="hover:text-[#006BFF] transition-colors">Twitter</a>
+              <a href="https://linkedin.com/in/alhajikallon" target="_blank" rel="noopener noreferrer"
+                 className="hover:text-[#006BFF] transition-colors">LinkedIn</a>
+              <a href="https://github.com/alhajikallon" target="_blank" rel="noopener noreferrer"
+                 className="hover:text-[#006BFF] transition-colors">GitHub</a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isSearchOpen && <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />}
     </>
   );
 };

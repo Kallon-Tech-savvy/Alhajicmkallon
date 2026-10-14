@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
@@ -12,7 +9,7 @@ export const NewsletterCTA = () => (
       style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '40px 40px' }}
     />
     <div className="max-w-4xl mx-auto text-center relative z-10">
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
+      <div   >
         <span className="font-space text-midnight text-xs font-black tracking-[0.4em] uppercase mb-8 block">
           Notes & Ideas
         </span>
@@ -28,7 +25,7 @@ export const NewsletterCTA = () => (
         >
           Explore the writing <ArrowRight size={16} />
         </Link>
-      </motion.div>
+      </div>
     </div>
   </section>
 );
