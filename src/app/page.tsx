@@ -48,8 +48,7 @@ export default function Home() {
                 {/* The quote */}
                 <blockquote className="font-[family-name:var(--font-space-mono)] text-xl md:text-2xl lg:text-3xl leading-relaxed mb-8 text-[#E0E0E0]">
                   <span className="text-[var(--color-pride-blue)] mr-[0.5em]">&gt;</span>
-                  &quot;Innovation is most meaningful when it expands opportunity,
-                  empowers people, and creates lasting value for society.&quot;
+                  &quot;A product does not earn its place because it exists. It earns it by solving a problem people care about—and by showing that it does.&quot;
                 </blockquote>
 
                 {/* Attribution */}
@@ -68,7 +67,7 @@ export default function Home() {
                 $
               </span>
               <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-[#6B7280]">
-                believe --courage --strength --build
+                question --decide --build --learn
               </span>
               <span className="cursor-blink" />
             </div>
