@@ -1,10 +1,27 @@
 // Server component — no 'use client' needed
 import React from 'react';
+import type { Metadata } from 'next';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+
+const siteUrl = 'https://alhajikallon.com';
+
+export const metadata: Metadata = {
+  title: 'About Alhaji C.M. Kallon',
+  description:
+    'Learn about Alhaji C.M. Kallon, a Freetown-based design engineer connecting problem discovery, product thinking, experience design and software engineering.',
+  alternates: { canonical: '/about' },
+  openGraph: {
+    title: 'About Alhaji C.M. Kallon | Design Engineer',
+    description:
+      'The background, working principles and product approach of Alhaji C.M. Kallon, a design engineer based in Sierra Leone.',
+    url: `${siteUrl}/about`,
+    type: 'profile',
+  },
+};
 
 const MARQUEE_ITEMS = [
   'Design Systems',
@@ -68,7 +85,7 @@ export default function AboutPage() {
             className="font-space text-[10px] font-black tracking-[0.5em] uppercase mb-8 block"
             style={{ color: 'var(--color-gold)' }}
           >
-            Product thinker & design engineer
+            Design engineer · Product discovery · Experience design
           </span>
 
           {/* Headline + small portrait in header */}
@@ -216,7 +233,7 @@ export default function AboutPage() {
                 className="text-3xl md:text-4xl font-inter font-light leading-snug tracking-tight"
                 style={{ color: '#E0E0E0' }}
               >
-                I’m Alhaji C. M. Kallon, a 
+                I’m Alhaji C.M. Kallon, a 
                 <span
                   style={{
                     color: 'var(--color-gold)',
@@ -226,7 +243,7 @@ export default function AboutPage() {
                 >
                   Sierra Leonean
                 </span>{' '}
-                design engineer and software developer. I help turn business and organisational problems into digital products—from clarifying the idea to designing and building the solution.
+                design engineer based in Freetown, Sierra Leone. I help founders, businesses and organisations turn unclear ideas into useful digital products—from understanding the problem and deciding what to build to designing the experience and engineering the solution.
               </p>
             </div>
 
@@ -235,7 +252,7 @@ export default function AboutPage() {
               style={{ color: '#475569' }}
             >
               <p>
-                My work connects product discovery, experience design, and software engineering. I help make the problem clearer, choose what is worth building, and turn that decision into a working product.
+                My work connects problem discovery, product thinking, experience design and software engineering. I help make the problem clearer, decide what is worth building, and turn that decision into a working product.
               </p>
               <p>
                 A good implementation starts before the code. It means understanding who the product is for, what they need to do, and what constraints matter. The goal is not technology for its own sake; it is a useful solution people can understand and use.
@@ -298,7 +315,7 @@ export default function AboutPage() {
               className="font-space text-[10px] font-black uppercase tracking-[0.5em]"
               style={{ color: 'var(--color-pride-blue)' }}
             >
-              Alhaji C M Kallon&apos;s Story
+              The story behind my work
             </h2>
             <div
               className="flex-1 h-[1px]"
