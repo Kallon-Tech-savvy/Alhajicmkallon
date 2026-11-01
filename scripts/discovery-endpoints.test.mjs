@@ -18,10 +18,10 @@ test('robots and sitemap expose the public crawl paths', async () => {
   assert.match(robots, /User-Agent:\s*\*/i);
   assert.match(robots, /Allow:\s*\//i);
   assert.match(robots, /Disallow:\s*\/api\//i);
-  assert.match(robots, /Sitemap:\s*https:\/\/alhajicmkallon\.vercel\.app\/sitemap\.xml/i);
+  assert.match(robots, /Sitemap:\s*https:\/\/alhajikallon\.com\/sitemap\.xml/i);
   assert.match(sitemapResponse.headers.get('content-type') ?? '', /application\/xml|text\/xml/i);
-  for (const route of ['/about', '/work', '/writing', '/knowledge', '/contact']) {
-    assert.ok(sitemap.includes(`https://alhajicmkallon.vercel.app${route}`), `Sitemap missing ${route}`);
+  for (const route of ['/about', '/work', '/writing', '/knowledge', '/faq', '/contact']) {
+    assert.ok(sitemap.includes(`https://alhajikallon.com${route}`), `Sitemap missing ${route}`);
   }
 });
 
@@ -29,8 +29,8 @@ test('AI discovery index points to canonical content and the full-text feed', as
   const { response, body } = await get('/llms.txt');
   assert.match(response.headers.get('content-type') ?? '', /text\/plain/i);
   assert.match(body, /Alhaji C\. M\. Kallon/);
-  assert.match(body, /https:\/\/alhajicmkallon\.vercel\.app\/llms-full\.txt/);
-  assert.match(body, /https:\/\/alhajicmkallon\.vercel\.app\/sitemap\.xml/);
+  assert.match(body, /https:\/\/alhajikallon\.com\/llms-full\.txt/);
+  assert.match(body, /https:\/\/alhajikallon\.com\/sitemap\.xml/);
   assert.match(body, /Published project case studies/);
   assert.match(body, /Published writing/);
   assert.match(body, /Published knowledge notes/);
