@@ -137,7 +137,7 @@ const faqs = [
       {
         question: 'How can I contact Alhaji Kallon?',
         answer:
-          'You can reach Alhaji Kallon through the contact page or connect with him through LinkedIn and GitHub.',
+          'For general enquiries, email info@alhajikallon.com. For development enquiries, email dev@alhajikallon.com. You can also use the contact page or connect with him through LinkedIn and GitHub.',
         links: [
           { label: 'Contact page', href: '/contact' },
           { label: 'LinkedIn', href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b' },
