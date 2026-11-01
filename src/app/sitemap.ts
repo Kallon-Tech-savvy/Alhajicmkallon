@@ -1,14 +1,14 @@
 import type { MetadataRoute } from 'next';
 import { ARTICLES, KNOWLEDGE_ENTRIES, PROJECTS } from '@/lib/content';
 
-const siteUrl = 'https://alhajicmkallon.vercel.app';
+const siteUrl = 'https://alhajikallon.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '/about', '/work', '/writing', '/knowledge', '/contact'];
+  const routes = ['', '/about', '/work', '/writing', '/knowledge', '/faq', '/contact'];
   const staticPages = routes.map((route) => ({
     url: `${siteUrl}${route}`,
     changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
-    priority: route === '' ? 1 : 0.7,
+    priority: route === '' ? 1 : route === '/faq' ? 0.8 : 0.7,
   }));
   const projectPages = PROJECTS.map((project) => ({
     url: `${siteUrl}/work/${project.slug}`,
