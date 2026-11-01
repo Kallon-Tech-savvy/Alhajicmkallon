@@ -6,7 +6,7 @@ const SOCIAL_LINKS = [
   { name: 'twitter', icon: <Send size={14} />, href: 'https://x.com/' },
   { name: 'linkedin', icon: <Users size={14} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b'},
   { name: 'github', icon: <Code size={14} />, href: 'https://github.com/Kallon-Tech-savvy' },
-  { name: 'mail', icon: <Mail size={14} />, href: 'mailto:hello@alhajikallon.dev' },
+  { name: 'mail', icon: <Mail size={14} />, href: 'mailto:info@alhajikallon.com' },
 ];
 
 const NAV_CMDS = [
