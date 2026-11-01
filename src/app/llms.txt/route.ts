@@ -1,6 +1,6 @@
 import { ARTICLES, PROJECTS } from '@/lib/content';
 
-const siteUrl = 'https://alhajicmkallon.vercel.app';
+const siteUrl = 'https://alhajikallon.com';
 
 const staticPages = [
   ['Home', '/', 'Professional overview, working approach, and selected work.'],
@@ -8,6 +8,7 @@ const staticPages = [
   ['Selected work', '/work', 'Published project summaries and case studies.'],
   ['Writing', '/writing', 'Published essays and reflections.'],
   ['Knowledge hub', '/knowledge', 'Published learning notes and reference material.'],
+  ['FAQ', '/faq', 'Answers about Alhaji’s work, approach, projects, and professional background.'],
   ['Contact', '/contact', 'Contact options for discussing a project.'],
 ] as const;
 
