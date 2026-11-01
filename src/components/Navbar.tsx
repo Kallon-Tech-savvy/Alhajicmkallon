@@ -217,9 +217,9 @@ export const Navbar = () => {
                  style={{ color: '#6B7280' }}>
               <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer"
                  className="hover:text-[#006BFF] transition-colors">Twitter</a>
-              <a href="https://linkedin.com/in/alhajikallon" target="_blank" rel="noopener noreferrer"
+              <a href="https://linkedin.com/in/alhaji-c-m-k-8b79a225b" target="_blank" rel="noopener noreferrer"
                  className="hover:text-[#006BFF] transition-colors">LinkedIn</a>
-              <a href="https://github.com/alhajikallon" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/Kallon-Tech-savvy" target="_blank" rel="noopener noreferrer"
                  className="hover:text-[#006BFF] transition-colors">GitHub</a>
             </div>
           </div>
