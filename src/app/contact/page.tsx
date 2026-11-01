@@ -43,7 +43,7 @@ export default function ContactPage() {
       }
 
       setStatus('fallback');
-      setStatusMessage('Your email app should open with a draft. This does not confirm delivery, so please send the draft or email hello@alhajikallon.dev directly. Your message remains in this form until you confirm it has been sent.');
+      setStatusMessage('Your email app should open with a draft. This does not confirm delivery, so please send the draft or email info@alhajikallon.com for general enquiries or dev@alhajikallon.com for development. Your message remains in this form until you confirm it has been sent.');
       return;
     }
 
@@ -105,9 +105,13 @@ export default function ContactPage() {
                   <Mail size={20} />
                 </div>
                 <div>
-                  <div className="text-[9px] font-space font-bold uppercase tracking-widest text-muted mb-1">Email</div>
-                  <a href="mailto:hello@alhajikallon.dev" className="text-lg font-space font-bold hover:text-gold transition-colors duration-300 underline-grow">
-                    hello@alhajikallon.dev
+                  <div className="text-[9px] font-space font-bold uppercase tracking-widest text-muted mb-1">General enquiries</div>
+                  <a href="mailto:info@alhajikallon.com" className="text-lg font-space font-bold hover:text-gold transition-colors duration-300 underline-grow">
+                    info@alhajikallon.com
+                  </a>
+                  <div className="mt-4 text-[9px] font-space font-bold uppercase tracking-widest text-muted mb-1">Development enquiries</div>
+                  <a href="mailto:dev@alhajikallon.com" className="text-lg font-space font-bold hover:text-gold transition-colors duration-300 underline-grow">
+                    dev@alhajikallon.com
                   </a>
                 </div>
               </div>
