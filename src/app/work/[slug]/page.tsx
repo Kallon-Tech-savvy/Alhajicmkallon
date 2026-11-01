@@ -43,11 +43,11 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         name: project.title,
         headline: project.title,
         description: project.summary,
-        url: `https://alhajicmkallon.vercel.app/work/${project.slug}`,
-        creator: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
+        url: `https://alhajikallon.com/work/${project.slug}`,
+        creator: { '@id': 'https://alhajikallon.com/#person' },
         keywords: project.topics,
         genre: project.role,
-        isPartOf: { '@id': 'https://alhajicmkallon.vercel.app/#website' },
+        isPartOf: { '@id': 'https://alhajikallon.com/#website' },
       }) }} />
       <Navbar />
       <section className="pt-40 pb-14 px-6 border-b border-white/5">
