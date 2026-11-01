@@ -15,18 +15,46 @@ const inter = Inter({
   display: "swap",
 });
 
+const siteUrl = "https://alhajikallon.com";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://alhajicmkallon.vercel.app"),
-  title: "Alhaji Kallon | Digital Product Design & Engineering",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Alhaji C.M. Kallon | Design Engineer",
+    template: "%s | Alhaji C.M. Kallon",
+  },
   description:
-    "I help founders, businesses, and organisations clarify product ideas, shape user experiences, and build useful digital products from Sierra Leone.",
-  keywords: ["digital product development", "product design", "software development", "design engineer", "Sierra Leone"],
+    "Alhaji C.M. Kallon is a Sierra Leonean design engineer helping founders, businesses and organisations turn unclear ideas into useful digital products.",
+  applicationName: "Alhaji C.M. Kallon",
+  authors: [{ name: "Alhaji C.M. Kallon", url: siteUrl }],
+  creator: "Alhaji C.M. Kallon",
+  publisher: "Alhaji C.M. Kallon",
+  keywords: [
+    "Alhaji C.M. Kallon",
+    "Alhaji Kallon",
+    "design engineer",
+    "product discovery",
+    "product thinking",
+    "experience design",
+    "web development",
+    "Sierra Leone",
+    "Freetown",
+  ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Alhaji Kallon | Digital Product Design & Engineering",
-    description: "From product questions to working digital products. Explore Alhaji Kallon's approach, projects, and product thinking.",
+    title: "Alhaji C.M. Kallon | Design Engineer",
+    description:
+      "From understanding the problem to designing and engineering useful digital products.",
+    url: siteUrl,
+    siteName: "Alhaji C.M. Kallon",
     type: "website",
+    locale: "en_SL",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Alhaji C.M. Kallon | Design Engineer",
+    description:
+      "I help founders, businesses and organisations turn unclear ideas into useful digital products.",
   },
 };
 
@@ -35,24 +63,47 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://alhajicmkallon.vercel.app/#person",
-      name: "Alhaji C. M. Kallon",
-      url: "https://alhajicmkallon.vercel.app",
-      jobTitle: "Design Engineer and Software Developer",
+      "@id": `${siteUrl}/#person`,
+      name: "Alhaji C.M. Kallon",
+      alternateName: ["Alhaji Kallon", "Alhaji C M Kallon"],
+      url: siteUrl,
+      image: `${siteUrl}/assets/kallon1.png`,
+      jobTitle: "Design Engineer",
       description:
-        "Helps founders, businesses, and organisations clarify product ideas, design digital experiences, and build useful digital products.",
+        "Sierra Leonean design engineer helping founders, businesses and organisations turn unclear ideas into useful digital products through problem discovery, product thinking, experience design and engineering.",
       address: {
         "@type": "PostalAddress",
+        addressLocality: "Freetown",
         addressCountry: "SL",
       },
+      knowsAbout: [
+        "Problem discovery",
+        "Product thinking",
+        "Digital product design",
+        "Experience design",
+        "Web development",
+        "React",
+        "TypeScript",
+        "Next.js",
+        "Vite",
+        "Supabase",
+        "Cloudflare Workers",
+        "Web accessibility",
+        "Web performance",
+        "Design systems",
+      ],
+      sameAs: [
+        "https://linkedin.com/in/alhaji-c-m-k-8b79a225b",
+        "https://github.com/Kallon-Tech-savvy",
+      ],
     },
     {
       "@type": "WebSite",
-      "@id": "https://alhajicmkallon.vercel.app/#website",
-      url: "https://alhajicmkallon.vercel.app",
-      name: "Alhaji Kallon | Digital Product Design & Engineering",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Alhaji C.M. Kallon",
       inLanguage: "en",
-      publisher: { "@id": "https://alhajicmkallon.vercel.app/#person" },
+      publisher: { "@id": `${siteUrl}/#person` },
     },
   ],
 };
