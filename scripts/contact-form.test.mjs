@@ -2,21 +2,45 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildContactMailto } from '../src/lib/contact-form.mjs';
 
-test('builds an email draft with the selected intent and all form values', () => {
+test('routes general enquiries to the information inbox', () => {
   const draft = new URL(buildContactMailto({
     name: 'Aminata Conteh',
     email: 'aminata@example.com',
-    message: 'I want to test a product idea.',
-    intent: 'Clarify a product idea',
+    message: 'I have a question.',
   }));
 
   assert.equal(draft.protocol, 'mailto:');
-  assert.equal(draft.pathname, 'hello@alhajikallon.dev');
-  assert.equal(draft.searchParams.get('subject'), 'Inquiry: Clarify a product idea');
+  assert.equal(draft.pathname, 'info@alhajikallon.com');
+  assert.equal(draft.searchParams.get('subject'), 'Inquiry: General');
   assert.equal(
     draft.searchParams.get('body'),
-    'Name: Aminata Conteh\nEmail: aminata@example.com\n\nI want to test a product idea.',
+    'Name: Aminata Conteh\nEmail: aminata@example.com\n\nI have a question.',
   );
+});
+
+test('routes product development enquiries to the development inbox', () => {
+  for (const intent of ['Design and build a product', 'Improve a product']) {
+    const draft = new URL(buildContactMailto({
+      name: 'Aminata Conteh',
+      email: 'aminata@example.com',
+      message: 'I need help with a product.',
+      intent,
+    }));
+
+    assert.equal(draft.pathname, 'dev@alhajikallon.com');
+    assert.equal(draft.searchParams.get('subject'), `Inquiry: ${intent}`);
+  }
+});
+
+test('keeps idea clarification in the general inbox', () => {
+  const draft = new URL(buildContactMailto({
+    name: 'User',
+    email: 'user@example.com',
+    message: 'I have an early idea.',
+    intent: 'Clarify an idea',
+  }));
+
+  assert.equal(draft.pathname, 'info@alhajikallon.com');
 });
 
 test('encodes Unicode and punctuation without losing the original message', () => {
@@ -29,14 +53,4 @@ test('encodes Unicode and punctuation without losing the original message', () =
   }));
 
   assert.equal(draft.searchParams.get('body'), `Name: José\nEmail: jose@example.com\n\n${message}`);
-});
-
-test('uses a general inquiry subject when no intent was selected', () => {
-  const draft = new URL(buildContactMailto({
-    name: 'User',
-    email: 'user@example.com',
-    message: 'Hello',
-  }));
-
-  assert.equal(draft.searchParams.get('subject'), 'Inquiry: General');
 });
