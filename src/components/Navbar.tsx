@@ -39,6 +39,7 @@ const NAV_LINKS = [
   { name: 'work',       href: '/work',      short: 'WORK'     },
   { name: 'writing',    href: '/writing',   short: 'WRITING'  },
   { name: 'knowledge',  href: '/knowledge', short: 'KNOWLEDGE'},
+  { name: 'faq',        href: '/faq',       short: 'FAQ'      },
   { name: 'contact',    href: '/contact',   short: 'CONTACT'  },
 ];
 
