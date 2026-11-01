@@ -106,9 +106,10 @@ const faqs = [
       {
         question: 'What projects has Alhaji Kallon worked on?',
         answer:
-          'A featured project is his work with the Africa Education Empowerment Movement (AEEM), a youth-led education organisation. His contribution focused on bringing the organisation’s mission, documented activities, resources and opportunities to get involved into a more coherent digital experience, involving content architecture, user experience and frontend development.',
+          'His selected work includes a digital presence project for the Africa Education Empowerment Movement (AEEM), where he worked across content architecture, user experience and frontend development. He is also developing the backend foundation for MJ Studio, a photography-studio application, using TypeScript, Express and Supabase. MJ Studio is an in-progress project, not a completed launch.',
         links: [
           { label: 'Read the AEEM case study', href: '/work/aeem-digital-presence' },
+          { label: 'Read about MJ Studio', href: '/work/mj-studio-backend' },
           { label: 'Visit the live AEEM website', href: 'https://aeem-w.vercel.app' },
         ],
       },
