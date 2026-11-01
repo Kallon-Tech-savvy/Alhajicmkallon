@@ -61,7 +61,18 @@ function assertUniqueSlugs<T extends { slug: string }>(entries: T[], type: strin
 assertUniqueSlugs(projectCatalogue, 'project');
 assertUniqueSlugs(articleCatalogue, 'article');
 
-export const PROJECTS = projectCatalogue.filter((project) => project.status === 'published');
+// Curate the public portfolio by strength of available evidence, not recency.
+const PROJECT_ORDER = ['aeem-digital-presence', 'mj-studio-backend'];
+
+export const PROJECTS = projectCatalogue
+  .filter((project) => project.status === 'published')
+  .sort((a, b) => {
+    const aIndex = PROJECT_ORDER.indexOf(a.slug);
+    const bIndex = PROJECT_ORDER.indexOf(b.slug);
+    const aOrder = aIndex === -1 ? PROJECT_ORDER.length : aIndex;
+    const bOrder = bIndex === -1 ? PROJECT_ORDER.length : bIndex;
+    return aOrder - bOrder;
+  });
 export const ARTICLES = articleCatalogue.filter((article) => article.status === 'published');
 export const JOURNAL_ENTRIES = ARTICLES.filter((article) => article.kind === 'journal');
 export const KNOWLEDGE_ENTRIES = ARTICLES.filter((article) => article.kind === 'knowledge');
