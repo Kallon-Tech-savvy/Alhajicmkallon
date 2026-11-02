@@ -195,8 +195,9 @@ export function NavbarInteractions() {
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-navigation"
           aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          className="relative z-[60] rounded p-3 text-[#C0C9D5] hover:text-white"
+          className="relative z-[60] inline-flex min-h-12 items-center gap-2 rounded-lg border border-white/25 bg-[#152238] px-3 py-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#A8C9FF]"
         >
+          <span className="text-sm font-semibold">{isMobileMenuOpen ? 'Close' : 'Menu'}</span>
           <NavIcon name={isMobileMenuOpen ? 'close' : 'menu'} size={22} />
         </button>
       </div>
@@ -207,10 +208,12 @@ export function NavbarInteractions() {
           id="mobile-navigation"
           role="region"
           aria-label="Mobile navigation"
-          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-midnight px-6 pb-10 pt-28 lg:hidden"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-[#F4F0E8] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-28 text-[#152238] lg:hidden"
         >
-          <p className="mb-8 text-[10px] uppercase tracking-[0.35em] text-[#9AA4B2]">Explore the site</p>
-          <div className="space-y-4">
+          <div className="mx-auto w-full max-w-lg">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#43546A]">Navigation</p>
+          <h2 className="mb-6 mt-2 text-3xl font-bold tracking-tight text-[#152238]">Explore the site</h2>
+          <div className="space-y-2">
             {LINKS.map(({ name, href }) => {
               const current = isActivePath(pathname, href);
               return (
@@ -220,23 +223,24 @@ export function NavbarInteractions() {
                   aria-current={current ? 'page' : undefined}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={
-                    'block font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold transition-colors ' +
-                    (current ? 'text-[#A8C9FF]' : 'text-[#E0E0E0] hover:text-white')
+                    'flex min-h-14 items-center justify-between gap-3 rounded-xl border px-4 py-3 text-xl font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#173C66] ' +
+                    (current ? 'border-[#173C66] bg-[#173C66] text-white' : 'border-[#C4CEDA] bg-white text-[#152238] hover:border-[#173C66] hover:bg-[#E4EBF3]')
                   }
                 >
-                  <span aria-hidden="true" className="mr-2 text-[#9AA4B2]">&gt;</span>
-                  {name}
+                  <span>{name}</span>
+                  {current ? <span className="text-xs font-medium">Current</span> : <span aria-hidden="true" className="text-[#43546A]">→</span>}
                 </Link>
               );
             })}
           </div>
-          <div className="mt-8 border-t border-white/15 pt-6"><h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C0C9D5]">Learning paths</h2><div className="space-y-3">{[['New to development', 'beginner'], ['Beyond the basics', 'intermediate'], ['Working as a junior', 'junior']].map(([title, id]) => <Link prefetch={false} key={id} href={'/knowledge#' + id} onClick={() => setIsMobileMenuOpen(false)} className="block rounded py-2 text-base text-[#A8C9FF]">{title} →</Link>)}</div></div>
-          <div className="mt-10 border-t border-[#2A2A2A] pt-6">
-            <div className="flex flex-wrap gap-6 text-xs uppercase tracking-widest text-[#9AA4B2]">
+          <div className="mt-7 rounded-xl border border-[#C4CEDA] bg-[#E4EBF3] p-4"><h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#43546A]">Learning paths</h2><div className="space-y-1">{[['New to development', 'beginner'], ['Beyond the basics', 'intermediate'], ['Working as a junior', 'junior']].map(([title, id]) => <Link prefetch={false} key={id} href={'/knowledge#' + id} onClick={() => setIsMobileMenuOpen(false)} className="block min-h-12 rounded-lg px-2 py-3 text-base font-semibold text-[#173C66] hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#173C66]">{title} →</Link>)}</div></div>
+          <div className="mt-7 border-t border-[#C4CEDA] pt-6">
+            <div className="flex flex-wrap gap-6 text-sm font-medium text-[#173C66] underline underline-offset-4">
               <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer">Twitter</a>
               <a href="https://linkedin.com/in/alhaji-c-m-k-8b79a225b" target="_blank" rel="noopener noreferrer">LinkedIn</a>
               <a href="https://github.com/Kallon-Tech-savvy" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
+          </div>
           </div>
         </div>, document.body
       )}
