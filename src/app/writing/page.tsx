@@ -3,6 +3,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { NewsletterCTA } from '@/components/NewsletterCTA';
 import { ArticleFilters } from '@/components/ArticleFilters';
+import { JOURNAL_ENTRIES } from '@/lib/content';
 
 export const metadata = {
   title: 'Writing & Ideas',
@@ -23,7 +24,7 @@ export default function WritingPage() {
         <div aria-hidden="true" className="absolute top-1/2 left-0 text-white/[0.01] font-space text-[30vw] font-black leading-none pointer-events-none select-none -translate-x-1/4">THINK</div>
       </section>
       <section className="px-6 pb-24">
-        <div className="max-w-7xl mx-auto"><ArticleFilters /></div>
+        <div className="max-w-7xl mx-auto"><ArticleFilters entries={JOURNAL_ENTRIES.map(({ slug, title, excerpt, category, date, topics }) => ({ slug, title, excerpt, category, date, topics }))} /></div>
       </section>
       <NewsletterCTA />
       <Footer />

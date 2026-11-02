@@ -222,3 +222,14 @@ test('global search quick links resolve to routes that exist', () => {
   assert.doesNotMatch(searchSource, /href: '\/speaking'/);
   assert.match(searchSource, /href: '\/knowledge'/);
 });
+
+const writingFiltersSource = await readFile(new URL('../src/components/ArticleFilters.tsx', import.meta.url), 'utf8');
+const writingPageSource = await readFile(new URL('../src/app/writing/page.tsx', import.meta.url), 'utf8');
+
+test('writing client filters use slim metadata instead of importing article bodies', () => {
+  assert.doesNotMatch(writingFiltersSource, /import \{ JOURNAL_ENTRIES \} from/);
+  assert.doesNotMatch(writingFiltersSource, /entry\.content/);
+  assert.match(writingFiltersSource, /entries: WritingListItem\[\]/);
+  assert.match(writingPageSource, /JOURNAL_ENTRIES\.map/);
+  assert.match(writingPageSource, /<ArticleFilters entries=/);
+});
