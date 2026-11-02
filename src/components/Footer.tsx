@@ -17,6 +17,7 @@ const NAV_CMDS = [
   { cmd: 'knowledge', href: '/knowledge' },
   { cmd: 'FAQ', href: '/faq' },
   { cmd: 'contact', href: '/contact' },
+  { cmd: 'privacy', href: '/privacy' },
 ];
 
 export const Footer = () => {
