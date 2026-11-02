@@ -30,7 +30,7 @@ export default function WorkPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
           {PROJECTS.length ? PROJECTS.map((project) => (
             <article key={project.id} id={project.id} className="border border-white/10 p-8 rounded-sm">
-              <p className="text-gold text-xs uppercase tracking-widest mb-4">{project.role}</p>
+              <div className="flex flex-wrap items-center gap-3 mb-4">\n                <p className="text-gold text-xs uppercase tracking-widest">{project.role}</p>\n                <span className="text-[10px] uppercase tracking-widest text-muted border border-white/10 px-2 py-1">{project.links?.live ? 'Live website' : project.role.toLowerCase().includes('in progress') ? 'In progress' : 'Case study'}</span>\n              </div>
               <h2 className="font-space text-3xl font-bold mb-4"><Link href={`/work/${project.slug}`} className="hover:text-gold transition-colors">{project.title}</Link></h2>
               <p className="text-muted leading-relaxed mb-6">{project.summary}</p>
               <div className="flex flex-wrap gap-2 mb-6">{project.technologies.map((technology) => <span key={technology} className="text-xs border border-white/10 px-3 py-1 rounded-full">{technology}</span>)}</div>
