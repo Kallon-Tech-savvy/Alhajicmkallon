@@ -291,3 +291,13 @@ test('homepage links avoid route prefetch until visitors navigate', async () => 
     assert.equal(deferred.length, links.length, `Unexpected eager Link prefetch in ${file}`);
   }
 });
+
+test('homepage imports server-rendered sections without next/dynamic overhead', async () => {
+  assert.doesNotMatch(homepageSource, /import dynamic from ['"]next\/dynamic['"]/);
+  const sections = ['ImpactCards', 'Timeline', 'FeaturedWork', 'ThoughtLeadership', 'NewsletterCTA', 'Footer'];
+  for (const name of sections) {
+    assert.ok(homepageSource.includes('import { ' + name + ' } from '+String.fromCharCode(39)+'@/components/' + name + String.fromCharCode(39)));
+    const source = await readFile(new URL('../src/components/' + name + '.tsx', import.meta.url), 'utf8');
+    assert.doesNotMatch(source, /^['"]use client['"];?/m, name + ' must remain a server component');
+  }
+}
