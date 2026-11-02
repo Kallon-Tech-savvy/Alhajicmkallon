@@ -285,8 +285,8 @@ const homepageLinkFiles = [
 test('homepage links avoid route prefetch until visitors navigate', async () => {
   for (const file of homepageLinkFiles) {
     const source = await readFile(new URL(file, import.meta.url), 'utf8');
-    const links = source.match(/<Link(?=\\s|>)/g) ?? [];
-    const deferred = source.match(/<Link prefetch=\\{false\\}/g) ?? [];
+    const links = source.match(/<Link(?=\s|>)/g) ?? [];
+    const deferred = source.match(/<Link prefetch=\{false\}/g) ?? [];
     assert.ok(links.length > 0, `Expected Next Link usage in ${file}`);
     assert.equal(deferred.length, links.length, `Unexpected eager Link prefetch in ${file}`);
   }
