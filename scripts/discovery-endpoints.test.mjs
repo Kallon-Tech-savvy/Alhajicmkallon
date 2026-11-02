@@ -48,7 +48,7 @@ test('full AI feed includes canonical links and attribution guidance', async () 
 
 test('search endpoint returns public summaries but never complete content bodies', async () => {
   const { response, body } = await get('/api/search?q=aeem');
-  assert.match(response.headers.get('content-type') ?? '', /application\\/json/);
+  assert.match(response.headers.get('content-type') ?? '', /application\/json/);
   assert.match(response.headers.get('cache-control') ?? '', /no-store/);
   const results = JSON.parse(body);
   assert.ok(results.projects.some((entry) => entry.href === '/work/aeem-digital-presence'));
@@ -64,14 +64,14 @@ test('search endpoint returns public summaries but never complete content bodies
 });
 
 test('search ignores case, handles empty queries and rejects overlong input', async () => {
-  const [, upper, empty, tooLong] = await Promise.all([
+  const [upper, lower, empty, tooLong] = await Promise.all([
     get('/api/search?q=AEEM'),
     get('/api/search?q=aeem'),
     get('/api/search?q='),
     fetch(new URL('/api/search?q=' + 'x'.repeat(121), baseUrl)),
   ]);
-  const upperResults = JSON.parse((await get('/api/search?q=AEEM')).body);
-  assert.deepEqual(upperResults, JSON.parse(upper.body));
+  const upperResults = JSON.parse(upper.body);
+  assert.deepEqual(upperResults, JSON.parse(lower.body));
   assert.deepEqual(JSON.parse(empty.body), { projects: [], articles: [] });
   assert.equal(tooLong.status, 400);
   assert.match(tooLong.headers.get('cache-control') ?? '', /no-store/);
