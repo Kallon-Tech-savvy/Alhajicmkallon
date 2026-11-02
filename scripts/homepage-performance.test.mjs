@@ -54,11 +54,20 @@ test('work page keeps case-study and live-project paths distinct and safe', () =
 });
 
 const navbarSource = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');
+const navInteractionsSource = await readFile(new URL('../src/components/NavbarInteractions.tsx', import.meta.url), 'utf8');
+
+test('navigation renders brand shell on server and hydrates only its controls', () => {
+  assert.doesNotMatch(navbarSource, /^['"]use client['"];?/m);
+  assert.match(navbarSource, /<NavbarInteractions \/>/);
+  assert.match(navbarSource, /aria-label="Primary navigation"/);
+  assert.doesNotMatch(navbarSource, /useState|useEffect|usePathname/);
+});
 
 test('navigation avoids loading Framer Motion for the mobile menu', () => {
-  assert.doesNotMatch(navbarSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(navbarSource, /<AnimatePresence|<motion\./);
-  assert.match(navbarSource, /isMobileMenuOpen &&/);
+  assert.doesNotMatch(navInteractionsSource, /from ['"]framer-motion['"]/);
+  assert.doesNotMatch(navInteractionsSource, /<AnimatePresence|<motion\./);
+  assert.match(navInteractionsSource, /isMobileMenuOpen &&/);
+  assert.match(navInteractionsSource, /aria-expanded=\{isMobileMenuOpen\}/);
 });
 
 const globalSearchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
@@ -69,8 +78,8 @@ test('global search avoids the Framer Motion runtime', () => {
 });
 
 test('global search is split out until a visitor opens it', () => {
-  assert.ok(navbarSource.includes('dynamic(') && navbarSource.includes("import('./GlobalSearch')"));
-  assert.ok(navbarSource.includes('isSearchOpen && <GlobalSearch'));
+  assert.ok(navInteractionsSource.includes('dynamic(') && navInteractionsSource.includes("import('./GlobalSearch')"));
+  assert.ok(navInteractionsSource.includes('isSearchOpen && <GlobalSearch'));
 });
 
 
