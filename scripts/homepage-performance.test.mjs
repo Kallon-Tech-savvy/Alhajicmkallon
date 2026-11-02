@@ -319,5 +319,5 @@ test('first-party Web Vitals are only mounted with explicit server-side enableme
   assert.doesNotMatch(rumReporterSource, /navigator\.sendBeacon/);
   assert.doesNotMatch(rumReporterSource, /localStorage|document\.cookie|location\.search/);
   assert.match(rumRouteSource, /parseAnonymousVital/);
-  assert.doesNotMatch(rumRouteSource, /request\.headers\.get\('x-forwarded-for'\)|user-agent|request\.cookies/);
+  assert.doesNotMatch(rumRouteSource, /request\.headers\.get\(['"](?:x-forwarded-for|user-agent)['"]\)|request\.cookies/);
 });
