@@ -4,7 +4,7 @@ import { ARTICLES, KNOWLEDGE_ENTRIES, PROJECTS } from '@/lib/content';
 const siteUrl = 'https://alhajikallon.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '/about', '/work', '/writing', '/knowledge', '/faq', '/contact'];
+  const routes = ['', '/about', '/work', '/writing', '/knowledge', '/faq', '/contact', '/privacy'];
   const staticPages = routes.map((route) => ({
     url: `${siteUrl}${route}`,
     changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
