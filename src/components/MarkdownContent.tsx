@@ -30,14 +30,18 @@ function renderInline(source: string): InlinePart[] {
 }
 
 export function MarkdownContent({ source }: { source: string }) {
-  const blocks = source.trim().split(/\n\s*\n/);
+  const blocks = source.trim().split(/(```[\s\S]*?```)/).flatMap((block) => block.startsWith('```') ? [block] : block.split(/\n\s*\n/)).filter((block) => block.trim());
   return <div className="space-y-6">{blocks.map((block, index) => {
+    if (block.startsWith('```')) {
+      const code = block.replace(/^```[^\n]*\n/, '').replace(/\n```$/, '');
+      return <pre key={index} className="overflow-x-auto rounded-xl border border-white/15 bg-black/30 p-5 text-sm leading-relaxed"><code>{code}</code></pre>;
+    }
     const lines = block.split('\n');
     const heading = lines.length === 1 ? lines[0].match(/^(#{1,4})\s+(.+)$/) : null;
     if (heading) {
       const level = heading[1].length;
       const className = 'font-space font-bold tracking-tight text-ivory ' + (level <= 2 ? 'text-2xl md:text-3xl' : level === 3 ? 'text-xl' : 'text-lg');
-      if (level <= 2) return <h2 key={index} className={className}>{renderInline(heading[2])}</h2>;
+      if (level <= 2) return <h2 id={heading[2].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')} key={index} className={className + ' scroll-mt-28'}>{renderInline(heading[2])}</h2>;
       if (level === 3) return <h3 key={index} className={className}>{renderInline(heading[2])}</h3>;
       return <h4 key={index} className={className}>{renderInline(heading[2])}</h4>;
     }

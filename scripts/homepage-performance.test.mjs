@@ -79,7 +79,7 @@ test('global search avoids the Framer Motion runtime', () => {
 
 test('global search is split out until a visitor opens it', () => {
   assert.ok(navInteractionsSource.includes('dynamic(') && navInteractionsSource.includes("import('./GlobalSearch')"));
-  assert.ok(navInteractionsSource.includes('isSearchOpen && <GlobalSearch'));
+  assert.ok(navInteractionsSource.includes('isSearchOpen && createPortal(<GlobalSearch'));
 });
 
 

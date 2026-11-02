@@ -56,6 +56,12 @@ function validateCommon(metadata, filePath, type) {
   const topics = requireStringArray(metadata, 'topics', filePath);
   if (type === 'article') {
     requireString(metadata, 'category', filePath);
+    if (metadata.level && !['beginner', 'intermediate', 'junior'].includes(metadata.level)) throw new Error(filePath + ': invalid learning level');
+    for (const key of ['prerequisites', 'objectives', 'sources']) requireStringArray(metadata, key, filePath);
+    for (const source of metadata.sources ?? []) {
+      try { if (new URL(source).protocol !== 'https:') throw new Error(); }
+      catch { throw new Error(filePath + ': sources must be HTTPS URLs'); }
+    }
     if (!datePattern.test(requireString(metadata, 'date', filePath))) throw new Error(filePath + ': date must use YYYY-MM-DD');
     if (!['journal', 'knowledge'].includes(metadata.kind)) throw new Error(filePath + ': kind must be "journal" or "knowledge"');
   } else {
@@ -99,7 +105,8 @@ export async function buildContentIndex({ projectRoot = root, destination = path
       if (type === 'article') articles.push({
         slug: common.slug, title: common.title, category: metadata.category, topics: common.topics,
         date: metadata.date, readTime: metadata.readTime, excerpt: common.summary, content: body,
-        status: common.status, kind: metadata.kind,
+        status: common.status, kind: metadata.kind, level: metadata.level,
+        prerequisites: metadata.prerequisites ?? [], objectives: metadata.objectives ?? [], sources: metadata.sources ?? [],
       });
       else projects.push({
         id: common.slug, slug: common.slug, title: common.title, role: metadata.role, summary: common.summary,
