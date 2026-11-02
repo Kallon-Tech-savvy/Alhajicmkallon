@@ -26,3 +26,7 @@ Response headers include clickjacking, MIME-sniffing and referrer protections. A
 ## Contribution workflow
 
 Create a feature branch; keep changes small and scoped; include regression tests; open a PR; wait for all checks, including Lighthouse (performance >=80 and SEO =100), before review and merge. Do not commit logs, environment files, build outputs or TypeScript caches.
+
+## Global search performance boundary
+
+Global Search fetches bounded, published-only JSON summaries from `/api/search?q=...`. The route alone imports `src/lib/content.ts`, which is marked `server-only` so future client imports fail during builds. Never import catalogue values from a client component: client interfaces should receive lightweight serializable props or fetch results when requested. The search endpoint searches full published text on the server but never returns it; requests are debounced and cancelled as visitors type. Search queries are not stored by the application, and responses use `Cache-Control: no-store`.

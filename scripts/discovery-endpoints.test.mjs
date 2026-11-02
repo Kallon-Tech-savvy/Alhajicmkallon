@@ -45,3 +45,34 @@ test('full AI feed includes canonical links and attribution guidance', async () 
   assert.match(body, /Evidence and attribution guidance/);
   assert.match(body, /Use canonical page URLs when citing or linking to content/);
 });
+
+test('search endpoint returns public summaries but never complete content bodies', async () => {
+  const { response, body } = await get('/api/search?q=aeem');
+  assert.match(response.headers.get('content-type') ?? '', /application\\/json/);
+  assert.match(response.headers.get('cache-control') ?? '', /no-store/);
+  const results = JSON.parse(body);
+  assert.ok(results.projects.some((entry) => entry.href === '/work/aeem-digital-presence'));
+  assert.equal(results.projects.length <= 8, true);
+  assert.equal(results.articles.length <= 8, true);
+  for (const result of [...results.projects, ...results.articles]) {
+    assert.ok(Object.keys(result).every((key) => ['id','slug','title','summary','excerpt','href'].includes(key)));
+    assert.ok(!('description' in result) && !('content' in result) && !('body' in result));
+    assert.ok((result.summary ?? result.excerpt).length <= 220);
+    assert.ok(result.href.startsWith('/') && !result.href.startsWith('//'));
+  }
+  assert.ok(body.length < 10_000, 'Search responses should stay small');
+});
+
+test('search ignores case, handles empty queries and rejects overlong input', async () => {
+  const [, upper, empty, tooLong] = await Promise.all([
+    get('/api/search?q=AEEM'),
+    get('/api/search?q=aeem'),
+    get('/api/search?q='),
+    fetch(new URL('/api/search?q=' + 'x'.repeat(121), baseUrl)),
+  ]);
+  const upperResults = JSON.parse((await get('/api/search?q=AEEM')).body);
+  assert.deepEqual(upperResults, JSON.parse(upper.body));
+  assert.deepEqual(JSON.parse(empty.body), { projects: [], articles: [] });
+  assert.equal(tooLong.status, 400);
+  assert.match(tooLong.headers.get('cache-control') ?? '', /no-store/);
+});

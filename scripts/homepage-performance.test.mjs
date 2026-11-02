@@ -243,3 +243,21 @@ test('writing client filters use slim metadata instead of importing article bodi
   assert.match(writingPageSource, /JOURNAL_ENTRIES\.map/);
   assert.match(writingPageSource, /<ArticleFilters entries=/);
 });
+
+const searchRouteSource = await readFile(new URL('../src/app/api/search/route.ts', import.meta.url), 'utf8');
+
+test('global search requests bounded results without hydrating the full catalogue', () => {
+  assert.doesNotMatch(globalSearchSource, /from ['\"]@\\/lib\\/content['\"]/);
+  assert.doesNotMatch(globalSearchSource, /generated-content|searchPublishedContent/);
+  assert.match(globalSearchSource, /fetch\\(\\`\\/api\\/search\\?q=/);
+  assert.match(globalSearchSource, /AbortController/);
+  assert.match(globalSearchSource, /clearTimeout/);
+  assert.match(searchRouteSource, /searchPublishedContent/);
+  assert.match(searchRouteSource, /MAX_RESULTS_PER_TYPE = 8/);
+  assert.doesNotMatch(searchRouteSource, /project\\.description|article\\.content/);
+});
+
+test('public content catalogue is explicitly server-only', async () => {
+  const source = await readFile(new URL('../src/lib/content.ts', import.meta.url), 'utf8');
+  assert.match(source, /import ['\"]server-only['\"]/);
+});

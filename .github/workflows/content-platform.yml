@@ -57,7 +57,7 @@ jobs:
           done
           cat /tmp/portfolio-next.log
           exit 1
-      - name: Test production crawl and AI discovery endpoints
+      - name: Test production crawl, search and AI discovery endpoints
         run: node --test scripts/discovery-endpoints.test.mjs
       - name: Run Lighthouse performance audit
         run: |
