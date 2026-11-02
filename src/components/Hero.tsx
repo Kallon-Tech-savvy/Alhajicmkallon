@@ -30,48 +30,47 @@ export const Hero = () => (
 
     <div className="relative z-10 flex flex-1 items-center px-6 pb-10 pt-28 md:px-8 lg:px-10">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
-        <div className="reveal-in flex flex-col justify-center lg:col-span-7">
-          <div className="mb-7 flex items-center gap-2 text-[11px] uppercase tracking-[0.32em] text-muted">
+        <div className="flex flex-col justify-center lg:col-span-7">
+          <div className="mb-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#C0C9D5]">
             <span className="inline-flex h-2 w-2 rounded-full bg-pride-blue" />
             <span>Design engineer · Sierra Leone</span>
           </div>
 
           <h1
-            className="mb-6 font-space font-black leading-[0.92] tracking-[-0.03em] text-ivory"
+            className="mb-6 max-w-[13ch] font-space font-black leading-[1.04] tracking-[-0.035em] text-ivory"
             style={{ fontSize: 'clamp(2.8rem, 6.2vw, 6.5rem)' }}
           >
-            <span className="block">Useful products</span>
-            <span className="block text-pride-blue">start with better</span>
-            <span className="block">questions.</span>
+            <span className="block">From unclear ideas</span>
+            <span className="block text-[#75A9FF]">to useful digital products.</span>
           </h1>
 
-          <p className="mb-8 max-w-[46ch] text-[1rem] leading-7 text-[#9aa4b2] md:text-[1.05rem]">
-            I help founders, businesses, and organisations turn unclear ideas into useful digital products—from defining the problem and choosing what to build to designing the experience and engineering the solution.
+          <p className="mb-8 max-w-[54ch] text-base leading-8 text-[#C0C9D5] md:text-lg">
+            I’m Alhaji C.M. Kallon, a design engineer in Sierra Leone. I help founders, businesses and organisations discover the right problem, design a clear experience and build working digital products.
           </p>
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
             <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
               <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-pride-blue transition-all duration-300 hover:bg-pride-blue/20"
+                href="/work"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#75A9FF] bg-[#75A9FF] px-6 py-3 text-sm font-bold text-[#0A0A0A] transition-colors hover:bg-white focus-visible:outline-offset-4"
               >
-                Talk through your idea
+                See the work and evidence
               </Link>
             </div>
             <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
               <Link
-                href="/work"
-                className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-ivory transition-all duration-300 hover:border-pride-blue/40 hover:bg-white/[0.06]"
+                href="/contact"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-ivory transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-offset-4"
               >
-                Explore the work
+                Discuss your project
               </Link>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.22em] text-muted">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-[#C0C9D5]">
             <span className="inline-flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-pride-blue" />
-              Discovery · product decisions · design · engineering
+              Discover → Define → Design → Build
             </span>
           </div>
         </div>
