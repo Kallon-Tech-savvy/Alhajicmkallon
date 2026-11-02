@@ -20,7 +20,7 @@ test('robots and sitemap expose the public crawl paths', async () => {
   assert.match(robots, /Disallow:\s*\/api\//i);
   assert.match(robots, /Sitemap:\s*https:\/\/alhajikallon\.com\/sitemap\.xml/i);
   assert.match(sitemapResponse.headers.get('content-type') ?? '', /application\/xml|text\/xml/i);
-  for (const route of ['/about', '/work', '/writing', '/knowledge', '/faq', '/contact']) {
+  for (const route of ['/about', '/work', '/writing', '/knowledge', '/faq', '/contact', '/privacy']) {
     assert.ok(sitemap.includes(`https://alhajikallon.com${route}`), `Sitemap missing ${route}`);
   }
 });
