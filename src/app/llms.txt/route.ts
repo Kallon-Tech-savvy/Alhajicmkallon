@@ -34,14 +34,14 @@ const lines = [
   '## Published writing',
   ...(ARTICLES.filter((article) => article.kind === 'journal').length
     ? ARTICLES.filter((article) => article.kind === 'journal').flatMap((article) => [
-        `- [${article.title}](${siteUrl}/writing/${article.slug}): ${article.excerpt} Topics: ${article.topics.join(', ') || 'Not specified'}.`,
+        `- [${article.title}](${siteUrl}/writing/${article.slug}): ${article.excerpt} Level: ${article.level ?? 'Not specified'}. Topics: ${article.topics.join(', ') || 'Not specified'}.`,
       ])
     : ['- No writing entries are currently published.']),
   '',
   '## Published knowledge notes',
   ...(ARTICLES.filter((article) => article.kind === 'knowledge').length
     ? ARTICLES.filter((article) => article.kind === 'knowledge').flatMap((article) => [
-        `- [${article.title}](${siteUrl}/knowledge/${article.slug}): ${article.excerpt} Topics: ${article.topics.join(', ') || 'Not specified'}.`,
+        `- [${article.title}](${siteUrl}/knowledge/${article.slug}): ${article.excerpt} Level: ${article.level ?? 'Not specified'}. Topics: ${article.topics.join(', ') || 'Not specified'}.`,
       ])
     : ['- No knowledge notes are currently published.']),
   '',

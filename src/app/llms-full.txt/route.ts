@@ -1,6 +1,6 @@
 import { ARTICLES, PROJECTS } from '@/lib/content';
 
-const siteUrl = 'https://alhajicmkallon.vercel.app';
+const siteUrl = 'https://alhajikallon.com';
 
 function section(title: string, body: string) {
   return `## ${title}\n\n${body.trim()}\n`;
@@ -27,6 +27,9 @@ const articleText = ARTICLES.map((article) => section(
     `URL: ${siteUrl}/${article.kind === 'journal' ? 'writing' : 'knowledge'}/${article.slug}`,
     `Type: ${article.kind === 'journal' ? 'Published writing' : 'Published knowledge note'}`,
     `Category: ${article.category}`,
+    `Level: ${article.level ?? 'Not specified'}`,
+    `Prerequisites: ${article.prerequisites?.join('; ') || 'Not specified'}`,
+    `Learning objectives: ${article.objectives?.join('; ') || 'Not specified'}`,
     `Date: ${article.date}`,
     `Topics: ${article.topics.join(', ') || 'Not specified'}`,
     `Summary: ${article.excerpt}`,

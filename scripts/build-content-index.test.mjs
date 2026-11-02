@@ -91,3 +91,24 @@ test('rejects duplicate slugs across content types', async () => {
     await rm(projectRoot, { recursive: true, force: true });
   }
 });
+
+
+test('learning metadata is exported and invalid levels or sources fail the build', async () => {
+  const projectRoot = await mkdtemp(path.join(os.tmpdir(), 'learning-index-'));
+  try {
+    const folder = path.join(projectRoot, 'content', 'knowledge');
+    await mkdir(folder, { recursive: true });
+    const file = path.join(folder, 'lesson.md');
+    const document = (level, source) => ['---', 'slug: lesson', 'title: Lesson', 'category: HTML', 'topics: []', 'date: "2026-11-02"', 'excerpt: Learn HTML', 'status: published', 'kind: knowledge', 'level: ' + level, 'prerequisites: ["Open a browser"]', 'objectives: ["Build a page"]', 'sources: ' + JSON.stringify([source]), '---', '', 'A useful lesson.'].join('\n');
+    const destination = path.join(projectRoot, 'generated.ts');
+    await writeFile(file, document('beginner', 'https://developer.mozilla.org/'));
+    await buildContentIndex({ projectRoot, destination });
+    const output = await readFile(destination, 'utf8');
+    assert.match(output, /"level": "beginner"/);
+    assert.match(output, /Build a page/);
+    await writeFile(file, document('expert-ish', 'https://developer.mozilla.org/'));
+    await assert.rejects(buildContentIndex({ projectRoot, destination }), /invalid learning level/);
+    await writeFile(file, document('beginner', 'javascript:alert(1)'));
+    await assert.rejects(buildContentIndex({ projectRoot, destination }), /sources must be HTTPS/);
+  } finally { await rm(projectRoot, { recursive: true, force: true }); }
+});

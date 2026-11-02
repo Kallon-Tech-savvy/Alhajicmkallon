@@ -87,3 +87,23 @@ test('anonymous web vitals collector is disabled unless explicitly configured', 
   assert.equal(response.status, expected);
   assert.match(response.headers.get('cache-control') ?? '', /no-store/);
 });
+
+
+test('learning paths and lessons expose canonical, sourced learning content', async () => {
+  const { body: hub } = await get('/knowledge');
+  for (const id of ['beginner', 'intermediate', 'junior']) assert.ok(hub.includes(`id="${id}"`));
+  const { body } = await get('/knowledge/semantic-html-for-beginners');
+  assert.match(body, /LearningResource/);
+  assert.match(body, /educationalLevel/);
+  assert.match(body, /Before you start/);
+  assert.match(body, /Sources and further reading/);
+  assert.match(body, /https:\/\/alhajikallon\.com\/knowledge\/semantic-html-for-beginners/);
+  assert.doesNotMatch(body, /alhajicmkallon\.vercel\.app/);
+  const duplicate = await fetch(new URL('/writing/semantic-html-for-beginners', baseUrl));
+  assert.equal(duplicate.status, 404);
+  const { body: feed } = await get('/llms-full.txt');
+  assert.match(feed, /Level: beginner/);
+  assert.doesNotMatch(feed, /alhajicmkallon\.vercel\.app/);
+  const { body: search } = await get('/api/search?q=semantic');
+  assert.ok(JSON.parse(search).articles.some((article) => article.slug === 'semantic-html-for-beginners'));
+});

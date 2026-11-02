@@ -17,7 +17,8 @@ concurrency:
 
 jobs:
   deploy:
-    if: inputs.confirm_production == 'deploy'
+    # Disabled while Cloudflare is the deployment target.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     environment: production
     steps:

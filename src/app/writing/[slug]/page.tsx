@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
-import { getArticleBySlug, ARTICLES } from '@/lib/content';
+import { getArticleBySlug, JOURNAL_ENTRIES } from '@/lib/content';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
@@ -14,13 +14,13 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return ARTICLES.map(({ slug }) => ({ slug }));
+  return JOURNAL_ENTRIES.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
-  if (!article) return { title: 'Writing not found' };
+  if (!article || article.kind !== 'journal') return { title: 'Writing not found' };
   return {
     title: article.title,
     description: article.excerpt,
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function ArticleTemplate({ params }: PageProps) {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
-  if (!article) notFound();
+  if (!article || article.kind !== 'journal') notFound();
 
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-gold/30">
@@ -41,12 +41,12 @@ export default async function ArticleTemplate({ params }: PageProps) {
         '@type': 'Article',
         headline: article.title,
         description: article.excerpt,
-        url: `https://alhajicmkallon.vercel.app/writing/${article.slug}`,
-        author: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
-        publisher: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
+        url: `https://alhajikallon.com/writing/${article.slug}`,
+        author: { '@id': 'https://alhajikallon.com/#person' },
+        publisher: { '@id': 'https://alhajikallon.com/#person' },
         keywords: article.topics,
         inLanguage: 'en',
-        isPartOf: { '@id': 'https://alhajicmkallon.vercel.app/#website' },
+        isPartOf: { '@id': 'https://alhajikallon.com/#website' },
       }) }} />
       <Navbar />
       <section className="pt-40 pb-16 px-6 border-b border-white/5">

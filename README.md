@@ -15,7 +15,7 @@ Requires Node.js 22 and npm. Install locked dependencies with `npm ci`, then run
 
 ## Quality gates
 
-Run `npm run lint`, `npm run typecheck`, `npm run test:content`, `npm run test:contact`, `npm run test:security`, `npm run test:homepage-performance`, `npm run test:boundaries`, and `npm run build`. These also run in GitHub Actions before a change is merged. The production deploy is manual and should only follow a passing PR.
+Run `npm run lint`, `npm run typecheck`, `npm run test:content`, `npm run test:contact`, `npm run test:security`, `npm run test:homepage-performance`, `npm run test:boundaries`, and `npm run build`. These also run in GitHub Actions before a change is merged. Vercel Git deployments are disabled in `vercel.json` and the manual Vercel Actions job is disabled. Cloudflare is the deployment target. Existing Vercel deployments, deploy hooks and direct CLI/API access are account-level controls and are not removed by these repository settings.
 
 ## Security model
 

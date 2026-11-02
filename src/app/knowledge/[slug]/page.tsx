@@ -38,12 +38,17 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
         '@type': 'LearningResource',
         name: entry.title,
         description: entry.excerpt,
-        url: `https://alhajicmkallon.vercel.app/knowledge/${entry.slug}`,
-        creator: { '@id': 'https://alhajicmkallon.vercel.app/#person' },
-        learningResourceType: 'Knowledge note',
+        url: `https://alhajikallon.com/knowledge/${entry.slug}`,
+        creator: { '@id': 'https://alhajikallon.com/#person' },
+        learningResourceType: 'Practical guide',
+        educationalLevel: entry.level,
+        teaches: entry.objectives,
+        citation: entry.sources,
+        datePublished: entry.date,
+        author: { '@id': 'https://alhajikallon.com/#person' },
         keywords: entry.topics,
         inLanguage: 'en',
-        isPartOf: { '@id': 'https://alhajicmkallon.vercel.app/#website' },
+        isPartOf: { '@id': 'https://alhajikallon.com/#website' },
       }) }} />
       <Navbar />
       <section className="pt-40 pb-14 px-6 border-b border-white/5">
@@ -52,6 +57,7 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
           <Reveal variant="up"><p className="text-gold text-xs uppercase tracking-widest mb-5">{entry.category}</p><h1 className="font-space text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-7">{entry.title}</h1><p className="text-muted text-lg leading-relaxed">{entry.excerpt}</p></Reveal>
         </div>
       </section>
+      <section className="px-6 py-8 border-b border-white/10"><div className="mx-auto max-w-4xl grid gap-7 md:grid-cols-2"><div><p className="text-sm text-[#C0C9D5]">By Alhaji C. M. Kallon · <time dateTime={entry.date}>{entry.date}</time> · {entry.level} · {entry.readTime}</p><h2 className="mt-5 mb-2 font-semibold">Before you start</h2><ul className="list-disc pl-5 text-sm text-[#C0C9D5]">{entry.prerequisites?.map((item) => <li key={item}>{item}</li>)}</ul><h2 className="mt-5 mb-2 font-semibold">What you will practise</h2><ul className="list-disc pl-5 text-sm text-[#C0C9D5]">{entry.objectives?.map((item) => <li key={item}>{item}</li>)}</ul></div><nav aria-label="On this page"><h2 className="mb-3 font-semibold">On this page</h2><ul className="space-y-2 text-sm">{[...entry.content.matchAll(/^## (.+)$/gm)].map((match) => <li key={match[1]}><a className="text-[#A8C9FF] underline underline-offset-4" href={'#' + match[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}>{match[1]}</a></li>)}</ul></nav></div></section>
       <section className="px-6 py-14"><article className="max-w-3xl mx-auto font-inter text-base md:text-lg"><MarkdownContent source={entry.content} /></article></section>
       <Footer />
     </main>

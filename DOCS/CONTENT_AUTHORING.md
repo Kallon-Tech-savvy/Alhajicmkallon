@@ -53,3 +53,10 @@ Run:
 - `npm run build`
 
 Before publishing, preview the index, detail route, search result, metadata, and sitemap. If local or CI checks are unavailable, do not claim they passed.
+
+
+## Learning guides
+
+Publish focused guides under `content/knowledge/` using `kind: knowledge`. Use `level: beginner`, `intermediate`, or `junior`; these describe starting points, not credentials. Provide `prerequisites`, `objectives`, and `sources` as inline JSON arrays. Source URLs must use HTTPS. Keep examples small and explain their limits. Each guide should offer a direct answer, practice task, common mistake, self-check, next step and named primary references. Dates describe publication; update them only for a real publication change. Never invent personal experience, results, endorsements or test evidence.
+
+The hub, sitemap, global search and AI discovery feeds use published records. Knowledge notes belong only at `/knowledge/<slug>`; journal entries belong only at `/writing/<slug>`. Guides expose LearningResource metadata and visible matching learning objectives. This improves clarity and retrieval but does not guarantee search ranking or AI citations. Add new guides to the curated order in `src/lib/content.ts` after reviewing their prerequisites.

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -15,13 +16,13 @@ const LINKS = [
   { name: 'Work', href: '/work' },
   { name: 'About', href: '/about' },
   { name: 'Writing', href: '/writing' },
-  { name: 'Knowledge', href: '/knowledge' },
+  { name: 'Learn', href: '/knowledge' },
   { name: 'FAQ', href: '/faq' },
   { name: 'Contact', href: '/contact' },
 ] as const;
 
 const PRIMARY_LINKS = LINKS.filter(
-  ({ href }) => !['/', '/faq', '/contact'].includes(href)
+  ({ href }) => !['/', '/faq', '/contact', '/knowledge'].includes(href)
 );
 
 function isActivePath(pathname: string, href: string) {
@@ -54,8 +55,35 @@ export function NavbarInteractions() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const closeSearch = useCallback(() => setIsSearchOpen(false), []);
+  const learningMenuRef = useRef<HTMLDetailsElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (learningMenuRef.current) learningMenuRef.current.open = false;
+  }, [pathname]);
+
+  useEffect(() => {
+    const closeLearningMenu = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && learningMenuRef.current?.open) {
+        learningMenuRef.current.open = false;
+        learningMenuRef.current.querySelector('summary')?.focus();
+      }
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (learningMenuRef.current && !learningMenuRef.current.contains(event.target as Node)) learningMenuRef.current.open = false;
+    };
+    const onResize = () => { if (window.innerWidth >= 1024) setIsMobileMenuOpen(false); };
+    window.addEventListener('keydown', closeLearningMenu);
+    document.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('keydown', closeLearningMenu);
+      document.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
 
   useEffect(() => {
     function openSearch(event: KeyboardEvent) {
@@ -126,6 +154,13 @@ export function NavbarInteractions() {
             </Link>
           );
         })}
+        <details ref={learningMenuRef} className="relative">
+          <summary className={'cursor-pointer rounded px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#A8C9FF] ' + (isActivePath(pathname, '/knowledge') ? 'text-[#A8C9FF]' : 'text-[#C0C9D5]')}>Learn</summary>
+          <div className="absolute right-0 top-full mt-3 w-80 rounded-xl border border-white/20 bg-midnight p-3 shadow-2xl">
+            <p className="px-3 py-2 text-xs text-[#C0C9D5]">Choose your next step</p>
+            {[['Learning hub', '/knowledge', 'All guides and learning paths'], ['New to development', '/knowledge#beginner', 'HTML, CSS and first projects'], ['Beyond the basics', '/knowledge#intermediate', 'JavaScript, APIs and TypeScript'], ['Working as a junior', '/knowledge#junior', 'Delivery, testing and code review']].map(([title, href, description]) => <Link prefetch={false} key={href} href={href} onClick={() => { if (learningMenuRef.current) learningMenuRef.current.open = false; }} className="block rounded-lg p-3 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#A8C9FF]"><span className="block text-sm font-semibold text-ivory">{title}</span><span className="mt-1 block text-xs text-[#C0C9D5]">{description}</span></Link>)}
+          </div>
+        </details>
         <span aria-hidden="true" className="mx-3 h-4 w-px bg-[#2A2A2A]" />
         <button
           type="button"
@@ -166,13 +201,13 @@ export function NavbarInteractions() {
         </button>
       </div>
 
-      {isMobileMenuOpen && (
+      {isMobileMenuOpen && createPortal(
         <div
           ref={menuPanelRef}
           id="mobile-navigation"
           role="region"
           aria-label="Mobile navigation"
-          className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-midnight px-6 pb-10 pt-28 lg:hidden"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-midnight px-6 pb-10 pt-28 lg:hidden"
         >
           <p className="mb-8 text-[10px] uppercase tracking-[0.35em] text-[#9AA4B2]">Explore the site</p>
           <div className="space-y-4">
@@ -195,6 +230,7 @@ export function NavbarInteractions() {
               );
             })}
           </div>
+          <div className="mt-8 border-t border-white/15 pt-6"><h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C0C9D5]">Learning paths</h2><div className="space-y-3">{[['New to development', 'beginner'], ['Beyond the basics', 'intermediate'], ['Working as a junior', 'junior']].map(([title, id]) => <Link prefetch={false} key={id} href={'/knowledge#' + id} onClick={() => setIsMobileMenuOpen(false)} className="block rounded py-2 text-base text-[#A8C9FF]">{title} →</Link>)}</div></div>
           <div className="mt-10 border-t border-[#2A2A2A] pt-6">
             <div className="flex flex-wrap gap-6 text-xs uppercase tracking-widest text-[#9AA4B2]">
               <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer">Twitter</a>
@@ -202,10 +238,10 @@ export function NavbarInteractions() {
               <a href="https://github.com/Kallon-Tech-savvy" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </div>
-        </div>
+        </div>, document.body
       )}
 
-      {isSearchOpen && <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />}
+      {isSearchOpen && createPortal(<GlobalSearch isOpen={isSearchOpen} onClose={closeSearch} />, document.body)}
     </>
   );
 }

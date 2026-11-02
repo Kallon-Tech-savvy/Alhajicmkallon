@@ -40,6 +40,10 @@ export interface Article {
   content: string;
   status: PublicationStatus;
   kind: 'journal' | 'knowledge';
+  level?: 'beginner' | 'intermediate' | 'junior';
+  prerequisites?: string[];
+  objectives?: string[];
+  sources?: string[];
 }
 
 import { generatedArticles, generatedProjects } from './generated-content';
@@ -77,7 +81,11 @@ export const PROJECTS = projectCatalogue
   });
 export const ARTICLES = articleCatalogue.filter((article) => article.status === 'published');
 export const JOURNAL_ENTRIES = ARTICLES.filter((article) => article.kind === 'journal');
-export const KNOWLEDGE_ENTRIES = ARTICLES.filter((article) => article.kind === 'knowledge');
+const KNOWLEDGE_ORDER = ['semantic-html-for-beginners', 'css-layout-without-guesswork', 'fetch-loading-error-empty-states', 'typescript-runtime-validation', 'when-is-a-feature-done', 'junior-developer-pull-request-checklist'];
+export const KNOWLEDGE_ENTRIES = ARTICLES.filter((article) => article.kind === 'knowledge').sort((a, b) => {
+  const order = (slug: string) => { const i = KNOWLEDGE_ORDER.indexOf(slug); return i < 0 ? KNOWLEDGE_ORDER.length : i; };
+  return order(a.slug) - order(b.slug);
+});
 
 export function getProjectBySlug(slug: string) {
   return PROJECTS.find((project) => project.slug === slug);
