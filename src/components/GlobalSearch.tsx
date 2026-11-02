@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
+import { Search, X, FileText, Code, BookOpen, ArrowRight } from 'lucide-react';
 import { searchPublishedContent } from '@/lib/content';
 import Link from 'next/link';
 
@@ -19,11 +19,31 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     inputRef.current?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = [...dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled])'
+        )];
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', handleKeyDown);
     return () => {
+      document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', handleKeyDown);
       previouslyFocused?.focus();
     };
@@ -53,7 +73,6 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               <h2 id="global-search-title" className="sr-only">Search this website</h2>
               <input
                 ref={inputRef}
-                autoFocus
                 aria-label="Search projects and articles"
                 className="flex-1 bg-transparent border-none outline-none text-ivory placeholder-muted font-space text-xl py-2 font-bold"
                 placeholder="Search anything..."
@@ -79,7 +98,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       {[
                         { icon: <Code size={18} />, label: 'Case Studies', href: '/work', color: 'text-blue-400' },
                         { icon: <FileText size={18} />, label: 'Writing', href: '/writing', color: 'text-purple-400' },
-                        { icon: <Map size={18} />, label: 'Speaking', href: '/speaking', color: 'text-blue-400' },
+                        { icon: <BookOpen size={18} />, label: 'Knowledge', href: '/knowledge', color: 'text-blue-400' },
                         { icon: <ArrowRight size={18} />, label: 'About Alhaji', href: '/about', color: 'text-gold' },
                       ].map((item) => (
                         <Link

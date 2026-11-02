@@ -207,3 +207,18 @@ test('published project, writing, and knowledge pages expose typed structured da
     assert.ok(source.includes('#website'));
   }
 });
+
+const homepageSource = await readFile(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
+
+test('homepage presents case-study evidence before the process sections', () => {
+  const hero = homepageSource.indexOf('<Hero />');
+  const work = homepageSource.indexOf('<FeaturedWork />');
+  const process = homepageSource.indexOf('<PracticeOverview />');
+  assert.ok(hero >= 0 && work > hero && process > work);
+});
+
+const searchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
+test('global search quick links resolve to routes that exist', () => {
+  assert.doesNotMatch(searchSource, /href: '\/speaking'/);
+  assert.match(searchSource, /href: '\/knowledge'/);
+});

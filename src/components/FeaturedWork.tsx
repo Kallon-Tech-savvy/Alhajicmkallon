@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 export const FeaturedWork = () => {
   return (
-    <section id="work" className="py-32 bg-midnight px-6 relative">
+    <section id="work" className="py-20 md:py-28 bg-midnight px-6 relative">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
             <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
               Selected work
@@ -27,7 +27,7 @@ export const FeaturedWork = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-32">
+        <div className="grid grid-cols-1 gap-16 md:gap-24">
           {PROJECTS.length === 0 ? (
             <div className="border border-white/10 p-8 md:p-12">
               <h3 className="font-space text-2xl font-bold mb-4">Evidence before claims</h3>

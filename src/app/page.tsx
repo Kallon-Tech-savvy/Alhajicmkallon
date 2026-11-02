@@ -17,14 +17,15 @@ export default function Home() {
     <main className="relative min-h-screen">
       <Navbar />
       <Hero />
+      {/* Show evidence before explaining the approach: one clear reading path. */}
+      <FeaturedWork />
       <PracticeOverview />
       <ImpactCards />
       <Timeline />
-      <FeaturedWork />
       <ThoughtLeadership />
 
       {/* ── Terminal Quote Section ──────────────────────────────────── */}
-      <section className="py-48 px-6 relative overflow-hidden bg-[#0A0A0A] border-t border-[#2A2A2A]">
+      <section className="py-20 md:py-28 px-6 relative overflow-hidden bg-[#0A0A0A] border-t border-[#2A2A2A]">
         
         {/* Watermark */}
         <div

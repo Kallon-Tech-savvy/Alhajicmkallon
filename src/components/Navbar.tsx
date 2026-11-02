@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
 const GlobalSearch = dynamic(
@@ -34,20 +34,29 @@ function NavIcon({ name, size }: { name: 'search' | 'menu' | 'close'; size: numb
 }
 
 const NAV_LINKS = [
-  { name: 'home',       href: '/',         short: 'HOME'     },
-  { name: 'about',      href: '/about',     short: 'ABOUT'    },
-  { name: 'work',       href: '/work',      short: 'WORK'     },
-  { name: 'writing',    href: '/writing',   short: 'WRITING'  },
-  { name: 'knowledge',  href: '/knowledge', short: 'KNOWLEDGE'},
-  { name: 'faq',        href: '/faq',       short: 'FAQ'      },
-  { name: 'contact',    href: '/contact',   short: 'CONTACT'  },
+  { name: 'Home', href: '/' },
+  { name: 'Work', href: '/work' },
+  { name: 'About', href: '/about' },
+  { name: 'Writing', href: '/writing' },
+  { name: 'Knowledge', href: '/knowledge' },
+  { name: 'FAQ', href: '/faq' },
+  { name: 'Contact', href: '/contact' },
 ];
+
+const PRIMARY_NAV_LINKS = NAV_LINKS.filter(
+  (link) => !['/', '/faq', '/contact'].includes(link.href)
+);
+
+function isCurrentPath(pathname: string, href: string): boolean {
+  return pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
+}
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled]         = useState(false);
   const [isMobileMenuOpen, setIsMobileOpen]  = useState(false);
   const [isSearchOpen, setIsSearchOpen]      = useState(false);
   const scrolledRef = useRef(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   // Scroll listener
@@ -65,6 +74,24 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Keep mobile navigation scrollable on small screens, while the page behind it stays still.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isMobileMenuOpen]);
+
   // Cmd+K search shortcut
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -79,7 +106,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav
+      <nav aria-label="Primary navigation"
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4 md:px-10',
           isScrolled
@@ -90,7 +117,7 @@ export const Navbar = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
 
           {/* ── Left: shell prompt ──────────────────────────────────── */}
-          <Link href="/" className="group flex items-center gap-2 select-none">
+          <Link href="/" aria-label="Alhaji Kallon — Home" className="group flex items-center gap-2 select-none">
             <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold md:text-sm"
                   style={{ color: '#A8C9FF' }}>
               alhaji
@@ -108,12 +135,13 @@ export const Navbar = () => {
 
           {/* ── Desktop nav ─────────────────────────────────────────── */}
           <div className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map(link => {
-              const isActive = pathname === link.href;
+            {PRIMARY_NAV_LINKS.map(link => {
+              const isActive = isCurrentPath(pathname, link.href);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={cn(
                     'relative rounded-sm px-3 py-1.5 font-inter text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-200',
                     isActive
@@ -135,6 +163,7 @@ export const Navbar = () => {
             <div className="h-4 w-px mx-3" style={{ background: '#2A2A2A' }} />
 
             <button
+              type="button"
               onClick={() => setIsSearchOpen(true)}
               className="p-2 transition-colors duration-200"
               style={{ color: '#C0C9D5' }}
@@ -145,18 +174,13 @@ export const Navbar = () => {
 
             <Link
               href="/contact"
-              className="ml-3 rounded-full border px-4 py-1.5 font-inter text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-200"
+              className="ml-3 rounded-full border px-4 py-2 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors duration-200 hover:border-[#A8C9FF] hover:bg-pride-blue/25"
               style={{
                 color: '#F5F5F5',
                 background: 'rgba(0, 102, 255, 0.16)',
                 borderColor: 'rgba(0, 102, 255, 0.35)',
               }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 16px rgba(0,107,255,0.4)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-              }}
+
             >
               Let&apos;s talk
             </Link>
@@ -164,11 +188,13 @@ export const Navbar = () => {
 
           {/* ── Mobile toggles ─────────────────────────────────────── */}
           <div className="lg:hidden flex items-center gap-2">
-            <button onClick={() => setIsSearchOpen(true)} aria-label="Search site" style={{ color: '#C0C9D5' }}
+            <button type="button" onClick={() => { setIsMobileOpen(false); setIsSearchOpen(true); }} aria-label="Search site" style={{ color: '#C0C9D5' }}
                     className="p-3">
               <NavIcon name="search" size={18} />
             </button>
             <button
+              ref={menuButtonRef}
+              type="button"
               onClick={() => setIsMobileOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isMobileMenuOpen}
@@ -188,15 +214,15 @@ export const Navbar = () => {
           id="mobile-navigation"
           role="navigation"
           aria-label="Mobile navigation"
-          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-center p-10 scanlines"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto px-6 pb-10 pt-28 scanlines lg:hidden"
           style={{ background: '#0A0A0A' }}
         >
           <div className="mb-10 font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.4em] uppercase"
                style={{ color: '#6B7280' }}>
-            alhaji@kallon ~$
+            Explore the site
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {NAV_LINKS.map((link, i) => (
               <div
                 key={link.href}
@@ -205,8 +231,9 @@ export const Navbar = () => {
                 <Link
                   href={link.href}
                   onClick={() => setIsMobileOpen(false)}
+                  aria-current={isCurrentPath(pathname, link.href) ? 'page' : undefined}
                   className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold block transition-colors duration-200"
-                  style={{ color: pathname === link.href ? '#FFB000' : '#E0E0E0' }}
+                  style={{ color: isCurrentPath(pathname, link.href) ? '#A8C9FF' : '#E0E0E0' }}
                 >
                   <span style={{ color: '#6B7280', marginRight: 8 }}>&gt;</span>
                   {link.name}
@@ -216,11 +243,11 @@ export const Navbar = () => {
           </div>
 
           <div
-            className="mt-16 pt-8 border-t"
+            className="mt-10 pt-6 border-t"
             style={{ borderColor: '#2A2A2A', animation: 'slide-up 240ms ease-out both', animationDelay: '300ms' }}
           >
-            <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
-                 style={{ color: '#6B7280' }}>
+            <div className="flex flex-wrap gap-6 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
+                 style={{ color: '#9AA4B2' }}>
               <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer"
                  className="hover:text-[#006BFF] transition-colors">Twitter</a>
               <a href="https://linkedin.com/in/alhaji-c-m-k-8b79a225b" target="_blank" rel="noopener noreferrer"
