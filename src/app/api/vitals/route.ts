@@ -12,8 +12,23 @@ export async function POST(request: NextRequest) {
   // Origin check is a browser spam barrier, not authentication.
   const origin = request.headers.get('origin');
   const fetchSite = request.headers.get('sec-fetch-site');
-  if (!origin || origin !== request.nextUrl.origin ||
-      (fetchSite && fetchSite !== 'same-origin')) {
+  const host = request.headers.get('host');
+  let sameOrigin = false;
+  if (origin && host) {
+    try {
+      const parsed = new URL(origin);
+      const local = host === 'localhost:3001' || host === '127.0.0.1:3001' ||
+        host === 'localhost:3000' || host === '127.0.0.1:3000';
+      sameOrigin = parsed.origin === origin && parsed.host === host &&
+        (parsed.protocol === 'https:' || (local && parsed.protocol === 'http:'));
+    } catch {
+      sameOrigin = false;
+    }
+  }
+  // Request URL reconstruction can use a different internal hostname behind a proxy.
+  // Compare browser Origin with the public Host header instead, and require HTTPS
+  // except for local development/test servers. This is still not authentication.
+  if (!sameOrigin || (fetchSite && fetchSite !== 'same-origin')) {
     return new NextResponse(null, { status: 403, headers: NO_STORE });
   }
   if (!/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(request.headers.get('content-type') ?? '')) {
