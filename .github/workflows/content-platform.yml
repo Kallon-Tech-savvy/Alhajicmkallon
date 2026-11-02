@@ -33,6 +33,8 @@ jobs:
         run: npm run test:contact
       - name: Test chat request security
         run: npm run test:security
+      - name: Test anonymous Web Vitals validation
+        run: npm run test:vitals
       - name: Test Lighthouse report diagnostics
         run: npm run test:performance-report
       - name: Typecheck
