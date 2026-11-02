@@ -69,7 +69,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
-    "test:security": "node --test scripts/chat-security.test.mjs",
+    "test:security": "node --test scripts/chat-security.test.mjs scripts/chat-handler.test.mjs",
     "test:boundaries": "node scripts/test-deep-module-boundaries.mjs",
     "predev": "node scripts/build-content-index.mjs",
     "prebuild": "node scripts/build-content-index.mjs",

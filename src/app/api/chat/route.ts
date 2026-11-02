@@ -139,7 +139,11 @@ export async function POST(req: NextRequest) {
   // Execute Moderation checks cleanly and intercept fatal connection errors early
   try {
     const moderation = await getOpenAiClient().moderations.create({ input: trimmedMessage });
-    if (moderation.results[0]?.flagged) {
+    const result = moderation?.results?.[0];
+    if (typeof result?.flagged !== 'boolean') {
+      throw new Error('Invalid moderation response');
+    }
+    if (result.flagged) {
       return NextResponse.json(
         { error: "I can't help with that. Try asking about Alhaji's work, skills, or how to reach him." },
         { status: 400 }
