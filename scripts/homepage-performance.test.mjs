@@ -108,10 +108,13 @@ test('homepage omits the decorative regional map section', async () => {
 test('Lighthouse enforces the agreed performance and discoverability acceptance criteria', async () => {
   const workflow = await readFile(new URL('../.github/workflows/content-platform.yml', import.meta.url), 'utf8');
   assert.match(workflow, /--only-categories=performance,seo/);
-  assert.match(workflow, /score < 0\.8/);
-  assert.match(workflow, /seoScore < 1/);
-  assert.match(workflow, /expected at least 80\/100/);
-  assert.match(workflow, /expected 100\/100/);
+  const verifier = await readFile(new URL('../scripts/verify-lighthouse-baseline.mjs', import.meta.url), 'utf8');
+  assert.match(workflow, /scripts\/verify-lighthouse-baseline\.mjs/);
+  assert.match(workflow, /for attempt in 1 2 3/);
+  assert.match(verifier, /if \(score < 0\.8\)/);
+  assert.match(verifier, /if \(seoScore < 1\)/);
+  assert.match(verifier, /expected at least 80\/100/);
+  assert.match(verifier, /expected 100\/100/);
   assert.match(workflow, /concurrency:\s*\n\s+group: content-platform-\$\{\{\s*github\.ref\s*\}\}/);
   assert.match(workflow, /cancel-in-progress:\s*true/);
 });

@@ -77,7 +77,7 @@
     "test:contact": "node --test scripts/contact-form.test.mjs",
     "test:homepage-performance": "node --test scripts/homepage-performance.test.mjs",
     "test:browser-bundle": "node --test scripts/browser-bundle.test.mjs",
-    "test:performance-report": "node --test scripts/report-main-thread.test.mjs"
+    "test:performance-report": "node --test scripts/report-main-thread.test.mjs scripts/verify-lighthouse-baseline.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

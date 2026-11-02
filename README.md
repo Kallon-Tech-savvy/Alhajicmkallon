@@ -42,3 +42,7 @@ Homepage links use `prefetch={false}` on Next.js Link. This prevents initial pag
 ### Lighthouse main-thread diagnosis
 
 The CI job now runs `npm run test:performance-report` and prints a bounded diagnostic from the Lighthouse JSON report (`node scripts/report-main-thread.mjs lighthouse-report.json`). It reports script evaluation, layout work, top script CPU costs and longest tasks. This is evidence for choosing subsequent work—not a stable per-commit measurement of JavaScript speed. Identical commits have returned widely varying synthetic Total Blocking Time scores; compare multiple runs and real-user metrics before claiming a performance gain.
+
+### Multi-run performance baseline
+
+CI now runs **three independent mobile Lighthouse audits** against one production build and writes individual JSON reports plus `lighthouse-reports/summary.json` to the Lighthouse baseline artifact. The acceptance gate uses **median performance >=80/100** instead of a single noisy result; **every** run must score SEO 100/100 and show zero unsolicited `_rsc` route fetches. It reports per-run LCP, TBT and performance and their min/median/max spread. This is a more robust synthetic baseline, not real-user performance monitoring. The previous single-run budget was susceptible to large variance even on identical commits.
