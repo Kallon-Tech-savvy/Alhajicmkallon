@@ -126,7 +126,7 @@ test('root layout exposes canonical URL and truthful Person/WebSite structured d
   assert.match(layoutSource, /"@context":\s*"https:\/\/schema\.org"/);
   assert.match(layoutSource, /"@type":\s*"Person"/);
   assert.match(layoutSource, /"@type":\s*"WebSite"/);
-  assert.match(layoutSource, /JSON\.stringify\(structuredData\)/);
+  assert.match(layoutSource, /serializeJsonLd\(structuredData\)/);
   assert.match(layoutSource, /addressCountry:\s*"SL"/);
 });
 
