@@ -45,7 +45,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-pride-blue);
+  outline: 3px solid #A8C9FF;
   outline-offset: 3px;
 }
 
@@ -59,8 +59,8 @@ h1, h2, h3, h4 {
 
 /* Selection */
 ::selection {
-  background: rgba(0, 102, 255, 0.15);
-  color: var(--color-pride-blue);
+  background: #A8C9FF;
+  color: #0A0A0A;
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────── */
