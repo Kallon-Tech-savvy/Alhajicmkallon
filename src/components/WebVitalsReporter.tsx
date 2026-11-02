@@ -35,13 +35,14 @@ function reportVital(metric: { name: string; value: number; id: string }) {
   });
 
   try {
-    const url = '/api/vitals';
-    const data = new Blob([body], { type: 'application/json' });
-    if (navigator.sendBeacon?.(url, data)) return;
-    void fetch(url, {
-      method: 'POST', body,
+    // Unlike sendBeacon, fetch lets us explicitly omit cookies and full referrers.
+    void fetch('/api/vitals', {
+      method: 'POST',
+      body,
       headers: { 'Content-Type': 'application/json' },
-      keepalive: true, credentials: 'omit',
+      keepalive: true,
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
     }).catch(() => {});
   } catch {
     // Measurement must never disrupt rendering or navigation.
