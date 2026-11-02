@@ -25,7 +25,7 @@ export function PracticeOverview() {
               <p className="text-sm leading-7 text-[#C0C9D5]">
                 Start with the problem, the people affected and the assumptions worth testing before building.
               </p>
-              <Link href="/contact" className="mt-4 inline-block text-sm font-semibold text-[#A8C9FF] underline underline-offset-4 hover:text-white">
+              <Link prefetch={false} href="/contact" className="mt-4 inline-block text-sm font-semibold text-[#A8C9FF] underline underline-offset-4 hover:text-white">
                 Discuss an idea
               </Link>
             </div>
@@ -34,13 +34,13 @@ export function PracticeOverview() {
               <p className="text-sm leading-7 text-[#C0C9D5]">
                 Explore case studies showing context, decisions, implementation and the limits of the evidence.
               </p>
-              <Link href="/work" className="mt-4 inline-block text-sm font-semibold text-[#A8C9FF] underline underline-offset-4 hover:text-white">
+              <Link prefetch={false} href="/work" className="mt-4 inline-block text-sm font-semibold text-[#A8C9FF] underline underline-offset-4 hover:text-white">
                 Read case studies
               </Link>
             </div>
           </div>
           <p className="text-sm leading-7 text-[#C0C9D5]">
-            Looking for a specific answer? <Link href="/faq" className="font-semibold text-[#A8C9FF] underline underline-offset-4 hover:text-white">Read frequently asked questions</Link> about services, process and project experience.
+            Looking for a specific answer? <Link prefetch={false} href="/faq" className="font-semibold text-[#A8C9FF] underline underline-offset-4 hover:text-white">Read frequently asked questions</Link> about services, process and project experience.
           </p>
         </div>
       </div>

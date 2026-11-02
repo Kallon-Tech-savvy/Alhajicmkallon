@@ -1,30 +1,30 @@
-import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { VisitorPath } from '@/components/VisitorPath';
 import { PracticeOverview } from '@/components/PracticeOverview';
 
-// 1. Dynamic Imports: Defers loading of below-the-fold Client Components
-const ImpactCards = dynamic(() => import('@/components/ImpactCards').then(mod => mod.ImpactCards));
-const Timeline = dynamic(() => import('@/components/Timeline').then(mod => mod.Timeline));
-const FeaturedWork = dynamic(() => import('@/components/FeaturedWork').then(mod => mod.FeaturedWork));
-const ThoughtLeadership = dynamic(() => import('@/components/ThoughtLeadership').then(mod => mod.ThoughtLeadership));
-const NewsletterCTA = dynamic(() => import('@/components/NewsletterCTA').then(mod => mod.NewsletterCTA));
-const Footer = dynamic(() => import('@/components/Footer').then(mod => mod.Footer));
+// The following sections remain server-rendered; no client lazy loader is necessary.
+import { ImpactCards } from '@/components/ImpactCards';
+import { Timeline } from '@/components/Timeline';
+import { FeaturedWork } from '@/components/FeaturedWork';
+import { ThoughtLeadership } from '@/components/ThoughtLeadership';
+import { NewsletterCTA } from '@/components/NewsletterCTA';
+import { Footer } from '@/components/Footer';
 
 export default function Home() {
   return (
     <main className="relative min-h-screen">
       <Navbar />
       <Hero />
+      {/* Show evidence before explaining the approach: one clear reading path. */}
+      <FeaturedWork />
       <PracticeOverview />
       <ImpactCards />
       <Timeline />
-      <FeaturedWork />
       <ThoughtLeadership />
 
       {/* ── Terminal Quote Section ──────────────────────────────────── */}
-      <section className="py-48 px-6 relative overflow-hidden bg-[#0A0A0A] border-t border-[#2A2A2A]">
+      <section className="py-20 md:py-28 px-6 relative overflow-hidden bg-[#0A0A0A] border-t border-[#2A2A2A]">
         
         {/* Watermark */}
         <div

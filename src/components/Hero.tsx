@@ -50,7 +50,7 @@ export const Hero = () => (
 
           <div className="mb-10 flex flex-col items-start gap-3 sm:flex-row">
             <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
-              <Link
+              <Link prefetch={false}
                 href="/work"
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#75A9FF] bg-[#75A9FF] px-6 py-3 text-sm font-bold text-[#0A0A0A] transition-colors hover:bg-white focus-visible:outline-offset-4"
               >
@@ -58,7 +58,7 @@ export const Hero = () => (
               </Link>
             </div>
             <div className="transition-transform duration-200 hover:-translate-y-[3px] hover:scale-[1.01]">
-              <Link
+              <Link prefetch={false}
                 href="/contact"
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-ivory transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-offset-4"
               >

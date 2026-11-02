@@ -36,6 +36,18 @@ jobs:
       - name: Test content parser
         run: npm run test:content
 
+      - name: Test contact fallback
+        run: npm run test:contact
+
+      - name: Test chat security
+        run: npm run test:security
+
+      - name: Test homepage performance boundary
+        run: npm run test:homepage-performance
+
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Lint
         run: npm run lint
 

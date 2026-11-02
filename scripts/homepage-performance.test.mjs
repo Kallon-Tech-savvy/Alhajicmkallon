@@ -54,11 +54,20 @@ test('work page keeps case-study and live-project paths distinct and safe', () =
 });
 
 const navbarSource = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');
+const navInteractionsSource = await readFile(new URL('../src/components/NavbarInteractions.tsx', import.meta.url), 'utf8');
+
+test('navigation renders brand shell on server and hydrates only its controls', () => {
+  assert.doesNotMatch(navbarSource, /^['"]use client['"];?/m);
+  assert.match(navbarSource, /<NavbarInteractions \/>/);
+  assert.match(navbarSource, /aria-label="Primary navigation"/);
+  assert.doesNotMatch(navbarSource, /useState|useEffect|usePathname/);
+});
 
 test('navigation avoids loading Framer Motion for the mobile menu', () => {
-  assert.doesNotMatch(navbarSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(navbarSource, /<AnimatePresence|<motion\./);
-  assert.match(navbarSource, /isMobileMenuOpen &&/);
+  assert.doesNotMatch(navInteractionsSource, /from ['"]framer-motion['"]/);
+  assert.doesNotMatch(navInteractionsSource, /<AnimatePresence|<motion\./);
+  assert.match(navInteractionsSource, /isMobileMenuOpen &&/);
+  assert.match(navInteractionsSource, /aria-expanded=\{isMobileMenuOpen\}/);
 });
 
 const globalSearchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
@@ -69,8 +78,8 @@ test('global search avoids the Framer Motion runtime', () => {
 });
 
 test('global search is split out until a visitor opens it', () => {
-  assert.ok(navbarSource.includes('dynamic(') && navbarSource.includes("import('./GlobalSearch')"));
-  assert.ok(navbarSource.includes('isSearchOpen && <GlobalSearch'));
+  assert.ok(navInteractionsSource.includes('dynamic(') && navInteractionsSource.includes("import('./GlobalSearch')"));
+  assert.ok(navInteractionsSource.includes('isSearchOpen && <GlobalSearch'));
 });
 
 
@@ -99,10 +108,13 @@ test('homepage omits the decorative regional map section', async () => {
 test('Lighthouse enforces the agreed performance and discoverability acceptance criteria', async () => {
   const workflow = await readFile(new URL('../.github/workflows/content-platform.yml', import.meta.url), 'utf8');
   assert.match(workflow, /--only-categories=performance,seo/);
-  assert.match(workflow, /score < 0\.8/);
-  assert.match(workflow, /seoScore < 1/);
-  assert.match(workflow, /expected at least 80\/100/);
-  assert.match(workflow, /expected 100\/100/);
+  const verifier = await readFile(new URL('../scripts/verify-lighthouse-baseline.mjs', import.meta.url), 'utf8');
+  assert.match(workflow, /scripts\/verify-lighthouse-baseline\.mjs/);
+  assert.match(workflow, /for attempt in 1 2 3/);
+  assert.match(verifier, /if \(score < 0\.8\)/);
+  assert.match(verifier, /if \(seoScore < 1\)/);
+  assert.match(verifier, /expected at least 80\/100/);
+  assert.match(verifier, /expected 100\/100/);
   assert.match(workflow, /concurrency:\s*\n\s+group: content-platform-\$\{\{\s*github\.ref\s*\}\}/);
   assert.match(workflow, /cancel-in-progress:\s*true/);
 });
@@ -126,7 +138,7 @@ test('root layout exposes canonical URL and truthful Person/WebSite structured d
   assert.match(layoutSource, /"@context":\s*"https:\/\/schema\.org"/);
   assert.match(layoutSource, /"@type":\s*"Person"/);
   assert.match(layoutSource, /"@type":\s*"WebSite"/);
-  assert.match(layoutSource, /JSON\.stringify\(structuredData\)/);
+  assert.match(layoutSource, /serializeJsonLd\(structuredData\)/);
   assert.match(layoutSource, /addressCountry:\s*"SL"/);
 });
 
@@ -158,8 +170,9 @@ const chatLauncherSourceForIcons = await readFile(new URL('../src/components/Cha
 
 test('initial navigation and chat launcher do not import the icon package into the client shell', () => {
   assert.doesNotMatch(navbarSourceForIcons, /from ['"]lucide-react['"]/);
+  assert.doesNotMatch(navInteractionsSource, /from ['"]lucide-react['"]/);
   assert.doesNotMatch(chatLauncherSourceForIcons, /from ['"]lucide-react['"]/);
-  assert.match(navbarSourceForIcons, /function NavIcon/);
+  assert.match(navInteractionsSource, /function NavIcon/);
   assert.match(chatLauncherSourceForIcons, /<svg/);
 });
 
@@ -206,4 +219,105 @@ test('published project, writing, and knowledge pages expose typed structured da
     assert.ok(source.includes('#person'));
     assert.ok(source.includes('#website'));
   }
+});
+
+const homepageSource = await readFile(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
+
+test('homepage presents case-study evidence before the process sections', () => {
+  const hero = homepageSource.indexOf('<Hero />');
+  const work = homepageSource.indexOf('<FeaturedWork />');
+  const process = homepageSource.indexOf('<PracticeOverview />');
+  assert.ok(hero >= 0 && work > hero && process > work);
+});
+
+const searchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
+test('global search quick links resolve to routes that exist', () => {
+  assert.doesNotMatch(searchSource, /href: '\/speaking'/);
+  assert.match(searchSource, /href: '\/knowledge'/);
+});
+
+const writingFiltersSource = await readFile(new URL('../src/components/ArticleFilters.tsx', import.meta.url), 'utf8');
+const writingPageSource = await readFile(new URL('../src/app/writing/page.tsx', import.meta.url), 'utf8');
+
+test('writing client filters use slim metadata instead of importing article bodies', () => {
+  assert.doesNotMatch(writingFiltersSource, /import \{ JOURNAL_ENTRIES \} from/);
+  assert.doesNotMatch(writingFiltersSource, /entry\.content/);
+  assert.match(writingFiltersSource, /entries: WritingListItem\[\]/);
+  assert.match(writingPageSource, /JOURNAL_ENTRIES\.map/);
+  assert.match(writingPageSource, /<ArticleFilters entries=/);
+});
+
+const searchRouteSource = await readFile(new URL('../src/app/api/search/route.ts', import.meta.url), 'utf8');
+
+test('global search requests bounded results without hydrating the full catalogue', () => {
+  assert.doesNotMatch(globalSearchSource, /from ['"]@\/lib\/content['"]/);
+  assert.doesNotMatch(globalSearchSource, /generated-content|searchPublishedContent/);
+  assert.ok(globalSearchSource.includes("fetch(`/api/search?q="));
+  assert.match(globalSearchSource, /AbortController/);
+  assert.match(globalSearchSource, /clearTimeout/);
+  assert.match(searchRouteSource, /searchPublishedContent/);
+  assert.match(searchRouteSource, /MAX_RESULTS_PER_TYPE = 8/);
+  assert.doesNotMatch(searchRouteSource, /project\.description|article\.content/);
+});
+
+test('public content catalogue is explicitly server-only', async () => {
+  const source = await readFile(new URL('../src/lib/content.ts', import.meta.url), 'utf8');
+  assert.match(source, /import ['\"]server-only['\"]/);
+});
+
+test('search results and fallback links do not prefetch full pages when the dialog opens', () => {
+  assert.match(globalSearchSource, /href=\{p\.href\} prefetch=\{false\}/);
+  assert.match(globalSearchSource, /href=\{a\.href\} prefetch=\{false\}/);
+  assert.match(globalSearchSource, /href=\{item\.href\}\s+prefetch=\{false\}/);
+  assert.match(globalSearchSource, /href="\/work" prefetch=\{false\}/);
+  assert.match(globalSearchSource, /query\.trim\(\) === ''/);
+});
+
+const homepageLinkFiles = [
+  '../src/components/Navbar.tsx',
+  '../src/components/NavbarInteractions.tsx',
+  '../src/components/Hero.tsx',
+  '../src/components/FeaturedWork.tsx',
+  '../src/components/PracticeOverview.tsx',
+  '../src/components/VisitorPath.tsx',
+  '../src/components/NewsletterCTA.tsx',
+  '../src/components/Footer.tsx',
+  '../src/components/ThoughtLeadership.tsx',
+];
+
+test('homepage links avoid route prefetch until visitors navigate', async () => {
+  for (const file of homepageLinkFiles) {
+    const source = await readFile(new URL(file, import.meta.url), 'utf8');
+    const links = source.match(/<Link(?=\s|>)/g) ?? [];
+    const deferred = source.match(/<Link prefetch=\{false\}/g) ?? [];
+    assert.ok(links.length > 0, `Expected Next Link usage in ${file}`);
+    assert.equal(deferred.length, links.length, `Unexpected eager Link prefetch in ${file}`);
+  }
+});
+
+test('homepage imports server-rendered sections without next/dynamic overhead', async () => {
+  assert.doesNotMatch(homepageSource, /import dynamic from ['"]next\/dynamic['"]/);
+  const sections = ['ImpactCards', 'Timeline', 'FeaturedWork', 'ThoughtLeadership', 'NewsletterCTA', 'Footer'];
+  for (const name of sections) {
+    assert.ok(homepageSource.includes('import { ' + name + ' } from '+String.fromCharCode(39)+'@/components/' + name + String.fromCharCode(39)));
+    const source = await readFile(new URL('../src/components/' + name + '.tsx', import.meta.url), 'utf8');
+    assert.doesNotMatch(source, /^['"]use client['"];?/m, name + ' must remain a server component');
+  }
+});
+
+const rumReporterSource = await readFile(new URL('../src/components/WebVitalsReporter.tsx', import.meta.url), 'utf8');
+const rumRouteSource = await readFile(new URL('../src/app/api/vitals/route.ts', import.meta.url), 'utf8');
+
+test('first-party Web Vitals are only mounted with explicit server-side enablement', () => {
+  assert.match(layoutSource, /WEB_VITALS_ENABLED === '1' && <WebVitalsReporter \/>/);
+  assert.match(rumReporterSource, /useReportWebVitals\(reportVital\)/);
+  assert.match(rumReporterSource, /SAMPLE_RATE = 0\.2/);
+  assert.match(rumReporterSource, /globalPrivacyControl/);
+  assert.match(rumReporterSource, /keepalive: true/);
+  assert.match(rumReporterSource, /credentials: 'omit'/);
+  assert.match(rumReporterSource, /referrerPolicy: 'no-referrer'/);
+  assert.doesNotMatch(rumReporterSource, /navigator\.sendBeacon/);
+  assert.doesNotMatch(rumReporterSource, /localStorage|document\.cookie|location\.search/);
+  assert.match(rumRouteSource, /parseAnonymousVital/);
+  assert.doesNotMatch(rumRouteSource, /request\.headers\.get\(['"](?:x-forwarded-for|user-agent)['"]\)|request\.cookies/);
 });

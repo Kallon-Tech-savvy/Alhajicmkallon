@@ -1,238 +1,38 @@
-'use client';
-
-import React, { useState, useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
-import { cn } from '@/lib/utils';
-const GlobalSearch = dynamic(
-  () => import('./GlobalSearch').then((module) => module.GlobalSearch),
-  { ssr: false }
-);
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { NavbarInteractions } from './NavbarInteractions';
 
-// Each nav link gets a shell-command label
-function NavIcon({ name, size }: { name: 'search' | 'menu' | 'close'; size: number }) {
-  const common = {
-    width: size,
-    height: size,
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.8,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    'aria-hidden': true as const,
-  };
-
-  if (name === 'search') {
-    return <svg {...common}><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>;
-  }
-  if (name === 'close') {
-    return <svg {...common}><path d="m18 6-12 12M6 6l12 12" /></svg>;
-  }
-  return <svg {...common}><path d="M4 6h16M4 12h16M4 18h16" /></svg>;
-}
-
-const NAV_LINKS = [
-  { name: 'home',       href: '/',         short: 'HOME'     },
-  { name: 'about',      href: '/about',     short: 'ABOUT'    },
-  { name: 'work',       href: '/work',      short: 'WORK'     },
-  { name: 'writing',    href: '/writing',   short: 'WRITING'  },
-  { name: 'knowledge',  href: '/knowledge', short: 'KNOWLEDGE'},
-  { name: 'faq',        href: '/faq',       short: 'FAQ'      },
-  { name: 'contact',    href: '/contact',   short: 'CONTACT'  },
-];
-
-export const Navbar = () => {
-  const [isScrolled, setIsScrolled]         = useState(false);
-  const [isMobileMenuOpen, setIsMobileOpen]  = useState(false);
-  const [isSearchOpen, setIsSearchOpen]      = useState(false);
-  const scrolledRef = useRef(false);
-  const pathname = usePathname();
-
-  // Scroll listener
-  useEffect(() => {
-    const onScroll = () => {
-      const next = window.scrollY > 50;
-      if (next !== scrolledRef.current) {
-        scrolledRef.current = next;
-        setIsScrolled(next);
-      }
-    };
-
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Cmd+K search shortcut
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setIsSearchOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
-
+/**
+ * Server-rendered navigation shell. The brand never needs hydration; only
+ * the menu and search controls participate in the client runtime.
+ */
+export function Navbar() {
   return (
-    <>
-      <nav
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4 md:px-10',
-          isScrolled
-            ? 'bg-midnight/90 backdrop-blur-xl border-b border-[#2A2A2A]'
-            : 'bg-transparent'
-        )}
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-
-          {/* ── Left: shell prompt ──────────────────────────────────── */}
-          <Link href="/" className="group flex items-center gap-2 select-none">
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold md:text-sm"
-                  style={{ color: '#A8C9FF' }}>
-              alhaji
-            </span>
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-pride-blue md:text-sm">
-              kallon
-            </span>
-            <span
-              className="cursor-text-blink font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold md:text-sm"
-              style={{ color: 'var(--color-pride-blue)' }}
-            >
-              █
-            </span>
-          </Link>
-
-          {/* ── Desktop nav ─────────────────────────────────────────── */}
-          <div className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map(link => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    'relative rounded-sm px-3 py-1.5 font-inter text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-200',
-                    isActive
-                      ? 'text-[#A8C9FF]'
-                      : 'text-[#9AA4B2] hover:text-ivory'
-                  )}
-                >
-                  {link.name}
-                  {isActive && (
-                    <div
-                      className="absolute bottom-0 left-2 right-2 h-[1px]"
-                      style={{ background: 'var(--color-pride-blue)' }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
-
-            <div className="h-4 w-px mx-3" style={{ background: '#2A2A2A' }} />
-
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 transition-colors duration-200"
-              style={{ color: '#C0C9D5' }}
-              aria-label="Search (⌘K)"
-            >
-              <NavIcon name="search" size={14} />
-            </button>
-
-            <Link
-              href="/contact"
-              className="ml-3 rounded-full border px-4 py-1.5 font-inter text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-200"
-              style={{
-                color: '#F5F5F5',
-                background: 'rgba(0, 102, 255, 0.16)',
-                borderColor: 'rgba(0, 102, 255, 0.35)',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 16px rgba(0,107,255,0.4)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-              }}
-            >
-              Let&apos;s talk
-            </Link>
-          </div>
-
-          {/* ── Mobile toggles ─────────────────────────────────────── */}
-          <div className="lg:hidden flex items-center gap-2">
-            <button onClick={() => setIsSearchOpen(true)} aria-label="Search site" style={{ color: '#C0C9D5' }}
-                    className="p-3">
-              <NavIcon name="search" size={18} />
-            </button>
-            <button
-              onClick={() => setIsMobileOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-navigation"
-              style={{ color: '#C0C9D5' }}
-              className="p-3 relative z-[60]"
-            >
-              {isMobileMenuOpen ? <NavIcon name="close" size={22} /> : <NavIcon name="menu" size={22} />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile menu is conditionally rendered without a motion runtime. */}
-      {isMobileMenuOpen && (
-        <div
-          id="mobile-navigation"
-          role="navigation"
-          aria-label="Mobile navigation"
-          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-center p-10 scanlines"
-          style={{ background: '#0A0A0A' }}
+    <nav
+      aria-label="Primary navigation"
+      className="fixed inset-x-0 top-0 z-[60] border-b border-[#2A2A2A] bg-midnight/90 px-6 py-4 backdrop-blur-xl md:px-10"
+    >
+      <div className="relative z-50 mx-auto flex max-w-7xl items-center justify-between">
+        <Link prefetch={false}
+          href="/"
+          aria-label="Alhaji Kallon — Home"
+          className="group flex select-none items-center gap-2"
         >
-          <div className="mb-10 font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.4em] uppercase"
-               style={{ color: '#6B7280' }}>
-            alhaji@kallon ~$
-          </div>
-
-          <div className="space-y-6">
-            {NAV_LINKS.map((link, i) => (
-              <div
-                key={link.href}
-                style={{ animation: 'slide-up 240ms ease-out both', animationDelay: `${i * 45}ms` }}
-              >
-                <Link
-                  href={link.href}
-                  onClick={() => setIsMobileOpen(false)}
-                  className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold block transition-colors duration-200"
-                  style={{ color: pathname === link.href ? '#FFB000' : '#E0E0E0' }}
-                >
-                  <span style={{ color: '#6B7280', marginRight: 8 }}>&gt;</span>
-                  {link.name}
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div
-            className="mt-16 pt-8 border-t"
-            style={{ borderColor: '#2A2A2A', animation: 'slide-up 240ms ease-out both', animationDelay: '300ms' }}
+          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-[#A8C9FF] md:text-sm">
+            alhaji
+          </span>
+          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-pride-blue md:text-sm">
+            kallon
+          </span>
+          <span
+            aria-hidden="true"
+            className="cursor-text-blink font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-pride-blue md:text-sm"
           >
-            <div className="flex gap-8 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-widest"
-                 style={{ color: '#6B7280' }}>
-              <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer"
-                 className="hover:text-[#006BFF] transition-colors">Twitter</a>
-              <a href="https://linkedin.com/in/alhaji-c-m-k-8b79a225b" target="_blank" rel="noopener noreferrer"
-                 className="hover:text-[#006BFF] transition-colors">LinkedIn</a>
-              <a href="https://github.com/Kallon-Tech-savvy" target="_blank" rel="noopener noreferrer"
-                 className="hover:text-[#006BFF] transition-colors">GitHub</a>
-            </div>
-          </div>
-        </div>
-      )}
+            █
+          </span>
+        </Link>
 
-      {isSearchOpen && <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />}
-    </>
+        <NavbarInteractions />
+      </div>
+    </nav>
   );
-};
+}

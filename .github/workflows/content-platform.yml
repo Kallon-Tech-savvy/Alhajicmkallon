@@ -1,5 +1,8 @@
 name: Content platform checks
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches: [main]
@@ -28,6 +31,16 @@ jobs:
         run: npm run test:content
       - name: Test contact form fallback
         run: npm run test:contact
+      - name: Test chat request security
+        run: npm run test:security
+      - name: Test anonymous Web Vitals validation
+        run: npm run test:vitals
+      - name: Test Lighthouse report diagnostics
+        run: npm run test:performance-report
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Prove deep-module boundaries
+        run: npm run test:boundaries
       - name: Test homepage performance boundary
         run: npm run test:homepage-performance
       - name: Lint
@@ -36,6 +49,8 @@ jobs:
         run: bash -n scripts/wizard-vercel-deployment.sh
       - name: Production build
         run: npm run build
+      - name: Verify browser bundle excludes published full-text content
+        run: npm run test:browser-bundle
       - name: Start production server for performance audit
         run: |
           npm run start > /tmp/portfolio-next.log 2>&1 &
@@ -48,71 +63,48 @@ jobs:
           done
           cat /tmp/portfolio-next.log
           exit 1
-      - name: Test production crawl and AI discovery endpoints
+      - name: Test production crawl, search and AI discovery endpoints
         run: node --test scripts/discovery-endpoints.test.mjs
-      - name: Run Lighthouse performance audit
+      - name: Run three independent Lighthouse audits
         run: |
-          npx --yes lighthouse http://127.0.0.1:3000/ \
-            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
-            --only-categories=performance,seo \
-            --output=json \
-            --output-path=./lighthouse-report.json
-          node <<'NODE'
-          const fs = require('node:fs');
-          const reportPath = './lighthouse-report.json';
-          if (!fs.existsSync(reportPath)) {
-            console.error('Lighthouse did not produce a report.');
-            process.exit(1);
-          }
-
-          const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-          const score = report.categories.performance.score;
-          const seoScore = report.categories.seo.score;
-          const metrics = [
-            'first-contentful-paint',
-            'largest-contentful-paint',
-            'speed-index',
-            'total-blocking-time',
-            'cumulative-layout-shift',
-            'interactive',
-          ];
-
-          console.log(`Lighthouse performance score: ${Math.round(score * 100)}`);
-          console.log(`Lighthouse SEO score: ${Math.round(seoScore * 100)}`);
-          console.log('Core performance metrics:');
-          for (const id of metrics) {
-            const audit = report.audits[id];
-            if (audit) console.log(`- ${audit.title}: ${audit.displayValue ?? audit.score}`);
-          }
-
-          const failures = Object.values(report.audits)
-            .filter((audit) => audit.score !== null && audit.score < 1)
-            .sort((a, b) =>
-              (b.details?.overallSavingsMs ?? 0) - (a.details?.overallSavingsMs ?? 0)
-            )
-            .slice(0, 10);
-
-          console.log('Highest-impact audits needing attention:');
-          for (const audit of failures) {
-            const savings = audit.details?.overallSavingsMs;
-            const suffix = Number.isFinite(savings) ? ` (potential savings: ${Math.round(savings)} ms)` : '';
-            console.log(`- [${audit.score}] ${audit.title}: ${audit.displayValue ?? 'Needs review'}${suffix}`);
-          }
-
-          if (score < 0.8) {
-            console.error('Performance budget failed: expected at least 80/100.');
-            process.exitCode = 1;
-          }
-          if (seoScore < 1) {
-            console.error('SEO / discoverability budget failed: expected 100/100.');
-            process.exitCode = 1;
-          }
-          NODE
-      - name: Upload Lighthouse report
+          mkdir -p lighthouse-reports
+          for attempt in 1 2 3; do
+            echo "Lighthouse audit ${attempt}/3"
+            npx --yes lighthouse http://127.0.0.1:3000/ \
+              --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+              --only-categories=performance,seo \
+              --output=json \
+              --output-path="./lighthouse-reports/run-${attempt}.json"
+          done
+          node scripts/verify-lighthouse-baseline.mjs \
+            lighthouse-reports/run-1.json \
+            lighthouse-reports/run-2.json \
+            lighthouse-reports/run-3.json
+      - name: Summarize main-thread CPU costs across audits
+        if: always()
+        run: |
+          for report in lighthouse-reports/run-*.json; do
+            if [ -f "$report" ]; then node scripts/report-main-thread.mjs "$report"; fi
+          done
+      - name: Verify enabled Web Vitals collector on a separate production server
+        run: |
+          WEB_VITALS_ENABLED=1 ./node_modules/.bin/next start -p 3001 > /tmp/portfolio-vitals.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3001/privacy > /dev/null; then
+              VITALS_TEST_URL=http://127.0.0.1:3001 node --test scripts/vitals-endpoint.test.mjs
+              exit $?
+            fi
+            sleep 2
+          done
+          cat /tmp/portfolio-vitals.log
+          exit 1
+      - name: Upload Lighthouse baseline reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-performance-report
-          path: lighthouse-report.json
+          name: lighthouse-performance-baseline
+          path: lighthouse-reports/
           if-no-files-found: warn
           retention-days: 7

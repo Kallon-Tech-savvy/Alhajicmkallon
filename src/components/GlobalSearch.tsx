@@ -1,12 +1,35 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, X, FileText, Code, Map, ArrowRight } from 'lucide-react';
-import { searchPublishedContent } from '@/lib/content';
+import { Search, X, FileText, Code, BookOpen, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+
+interface SearchProject {
+  id: string;
+  title: string;
+  summary: string;
+  href: string;
+}
+
+interface SearchArticle {
+  slug: string;
+  title: string;
+  excerpt: string;
+  href: string;
+}
+
+interface SearchResults {
+  projects: SearchProject[];
+  articles: SearchArticle[];
+}
+
+type SearchStatus = 'idle' | 'loading' | 'success' | 'error';
+const EMPTY_RESULTS: SearchResults = { projects: [], articles: [] };
 
 export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SearchResults>(EMPTY_RESULTS);
+  const [searchStatus, setSearchStatus] = useState<SearchStatus>('idle');
   const dialogRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -19,17 +42,69 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     inputRef.current?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = [...dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled])'
+        )];
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', handleKeyDown);
     return () => {
+      document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', handleKeyDown);
       previouslyFocused?.focus();
     };
   }, [isOpen, onClose]);
 
-  const { projects: filteredProjects, articles: filteredArticles } = searchPublishedContent(query);
+  // Search stays server-side; a cancelled response cannot replace newer results.
+  useEffect(() => {
+    const normalized = query.trim();
+    if (!isOpen || !normalized) return;
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(normalized)}`, {
+          signal: controller.signal,
+          cache: 'no-store',
+        });
+        if (!response.ok) throw new Error('Search is temporarily unavailable');
+        const payload: SearchResults = await response.json();
+        if (!controller.signal.aborted) {
+          setResults(payload);
+          setSearchStatus('success');
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setResults(EMPTY_RESULTS);
+          setSearchStatus('error');
+        }
+      }
+    }, 220);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, isOpen]);
+
+  const { projects: filteredProjects, articles: filteredArticles } = results;
 
   return isOpen ? (
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4">
@@ -53,12 +128,17 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               <h2 id="global-search-title" className="sr-only">Search this website</h2>
               <input
                 ref={inputRef}
-                autoFocus
                 aria-label="Search projects and articles"
                 className="flex-1 bg-transparent border-none outline-none text-ivory placeholder-muted font-space text-xl py-2 font-bold"
                 placeholder="Search anything..."
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                maxLength={120}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setQuery(value);
+                  setResults(EMPTY_RESULTS);
+                  setSearchStatus(value.trim() ? 'loading' : 'idle');
+                }}
               />
               <button
                 type="button"
@@ -70,8 +150,8 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               </button>
             </div>
 
-            <div className="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" aria-live="polite">
-              {query === '' ? (
+            <div className="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" aria-live="polite" aria-busy={searchStatus === 'loading'}>
+              {query.trim() === '' ? (
                 <div className="space-y-8">
                   <div>
                     <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Popular Categories</h3>
@@ -79,12 +159,13 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       {[
                         { icon: <Code size={18} />, label: 'Case Studies', href: '/work', color: 'text-blue-400' },
                         { icon: <FileText size={18} />, label: 'Writing', href: '/writing', color: 'text-purple-400' },
-                        { icon: <Map size={18} />, label: 'Speaking', href: '/speaking', color: 'text-blue-400' },
+                        { icon: <BookOpen size={18} />, label: 'Knowledge', href: '/knowledge', color: 'text-blue-400' },
                         { icon: <ArrowRight size={18} />, label: 'About Alhaji', href: '/about', color: 'text-gold' },
                       ].map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
+                          prefetch={false}
                           onClick={onClose}
                           className="flex items-center p-4 rounded-xl hover:bg-white/5 text-left transition-all duration-300 group border border-transparent hover:border-white/5"
                         >
@@ -97,6 +178,17 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                     </div>
                   </div>
                 </div>
+              ) : searchStatus === 'loading' ? (
+                <p role="status" className="py-12 text-center text-sm text-muted">Searching published work and writing…</p>
+              ) : searchStatus === 'error' ? (
+                <div role="alert" className="py-12 text-center text-sm text-ivory">
+                  <p>Search could not be completed. Please change your query or browse directly.</p>
+                  <div className="mt-5 flex flex-wrap justify-center gap-4">
+                    <Link href="/work" prefetch={false} onClick={onClose} className="text-[#A8C9FF] underline underline-offset-4">Work</Link>
+                    <Link href="/writing" prefetch={false} onClick={onClose} className="text-[#A8C9FF] underline underline-offset-4">Writing</Link>
+                    <Link href="/knowledge" prefetch={false} onClick={onClose} className="text-[#A8C9FF] underline underline-offset-4">Knowledge</Link>
+                  </div>
+                </div>
               ) : (
                 <div className="space-y-8">
                   {filteredProjects.length > 0 && (
@@ -104,7 +196,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Projects</h3>
                       <div className="space-y-2">
                         {filteredProjects.map(p => (
-                          <Link key={p.id} href={`/work/${p.slug}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
+                          <Link key={p.id} href={p.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
                             <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{p.title}</div>
                             <div className="text-xs text-muted mt-1">{p.summary}</div>
                           </Link>
@@ -118,7 +210,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Articles</h3>
                       <div className="space-y-2">
                         {filteredArticles.map((a) => (
-                          <Link key={a.slug} href={a.kind === 'knowledge' ? `/knowledge/${a.slug}` : `/writing/${a.slug}`} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
+                          <Link key={a.slug} href={a.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
                             <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{a.title}</div>
                             <div className="text-xs text-muted mt-1">{a.excerpt}</div>
                           </Link>
@@ -127,7 +219,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                     </div>
                   )}
 
-                  {filteredProjects.length === 0 && filteredArticles.length === 0 && (
+                  {searchStatus === 'success' && filteredProjects.length === 0 && filteredArticles.length === 0 && (
                     <div className="py-20 text-center">
                       <p className="text-muted italic font-inter text-ivory/50">No results found for &quot;{query}&quot;</p>
                     </div>

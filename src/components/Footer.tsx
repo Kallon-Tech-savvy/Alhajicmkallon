@@ -13,7 +13,11 @@ const NAV_CMDS = [
   { cmd: 'home', href: '/' },
   { cmd: 'work', href: '/work' },
   { cmd: 'about', href: '/about' },
-  { cmd: 'Contact', href: '/contact' },
+  { cmd: 'writing', href: '/writing' },
+  { cmd: 'knowledge', href: '/knowledge' },
+  { cmd: 'FAQ', href: '/faq' },
+  { cmd: 'contact', href: '/contact' },
+  { cmd: 'privacy', href: '/privacy' },
 ];
 
 export const Footer = () => {
@@ -52,7 +56,7 @@ export const Footer = () => {
               I help founders and teams clarify the problem, decide what to build, and turn the right idea into a working digital product.
             </p>
 
-            <Link
+            <Link prefetch={false}
               href="/contact"
               className="inline-flex items-center gap-3 rounded-full bg-pride-blue px-6 py-3 font-inter text-[12px] font-semibold uppercase tracking-[0.24em] text-white transition-transform duration-200 hover:-translate-y-0.5"
             >
@@ -72,7 +76,7 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {NAV_CMDS.map(item => (
                   <li key={item.cmd}>
-                    <Link
+                    <Link prefetch={false}
                       href={item.href}
                       className="font-inter text-sm transition-colors duration-150 hover:text-[var(--color-pride-blue)]"
                       style={{ color: '#9AA4B2' }}
