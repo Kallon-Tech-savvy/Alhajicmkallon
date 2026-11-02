@@ -86,7 +86,7 @@ export function NavbarInteractions() {
       if (event.key === 'Tab') {
         const button = menuButtonRef.current;
         const menuLinks = Array.from(menuPanelRef.current?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? []);
-        const focusable = [button, ...menuLinks].filter((item): item is HTMLElement => item !== null);
+        const focusable: HTMLElement[] = button ? [button, ...menuLinks] : menuLinks;
         if (focusable.length === 0) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
