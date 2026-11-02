@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { cycleNavigationFocus } from '@/lib/navigation-focus.mjs';
 
 const GlobalSearch = dynamic(
   () => import('./GlobalSearch').then((module) => module.GlobalSearch),
@@ -115,16 +116,7 @@ export function NavbarInteractions() {
         const button = menuButtonRef.current;
         const menuLinks = Array.from(menuPanelRef.current?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? []);
         const focusable: HTMLElement[] = button ? [button, ...menuLinks] : menuLinks;
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+        cycleNavigationFocus(event, focusable, document.activeElement);
       }
     }
     window.addEventListener('keydown', onKeyDown);
