@@ -34,3 +34,7 @@ Global Search fetches bounded, published-only JSON summaries from `/api/search?q
 ### Browser-bundle regression check
 
 After `npm run build`, run `npm run test:browser-bundle`. CI inspects the generated `.next/static` JavaScript for long snippets from published case-study and article bodies. This is a defense-in-depth heuristic; the `server-only` import remains the principal build-time boundary. Search result links use `prefetch={false}` so merely opening the dialog does not request every matching page's full route payload.
+
+### Prevent speculative route-data fetching
+
+Homepage links use `prefetch={false}` on Next.js Link. This prevents initial page visits from transferring other route payloads before navigation; the trade-off is that an initial click may wait for the target page rather than using a preloaded response. The CI Lighthouse job counts `_rsc` fetches on untouched homepage loads and fails if any remain. Revisit the trade-off after measuring real-user navigation latency.

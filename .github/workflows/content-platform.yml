@@ -96,6 +96,19 @@ jobs:
             if (audit) console.log(`- ${audit.title}: ${audit.displayValue ?? audit.score}`);
           }
 
+          // Unprompted _rsc requests here are often Next.js Link prefetches.
+          // The homepage should spend bandwidth on what the visitor selected.
+          const networkItems = report.audits['network-requests']?.details?.items ?? [];
+          const routePayloads = networkItems.filter(
+            (item) => item.resourceType === 'Fetch' && item.url.includes('_rsc=')
+          );
+          const routeBytes = routePayloads.reduce((sum, item) => sum + (item.transferSize ?? 0), 0);
+          console.log(`Homepage route-data prefetches: ${routePayloads.length} requests, ${routeBytes} bytes`);
+          if (routePayloads.length > 0) {
+            console.error('Unexpected automatic homepage route-data prefetches.');
+            process.exitCode = 1;
+          }
+
           const failures = Object.values(report.audits)
             .filter((audit) => audit.score !== null && audit.score < 1)
             .sort((a, b) =>

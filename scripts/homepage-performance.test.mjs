@@ -269,3 +269,25 @@ test('search results and fallback links do not prefetch full pages when the dial
   assert.match(globalSearchSource, /href="\/work" prefetch=\{false\}/);
   assert.match(globalSearchSource, /query\.trim\(\) === ''/);
 });
+
+const homepageLinkFiles = [
+  '../src/components/Navbar.tsx',
+  '../src/components/NavbarInteractions.tsx',
+  '../src/components/Hero.tsx',
+  '../src/components/FeaturedWork.tsx',
+  '../src/components/PracticeOverview.tsx',
+  '../src/components/VisitorPath.tsx',
+  '../src/components/NewsletterCTA.tsx',
+  '../src/components/Footer.tsx',
+  '../src/components/ThoughtLeadership.tsx',
+];
+
+test('homepage links avoid route prefetch until visitors navigate', async () => {
+  for (const file of homepageLinkFiles) {
+    const source = await readFile(new URL(file, import.meta.url), 'utf8');
+    const links = source.match(/<Link(?=\\s|>)/g) ?? [];
+    const deferred = source.match(/<Link prefetch=\\{false\\}/g) ?? [];
+    assert.ok(links.length > 0, `Expected Next Link usage in ${file}`);
+    assert.equal(deferred.length, links.length, `Unexpected eager Link prefetch in ${file}`);
+  }
+});
