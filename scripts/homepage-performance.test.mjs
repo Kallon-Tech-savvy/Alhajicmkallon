@@ -313,7 +313,10 @@ test('first-party Web Vitals are only mounted with explicit server-side enableme
   assert.match(rumReporterSource, /useReportWebVitals\(reportVital\)/);
   assert.match(rumReporterSource, /SAMPLE_RATE = 0\.2/);
   assert.match(rumReporterSource, /globalPrivacyControl/);
-  assert.match(rumReporterSource, /sendBeacon/);
+  assert.match(rumReporterSource, /keepalive: true/);
+  assert.match(rumReporterSource, /credentials: 'omit'/);
+  assert.match(rumReporterSource, /referrerPolicy: 'no-referrer'/);
+  assert.doesNotMatch(rumReporterSource, /navigator\.sendBeacon/);
   assert.doesNotMatch(rumReporterSource, /localStorage|document\.cookie|location\.search/);
   assert.match(rumRouteSource, /parseAnonymousVital/);
   assert.doesNotMatch(rumRouteSource, /request\.headers\.get\('x-forwarded-for'\)|user-agent|request\.cookies/);
