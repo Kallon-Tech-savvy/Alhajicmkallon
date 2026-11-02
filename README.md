@@ -30,3 +30,7 @@ Create a feature branch; keep changes small and scoped; include regression tests
 ## Global search performance boundary
 
 Global Search fetches bounded, published-only JSON summaries from `/api/search?q=...`. The route alone imports `src/lib/content.ts`, which is marked `server-only` so future client imports fail during builds. Never import catalogue values from a client component: client interfaces should receive lightweight serializable props or fetch results when requested. The search endpoint searches full published text on the server but never returns it; requests are debounced and cancelled as visitors type. Search queries are not stored by the application, and responses use `Cache-Control: no-store`.
+
+### Browser-bundle regression check
+
+After `npm run build`, run `npm run test:browser-bundle`. CI inspects the generated `.next/static` JavaScript for long snippets from published case-study and article bodies. This is a defense-in-depth heuristic; the `server-only` import remains the principal build-time boundary. Search result links use `prefetch={false}` so merely opening the dialog does not request every matching page's full route payload.

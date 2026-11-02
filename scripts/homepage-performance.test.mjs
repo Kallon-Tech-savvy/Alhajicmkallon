@@ -261,3 +261,11 @@ test('public content catalogue is explicitly server-only', async () => {
   const source = await readFile(new URL('../src/lib/content.ts', import.meta.url), 'utf8');
   assert.match(source, /import ['\"]server-only['\"]/);
 });
+
+test('search results and fallback links do not prefetch full pages when the dialog opens', () => {
+  assert.match(globalSearchSource, /href=\{p\.href\} prefetch=\{false\}/);
+  assert.match(globalSearchSource, /href=\{a\.href\} prefetch=\{false\}/);
+  assert.match(globalSearchSource, /href=\{item\.href\}\s+prefetch=\{false\}/);
+  assert.match(globalSearchSource, /href="\/work" prefetch=\{false\}/);
+  assert.match(globalSearchSource, /query\.trim\(\) === ''/);
+});
