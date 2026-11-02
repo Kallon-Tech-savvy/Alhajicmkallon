@@ -56,7 +56,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             <ArrowLeft size={14} /> Back to selected work
           </Link>
           <Reveal variant="up">
-            <p className="text-gold text-xs uppercase tracking-widest mb-5">{project.role}</p>
+            <div className="flex flex-wrap items-center gap-3 mb-5">\n              <p className="text-gold text-xs uppercase tracking-widest">{project.role}</p>\n              <span className="text-[10px] uppercase tracking-widest text-muted border border-white/10 px-2 py-1">{project.links?.live ? 'Live website' : project.role.toLowerCase().includes('in progress') ? 'In progress' : 'Case study'}</span>\n            </div>
             <h1 className="font-space text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-7">{project.title}</h1>
             <p className="text-muted text-lg md:text-xl leading-relaxed">{project.summary}</p>
             {(project.links?.live || project.links?.source) && (
