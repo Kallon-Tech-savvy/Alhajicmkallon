@@ -76,3 +76,14 @@ test('search ignores case, handles empty queries and rejects overlong input', as
   assert.equal(tooLong.status, 400);
   assert.match(tooLong.headers.get('cache-control') ?? '', /no-store/);
 });
+
+test('anonymous web vitals collector is disabled unless explicitly configured', async () => {
+  const response = await fetch(new URL('/api/vitals', baseUrl), {
+    method: 'POST',
+    headers: { Origin: baseUrl, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: 'LCP', value: 900, section: 'home', viewport: 'small' }),
+  });
+  const expected = process.env.WEB_VITALS_ENABLED === '1' ? 204 : 404;
+  assert.equal(response.status, expected);
+  assert.match(response.headers.get('cache-control') ?? '', /no-store/);
+});
