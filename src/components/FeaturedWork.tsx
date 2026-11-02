@@ -21,7 +21,7 @@ export const FeaturedWork = () => {
             <p className="text-muted text-lg font-inter leading-relaxed mb-8">
               These case studies show the problem, the decisions I made, what I built, and what the available evidence can—and cannot—tell us.
             </p>
-            <Link href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
+            <Link prefetch={false} href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
               Explore all work <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
           </div>
@@ -69,7 +69,7 @@ export const FeaturedWork = () => {
                 </div>
 
                 <h3 className="font-space text-4xl md:text-5xl font-bold tracking-tighter mb-6 group-hover:text-gold transition-colors">
-                  <Link href={`/work/${project.slug}`}>{project.title}</Link>
+                  <Link prefetch={false} href={`/work/${project.slug}`}>{project.title}</Link>
                 </h3>
 
                 <p className="text-muted text-lg font-inter mb-8 leading-relaxed">
@@ -85,7 +85,7 @@ export const FeaturedWork = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4">
-                  <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
+                  <Link prefetch={false} href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
                     Read Case Study <ArrowUpRight size={14} />
                   </Link>
                   {project.links?.live && (

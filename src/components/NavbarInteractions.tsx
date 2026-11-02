@@ -112,7 +112,7 @@ export function NavbarInteractions() {
         {PRIMARY_LINKS.map(({ name, href }) => {
           const current = isActivePath(pathname, href);
           return (
-            <Link
+            <Link prefetch={false}
               key={href}
               href={href}
               aria-current={current ? 'page' : undefined}
@@ -135,7 +135,7 @@ export function NavbarInteractions() {
         >
           <NavIcon name="search" size={16} />
         </button>
-        <Link
+        <Link prefetch={false}
           href="/contact"
           aria-current={pathname === '/contact' ? 'page' : undefined}
           className="ml-3 rounded-full border border-pride-blue/40 bg-pride-blue/15 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors hover:border-[#A8C9FF] hover:bg-pride-blue/25"
@@ -179,7 +179,7 @@ export function NavbarInteractions() {
             {LINKS.map(({ name, href }) => {
               const current = isActivePath(pathname, href);
               return (
-                <Link
+                <Link prefetch={false}
                   key={href}
                   href={href}
                   aria-current={current ? 'page' : undefined}

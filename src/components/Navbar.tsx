@@ -12,7 +12,7 @@ export function Navbar() {
       className="fixed inset-x-0 top-0 z-[60] border-b border-[#2A2A2A] bg-midnight/90 px-6 py-4 backdrop-blur-xl md:px-10"
     >
       <div className="relative z-50 mx-auto flex max-w-7xl items-center justify-between">
-        <Link
+        <Link prefetch={false}
           href="/"
           aria-label="Alhaji Kallon — Home"
           className="group flex select-none items-center gap-2"
