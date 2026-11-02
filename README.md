@@ -38,3 +38,7 @@ After `npm run build`, run `npm run test:browser-bundle`. CI inspects the genera
 ### Prevent speculative route-data fetching
 
 Homepage links use `prefetch={false}` on Next.js Link. This prevents initial page visits from transferring other route payloads before navigation; the trade-off is that an initial click may wait for the target page rather than using a preloaded response. The CI Lighthouse job counts `_rsc` fetches on untouched homepage loads and fails if any remain. Revisit the trade-off after measuring real-user navigation latency.
+
+### Lighthouse main-thread diagnosis
+
+The CI job now runs `npm run test:performance-report` and prints a bounded diagnostic from the Lighthouse JSON report (`node scripts/report-main-thread.mjs lighthouse-report.json`). It reports script evaluation, layout work, top script CPU costs and longest tasks. This is evidence for choosing subsequent work—not a stable per-commit measurement of JavaScript speed. Identical commits have returned widely varying synthetic Total Blocking Time scores; compare multiple runs and real-user metrics before claiming a performance gain.

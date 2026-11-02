@@ -33,6 +33,8 @@ jobs:
         run: npm run test:contact
       - name: Test chat request security
         run: npm run test:security
+      - name: Test Lighthouse report diagnostics
+        run: npm run test:performance-report
       - name: Typecheck
         run: npm run typecheck
       - name: Prove deep-module boundaries
@@ -132,6 +134,10 @@ jobs:
             process.exitCode = 1;
           }
           NODE
+      - name: Summarize main-thread CPU costs
+        if: always()
+        run: |
+          if [ -f lighthouse-report.json ]; then node scripts/report-main-thread.mjs lighthouse-report.json; fi
       - name: Upload Lighthouse report
         if: always()
         uses: actions/upload-artifact@v4
