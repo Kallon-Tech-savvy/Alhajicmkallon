@@ -300,4 +300,4 @@ test('homepage imports server-rendered sections without next/dynamic overhead', 
     const source = await readFile(new URL('../src/components/' + name + '.tsx', import.meta.url), 'utf8');
     assert.doesNotMatch(source, /^['"]use client['"];?/m, name + ' must remain a server component');
   }
-);
+});
