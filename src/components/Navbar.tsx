@@ -92,7 +92,7 @@ export const Navbar = () => {
           {/* ── Left: shell prompt ──────────────────────────────────── */}
           <Link href="/" className="group flex items-center gap-2 select-none">
             <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold md:text-sm"
-                  style={{ color: '#006BFF' }}>
+                  style={{ color: '#A8C9FF' }}>
               alhaji
             </span>
             <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-pride-blue md:text-sm">
@@ -117,7 +117,7 @@ export const Navbar = () => {
                   className={cn(
                     'relative rounded-sm px-3 py-1.5 font-inter text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-200',
                     isActive
-                      ? 'text-pride-blue'
+                      ? 'text-[#A8C9FF]'
                       : 'text-[#9AA4B2] hover:text-ivory'
                   )}
                 >
@@ -137,7 +137,7 @@ export const Navbar = () => {
             <button
               onClick={() => setIsSearchOpen(true)}
               className="p-2 transition-colors duration-200"
-              style={{ color: '#6B7280' }}
+              style={{ color: '#C0C9D5' }}
               aria-label="Search (⌘K)"
             >
               <NavIcon name="search" size={14} />
@@ -164,14 +164,17 @@ export const Navbar = () => {
 
           {/* ── Mobile toggles ─────────────────────────────────────── */}
           <div className="lg:hidden flex items-center gap-2">
-            <button onClick={() => setIsSearchOpen(true)} style={{ color: '#6B7280' }}
-                    className="p-2">
+            <button onClick={() => setIsSearchOpen(true)} aria-label="Search site" style={{ color: '#C0C9D5' }}
+                    className="p-3">
               <NavIcon name="search" size={18} />
             </button>
             <button
               onClick={() => setIsMobileOpen(!isMobileMenuOpen)}
-              style={{ color: '#6B7280' }}
-              className="p-2 relative z-[60]"
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
+              style={{ color: '#C0C9D5' }}
+              className="p-3 relative z-[60]"
             >
               {isMobileMenuOpen ? <NavIcon name="close" size={22} /> : <NavIcon name="menu" size={22} />}
             </button>
@@ -182,6 +185,9 @@ export const Navbar = () => {
       {/* Mobile menu is conditionally rendered without a motion runtime. */}
       {isMobileMenuOpen && (
         <div
+          id="mobile-navigation"
+          role="navigation"
+          aria-label="Mobile navigation"
           className="fixed inset-0 z-50 lg:hidden flex flex-col justify-center p-10 scanlines"
           style={{ background: '#0A0A0A' }}
         >
