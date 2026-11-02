@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ChatWidgetLoader } from "@/components/ChatWidgetLoader";
+import { serializeJsonLd } from "@/lib/serialize-json-ld";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -121,7 +122,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-midnight text-ivory">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
         />
         <a
           href="#main-content"

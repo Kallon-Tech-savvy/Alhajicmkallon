@@ -1,5 +1,8 @@
 name: Content platform checks
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches: [main]
@@ -28,6 +31,12 @@ jobs:
         run: npm run test:content
       - name: Test contact form fallback
         run: npm run test:contact
+      - name: Test chat request security
+        run: npm run test:security
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Prove deep-module boundaries
+        run: npm run test:boundaries
       - name: Test homepage performance boundary
         run: npm run test:homepage-performance
       - name: Lint

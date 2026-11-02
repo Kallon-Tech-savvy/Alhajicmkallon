@@ -5,6 +5,7 @@ import { buildSystemPrompt } from '@/lib/chatsystemPrompt';
 import { selectRelevantChunks } from '@/lib/Retrieval';
 import { matchFaq } from '@/lib/FAQmatcher';
 import { MAX_MESSAGE_LENGTH, MAX_HISTORY_MESSAGES } from '@/lib/Chatconstant';
+import { ChatBodyTooLargeError, hasJsonContentType, isAllowedChatOrigin, isOversizedContentLength, readChatJson } from '@/lib/chat-request-security.mjs';
 
 export const runtime = 'nodejs';
 
@@ -29,7 +30,7 @@ const FALLBACK_REPLY =
   "I’m currently taking a short break, but I can still help. Please try again in a moment or contact Alhaji directly through the contact page.";
 
 const BUDGET_REACHED_REPLY =
-  "I've reached my question budget for today. Please try again tomorrow, or reach Alhaji directly via the Contact page or hello@alhajikallon.dev.";
+  "I've reached my question budget for today. Please try again tomorrow, or reach Alhaji directly via the Contact page or info@alhajikallon.com.";
 
 function getClientIp(req: NextRequest): string {
   const forwarded = req.headers.get('x-forwarded-for');
@@ -48,22 +49,20 @@ function isValidHistoryMessage(m: unknown): m is ChatMessage {
   );
 }
 
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return true;
-  const allowedOrigins = [process.env.NEXT_PUBLIC_SITE_URL, 'http://localhost:3000', 'http://127.0.0.1:3000'];
-  const normalized = origin.replace(/\/$/, '');
-
-  return allowedOrigins.some((value) => {
-    if (!value) return false;
-    const normalizedValue = value.replace(/\/$/, '');
-    return normalized === normalizedValue || normalized.startsWith(`${normalizedValue}/`);
-  });
-}
-
 export async function POST(req: NextRequest) {
   const origin = req.headers.get('origin');
-  if (origin && !isAllowedOrigin(origin)) {
+  if (!isAllowedChatOrigin(origin, {
+    siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
+    previewUrl: process.env.VERCEL_URL,
+    nodeEnv: process.env.NODE_ENV,
+  })) {
     return NextResponse.json({ error: 'This chat can only be used from the website itself.' }, { status: 403 });
+  }
+  if (!hasJsonContentType(req.headers.get('content-type'))) {
+    return NextResponse.json({ error: 'Only JSON requests are accepted.' }, { status: 415 });
+  }
+  if (isOversizedContentLength(req.headers.get('content-length'))) {
+    return NextResponse.json({ error: 'The request is too large.' }, { status: 413 });
   }
 
   const ip = getClientIp(req);
@@ -80,8 +79,11 @@ export async function POST(req: NextRequest) {
 
   let body: unknown;
   try {
-    body = await req.json();
-  } catch {
+    body = await readChatJson(req);
+  } catch (error: unknown) {
+    if (error instanceof ChatBodyTooLargeError) {
+      return NextResponse.json({ error: 'The request is too large.' }, { status: 413 });
+    }
     return NextResponse.json({ error: 'The message could not be read. Please try again.' }, { status: 400 });
   }
 
@@ -143,15 +145,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-  } catch (err: unknown) {
-    console.error('OpenAI Moderation check failed:', err);
-    // If the account is explicitly restricted (403 Forbidden), intercept and short-circuit right here
-    if (typeof err === 'object' && err !== null && 'status' in err && err.status === 403) {
-      return NextResponse.json(
-        { reply: FALLBACK_REPLY, error: 'Upstream gateway clearance exception.' },
-        { status: 500 }
-      );
-    }
+  } catch {
+    // Fail closed: never send an unmoderated request to the completion endpoint.
+    console.error('OpenAI moderation is unavailable');
+    return NextResponse.json(
+      { reply: FALLBACK_REPLY, error: 'The chat service is currently unavailable.' },
+      { status: 503 }
+    );
   }
 
   const relevantChunks = selectRelevantChunks(trimmedMessage, safeHistory);
