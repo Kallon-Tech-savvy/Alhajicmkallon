@@ -56,7 +56,7 @@ export function VisitorPath() {
               <p className="mb-6 flex-1 text-sm leading-7 text-[#9aa4b2]">
                 {option.summary}
               </p>
-              <Link
+              <Link prefetch={false}
                 href={option.href}
                 className="inline-flex w-fit items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-pride-blue transition-colors duration-200 hover:bg-pride-blue/20"
               >

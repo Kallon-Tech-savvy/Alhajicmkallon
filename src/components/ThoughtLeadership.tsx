@@ -15,7 +15,7 @@ export const ThoughtLeadership = () => {
               THOUGHT <br /><span className="text-muted">LEADERSHIP</span>
             </h2>
           </div>
-          <Link
+          <Link prefetch={false}
             href="/writing"
             className="px-10 py-5 border border-white/10 text-ivory font-space font-black text-xs uppercase tracking-widest hover:bg-white/5 transition-all flex items-center gap-3"
           >
@@ -46,7 +46,7 @@ export const ThoughtLeadership = () => {
                 {article.excerpt}
               </p>
 
-              <Link
+              <Link prefetch={false}
                 href={`/writing/${article.slug}`}
                 className="mt-auto flex items-center gap-2 font-space text-[10px] font-black uppercase tracking-[0.2em] text-ivory group-hover:text-gold transition-colors"
               >

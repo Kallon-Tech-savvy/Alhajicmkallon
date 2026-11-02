@@ -19,7 +19,7 @@ export const NewsletterCTA = () => (
         <p className="text-midnight/70 text-lg md:text-xl font-medium font-inter mb-12 max-w-2xl mx-auto">
           Notes on product decisions, technology, and building digital products—written to make the reasoning behind the work more useful and reusable.
         </p>
-        <Link
+        <Link prefetch={false}
           href="/writing"
           className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-midnight text-ivory font-space font-black text-xs uppercase tracking-[0.2em] hover:bg-ivory hover:text-midnight transition-colors duration-300"
         >
