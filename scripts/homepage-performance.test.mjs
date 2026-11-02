@@ -167,8 +167,9 @@ const chatLauncherSourceForIcons = await readFile(new URL('../src/components/Cha
 
 test('initial navigation and chat launcher do not import the icon package into the client shell', () => {
   assert.doesNotMatch(navbarSourceForIcons, /from ['"]lucide-react['"]/);
+  assert.doesNotMatch(navInteractionsSource, /from ['"]lucide-react['"]/);
   assert.doesNotMatch(chatLauncherSourceForIcons, /from ['"]lucide-react['"]/);
-  assert.match(navbarSourceForIcons, /function NavIcon/);
+  assert.match(navInteractionsSource, /function NavIcon/);
   assert.match(chatLauncherSourceForIcons, /<svg/);
 });
 
