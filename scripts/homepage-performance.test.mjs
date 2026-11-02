@@ -304,3 +304,17 @@ test('homepage imports server-rendered sections without next/dynamic overhead', 
     assert.doesNotMatch(source, /^['"]use client['"];?/m, name + ' must remain a server component');
   }
 });
+
+const rumReporterSource = await readFile(new URL('../src/components/WebVitalsReporter.tsx', import.meta.url), 'utf8');
+const rumRouteSource = await readFile(new URL('../src/app/api/vitals/route.ts', import.meta.url), 'utf8');
+
+test('first-party Web Vitals are only mounted with explicit server-side enablement', () => {
+  assert.match(layoutSource, /WEB_VITALS_ENABLED === '1' && <WebVitalsReporter \/>/);
+  assert.match(rumReporterSource, /useReportWebVitals\(reportVital\)/);
+  assert.match(rumReporterSource, /SAMPLE_RATE = 0\.2/);
+  assert.match(rumReporterSource, /globalPrivacyControl/);
+  assert.match(rumReporterSource, /sendBeacon/);
+  assert.doesNotMatch(rumReporterSource, /localStorage|document\.cookie|location\.search/);
+  assert.match(rumRouteSource, /parseAnonymousVital/);
+  assert.doesNotMatch(rumRouteSource, /request\.headers\.get\('x-forwarded-for'\)|user-agent|request\.cookies/);
+});
