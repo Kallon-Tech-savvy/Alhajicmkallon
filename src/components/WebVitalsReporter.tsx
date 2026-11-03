@@ -15,6 +15,13 @@ function pageCategory(pathname: string) {
     ? section : 'other';
 }
 
+// Web Vitals describe the document lifecycle, including delayed callbacks after
+// client navigation. Keep the original document section rather than the route
+// visible when a metric is emitted. Navigation Timing also covers late mounting.
+const documentSection = typeof window === 'undefined' ? 'other' : pageCategory(
+  new URL(performance.getEntriesByType('navigation')[0]?.name ?? window.location.href).pathname
+);
+
 function reportVital(metric: { name: string; value: number; id: string }) {
   if (!included || !metrics.has(metric.name) || !Number.isFinite(metric.value)) return;
   const privacy = navigator as Navigator & { globalPrivacyControl?: boolean; doNotTrack?: string | null };
@@ -30,7 +37,7 @@ function reportVital(metric: { name: string; value: number; id: string }) {
     value: metric.name === 'CLS'
       ? Math.round(metric.value * 1000) / 1000
       : Math.round(metric.value),
-    section: pageCategory(window.location.pathname),
+    section: documentSection,
     viewport: window.matchMedia('(max-width: 767px)').matches ? 'small' : 'large',
   });
 
