@@ -36,7 +36,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   if (!project) notFound();
 
   return (
-    <main className="min-h-screen bg-midnight text-ivory selection:bg-gold/30">
+    <main className="min-h-screen bg-midnight text-ivory selection:bg-accent/30">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'CreativeWork',
@@ -50,14 +50,17 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         isPartOf: { '@id': 'https://alhajikallon.com/#website' },
       }) }} />
       <Navbar />
-      <section className="pt-40 pb-14 px-6 border-b border-white/5">
+      <section className="page-intro site-gutter border-b border-border">
         <div className="max-w-4xl mx-auto">
-          <Link href="/work" className="inline-flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-widest mb-10">
+          <Link href="/work" className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-10">
             <ArrowLeft size={14} /> Back to selected work
           </Link>
           <Reveal variant="up">
-            <div className="flex flex-wrap items-center gap-3 mb-5">\n              <p className="text-gold text-xs uppercase tracking-widest">{project.role}</p>\n              <span className="text-[10px] uppercase tracking-widest text-muted border border-white/10 px-2 py-1">{project.links?.live ? 'Live website' : project.role.toLowerCase().includes('in progress') ? 'In progress' : 'Case study'}</span>\n            </div>
-            <h1 className="font-space text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-7">{project.title}</h1>
+            <div className="flex flex-wrap items-center gap-3 mb-5">
+              <p className="text-accent text-xs uppercase tracking-widest">{project.role}</p>
+              <span className="text-xs uppercase tracking-widest text-muted border border-border px-2 py-1">{project.links?.live ? 'Live website' : project.role.toLowerCase().includes('in progress') ? 'In progress' : 'Case study'}</span>
+            </div>
+            <h1 className="page-title font-display font-bold tracking-tight leading-tight mb-7">{project.title}</h1>
             <p className="text-muted text-lg md:text-xl leading-relaxed">{project.summary}</p>
             {(project.links?.live || project.links?.source) && (
               <div className="flex flex-wrap gap-5 mt-8">
@@ -66,7 +69,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                     href={project.links.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-gold text-midnight px-5 py-3 text-xs font-bold uppercase tracking-widest hover:bg-ivory transition-colors"
+                    className="inline-flex items-center gap-2 bg-accent text-midnight px-5 py-3 text-xs font-bold uppercase tracking-widest hover:bg-ivory transition-colors"
                   >
                     Visit live project <ArrowUpRight size={14} />
                   </a>
@@ -76,7 +79,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                     href={project.links.source}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border border-white/20 px-5 py-3 text-xs font-bold uppercase tracking-widest text-ivory hover:border-gold hover:text-gold transition-colors"
+                    className="inline-flex items-center gap-2 border border-white/20 px-5 py-3 text-xs font-bold uppercase tracking-widest text-ivory hover:border-accent hover:text-accent transition-colors"
                   >
                     View source code <ArrowUpRight size={14} />
                   </a>
@@ -86,15 +89,15 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             {project.technologies.length > 0 && (
               <ul className="flex flex-wrap gap-2 mt-7" aria-label="Technologies">
                 {project.technologies.map((technology) => (
-                  <li key={technology} className="border border-white/10 rounded-full px-3 py-1 text-xs text-muted">{technology}</li>
+                  <li key={technology} className="border border-border rounded-full px-3 py-1 text-xs text-muted">{technology}</li>
                 ))}
               </ul>
             )}
           </Reveal>
         </div>
       </section>
-      <section className="px-6 py-14">
-        <article className="max-w-3xl mx-auto font-inter text-base md:text-lg">
+      <section className="section-space site-gutter">
+        <article className="max-w-3xl mx-auto font-body text-base md:text-lg">
           <MarkdownContent source={project.body ?? project.description} />
         </article>
       </section>

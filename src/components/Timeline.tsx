@@ -7,10 +7,10 @@ const milestones = [
 
 export const Timeline = () => {
   return (
-    <section className="py-24 bg-midnight px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-6 mb-20">
-          <h2 className="font-space text-2xl font-bold tracking-tighter uppercase italic text-muted">The path so far</h2>
+    <section className="section-space bg-midnight site-gutter overflow-hidden">
+      <div className="max-w-[var(--layout-max)] mx-auto">
+        <div className="flex items-center gap-6 mb-12">
+          <h2 className="font-display text-2xl font-bold tracking-tighter uppercase italic text-muted">The path so far</h2>
           <div className="flex-1 h-[1px] bg-white/10" />
         </div>
 
@@ -20,15 +20,15 @@ export const Timeline = () => {
               key={i}    
               className="relative"
             >
-              <div className="font-space text-6xl font-black text-white/5 absolute -top-10 -left-4 select-none">
+              <div className="font-display text-6xl font-black text-white/5 absolute -top-10 -left-4 select-none">
                 {m.year}
               </div>
               <div className="relative z-10">
-                <div className="w-10 h-10 bg-gold/10 rounded-sm flex items-center justify-center text-gold font-space font-bold text-xs mb-6 border border-gold/20">
+                <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent font-display font-bold text-xs mb-6 border border-accent/20">
                   0{i+1}
                 </div>
-                <h3 className="font-space text-lg font-bold text-ivory mb-2 uppercase tracking-widest">{m.title}</h3>
-                <p className="text-muted text-sm font-inter leading-relaxed">{m.desc}</p>
+                <h3 className="font-display text-lg font-bold text-ivory mb-2 uppercase tracking-widest">{m.title}</h3>
+                <p className="text-muted text-sm font-body leading-relaxed">{m.desc}</p>
               </div>
             </div>
           ))}

@@ -1,29 +1,130 @@
 @import "tailwindcss";
 
-/* ─── Tailwind v4 theme tokens → utilities ───────────────────────────── */
+/* Semantic values shared by Tailwind utilities and inline component styles. */
 :root {
-  --color-midnight: #0A0A0A;
-  --color-surface:  #0F0F0F;
-  --color-navy:     #0D0D0D;
-  --color-gold:     #D4A574;
-  --color-ivory:    #F5F5F5;
-  --color-muted:    #9AA4B2;
-  --color-pride-blue: #0066FF;
-  --color-green:    #0066FF;
-  --color-magenta:  #FF2D55;
-  --color-blue:     #00D4FF;
-  --color-border:   #1A1A1A;
-  --color-accent:   #0066FF;
-
-  /* Font stacks — JS vars injected by layout.tsx */
-  --font-space:     var(--font-jetbrains-mono);
-
-  --background: var(--color-midnight);
-  --foreground: var(--color-ivory);
-
-  /* Shared easing — "premium" cubic-bezier used across all motion */
+  --color-midnight: var(--ui-background);
+  --color-surface: var(--ui-surface);
+  --color-navy: var(--ui-elevated);
+  --color-ivory: var(--ui-text);
+  --color-muted: var(--ui-muted);
+  --color-accent: var(--ui-accent);
+  --color-pride-blue: var(--ui-action);
+  --color-border: var(--ui-border);
+  --color-gold: var(--ui-accent); /* Compatibility for existing accent utilities. */
+  --color-green: #8FE0B5;
+  --color-magenta: #FFB4BD;
+  --color-blue: var(--ui-accent);
+  --color-danger: #FFB4BD;
+  --color-success: #8FE0B5;
+  --color-warning: #F3D390;
+  --color-menu: var(--ui-menu);
+  --color-menu-ink: var(--ui-menu-ink);
+  --color-menu-muted: var(--ui-menu-muted);
+  --color-menu-border: var(--ui-menu-border);
+  --color-menu-hover: var(--ui-menu-hover);
+  --color-menu-active: var(--ui-menu-active);
+  --ui-background: #0B1018;
+  --ui-surface: #131C29;
+  --ui-elevated: #1B293C;
+  --ui-text: #F4F0E8;
+  --ui-muted: #BBC7D8;
+  --ui-accent: #A8C9FF;
+  --ui-action: #1D5FD1;
+  --ui-border: #667994;
+  --ui-menu: #F4F0E8;
+  --ui-menu-ink: #152238;
+  --ui-menu-muted: #43546A;
+  --ui-menu-border: #687C97;
+  --ui-menu-hover: #E4EBF3;
+  --ui-menu-active: #173C66;
+  --layout-max: 72rem;
+  --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --section-space: clamp(3rem, 6vw, 5rem);
+  --panel-radius: 0.875rem;
+  --background: var(--ui-background);
+  --foreground: var(--ui-text);
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* Tailwind v4 must register these names to emit bg-midnight, text-muted, etc. */
+@theme inline {
+  --color-midnight: var(--ui-background);
+  --color-surface: var(--ui-surface);
+  --color-navy: var(--ui-elevated);
+  --color-ivory: var(--ui-text);
+  --color-muted: var(--ui-muted);
+  --color-accent: var(--ui-accent);
+  --color-pride-blue: var(--ui-action);
+  --color-border: var(--ui-border);
+  --color-gold: var(--ui-accent); /* Compatibility for existing accent utilities. */
+  --color-green: #8FE0B5;
+  --color-magenta: #FFB4BD;
+  --color-blue: var(--ui-accent);
+  --color-danger: #FFB4BD;
+  --color-success: #8FE0B5;
+  --color-warning: #F3D390;
+  --color-menu: var(--ui-menu);
+  --color-menu-ink: var(--ui-menu-ink);
+  --color-menu-muted: var(--ui-menu-muted);
+  --color-menu-border: var(--ui-menu-border);
+  --color-menu-hover: var(--ui-menu-hover);
+  --color-menu-active: var(--ui-menu-active);
+  --font-body: var(--font-inter), ui-sans-serif, system-ui;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+}
+
+/* Consistent page rhythm; reading-width containers remain intentionally narrower. */
+.page-intro {
+  padding-top: clamp(8rem, 12vw, 10rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+@utility site-gutter { padding-inline: var(--page-gutter); }
+@utility site-container { width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), var(--layout-max)); margin-inline: auto; }
+@utility section-space { padding-block: var(--section-space); }
+.section-title { font-size: clamp(1.75rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -0.025em; }
+.page-title {
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+.ui-panel {
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--panel-radius);
+}
+.ui-primary {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--ui-accent);
+  border-radius: 999px;
+  background: var(--ui-accent);
+  color: var(--ui-background);
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ui-primary:hover { background: var(--ui-text); border-color: var(--ui-text); }
+.ui-primary:disabled { opacity: 0.55; cursor: wait; }
+.ui-field {
+  min-height: 3rem;
+  width: 100%;
+  border: 1px solid var(--ui-border);
+  border-radius: 0.75rem;
+  background: var(--ui-background);
+  padding: 0.75rem 1rem;
+  color: var(--ui-text);
+  font: inherit;
+}
+.ui-field::placeholder { color: var(--ui-muted); opacity: 1; }
+.ui-field:focus-visible { border-color: var(--ui-accent); }
 
 /* ─── Base ───────────────────────────────────────────────────────────── */
 body {
@@ -39,13 +140,12 @@ body {
   transition: background 0.3s ease;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a { color: inherit; text-decoration: none; }
 }
 
 :focus-visible {
-  outline: 3px solid #A8C9FF;
+  outline: 3px solid var(--ui-accent);
   outline-offset: 3px;
 }
 
@@ -55,12 +155,13 @@ p, li {
 
 h1, h2, h3, h4 {
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 /* Selection */
 ::selection {
-  background: #A8C9FF;
-  color: #0A0A0A;
+  background: var(--ui-accent);
+  color: var(--ui-background);
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────── */
@@ -90,32 +191,32 @@ h1, h2, h3, h4 {
 
 /* ─── Glass (updated to surface palette) ───────────────────────────── */
 .glass {
-  background: rgba(15, 15, 15, 0.6);
+  background: var(--ui-surface);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ui-border);
 }
 
 /* ─── Frosted layering system ────────────────────────────────────────── */
 /* Heavier frost — for cards/panels that sit above busy or animated backgrounds */
 .glass-frost {
-  background: rgba(15, 15, 15, 0.55);
+  background: var(--ui-surface);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--ui-border);
 }
 
 /* Lighter frost — for subtle inline surfaces (list rows, chips) */
 .glass-frost-light {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--ui-surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ui-border);
 }
 
 /* Frosted sticky bar (e.g. control strips, sub-nav) */
 .glass-frost-bar {
-  background: rgba(10, 10, 10, 0.7);
+  background: var(--ui-elevated);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -292,7 +393,7 @@ h1, h2, h3, h4 {
 
 /* ─── Text gradient (pride blue → ivory) ────────────────────────── */
 .text-gradient {
-  background: linear-gradient(90deg, #E0E0E0 0%, var(--color-pride-blue) 100%);
+  background: linear-gradient(90deg, var(--ui-text) 0%, var(--ui-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -396,3 +497,10 @@ h1, h2, h3, h4 {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* Forms and reading surfaces follow the same focus and spacing rules. */
+:where(input, textarea, select):focus-visible { outline: 3px solid var(--ui-accent); outline-offset: 3px; }
+:where(pre, code) { font-family: var(--font-jetbrains-mono), monospace; }
+:where(pre) { tab-size: 2; }
+:where(section[id], h2[id], h3[id]) { scroll-margin-top: 7rem; }
+:where(a, button, summary) { -webkit-tap-highlight-color: transparent; }
+#mobile-navigation :focus-visible { outline-color: var(--ui-menu-active); }

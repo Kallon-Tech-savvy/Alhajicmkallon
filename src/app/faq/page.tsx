@@ -172,16 +172,16 @@ export default function FAQPage() {
     <main className="min-h-screen overflow-x-hidden bg-midnight text-ivory">
       <Navbar />
 
-      <section className="px-6 pb-16 pt-36 md:pb-20">
-        <div className="mx-auto max-w-7xl">
-          <p className="mb-6 font-space text-xs uppercase tracking-[0.35em] text-gold">
+      <section className="page-intro site-gutter">
+        <div className="mx-auto max-w-[var(--layout-max)]">
+          <p className="mb-6 font-display text-xs uppercase tracking-[0.16em] text-accent">
             About my work · Answers to common questions
           </p>
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
-              <h1 className="font-space text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">
+              <h1 className="page-title font-display tracking-tight">
                 Frequently asked
-                <span className="block text-pride-blue">questions.</span>
+                <span className="block text-accent">questions.</span>
               </h1>
             </div>
             <p className="max-w-xl text-base leading-relaxed text-muted lg:col-span-4">
@@ -192,9 +192,9 @@ export default function FAQPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-28">
+      <section className="section-space site-gutter pb-28">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-10 border-y border-white/10 py-5">
+          <div className="mb-10 border-y border-border py-5">
             <p className="max-w-3xl text-sm leading-relaxed text-muted">
               I’m Alhaji C.M. Kallon, a design engineer based in Freetown,
               Sierra Leone. I help founders, businesses and organisations turn
@@ -210,19 +210,19 @@ export default function FAQPage() {
               className="mb-14"
             >
               <div className="mb-5 flex items-center gap-4">
-                <span className="font-space text-xs text-gold">
+                <span className="font-display text-xs text-accent">
                   {String(groupIndex + 1).padStart(2, '0')}
                 </span>
                 <h2
                   id={`faq-group-${groupIndex}`}
-                  className="font-space text-sm font-bold uppercase tracking-[0.2em] text-ivory"
+                  className="font-display text-sm font-bold uppercase tracking-[0.2em] text-ivory"
                 >
                   {group.category}
                 </h2>
                 <span className="h-px flex-1 bg-white/10" />
               </div>
 
-              <div className="divide-y divide-white/10 border-y border-white/10">
+              <div className="divide-y divide-white/10 border-y border-border">
                 {group.items.map((item, itemIndex) => (
                   <details
                     key={item.question}
@@ -230,12 +230,12 @@ export default function FAQPage() {
                     open={groupIndex === 0 && itemIndex === 0}
                   >
                     <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left marker:hidden">
-                      <h3 className="text-base font-medium leading-relaxed text-ivory transition-colors group-hover:text-pride-blue md:text-lg">
+                      <h3 className="text-base font-medium leading-relaxed text-ivory transition-colors group-hover:text-accent md:text-lg">
                         {item.question}
                       </h3>
                       <span
                         aria-hidden="true"
-                        className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center border border-white/15 font-space text-sm text-gold transition-transform group-open:rotate-45"
+                        className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center border border-border font-display text-sm text-accent transition-transform group-open:rotate-45"
                       >
                         +
                       </span>
@@ -248,7 +248,7 @@ export default function FAQPage() {
                             <Link
                               key={link.href}
                               href={link.href}
-                              className="text-sm font-medium text-pride-blue underline decoration-pride-blue/40 underline-offset-4 hover:decoration-pride-blue"
+                              className="text-sm font-medium text-accent underline decoration-pride-blue/40 underline-offset-4 hover:decoration-pride-blue"
                               target={link.href.startsWith('http') ? '_blank' : undefined}
                               rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                             >
@@ -264,11 +264,11 @@ export default function FAQPage() {
             </section>
           ))}
 
-          <div className="mt-16 border border-white/10 bg-white/[0.02] p-7 md:p-10">
-            <p className="mb-3 font-space text-xs uppercase tracking-[0.3em] text-gold">
+          <div className="mt-16 border border-border bg-surface p-7 md:p-10">
+            <p className="mb-3 font-display text-xs uppercase tracking-[0.16em] text-accent">
               Have a project in mind?
             </p>
-            <h2 className="mb-4 font-space text-2xl font-bold tracking-tight md:text-3xl">
+            <h2 className="mb-4 font-display text-2xl font-bold tracking-tight md:text-3xl">
               Start with the problem.
             </h2>
             <p className="mb-7 max-w-2xl text-sm leading-relaxed text-muted">
@@ -284,9 +284,9 @@ export default function FAQPage() {
           </div>
 
           <p className="mt-10 text-xs text-muted">
-            Explore <Link href="/about" className="text-pride-blue underline underline-offset-4">more about my background</Link>,{' '}
-            <Link href="/work" className="text-pride-blue underline underline-offset-4">selected work</Link> and{' '}
-            <Link href="/writing" className="text-pride-blue underline underline-offset-4">writing</Link>.
+            Explore <Link href="/about" className="text-accent underline underline-offset-4">more about my background</Link>,{' '}
+            <Link href="/work" className="text-accent underline underline-offset-4">selected work</Link> and{' '}
+            <Link href="/writing" className="text-accent underline underline-offset-4">writing</Link>.
           </p>
         </div>
       </section>

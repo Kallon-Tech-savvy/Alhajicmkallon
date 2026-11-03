@@ -58,3 +58,38 @@ test('client JavaScript does not contain the published full-text catalogue', asy
   }
   console.log(`Checked ${chunks.length} production browser JavaScript files (${totalBytes} uncompressed bytes) against ${markers.length} full-text markers.`);
 });
+
+
+test('production CSS includes the registered application palette and font utilities', async () => {
+  async function collectCss(directory) {
+    const files = [];
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const name = path.join(directory, entry.name);
+      if (entry.isDirectory()) files.push(...await collectCss(name));
+      else if (name.endsWith('.css')) files.push(name);
+    }
+    return files;
+  }
+  const files = await collectCss(path.join(projectRoot, '.next/static'));
+  assert.ok(files.length, 'Build must emit CSS');
+  const css = (await Promise.all(files.map((file) => readFile(file, 'utf8')))).join('\n');
+  for (const utility of ['bg-midnight', 'bg-surface', 'text-ivory', 'text-muted', 'text-accent', 'font-display', 'font-body', 'site-gutter', 'section-space']) {
+    assert.ok(new RegExp('\\.' + utility + '(?:[,{])').test(css), `Missing generated theme utility: ${utility}`);
+  }
+  assert.ok(css.includes('--ui-menu:'), 'Keep the contrasting menu palette available');
+});
+
+test('shared text, action and menu colours meet their contrast budgets', async () => {
+  const source = await readFile(path.join(projectRoot, 'src/app/globals.css'), 'utf8');
+  const colours = Object.fromEntries([...source.matchAll(/--ui-([a-z-]+):\s*(#[0-9A-Fa-f]{6});/g)].map((match) => [match[1], match[2]]));
+  function luminance(hex) {
+    const values = [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16) / 255).map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
+  }
+  for (const [foreground, background] of [['text','background'], ['text','surface'], ['muted','surface'], ['muted','elevated'], ['accent','elevated'], ['menu-ink','menu'], ['menu-muted','menu'], ['menu','menu-active'], ['text','action']]) {
+    assert.ok(colours[foreground] && colours[background], 'Missing contrast token');
+    const [low, high] = [luminance(colours[foreground]), luminance(colours[background])].sort((a,b) => a-b);
+    const ratio = (high + 0.05) / (low + 0.05);
+    assert.ok(ratio >= 4.5, `${foreground} on ${background}: ${ratio.toFixed(2)}:1 is below 4.5:1`);
+  }
+});

@@ -9,23 +9,23 @@ export function Navbar() {
   return (
     <nav
       aria-label="Primary navigation"
-      className="fixed inset-x-0 top-0 z-[60] border-b border-[#2A2A2A] bg-midnight/90 px-6 py-4 backdrop-blur-xl md:px-10"
+      className="fixed inset-x-0 top-0 z-[60] border-b border-[var(--color-border)] bg-midnight/90 site-gutter py-4 backdrop-blur-xl"
     >
-      <div className="relative z-50 mx-auto flex max-w-7xl items-center justify-between">
+      <div className="relative z-50 mx-auto flex max-w-[var(--layout-max)] items-center justify-between">
         <Link prefetch={false}
           href="/"
           aria-label="Alhaji Kallon — Home"
           className="group flex select-none items-center gap-2"
         >
-          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-[#A8C9FF] md:text-sm">
+          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-[var(--color-accent)] md:text-sm">
             alhaji
           </span>
-          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-pride-blue md:text-sm">
+          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-accent md:text-sm">
             kallon
           </span>
           <span
             aria-hidden="true"
-            className="cursor-text-blink font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-pride-blue md:text-sm"
+            className="cursor-text-blink font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-accent md:text-sm"
           >
             █
           </span>

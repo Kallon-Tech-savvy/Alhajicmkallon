@@ -24,7 +24,7 @@ export default function Home() {
       <ThoughtLeadership />
 
       {/* ── Terminal Quote Section ──────────────────────────────────── */}
-      <section className="py-20 md:py-28 px-6 relative overflow-hidden bg-[#0A0A0A] border-t border-[#2A2A2A]">
+      <section className="section-space site-gutter relative overflow-hidden bg-[var(--color-midnight)] border-t border-[var(--color-border)]">
         
         {/* Watermark */}
         <div
@@ -41,22 +41,22 @@ export default function Home() {
               <div className="p-8 md:p-12">
                 
                 {/* Prompt line */}
-                <p className="font-[family-name:var(--font-jetbrains-mono)] text-xs mb-6 text-[#6B7280]">
-                  <span className="text-[var(--color-pride-blue)]">alhaji@kallon</span>
+                <p className="font-[family-name:var(--font-jetbrains-mono)] text-xs mb-6 text-[var(--color-muted)]">
+                  <span className="text-accent">alhaji@kallon</span>
                   <span>:~$&nbsp;</span>
-                  <span className="text-[#E0E0E0]">cat ./professional_philosophy.md</span>
+                  <span className="text-[var(--color-ivory)]">cat ./professional_philosophy.md</span>
                 </p>
 
                 {/* The quote */}
-                <blockquote className="font-[family-name:var(--font-space-mono)] text-xl md:text-2xl lg:text-3xl leading-relaxed mb-8 text-[#E0E0E0]">
-                  <span className="text-[var(--color-pride-blue)] mr-[0.5em]">&gt;</span>
+                <blockquote className="font-[family-name:var(--font-jetbrains-mono)] text-xl md:text-2xl lg:text-3xl leading-relaxed mb-8 text-[var(--color-ivory)]">
+                  <span className="text-accent mr-[0.5em]">&gt;</span>
                   &quot;A product does not earn its place because it exists. It earns it by solving a problem people care about—and by showing that it does.&quot;
                 </blockquote>
 
                 {/* Attribution */}
                 <div className="flex items-center gap-4">
-                  <div className="h-px flex-1 bg-[#2A2A2A]" />
-                  <span className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] uppercase tracking-[0.5em] text-[#FFB000]">
+                  <div className="h-px flex-1 bg-[var(--color-border)]" />
+                  <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.16em] text-[var(--color-accent)]">
                     — Alhaji C M Kallon, Design Engineer
                   </span>
                 </div>
@@ -65,10 +65,10 @@ export default function Home() {
 
             {/* Mantra as system command */}
             <div className="mt-8 flex items-center gap-3 reveal-in">
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-[var(--color-pride-blue)]">
+              <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-accent">
                 $
               </span>
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-[#6B7280]">
+              <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-[var(--color-muted)]">
                 question --decide --build --learn
               </span>
               <span className="cursor-blink" />
