@@ -9,7 +9,7 @@ export function Navbar() {
   return (
     <nav
       aria-label="Primary navigation"
-      className="fixed inset-x-0 top-0 z-[60] border-b border-[var(--color-border)] bg-midnight/90 site-gutter py-4 backdrop-blur-xl"
+      className="fixed inset-x-0 top-0 z-[60] border-b border-[var(--color-border)] bg-midnight site-gutter py-4"
     >
       <div className="relative z-50 mx-auto flex max-w-[var(--layout-max)] items-center justify-between">
         <Link prefetch={false}
