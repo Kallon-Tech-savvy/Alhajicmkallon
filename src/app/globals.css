@@ -485,4 +485,4 @@ h1, h2, h3, h4 {
 :where(pre) { tab-size: 2; }
 :where(section[id], h2[id], h3[id]) { scroll-margin-top: 7rem; }
 :where(a, button, summary) { -webkit-tap-highlight-color: transparent; }
-#mobile-navigation :focus-visible { outline-color: var(--ui-menu-active); }
+#mobile-navigation :focus-visible { outline-color: var(--ui-accent); }
