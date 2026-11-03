@@ -107,7 +107,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const { projects: filteredProjects, articles: filteredArticles } = results;
 
   return isOpen ? (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4">
+        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-24 pb-6 px-4">
           <div
             className="fixed inset-0 bg-midnight/95 backdrop-blur-xl"
             onClick={onClose}
@@ -119,17 +119,17 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             role="dialog"
             aria-modal="true"
             aria-labelledby="global-search-title"
-            className="relative w-full max-w-2xl bg-navy/50 border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl"
+            className="relative w-full max-w-2xl bg-surface border border-border rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden "
           >
-            <div className="p-6 border-b border-white/5 flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center text-gold" aria-hidden="true">
+            <div className="p-6 border-b border-border flex items-center space-x-4">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent" aria-hidden="true">
                 <Search size={20} />
               </div>
               <h2 id="global-search-title" className="sr-only">Search this website</h2>
               <input
                 ref={inputRef}
                 aria-label="Search projects and articles"
-                className="flex-1 bg-transparent border-none outline-none text-ivory placeholder-muted font-space text-xl py-2 font-bold"
+                className="min-w-0 flex-1 bg-transparent border-none outline-none text-ivory placeholder-muted font-display text-xl py-2 font-bold"
                 placeholder="Search anything..."
                 value={query}
                 maxLength={120}
@@ -154,25 +154,25 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               {query.trim() === '' ? (
                 <div className="space-y-8">
                   <div>
-                    <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Popular Categories</h3>
+                    <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Popular Categories</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
-                        { icon: <Code size={18} />, label: 'Case Studies', href: '/work', color: 'text-blue-400' },
-                        { icon: <FileText size={18} />, label: 'Writing', href: '/writing', color: 'text-purple-400' },
-                        { icon: <BookOpen size={18} />, label: 'Knowledge', href: '/knowledge', color: 'text-blue-400' },
-                        { icon: <ArrowRight size={18} />, label: 'About Alhaji', href: '/about', color: 'text-gold' },
+                        { icon: <Code size={18} />, label: 'Case Studies', href: '/work', color: 'text-accent' },
+                        { icon: <FileText size={18} />, label: 'Writing', href: '/writing', color: 'text-accent' },
+                        { icon: <BookOpen size={18} />, label: 'Knowledge', href: '/knowledge', color: 'text-accent' },
+                        { icon: <ArrowRight size={18} />, label: 'About Alhaji', href: '/about', color: 'text-accent' },
                       ].map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
                           prefetch={false}
                           onClick={onClose}
-                          className="flex items-center p-4 rounded-xl hover:bg-white/5 text-left transition-all duration-300 group border border-transparent hover:border-white/5"
+                          className="flex items-center p-4 rounded-xl hover:bg-white/5 text-left transition-all duration-300 group border border-transparent hover:border-border"
                         >
                           <div className="p-2 bg-white/5 rounded-lg mr-4 group-hover:scale-110 transition-transform" aria-hidden="true">
                             {item.icon}
                           </div>
-                          <div className="text-sm font-space font-bold text-ivory uppercase tracking-widest">{item.label}</div>
+                          <div className="text-sm font-display font-bold text-ivory uppercase tracking-widest">{item.label}</div>
                         </Link>
                       ))}
                     </div>
@@ -184,20 +184,20 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 <div role="alert" className="py-12 text-center text-sm text-ivory">
                   <p>Search could not be completed. Please change your query or browse directly.</p>
                   <div className="mt-5 flex flex-wrap justify-center gap-4">
-                    <Link href="/work" prefetch={false} onClick={onClose} className="text-[#A8C9FF] underline underline-offset-4">Work</Link>
-                    <Link href="/writing" prefetch={false} onClick={onClose} className="text-[#A8C9FF] underline underline-offset-4">Writing</Link>
-                    <Link href="/knowledge" prefetch={false} onClick={onClose} className="text-[#A8C9FF] underline underline-offset-4">Knowledge</Link>
+                    <Link href="/work" prefetch={false} onClick={onClose} className="text-[var(--color-accent)] underline underline-offset-4">Work</Link>
+                    <Link href="/writing" prefetch={false} onClick={onClose} className="text-[var(--color-accent)] underline underline-offset-4">Writing</Link>
+                    <Link href="/knowledge" prefetch={false} onClick={onClose} className="text-[var(--color-accent)] underline underline-offset-4">Knowledge</Link>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-8">
                   {filteredProjects.length > 0 && (
                     <div>
-                      <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Projects</h3>
+                      <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Projects</h3>
                       <div className="space-y-2">
                         {filteredProjects.map(p => (
                           <Link key={p.id} href={p.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
-                            <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{p.title}</div>
+                            <div className="text-sm font-display font-bold text-ivory group-hover:text-accent uppercase tracking-widest">{p.title}</div>
                             <div className="text-xs text-muted mt-1">{p.summary}</div>
                           </Link>
                         ))}
@@ -207,11 +207,11 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
                   {filteredArticles.length > 0 && (
                     <div>
-                      <h3 className="text-[10px] font-space font-bold uppercase tracking-[0.3em] text-gold/50 mb-4 px-2">Articles</h3>
+                      <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Articles</h3>
                       <div className="space-y-2">
                         {filteredArticles.map((a) => (
                           <Link key={a.slug} href={a.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
-                            <div className="text-sm font-space font-bold text-ivory group-hover:text-gold uppercase tracking-widest">{a.title}</div>
+                            <div className="text-sm font-display font-bold text-ivory group-hover:text-accent uppercase tracking-widest">{a.title}</div>
                             <div className="text-xs text-muted mt-1">{a.excerpt}</div>
                           </Link>
                         ))}
@@ -221,18 +221,18 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
                   {searchStatus === 'success' && filteredProjects.length === 0 && filteredArticles.length === 0 && (
                     <div className="py-20 text-center">
-                      <p className="text-muted italic font-inter text-ivory/50">No results found for &quot;{query}&quot;</p>
+                      <p className="text-muted italic font-body text-muted">No results found for &quot;{query}&quot;</p>
                     </div>
                   )}
                 </div>
               )}
             </div>
 
-            <div className="p-4 bg-white/5 border-t border-white/5 flex justify-between items-center px-6">
-              <div className="flex items-center space-x-4 text-[9px] text-muted uppercase tracking-[0.2em] font-space font-bold">
+            <div className="p-4 bg-white/5 border-t border-border flex justify-between items-center px-6">
+              <div className="flex items-center space-x-4 text-xs text-muted uppercase tracking-[0.2em] font-display font-bold">
                 <span><kbd className="bg-white/10 px-2 py-1 rounded text-ivory">ESC</kbd> to close</span>
               </div>
-              <div className="flex items-center space-x-1 text-gold/30" aria-hidden="true">
+              <div className="flex items-center space-x-1 text-accent/30" aria-hidden="true">
                 <div className="w-1 h-1 rounded-full bg-current" />
                 <div className="w-1 h-1 rounded-full bg-current" />
                 <div className="w-1 h-1 rounded-full bg-current" />

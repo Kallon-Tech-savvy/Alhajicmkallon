@@ -19,7 +19,7 @@ function renderInline(source: string): InlinePart[] {
       else {
         const [, label, href] = link;
         if (/^https:\/\//i.test(href) || href.startsWith('/') && !href.startsWith('//')) {
-          parts.push(<a key={match.index} href={href} className="text-gold underline underline-offset-4" rel={href.startsWith('https://') ? 'noreferrer noopener' : undefined}>{label}</a>);
+          parts.push(<a key={match.index} href={href} className="text-accent underline underline-offset-4" rel={href.startsWith('https://') ? 'noreferrer noopener' : undefined}>{label}</a>);
         } else parts.push(label);
       }
     }
@@ -34,20 +34,20 @@ export function MarkdownContent({ source }: { source: string }) {
   return <div className="space-y-6">{blocks.map((block, index) => {
     if (block.startsWith('```')) {
       const code = block.replace(/^```[^\n]*\n/, '').replace(/\n```$/, '');
-      return <pre key={index} className="overflow-x-auto rounded-xl border border-white/15 bg-black/30 p-5 text-sm leading-relaxed"><code>{code}</code></pre>;
+      return <pre key={index} className="overflow-x-auto rounded-xl border border-border bg-black/30 p-5 text-sm leading-relaxed"><code>{code}</code></pre>;
     }
     const lines = block.split('\n');
     const heading = lines.length === 1 ? lines[0].match(/^(#{1,4})\s+(.+)$/) : null;
     if (heading) {
       const level = heading[1].length;
-      const className = 'font-space font-bold tracking-tight text-ivory ' + (level <= 2 ? 'text-2xl md:text-3xl' : level === 3 ? 'text-xl' : 'text-lg');
+      const className = 'font-display font-bold tracking-tight text-ivory ' + (level <= 2 ? 'text-2xl md:text-3xl' : level === 3 ? 'text-xl' : 'text-lg');
       if (level <= 2) return <h2 id={heading[2].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')} key={index} className={className + ' scroll-mt-28'}>{renderInline(heading[2])}</h2>;
       if (level === 3) return <h3 key={index} className={className}>{renderInline(heading[2])}</h3>;
       return <h4 key={index} className={className}>{renderInline(heading[2])}</h4>;
     }
     if (lines.every((line) => /^\s*[-*]\s+/.test(line))) return <ul key={index} className="list-disc space-y-2 pl-6">{lines.map((line, i) => <li key={i}>{renderInline(line.replace(/^\s*[-*]\s+/, ''))}</li>)}</ul>;
     if (lines.every((line) => /^\s*\d+\.\s+/.test(line))) return <ol key={index} className="list-decimal space-y-2 pl-6">{lines.map((line, i) => <li key={i}>{renderInline(line.replace(/^\s*\d+\.\s+/, ''))}</li>)}</ol>;
-    if (lines.every((line) => /^>\s?/.test(line))) return <blockquote key={index} className="border-l-2 border-gold pl-5 italic text-muted">{lines.map((line) => line.replace(/^>\s?/, '')).join(' ')}</blockquote>;
+    if (lines.every((line) => /^>\s?/.test(line))) return <blockquote key={index} className="border-l-2 border-accent pl-5 italic text-muted">{lines.map((line) => line.replace(/^>\s?/, '')).join(' ')}</blockquote>;
     return <p key={index} className="leading-relaxed text-ivory/90">{lines.map((line, i) => <React.Fragment key={i}>{i > 0 && <br />}{renderInline(line)}</React.Fragment>)}</p>;
   })}</div>;
 }

@@ -22,7 +22,7 @@ function CairoIllustration() {
       <div className="absolute bottom-5 right-[18px] h-2.5 w-2.5 rounded-full bg-[#ffb9b9]" />
       <div className="absolute top-2 h-7 w-9 rounded-full bg-white/80" />
       <div className="absolute top-4 h-2.5 w-3 rounded-full bg-slate-900/80" />
-      <div className="absolute right-4 top-3 h-8 w-8 rounded-full border border-white/50 bg-white/20 backdrop-blur-sm" />
+      <div className="absolute right-4 top-3 h-8 w-8 rounded-full border border-border0 bg-white/20 backdrop-blur-sm" />
       <div className="absolute -right-1 top-1/2 h-5 w-5 -translate-y-1/2 rotate-45 rounded bg-[#ffd166]" />
     </div>
   );
@@ -193,19 +193,19 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
           ref={panelRef}
           role="dialog"
           aria-label="Chat with the site assistant"
-          className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-sm h-[70vh] max-h-[560px] flex flex-col rounded-lg glass-frost shadow-2xl overflow-hidden"
+          className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] max-w-sm h-[70vh] max-h-[560px] flex flex-col rounded-2xl ui-panel shadow-2xl overflow-hidden"
         >
           {/* Header */}
-          <div className="px-5 py-4 border-b border-white/10 flex-shrink-0">
-            <div className="font-space text-xs font-black uppercase tracking-widest text-ivory">
+          <div className="px-5 py-4 border-b border-border flex-shrink-0">
+            <div className="font-display text-xs font-black uppercase tracking-widest text-ivory">
               Ask about Alhaji
             </div>
-            <div className="text-[10px] text-muted mt-0.5">Usually answers instantly</div>
+            <div className="text-xs text-muted mt-0.5">Usually answers instantly</div>
           </div>
 
           <div ref={scrollRef} role="log" aria-live="polite" className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
             {messages.length === 0 && (
-              <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-4 py-6 text-center">
+              <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-surface px-4 py-6 text-center">
                 <CairoIllustration />
                 <h3 className="mt-3 text-sm font-semibold text-ivory">Hi, I&apos;m Cairo</h3>
                 <p className="mt-1 text-sm leading-relaxed text-muted">
@@ -216,10 +216,10 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`max-w-[85%] px-4 py-2.5 rounded-lg text-sm font-inter leading-relaxed whitespace-pre-wrap break-words ${
+                className={`max-w-[85%] px-4 py-2.5 rounded-lg text-sm font-body leading-relaxed whitespace-pre-wrap break-words ${
                   m.role === 'user'
                     ? 'ml-auto bg-[var(--color-pride-blue)] text-white'
-                    : 'mr-auto bg-white/[0.04] text-ivory/90 border border-white/5'
+                    : 'mr-auto bg-white/[0.04] text-ivory/90 border border-border'
                 }`}
               >
                 {renderMessageContent(m.content)}
@@ -233,13 +233,13 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
           </div>
 
           {error && (
-            <p role="alert" className="px-4 py-2 text-[11px] text-red-400 font-inter border-t border-white/5 flex-shrink-0">
+            <p role="alert" className="px-4 py-2 text-xs text-danger font-body border-t border-border flex-shrink-0">
               {error}
             </p>
           )}
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="relative p-3 border-t border-white/10 flex items-end gap-2 flex-shrink-0">
+          <form onSubmit={handleSubmit} className="relative p-3 border-t border-border flex items-end gap-2 flex-shrink-0">
             {/* Honeypot — hidden from real users off-screen; bots that
                 auto-fill every input tend to fill this one too. */}
             <input
@@ -260,7 +260,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
               rows={1}
               placeholder="Type a question…"
               aria-label="Your message"
-              className="flex-1 resize-none rounded-md bg-black/20 border border-white/10 px-3 py-2 text-sm text-ivory outline-none focus:border-[var(--color-pride-blue)]/40 transition-colors duration-300 max-h-24"
+              className="ui-field min-w-0 flex-1 resize-none max-h-24"
             />
             <button
               type="submit"

@@ -77,13 +77,13 @@ export default function AboutPage() {
       <Navbar />
 
       {/* ── Hero header ─────────────────────────────────────── */}
-      <section className="pt-40 pb-0 px-6 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto">
+      <section className="page-intro site-gutter relative overflow-hidden">
+        <div className="max-w-[var(--layout-max)] mx-auto">
 
           {/* Eyebrow */}
           <span
-            className="font-space text-[10px] font-black tracking-[0.5em] uppercase mb-8 block"
-            style={{ color: 'var(--color-gold)' }}
+            className="font-display text-xs font-black tracking-[0.16em] uppercase mb-8 block"
+            style={{ color: 'var(--color-accent)' }}
           >
             Design engineer · Product discovery · Experience design
           </span>
@@ -91,16 +91,14 @@ export default function AboutPage() {
           {/* Headline + small portrait in header */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-end">
             <div className="lg:col-span-8">
-              <h1
-                className="font-space font-black tracking-tighter leading-[0.82] uppercase"
-                style={{ fontSize: 'clamp(5rem, 14vw, 14rem)' }}
+              <h1 className="page-title font-display tracking-tighter uppercase"
               >
                 ABOUT
                 <br />
                 <span
                   style={{
                     background:
-                      'linear-gradient(90deg, #E0E0E0 0%, var(--color-pride-blue) 100%)',
+                      'linear-gradient(90deg, var(--color-ivory) 0%, var(--color-accent) 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -143,7 +141,7 @@ export default function AboutPage() {
 
         {/* Background watermark */}
         <div
-          className="absolute bottom-0 right-0 font-space font-black leading-none pointer-events-none select-none translate-x-[12%]"
+          className="absolute bottom-0 right-0 font-display font-black leading-none pointer-events-none select-none translate-x-[12%]"
           style={{ fontSize: '35vw', color: 'rgba(255,255,255,0.007)' }}
         >
           STORY
@@ -153,14 +151,14 @@ export default function AboutPage() {
       {/* ── Marquee strip ───────────────────────────────────── */}
       <div
         className="py-[10px] overflow-hidden"
-        style={{ borderTop: '1px solid #141414', borderBottom: '1px solid #141414' }}
+        style={{ borderTop: '1px solid var(--color-surface)', borderBottom: '1px solid var(--color-surface)' }}
       >
         <div className="marquee-track flex whitespace-nowrap">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span
               key={i}
-              className="font-space text-[9px] uppercase tracking-[0.4em] flex-shrink-0 flex items-center"
-              style={{ color: '#1E1E1E', paddingRight: '48px' }}
+              className="font-display text-xs uppercase tracking-[0.16em] flex-shrink-0 flex items-center"
+              style={{ color: 'var(--color-surface)', paddingRight: '48px' }}
             >
               {item}
               <span
@@ -174,8 +172,8 @@ export default function AboutPage() {
       </div>
 
       {/* ── Intro grid ──────────────────────────────────────── */}
-      <section className="py-28 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start">
+      <section className="section-space site-gutter">
+        <div className="max-w-[var(--layout-max)] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-start">
 
           {/* Photo */}
           <div className="lg:col-span-5 relative">
@@ -205,8 +203,8 @@ export default function AboutPage() {
                 style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(8px)' }}
               >
                 <p
-                  className="font-space text-[9px] uppercase tracking-[0.4em]"
-                  style={{ color: '#334155' }}
+                  className="font-display text-xs uppercase tracking-[0.16em]"
+                  style={{ color: 'var(--color-muted)' }}
                 >
                   Alhaji C.M. Kallon · Freetown, Sierra Leone
                 </p>
@@ -216,7 +214,7 @@ export default function AboutPage() {
             {/* Gold accent line */}
             <div
               className="absolute -bottom-3 left-0 h-[2px] w-16"
-              style={{ background: 'var(--color-gold)' }}
+              style={{ background: 'var(--color-accent)' }}
             />
           </div>
 
@@ -224,19 +222,19 @@ export default function AboutPage() {
           <div className="lg:col-span-7 space-y-10">
             <div>
               <h2
-                className="font-space text-[10px] font-black uppercase tracking-[0.4em] mb-6"
-                style={{ color: 'var(--color-gold)' }}
+                className="font-display text-xs font-black uppercase tracking-[0.16em] mb-6"
+                style={{ color: 'var(--color-accent)' }}
               >
                 What I do
               </h2>
               <p
-                className="text-3xl md:text-4xl font-inter font-light leading-snug tracking-tight"
-                style={{ color: '#E0E0E0' }}
+                className="text-3xl md:text-4xl font-body font-light leading-snug tracking-tight"
+                style={{ color: 'var(--color-ivory)' }}
               >
                 I’m Alhaji C.M. Kallon, a 
                 <span
                   style={{
-                    color: 'var(--color-gold)',
+                    color: 'var(--color-accent)',
                     fontWeight: 500,
                     fontStyle: 'italic',
                   }}
@@ -248,8 +246,8 @@ export default function AboutPage() {
             </div>
 
             <div
-              className="space-y-6 text-lg font-inter leading-relaxed font-light"
-              style={{ color: '#475569' }}
+              className="space-y-6 text-lg font-body leading-relaxed font-light"
+              style={{ color: 'var(--color-muted)' }}
             >
               <p>
                 My work connects problem discovery, product thinking, experience design and software engineering. I help make the problem clearer, decide what is worth building, and turn that decision into a working product.
@@ -262,7 +260,7 @@ export default function AboutPage() {
             {/* Stats block */}
             <div
               className="grid grid-cols-3 border"
-              style={{ borderColor: '#141414' }}
+              style={{ borderColor: 'var(--color-surface)' }}
             >
               {[
                 { val: '01', label: 'Understand' },
@@ -273,18 +271,18 @@ export default function AboutPage() {
                   key={s.label}
                   className="px-6 py-5"
                   style={{
-                    borderRight: i < 2 ? '1px solid #141414' : undefined,
+                    borderRight: i < 2 ? '1px solid var(--color-surface)' : undefined,
                   }}
                 >
                   <div
-                    className="font-space font-black leading-none"
-                    style={{ fontSize: '28px', color: '#E0E0E0' }}
+                    className="font-display font-black leading-none"
+                    style={{ fontSize: '28px', color: 'var(--color-ivory)' }}
                   >
                     {s.val}
                   </div>
                   <div
-                    className="font-space text-[9px] uppercase tracking-widest mt-2"
-                    style={{ color: '#334155' }}
+                    className="font-display text-xs uppercase tracking-widest mt-2"
+                    style={{ color: 'var(--color-muted)' }}
                   >
                     {s.label}
                   </div>
@@ -297,10 +295,10 @@ export default function AboutPage() {
 
       {/* ── Full Story ──────────────────────────────────────── */}
       <section
-        className="py-28"
+        className="section-space"
         style={{
-          borderTop: '1px solid #0F0F0F',
-          borderBottom: '1px solid #0F0F0F',
+          borderTop: '1px solid var(--color-surface)',
+          borderBottom: '1px solid var(--color-surface)',
           background: 'rgba(13,13,13,0.55)',
         }}
       >
@@ -312,20 +310,20 @@ export default function AboutPage() {
               style={{ background: 'var(--color-pride-blue)' }}
             />
             <h2
-              className="font-space text-[10px] font-black uppercase tracking-[0.5em]"
+              className="font-display text-xs font-black uppercase tracking-[0.16em]"
               style={{ color: 'var(--color-pride-blue)' }}
             >
               The story behind my work
             </h2>
             <div
               className="flex-1 h-[1px]"
-              style={{ background: '#141414' }}
+              style={{ background: 'var(--color-surface)' }}
             />
           </div>
 
           <div
-            className="space-y-10 text-xl font-inter leading-relaxed font-light"
-            style={{ color: 'rgba(224,224,224,0.7)' }}
+            className="space-y-10 text-xl font-body leading-relaxed font-light"
+            style={{ color: 'var(--color-muted)' }}
           >
             <p>
               I’m interested in the gap between an idea and something that works in the real world. How do you know which problem matters? What should be built first? How can the experience make sense to the people who use it? Those questions shape how I approach product work.
@@ -338,19 +336,19 @@ export default function AboutPage() {
             <div
               className="py-10"
               style={{
-                borderTop: '1px solid #141414',
-                borderBottom: '1px solid #141414',
+                borderTop: '1px solid var(--color-surface)',
+                borderBottom: '1px solid var(--color-surface)',
               }}
             >
               <p
-                className="font-space font-black leading-tight tracking-tight"
-                style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)', color: '#E0E0E0' }}
+                className="font-display font-black leading-tight tracking-tight"
+                style={{ fontSize: 'clamp(1.25rem, 3vw, 2rem)', color: 'var(--color-ivory)' }}
               >
                 &ldquo;Start with the problem. Make the choices clear. Build something useful—and be honest about what the evidence shows.&rdquo;
               </p>
               <div
                 className="mt-6 h-[2px] w-12"
-                style={{ background: 'var(--color-gold)' }}
+                style={{ background: 'var(--color-accent)' }}
               />
             </div>
 
@@ -362,20 +360,20 @@ export default function AboutPage() {
       </section>
 
       {/* ── Values: editorial list ───────────────────────────── */}
-      <section className="py-28 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-space site-gutter">
+        <div className="max-w-[var(--layout-max)] mx-auto">
 
           {/* Section headline — outlined contrast treatment */}
           <div className="mb-16">
             <h2
-              className="font-space font-black tracking-tighter uppercase leading-none"
-              style={{ fontSize: 'clamp(3rem, 8vw, 8rem)', color: '#E0E0E0' }}
+              className="font-display font-black tracking-tighter uppercase leading-none"
+              style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)', color: 'var(--color-ivory)' }}
             >
               HOW I{' '}
               <span
                 style={{
                   color: 'transparent',
-                  WebkitTextStroke: '1px #2A2A2A',
+                  WebkitTextStroke: '1px var(--color-border)',
                 }}
               >
                 WORK
@@ -384,19 +382,19 @@ export default function AboutPage() {
           </div>
 
           {/* List rows — editorial, not cards */}
-          <div style={{ borderTop: '1px solid #141414' }}>
+          <div style={{ borderTop: '1px solid var(--color-surface)' }}>
             {VALUES.map((v) => (
               <div
                 key={v.title}
                 className="group grid items-center gap-x-6 py-6 transition-all duration-300 hover:bg-[rgba(0,107,255,0.02)] -mx-3 px-3"
                 style={{
                   gridTemplateColumns: '28px 1fr 2fr 20px',
-                  borderBottom: '1px solid #141414',
+                  borderBottom: '1px solid var(--color-surface)',
                 }}
               >
                 {/* Number */}
                 <span
-                  className="font-space text-[10px] font-black"
+                  className="font-display text-xs font-black"
                   style={{ color: 'rgba(0,107,255,0.3)' }}
                 >
                   {v.num}
@@ -404,16 +402,16 @@ export default function AboutPage() {
 
                 {/* Title */}
                 <h3
-                  className="font-space text-base md:text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-[var(--color-pride-blue)]"
-                  style={{ color: '#E0E0E0' }}
+                  className="font-display text-base md:text-lg font-bold tracking-tight transition-colors duration-300 group-hover:text-accent"
+                  style={{ color: 'var(--color-ivory)' }}
                 >
                   {v.title}
                 </h3>
 
                 {/* Description */}
                 <p
-                  className="font-inter text-sm leading-relaxed font-light"
-                  style={{ color: '#475569' }}
+                  className="font-body text-sm leading-relaxed font-light"
+                  style={{ color: 'var(--color-muted)' }}
                 >
                   {v.desc}
                 </p>
@@ -432,15 +430,15 @@ export default function AboutPage() {
 
       {/* ── CTA — split layout ───────────────────────────────── */}
       <section
-        className="py-24 px-6"
-        style={{ borderTop: '1px solid #0F0F0F' }}
+        className="section-space site-gutter"
+        style={{ borderTop: '1px solid var(--color-surface)' }}
       >
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-[var(--layout-max)] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           <div>
             <h2
-              className="font-space font-black tracking-tighter uppercase leading-none"
-              style={{ fontSize: 'clamp(2.5rem, 5.5vw, 5.5rem)', color: '#E0E0E0' }}
+              className="font-display font-black tracking-tighter uppercase leading-none"
+              style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)', color: 'var(--color-ivory)' }}
             >
               HAVE AN IDEA?
               <br />
@@ -459,18 +457,18 @@ export default function AboutPage() {
 
           <div className="flex flex-col gap-6">
             <p
-              className="text-lg font-inter font-light leading-relaxed"
-              style={{ color: '#475569' }}
+              className="text-lg font-body font-light leading-relaxed"
+              style={{ color: 'var(--color-muted)' }}
             >
               If you have an early idea, an existing product, or a problem that is difficult to define, we can work out the next useful step together.
             </p>
             <div>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-3 px-8 py-4 font-space font-black text-xs uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-3 px-8 py-4 font-display font-black text-xs uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5"
                 style={{
-                  background: 'var(--color-gold)',
-                  color: '#0A0A0A',
+                  background: 'var(--color-accent)',
+                  color: 'var(--color-midnight)',
                   boxShadow: '0 0 24px rgba(255,176,0,0.2)',
                 }}
               >

@@ -30,16 +30,16 @@ const onboardingOptions = [
  */
 export function VisitorPath() {
   return (
-    <section className="border-t border-[#2A2A2A] bg-[#0A0A0A] px-6 py-20 md:px-8 lg:px-10">
-      <div className="mx-auto max-w-7xl">
+    <section className="section-space border-t border-[var(--color-border)] bg-[var(--color-midnight)] site-gutter">
+      <div className="mx-auto max-w-[var(--layout-max)]">
         <div className="mb-8 max-w-3xl">
-          <p className="mb-3 font-[family-name:var(--font-jetbrains-mono)] text-[10px] uppercase tracking-[0.35em] text-pride-blue">
+          <p className="mb-3 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.16em] text-accent">
             Start where you are
           </p>
-          <h2 className="font-space text-2xl font-black tracking-[-0.02em] text-ivory md:text-3xl">
+          <h2 className="font-display text-2xl font-black tracking-[-0.02em] text-ivory md:text-3xl">
             What are you working through?
           </h2>
-          <p className="mt-3 text-sm leading-7 text-[#9aa4b2]">
+          <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
             Whether you have an early idea, want to see how I work, or are here to learn, start with the path that fits.
           </p>
         </div>
@@ -48,17 +48,17 @@ export function VisitorPath() {
           {onboardingOptions.map((option) => (
             <article
               key={option.id}
-              className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-200 hover:border-pride-blue/35"
+              className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition-colors duration-200 hover:border-pride-blue/35"
             >
-              <h3 className="mb-3 font-space text-lg font-bold text-ivory">
+              <h3 className="mb-3 font-display text-lg font-bold text-ivory">
                 {option.title}
               </h3>
-              <p className="mb-6 flex-1 text-sm leading-7 text-[#9aa4b2]">
+              <p className="mb-6 flex-1 text-sm leading-7 text-[var(--color-muted)]">
                 {option.summary}
               </p>
               <Link prefetch={false}
                 href={option.href}
-                className="inline-flex w-fit items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-pride-blue transition-colors duration-200 hover:bg-pride-blue/20"
+                className="inline-flex w-fit items-center justify-center rounded-full border border-pride-blue bg-pride-blue/12 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-accent transition-colors duration-200 hover:bg-pride-blue/20"
               >
                 {option.cta}
               </Link>

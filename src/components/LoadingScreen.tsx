@@ -53,13 +53,13 @@ export const LoadingScreen = () => {
                style={{ background: 'radial-gradient(circle, rgba(0,107,255,0.04) 0%, transparent 70%)' }} />
 
           {/* Top bar */}
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-8 py-5 border-b border-[#2A2A2A]">
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.4em] uppercase"
-                  style={{ color: '#6B7280' }}>
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-8 py-5 border-b border-[var(--color-border)]">
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+                  style={{ color: 'var(--color-muted)' }}>
               alhaji@kallon.dev
             </span>
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.3em] uppercase"
-                  style={{ color: '#6B7280' }}>
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+                  style={{ color: 'var(--color-muted)' }}>
               v2.0.0
             </span>
           </div>
@@ -67,7 +67,7 @@ export const LoadingScreen = () => {
           {/* Terminal output */}
           <div className="relative px-8 md:px-16 lg:px-24 max-w-3xl w-full">
             <div className="mb-8">
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] tracking-[0.5em] uppercase"
+              <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
                     style={{ color: '#006BFF' }}>
                 ALHAJI KALLON / DESIGN ENGINEER
               </span>
@@ -98,13 +98,13 @@ export const LoadingScreen = () => {
                     <>
                       <span
                         className="font-[family-name:var(--font-jetbrains-mono)] text-xs md:text-sm"
-                        style={{ color: '#94A3B8' }}
+                        style={{ color: 'var(--color-muted)' }}
                       >
                         {line.text}
                       </span>
                       {line.status && (
                         <span
-                          className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] font-bold ml-8 shrink-0"
+                          className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-bold ml-8 shrink-0"
                           style={{ color: '#006BFF' }}
                         >
                           {line.status}
@@ -118,13 +118,13 @@ export const LoadingScreen = () => {
           </div>
 
           {/* Bottom bar */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-8 py-5 border-t border-[#2A2A2A]">
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] tracking-[0.3em] uppercase"
-                  style={{ color: '#6B7280' }}>
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-8 py-5 border-t border-[var(--color-border)]">
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+                  style={{ color: 'var(--color-muted)' }}>
               Sierra Leone · West Africa
             </span>
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-[9px] tracking-[0.3em] uppercase"
-                  style={{ color: '#6B7280' }}>
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+                  style={{ color: 'var(--color-muted)' }}>
               Believe it. We build it.
             </span>
           </div>

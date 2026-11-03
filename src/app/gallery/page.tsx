@@ -36,13 +36,13 @@ export default function GalleryPage() {
     <main className="min-h-screen bg-midnight text-ivory">
       <Navbar />
 
-      <section className="pt-28 pb-16 px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="page-intro site-gutter">
+        <div className="max-w-[var(--layout-max)] mx-auto">
           <Reveal variant="up" className="mb-10">
-            <p className="font-space text-xs uppercase tracking-[0.35em] text-pride-blue mb-4">
+            <p className="font-display text-xs uppercase tracking-[0.16em] text-accent mb-4">
               visual case studies
             </p>
-            <h1 className="font-space text-5xl md:text-6xl font-black tracking-[-0.03em] leading-tight">
+            <h1 className="page-title font-display tracking-[-0.03em] leading-tight">
               Gallery.
             </h1>
             <p className="mt-4 max-w-3xl text-base text-muted leading-8">
@@ -63,7 +63,7 @@ export default function GalleryPage() {
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search gallery by title, tag, or description"
-                className="w-full rounded-full border border-white/10 bg-[#0F0F0F] py-3 px-4 pr-12 text-sm text-ivory outline-none transition focus:border-pride-blue/50 focus:ring-2 focus:ring-pride-blue/10"
+                className="w-full rounded-full border border-border bg-[var(--color-surface)] py-3 px-4 pr-12 text-sm text-ivory outline-none transition focus:border-pride-blue/50 focus:ring-2 focus:ring-pride-blue/10"
                 aria-label="Filter gallery"
               />
               <span className="pointer-events-none absolute inset-y-0 right-4 grid place-content-center text-sm text-muted">
@@ -80,8 +80,8 @@ export default function GalleryPage() {
                 onClick={() => setSelectedTag(tag)}
                 className={`rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                   selectedTag === tag
-                    ? 'border-pride-blue bg-pride-blue/15 text-pride-blue'
-                    : 'border-white/10 bg-white/[0.03] text-muted hover:border-pride-blue/30 hover:text-ivory'
+                    ? 'border-pride-blue bg-pride-blue/15 text-accent'
+                    : 'border-border bg-surface text-muted hover:border-pride-blue/30 hover:text-ivory'
                 }`}
               >
                 {tag}
@@ -93,7 +93,7 @@ export default function GalleryPage() {
             {filteredItems.map((item, index) => (
               <article
                 key={item.title}
-                className="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0D0D0D] shadow-[0_35px_100px_rgba(0,0,0,0.15)] transition-transform duration-300 hover:-translate-y-2"
+                className="group overflow-hidden rounded-[1.5rem] border border-border bg-[var(--color-navy)] shadow-[0_35px_100px_rgba(0,0,0,0.15)] transition-transform duration-300 hover:-translate-y-2"
                 style={{ animationDelay: `${index * 70}ms` }}
               >
                 <div className="overflow-hidden rounded-[1.5rem] bg-black">
@@ -111,13 +111,13 @@ export default function GalleryPage() {
                     {item.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-muted"
+                        className="rounded-full bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.16em] text-muted"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <h2 className="font-space text-2xl font-black tracking-[-0.03em] mb-3">
+                  <h2 className="font-display text-2xl font-black tracking-[-0.03em] mb-3">
                     {item.title}
                   </h2>
                   <p className="text-sm leading-7 text-muted">
@@ -129,7 +129,7 @@ export default function GalleryPage() {
           </div>
 
           {filteredItems.length === 0 && (
-            <div className="mt-16 rounded-3xl border border-white/10 bg-[#111111] p-12 text-center text-sm text-muted">
+            <div className="mt-16 rounded-3xl border border-border bg-[var(--color-surface)] p-12 text-center text-sm text-muted">
               No results found. Try a different keyword like “research”, “visual”, or “platform”.
             </div>
           )}

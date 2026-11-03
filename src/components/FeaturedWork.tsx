@@ -5,32 +5,32 @@ import Link from 'next/link';
 
 export const FeaturedWork = () => {
   return (
-    <section id="work" className="py-20 md:py-28 bg-midnight px-6 relative">
-      <div className="max-w-7xl mx-auto">
+    <section id="work" className="py-20 md:section-space bg-midnight site-gutter relative">
+      <div className="max-w-[var(--layout-max)] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
           <div>
-            <span className="font-space text-gold text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
+            <span className="font-display text-accent text-xs font-bold tracking-[0.16em] uppercase mb-6 block">
               Selected work
             </span>
-            <h2 className="font-space text-5xl md:text-7xl font-bold tracking-tighter leading-none">
+            <h2 className="section-title font-display text-5xl md:text-7xl font-bold tracking-tighter leading-none">
               WORK <br /><span className="text-muted">IN CONTEXT</span>
             </h2>
           </div>
 
           <div className="max-w-md">
-            <p className="text-muted text-lg font-inter leading-relaxed mb-8">
+            <p className="text-muted text-lg font-body leading-relaxed mb-8">
               These case studies show the problem, the decisions I made, what I built, and what the available evidence can—and cannot—tell us.
             </p>
-            <Link prefetch={false} href="/work" className="font-space text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-gold transition-colors flex items-center gap-2 group">
+            <Link prefetch={false} href="/work" className="font-display text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-accent transition-colors flex items-center gap-2 group">
               Explore all work <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-16 md:gap-24">
+        <div className="grid grid-cols-1 gap-16 md:gap-12">
           {PROJECTS.length === 0 ? (
-            <div className="border border-white/10 p-8 md:p-12">
-              <h3 className="font-space text-2xl font-bold mb-4">Evidence before claims</h3>
+            <div className="border border-border p-8 md:p-12">
+              <h3 className="font-display text-2xl font-bold mb-4">Evidence before claims</h3>
               <p className="max-w-2xl text-muted leading-relaxed">I publish work when there is enough substance to explain the decisions, implementation, and what has been learned.</p>
             </div>
           ) : PROJECTS.map((project, _i) => (
@@ -39,7 +39,7 @@ export const FeaturedWork = () => {
               className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center group"
             >
               <div className={cn(
-                "lg:col-span-7 relative aspect-video overflow-hidden bg-navy rounded-sm border border-white/10",
+                "lg:col-span-7 relative aspect-video overflow-hidden bg-navy rounded-xl border border-border",
                 _i % 2 === 1 ? "lg:order-2" : ""
               )}>
                 {project.image ? (
@@ -52,7 +52,7 @@ export const FeaturedWork = () => {
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
-                    <span className="font-space text-2xl md:text-4xl font-bold text-white/30">{project.title}</span>
+                    <span className="font-display text-2xl md:text-4xl font-bold text-white/30">{project.title}</span>
                   </div>
                 )}
               </div>
@@ -62,30 +62,30 @@ export const FeaturedWork = () => {
                 _i % 2 === 1 ? "lg:order-1" : ""
               )}>
                 <div className="flex items-center gap-4 mb-6">
-                  <span className="font-space text-gold text-[10px] font-black uppercase tracking-[0.3em]">
+                  <span className="font-display text-accent text-xs font-black uppercase tracking-[0.16em]">
                     {project.role}
                   </span>
-                  <div className="h-[1px] w-8 bg-gold/30" />
+                  <div className="h-[1px] w-8 bg-accent/30" />
                 </div>
 
-                <h3 className="font-space text-4xl md:text-5xl font-bold tracking-tighter mb-6 group-hover:text-gold transition-colors">
+                <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tighter mb-6 group-hover:text-accent transition-colors">
                   <Link prefetch={false} href={`/work/${project.slug}`}>{project.title}</Link>
                 </h3>
 
-                <p className="text-muted text-lg font-inter mb-8 leading-relaxed">
+                <p className="text-muted text-lg font-body mb-8 leading-relaxed">
                   {project.summary}
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-10">
                   {project.technologies.map(t => (
-                    <span key={t} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-space font-bold text-muted uppercase tracking-wider">
+                    <span key={t} className="px-3 py-1 bg-white/5 border border-border rounded-full text-xs font-display font-bold text-muted uppercase tracking-wider">
                       {t}
                     </span>
                   ))}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4">
-                  <Link prefetch={false} href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-gold/30 text-gold font-space font-black text-[10px] uppercase tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500">
+                  <Link prefetch={false} href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-accent/30 text-accent font-display font-black text-xs uppercase tracking-widest hover:bg-accent hover:text-midnight transition-all duration-500">
                     Read Case Study <ArrowUpRight size={14} />
                   </Link>
                   {project.links?.live && (
@@ -93,7 +93,7 @@ export const FeaturedWork = () => {
                       href={project.links.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 py-4 text-muted hover:text-ivory font-space font-bold text-[10px] uppercase tracking-widest transition-colors"
+                      className="inline-flex items-center gap-2 py-4 text-muted hover:text-ivory font-display font-bold text-xs uppercase tracking-widest transition-colors"
                     >
                       Visit Live Project <ArrowUpRight size={14} />
                     </a>

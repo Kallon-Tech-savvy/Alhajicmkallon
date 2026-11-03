@@ -12,16 +12,16 @@ export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-midnight text-ivory">
       <Navbar />
-      <section className="mx-auto max-w-3xl px-6 pb-24 pt-36">
-        <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-pride-blue">Privacy</p>
-        <h1 className="mb-8 text-4xl font-bold tracking-tight md:text-6xl">
+      <section className="page-intro mx-auto max-w-3xl site-gutter">
+        <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-accent">Privacy</p>
+        <h1 className="page-title mb-8 font-bold tracking-tight">
           Your visit should not require tracking.
         </h1>
-        <p className="mb-10 text-lg leading-8 text-[#C0C9D5]">
+        <p className="mb-10 text-lg leading-8 text-[var(--color-muted)]">
           This website does not require an account to browse the work, writing or knowledge notes.
           Its optional performance-measurement feature is disabled unless deliberately activated.
         </p>
-        <div className="space-y-9 text-sm leading-7 text-[#C0C9D5]">
+        <div className="space-y-9 text-sm leading-7 text-[var(--color-muted)]">
           <section>
             <h2 className="mb-3 text-xl font-semibold text-ivory">Website performance</h2>
             <p>
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
             <p>
               If you voluntarily contact me, I use the details you provide to respond to your
               enquiry. For questions about website privacy or your communication, email{' '}
-              <a className="text-[#A8C9FF] underline underline-offset-4" href="mailto:info@alhajikallon.com">
+              <a className="text-[var(--color-accent)] underline underline-offset-4" href="mailto:info@alhajikallon.com">
                 info@alhajikallon.com
               </a>.
             </p>

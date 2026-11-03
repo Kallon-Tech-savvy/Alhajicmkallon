@@ -137,8 +137,8 @@ export function NavbarInteractions() {
               href={href}
               aria-current={current ? 'page' : undefined}
               className={
-                'relative rounded-sm px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.24em] transition-colors duration-200 ' +
-                (current ? 'text-[#A8C9FF]' : 'text-[#9AA4B2] hover:text-ivory')
+                'relative rounded-xl px-3 py-1.5 text-xs font-medium uppercase tracking-[0.16em] transition-colors duration-200 ' +
+                (current ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)] hover:text-ivory')
               }
             >
               {name}
@@ -147,17 +147,17 @@ export function NavbarInteractions() {
           );
         })}
         <details ref={learningMenuRef} className="relative">
-          <summary className={'cursor-pointer rounded px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#A8C9FF] ' + (isActivePath(pathname, '/knowledge') ? 'text-[#A8C9FF]' : 'text-[#C0C9D5]')}>Learn</summary>
-          <div className="absolute right-0 top-full mt-3 w-80 rounded-xl border border-white/20 bg-midnight p-3 shadow-2xl">
-            <p className="px-3 py-2 text-xs text-[#C0C9D5]">Choose your next step</p>
-            {[['Learning hub', '/knowledge', 'All guides and learning paths'], ['New to development', '/knowledge#beginner', 'HTML, CSS and first projects'], ['Beyond the basics', '/knowledge#intermediate', 'JavaScript, APIs and TypeScript'], ['Working as a junior', '/knowledge#junior', 'Delivery, testing and code review']].map(([title, href, description]) => <Link prefetch={false} key={href} href={href} onClick={() => { if (learningMenuRef.current) learningMenuRef.current.open = false; }} className="block rounded-lg p-3 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#A8C9FF]"><span className="block text-sm font-semibold text-ivory">{title}</span><span className="mt-1 block text-xs text-[#C0C9D5]">{description}</span></Link>)}
+          <summary className={'cursor-pointer rounded px-3 py-2 text-xs font-medium uppercase tracking-[0.18em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] ' + (isActivePath(pathname, '/knowledge') ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)]')}>Learn</summary>
+          <div className="absolute right-0 top-full mt-3 w-80 rounded-xl border border-white/20 bg-surface p-3 shadow-2xl">
+            <p className="px-3 py-2 text-xs text-[var(--color-muted)]">Choose your next step</p>
+            {[['Learning hub', '/knowledge', 'All guides and learning paths'], ['New to development', '/knowledge#beginner', 'HTML, CSS and first projects'], ['Beyond the basics', '/knowledge#intermediate', 'JavaScript, APIs and TypeScript'], ['Working as a junior', '/knowledge#junior', 'Delivery, testing and code review']].map(([title, href, description]) => <Link prefetch={false} key={href} href={href} onClick={() => { if (learningMenuRef.current) learningMenuRef.current.open = false; }} className="block rounded-lg p-3 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"><span className="block text-sm font-semibold text-ivory">{title}</span><span className="mt-1 block text-xs text-[var(--color-muted)]">{description}</span></Link>)}
           </div>
         </details>
-        <span aria-hidden="true" className="mx-3 h-4 w-px bg-[#2A2A2A]" />
+        <span aria-hidden="true" className="mx-3 h-4 w-px bg-[var(--color-border)]" />
         <button
           type="button"
           onClick={() => setIsSearchOpen(true)}
-          className="rounded p-2 text-[#C0C9D5] hover:text-white"
+          className="rounded p-2 text-[var(--color-muted)] hover:text-white"
           aria-label="Search (Ctrl or Command K)"
         >
           <NavIcon name="search" size={16} />
@@ -165,7 +165,7 @@ export function NavbarInteractions() {
         <Link prefetch={false}
           href="/contact"
           aria-current={pathname === '/contact' ? 'page' : undefined}
-          className="ml-3 rounded-full border border-pride-blue/40 bg-pride-blue/15 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory transition-colors hover:border-[#A8C9FF] hover:bg-pride-blue/25"
+          className="ml-3 rounded-full border border-pride-blue/40 bg-pride-blue/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-ivory transition-colors hover:border-[var(--color-accent)] hover:bg-pride-blue/25 ui-primary"
         >
           Let&apos;s talk
         </Link>
@@ -176,7 +176,7 @@ export function NavbarInteractions() {
           type="button"
           onClick={() => { setIsMobileMenuOpen(false); setIsSearchOpen(true); }}
           aria-label="Search site"
-          className="rounded p-3 text-[#C0C9D5] hover:text-white"
+          className="rounded p-3 text-[var(--color-muted)] hover:text-white"
         >
           <NavIcon name="search" size={18} />
         </button>
@@ -187,7 +187,7 @@ export function NavbarInteractions() {
           aria-expanded={isMobileMenuOpen}
           aria-controls="mobile-navigation"
           aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          className="relative z-[60] inline-flex min-h-12 items-center gap-2 rounded-lg border border-white/25 bg-[#152238] px-3 py-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#A8C9FF]"
+          className="relative z-[60] inline-flex min-h-12 items-center gap-2 rounded-lg border border-white/25 bg-[var(--color-menu-ink)] px-3 py-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
           <span className="text-sm font-semibold">{isMobileMenuOpen ? 'Close' : 'Menu'}</span>
           <NavIcon name={isMobileMenuOpen ? 'close' : 'menu'} size={22} />
@@ -200,11 +200,11 @@ export function NavbarInteractions() {
           id="mobile-navigation"
           role="region"
           aria-label="Mobile navigation"
-          className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-[#F4F0E8] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-28 text-[#152238] lg:hidden"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-[var(--color-menu)] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-28 text-[var(--color-menu-ink)] lg:hidden"
         >
           <div className="mx-auto w-full max-w-lg">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#43546A]">Navigation</p>
-          <h2 className="mb-6 mt-2 text-3xl font-bold tracking-tight text-[#152238]">Explore the site</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-menu-muted)]">Navigation</p>
+          <h2 className="mb-6 mt-2 text-3xl font-bold tracking-tight text-[var(--color-menu-ink)]">Explore the site</h2>
           <div className="space-y-2">
             {LINKS.map(({ name, href }) => {
               const current = isActivePath(pathname, href);
@@ -215,19 +215,19 @@ export function NavbarInteractions() {
                   aria-current={current ? 'page' : undefined}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={
-                    'flex min-h-14 items-center justify-between gap-3 rounded-xl border px-4 py-3 text-xl font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#173C66] ' +
-                    (current ? 'border-[#173C66] bg-[#173C66] text-white' : 'border-[#C4CEDA] bg-white text-[#152238] hover:border-[#173C66] hover:bg-[#E4EBF3]')
+                    'flex min-h-14 items-center justify-between gap-3 rounded-xl border px-4 py-3 text-xl font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-menu-active)] ' +
+                    (current ? 'border-[var(--color-menu-active)] bg-[var(--color-menu-active)] text-white' : 'border-[var(--color-menu-border)] bg-white text-[var(--color-menu-ink)] hover:border-[var(--color-menu-active)] hover:bg-[var(--color-menu-hover)]')
                   }
                 >
                   <span>{name}</span>
-                  {current ? <span className="text-xs font-medium">Current</span> : <span aria-hidden="true" className="text-[#43546A]">→</span>}
+                  {current ? <span className="text-xs font-medium">Current</span> : <span aria-hidden="true" className="text-[var(--color-menu-muted)]">→</span>}
                 </Link>
               );
             })}
           </div>
-          <div className="mt-7 rounded-xl border border-[#C4CEDA] bg-[#E4EBF3] p-4"><h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#43546A]">Learning paths</h2><div className="space-y-1">{[['New to development', 'beginner'], ['Beyond the basics', 'intermediate'], ['Working as a junior', 'junior']].map(([title, id]) => <Link prefetch={false} key={id} href={'/knowledge#' + id} onClick={() => setIsMobileMenuOpen(false)} className="block min-h-12 rounded-lg px-2 py-3 text-base font-semibold text-[#173C66] hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#173C66]">{title} →</Link>)}</div></div>
-          <div className="mt-7 border-t border-[#C4CEDA] pt-6">
-            <div className="flex flex-wrap gap-6 text-sm font-medium text-[#173C66] underline underline-offset-4">
+          <div className="mt-7 rounded-xl border border-[var(--color-menu-border)] bg-[var(--color-menu-hover)] p-4"><h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-menu-muted)]">Learning paths</h2><div className="space-y-1">{[['New to development', 'beginner'], ['Beyond the basics', 'intermediate'], ['Working as a junior', 'junior']].map(([title, id]) => <Link prefetch={false} key={id} href={'/knowledge#' + id} onClick={() => setIsMobileMenuOpen(false)} className="block min-h-12 rounded-lg px-2 py-3 text-base font-semibold text-[var(--color-menu-active)] hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-menu-active)]">{title} →</Link>)}</div></div>
+          <div className="mt-7 border-t border-[var(--color-menu-border)] pt-6">
+            <div className="flex flex-wrap gap-6 text-sm font-medium text-[var(--color-menu-active)] underline underline-offset-4">
               <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer">Twitter</a>
               <a href="https://linkedin.com/in/alhaji-c-m-k-8b79a225b" target="_blank" rel="noopener noreferrer">LinkedIn</a>
               <a href="https://github.com/Kallon-Tech-savvy" target="_blank" rel="noopener noreferrer">GitHub</a>
