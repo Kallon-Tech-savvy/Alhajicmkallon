@@ -67,7 +67,7 @@ const structuredData = {
       "@type": "Person",
       "@id": `${siteUrl}/#person`,
       name: "Alhaji C.M. Kallon",
-      alternateName: ["Alhaji Kallon", "Alhaji C M Kallon"],
+      alternateName: ["Alhaji Kallon", "Alhaji C M Kallon", "alhajikallon", "cmkallon"],
       url: siteUrl,
       image: `${siteUrl}/assets/kallon1.png`,
       jobTitle: "Design Engineer",
