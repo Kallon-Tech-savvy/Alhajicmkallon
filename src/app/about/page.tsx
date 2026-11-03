@@ -158,7 +158,7 @@ export default function AboutPage() {
             <span
               key={i}
               className="font-display text-xs uppercase tracking-[0.16em] flex-shrink-0 flex items-center"
-              style={{ color: 'var(--color-surface)', paddingRight: '48px' }}
+              style={{ color: 'var(--color-muted)', paddingRight: '48px' }}
             >
               {item}
               <span
@@ -372,8 +372,7 @@ export default function AboutPage() {
               HOW I{' '}
               <span
                 style={{
-                  color: 'transparent',
-                  WebkitTextStroke: '1px var(--color-border)',
+                  color: 'var(--color-accent)',
                 }}
               >
                 WORK
@@ -395,7 +394,7 @@ export default function AboutPage() {
                 {/* Number */}
                 <span
                   className="font-display text-xs font-black"
-                  style={{ color: 'rgba(0,107,255,0.3)' }}
+                  style={{ color: 'var(--color-accent)' }}
                 >
                   {v.num}
                 </span>
