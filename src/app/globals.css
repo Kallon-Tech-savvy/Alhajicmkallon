@@ -17,12 +17,6 @@
   --color-danger: #FFB4BD;
   --color-success: #8FE0B5;
   --color-warning: #F3D390;
-  --color-menu: var(--ui-menu);
-  --color-menu-ink: var(--ui-menu-ink);
-  --color-menu-muted: var(--ui-menu-muted);
-  --color-menu-border: var(--ui-menu-border);
-  --color-menu-hover: var(--ui-menu-hover);
-  --color-menu-active: var(--ui-menu-active);
   --ui-background: #0B1018;
   --ui-surface: #131C29;
   --ui-elevated: #1B293C;
@@ -31,12 +25,6 @@
   --ui-accent: #A8C9FF;
   --ui-action: #1D5FD1;
   --ui-border: #667994;
-  --ui-menu: #F4F0E8;
-  --ui-menu-ink: #152238;
-  --ui-menu-muted: #43546A;
-  --ui-menu-border: #687C97;
-  --ui-menu-hover: #E4EBF3;
-  --ui-menu-active: #173C66;
   --layout-max: 72rem;
   --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --section-space: clamp(3rem, 6vw, 5rem);
@@ -63,12 +51,6 @@
   --color-danger: #FFB4BD;
   --color-success: #8FE0B5;
   --color-warning: #F3D390;
-  --color-menu: var(--ui-menu);
-  --color-menu-ink: var(--ui-menu-ink);
-  --color-menu-muted: var(--ui-menu-muted);
-  --color-menu-border: var(--ui-menu-border);
-  --color-menu-hover: var(--ui-menu-hover);
-  --color-menu-active: var(--ui-menu-active);
   --font-body: var(--font-inter), ui-sans-serif, system-ui;
   --font-display: var(--font-inter), ui-sans-serif, system-ui;
   --font-mono: var(--font-jetbrains-mono), monospace;
@@ -503,4 +485,4 @@ h1, h2, h3, h4 {
 :where(pre) { tab-size: 2; }
 :where(section[id], h2[id], h3[id]) { scroll-margin-top: 7rem; }
 :where(a, button, summary) { -webkit-tap-highlight-color: transparent; }
-#mobile-navigation :focus-visible { outline-color: var(--ui-menu-active); }
+#mobile-navigation :focus-visible { outline-color: var(--ui-accent); }
