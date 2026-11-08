@@ -12,7 +12,7 @@ function renderInline(source: string): InlinePart[] {
     const token = match[0];
     if (token.startsWith('**')) parts.push(<strong key={match.index}>{token.slice(2, -2)}</strong>);
     else if (token.startsWith('*')) parts.push(<em key={match.index}>{token.slice(1, -1)}</em>);
-    else if (token.startsWith('`')) parts.push(<code key={match.index} className="rounded bg-white/10 px-1.5 py-0.5 text-[0.9em]">{token.slice(1, -1)}</code>);
+    else if (token.startsWith('`')) parts.push(<code key={match.index} className="rounded bg-navy px-1.5 py-0.5 text-[0.9em]">{token.slice(1, -1)}</code>);
     else {
       const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
       if (!link) parts.push(token);
@@ -34,7 +34,7 @@ export function MarkdownContent({ source }: { source: string }) {
   return <div className="space-y-6">{blocks.map((block, index) => {
     if (block.startsWith('```')) {
       const code = block.replace(/^```[^\n]*\n/, '').replace(/\n```$/, '');
-      return <pre key={index} className="overflow-x-auto rounded-xl border border-border bg-black/30 p-5 text-sm leading-relaxed"><code>{code}</code></pre>;
+      return <pre key={index} className="overflow-x-auto rounded-xl border border-border bg-surface p-5 text-sm leading-relaxed"><code>{code}</code></pre>;
     }
     const lines = block.split('\n');
     const heading = lines.length === 1 ? lines[0].match(/^(#{1,4})\s+(.+)$/) : null;

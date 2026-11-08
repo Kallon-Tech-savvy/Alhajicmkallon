@@ -219,7 +219,7 @@ export default function FAQPage() {
                 >
                   {group.category}
                 </h2>
-                <span className="h-px flex-1 bg-white/10" />
+                <span className="h-px flex-1 bg-navy" />
               </div>
 
               <div className="divide-y divide-white/10 border-y border-border">

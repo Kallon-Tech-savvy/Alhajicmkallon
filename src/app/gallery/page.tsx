@@ -111,7 +111,7 @@ export default function GalleryPage() {
                     {item.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.16em] text-muted"
+                        className="rounded-full bg-surface px-3 py-1 text-xs uppercase tracking-[0.16em] text-muted"
                       >
                         {tag}
                       </span>

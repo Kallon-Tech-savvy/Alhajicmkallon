@@ -1,6 +1,6 @@
-# Editorial portfolio pilot
+# Editorial portfolio
 
-The homepage and AEEM case study use Swiss grid structure and typographic hierarchy with restrained colour and generous spacing. Warm paper (#F4F1EA), charcoal (#20221F), supporting ink (#575D57) and blue (#174E72) are scoped to `.editorial-page`; other routes retain the existing palette for this first iteration. Navigation and footer inherit the scoped tokens. Portalled search, chat and mobile navigation retain their opaque dark surface.
+The homepage and AEEM case study use Swiss grid structure and typographic hierarchy with restrained colour and generous spacing. Warm paper (#F4F1EA), charcoal (#20221F), supporting ink (#575D57) and blue (#174E72) are shared global tokens. Navigation, footer, search, chat and mobile navigation use the same opaque paper surfaces. About, Work and Writing use the same restrained reading hierarchy.
 
 The homepage leads organisations and fellow developers to the AEEM case study. It replaces the full-height introduction and repeated process sections with a concise introduction, working-product evidence, Sierra Leonean context and separate paths to writing and enquiries. Technical detail lives in the project narrative rather than competing with the first introduction.
 

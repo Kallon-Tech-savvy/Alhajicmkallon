@@ -119,7 +119,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             role="dialog"
             aria-modal="true"
             aria-labelledby="global-search-title"
-            className="relative w-full max-w-2xl bg-surface border border-border rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden "
+            className="relative w-full max-w-2xl bg-surface border border-border rounded-2xl shadow-xl overflow-hidden "
           >
             <div className="p-6 border-b border-border flex items-center space-x-4">
               <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent" aria-hidden="true">
@@ -144,7 +144,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 type="button"
                 onClick={onClose}
                 aria-label="Close search"
-                className="p-2 hover:bg-white/5 rounded-full text-muted transition-colors"
+                className="p-2 hover:bg-navy rounded-full text-muted transition-colors"
               >
                 <X size={20} />
               </button>
@@ -167,9 +167,9 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                           href={item.href}
                           prefetch={false}
                           onClick={onClose}
-                          className="flex items-center p-4 rounded-xl hover:bg-white/5 text-left transition-all duration-300 group border border-transparent hover:border-border"
+                          className="flex items-center p-4 rounded-xl hover:bg-navy text-left transition-all duration-300 group border border-transparent hover:border-border"
                         >
-                          <div className="p-2 bg-white/5 rounded-lg mr-4 group-hover:scale-110 transition-transform" aria-hidden="true">
+                          <div className="p-2 bg-surface rounded-lg mr-4 group-hover:scale-110 transition-transform" aria-hidden="true">
                             {item.icon}
                           </div>
                           <div className="text-sm font-display font-bold text-ivory uppercase tracking-widest">{item.label}</div>
@@ -196,7 +196,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Projects</h3>
                       <div className="space-y-2">
                         {filteredProjects.map(p => (
-                          <Link key={p.id} href={p.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
+                          <Link key={p.id} href={p.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-navy transition-colors group">
                             <div className="text-sm font-display font-bold text-ivory group-hover:text-accent uppercase tracking-widest">{p.title}</div>
                             <div className="text-xs text-muted mt-1">{p.summary}</div>
                           </Link>
@@ -210,7 +210,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                       <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Articles</h3>
                       <div className="space-y-2">
                         {filteredArticles.map((a) => (
-                          <Link key={a.slug} href={a.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-white/5 transition-colors group">
+                          <Link key={a.slug} href={a.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-navy transition-colors group">
                             <div className="text-sm font-display font-bold text-ivory group-hover:text-accent uppercase tracking-widest">{a.title}</div>
                             <div className="text-xs text-muted mt-1">{a.excerpt}</div>
                           </Link>
@@ -228,9 +228,9 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               )}
             </div>
 
-            <div className="p-4 bg-white/5 border-t border-border flex justify-between items-center px-6">
+            <div className="p-4 bg-surface border-t border-border flex justify-between items-center px-6">
               <div className="flex items-center space-x-4 text-xs text-muted uppercase tracking-[0.2em] font-display font-bold">
-                <span><kbd className="bg-white/10 px-2 py-1 rounded text-ivory">ESC</kbd> to close</span>
+                <span><kbd className="bg-navy px-2 py-1 rounded text-ivory">ESC</kbd> to close</span>
               </div>
               <div className="flex items-center space-x-1 text-accent/30" aria-hidden="true">
                 <div className="w-1 h-1 rounded-full bg-current" />

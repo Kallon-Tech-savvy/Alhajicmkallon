@@ -93,7 +93,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                     href={project.links.source}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 border border-white/20 px-5 py-3 text-xs font-bold uppercase tracking-widest text-ivory hover:border-accent hover:text-accent transition-colors"
+                    className="inline-flex items-center gap-2 border border-border px-5 py-3 text-xs font-bold uppercase tracking-widest text-ivory hover:border-accent hover:text-accent transition-colors"
                   >
                     View source code <ArrowUpRight size={14} />
                   </a>
