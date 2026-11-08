@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { SubstackWriting } from '@/components/SubstackWriting';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { NewsletterCTA } from '@/components/NewsletterCTA';
@@ -26,6 +27,9 @@ export default function WritingPage() {
       <section className="section-space site-gutter pb-24">
         <div className="max-w-[var(--layout-max)] mx-auto"><ArticleFilters entries={JOURNAL_ENTRIES.map(({ slug, title, excerpt, category, date, topics }) => ({ slug, title, excerpt, category, date, topics }))} /></div>
       </section>
+      <Suspense fallback={<section className="section-space site-gutter" aria-label="Loading recent Substack essays"><p className="text-muted">Loading recent essays…</p></section>}>
+        <SubstackWriting />
+      </Suspense>
       <NewsletterCTA />
       <Footer />
     </main>

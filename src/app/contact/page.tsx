@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { Mail, Code, Send, Users, CheckCircle2, ArrowRight, Book, Video } from 'lucide-react';
+import { Mail, Code, MessageCircle, Send, Users, CheckCircle2, ArrowRight, Book, Video } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { SUBSTACK_URL, WHATSAPP_URL } from '@/lib/public-channels';
 import { buildContactMailto } from '@/lib/contact-form.mjs';
 
 export default function ContactPage() {
@@ -98,6 +99,11 @@ export default function ContactPage() {
 
           {/* Social Channels & Credentials */}
           <Reveal variant="up" delay={60} className="lg:col-span-5 space-y-12">
+            <div className="ui-panel p-6">
+              <h2 className="text-xl font-semibold">Prefer a conversation?</h2>
+              <p className="mt-3 text-sm text-muted">Tell me a little about your idea on WhatsApp Business. Review the message and send it when you are ready.</p>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="ui-primary mt-5"><MessageCircle size={18} aria-hidden="true" /> Chat on WhatsApp ↗</a>
+            </div>
             <div>
               <h2 className="font-display text-accent text-xs font-black uppercase tracking-[0.16em] mb-6">Email me directly</h2>
               <div className="p-6 glass-frost-light rounded-xl flex items-center gap-4 group hover-lift">
@@ -122,7 +128,7 @@ export default function ContactPage() {
                 {[
                   { name: 'LinkedIn', icon: <Users size={18} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b', desc: 'Professional background and updates' },
                   { name: 'GitHub', icon: <Code size={18} />, href: 'https://github.com/Kallon-Tech-savvy', desc: 'Code, experiments, and project work' },
-                  { name: 'Substack', icon: <Book size={18} />, href: 'https://substack.com/@alhajicmkallon', desc: 'Writing on technology and society' },
+                  { name: 'Substack', icon: <Book size={18} />, href: SUBSTACK_URL, desc: 'Writing on technology and society' },
                   { name: 'TikTok', icon: <Video size={18} />, href: 'https://tiktok.com/Zs9jMKdFNCeJ7-ypwTZ', desc: 'Short videos and updates' },
                   { name: 'Facebook', icon: <Users size={18} />, href: 'https://www.facebook.com/profile.php?id=100072626448471', desc: 'Community updates' }
                 ].map((social, i) => (
