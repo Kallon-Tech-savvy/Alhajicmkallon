@@ -29,6 +29,8 @@ jobs:
         run: npm ci
       - name: Test content parser
         run: npm run test:content
+      - name: Test Substack integration
+        run: node --test scripts/substack-feed.test.mjs
       - name: Test contact form fallback
         run: npm run test:contact
       - name: Test chat request security

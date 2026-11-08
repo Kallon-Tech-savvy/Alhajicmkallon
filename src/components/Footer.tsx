@@ -1,7 +1,10 @@
 import { ArrowUpRight, Send, Users, Code, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { WHATSAPP_URL, SUBSTACK_URL } from '@/lib/public-channels';
 
 const SOCIAL_LINKS = [
+  { name: 'WhatsApp', icon: <Send size={14} />, href: WHATSAPP_URL },
+  { name: 'Substack', icon: <Mail size={14} />, href: SUBSTACK_URL },
   {name: 'facebook', icon: <Users size={14} />, href: 'https://www.facebook.com/profile.php?id=100072626448471' },
   { name: 'twitter', icon: <Send size={14} />, href: 'https://x.com/' },
   { name: 'linkedin', icon: <Users size={14} />, href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b'},
