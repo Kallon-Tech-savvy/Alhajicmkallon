@@ -486,3 +486,48 @@ h1, h2, h3, h4 {
 :where(section[id], h2[id], h3[id]) { scroll-margin-top: 7rem; }
 :where(a, button, summary) { -webkit-tap-highlight-color: transparent; }
 #mobile-navigation :focus-visible { outline-color: var(--ui-accent); }
+
+/* Editorial portfolio pilot: Homepage and AEEM. Other routes retain their palette. */
+.editorial-page {
+  --ui-background: #F4F1EA;
+  --ui-surface: #EAE6DC;
+  --ui-elevated: #DEDACF;
+  --ui-text: #20221F;
+  --ui-muted: #575D57;
+  --ui-accent: #174E72;
+  --ui-action: #174E72;
+  --ui-border: #8A8D82;
+  --color-midnight: var(--ui-background);
+  --color-surface: var(--ui-surface);
+  --color-navy: var(--ui-elevated);
+  --color-ivory: var(--ui-text);
+  --color-muted: var(--ui-muted);
+  --color-accent: var(--ui-accent);
+  --color-pride-blue: var(--ui-action);
+  --color-border: var(--ui-border);
+  color: var(--ui-text);
+  background: var(--ui-background);
+  font-family: var(--font-inter), ui-sans-serif, system-ui;
+}
+.editorial-hero { padding-top: 7.5rem; }
+.editorial-kicker { font-size: .75rem; line-height: 1.6; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
+.editorial-headline { font-size: clamp(2.9rem, 6.4vw, 6rem); font-weight: 600; line-height: 1.04; letter-spacing: -.055em; }
+.editorial-case-title { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+.editorial-link { display: inline-flex; align-items: center; gap: .75rem; min-height: 2.75rem; padding-block: .5rem; font-size: .875rem; font-weight: 600; color: var(--ui-accent); border-bottom: 1px solid var(--ui-accent); text-decoration: none; }
+.editorial-link:hover { color: var(--ui-text); border-color: var(--ui-text); }
+.editorial-project-image { overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-surface); padding: clamp(.5rem, 2vw, 1.5rem); }
+.editorial-page :focus-visible { outline-color: var(--ui-accent); }
+.editorial-story { font-size: 1.0625rem; line-height: 1.85; }
+.editorial-story h2 { padding-top: 2rem; border-top: 1px solid var(--ui-border); margin-top: 3rem; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.25; }
+.editorial-story h2:first-child { margin-top: 0; }
+.editorial-story p, .editorial-story li { color: var(--ui-text); line-height: 1.85; }
+.editorial-story strong { font-weight: 600; }
+.editorial-page footer > div[aria-hidden] { display: none; }
+.editorial-page footer { padding-top: 3rem; }
+.editorial-page footer a:hover { color: var(--ui-accent); }
+@media (max-width: 640px) {
+  .editorial-hero { padding-top: 6.5rem; }
+  .editorial-headline { letter-spacing: -.045em; }
+}
+
+.editorial-page .cursor-text-blink { display: none; }

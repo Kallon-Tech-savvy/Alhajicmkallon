@@ -1,113 +1,33 @@
 import Image from 'next/image';
-import { PROJECTS } from '@/lib/content';
-import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
+import { PROJECTS } from '@/lib/content';
 
 export const FeaturedWork = () => {
+  const aeem = PROJECTS.find(project => project.slug === 'aeem-digital-presence');
+  const others = PROJECTS.filter(project => project.slug !== 'aeem-digital-presence');
   return (
-    <section id="work" className="py-20 md:section-space bg-midnight site-gutter relative">
-      <div className="max-w-[var(--layout-max)] mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-8">
-          <div>
-            <span className="font-display text-accent text-xs font-bold tracking-[0.16em] uppercase mb-6 block">
-              Selected work
-            </span>
-            <h2 className="section-title font-display text-5xl md:text-7xl font-bold tracking-tighter leading-none">
-              WORK <br /><span className="text-muted">IN CONTEXT</span>
-            </h2>
-          </div>
-
-          <div className="max-w-md">
-            <p className="text-muted text-lg font-body leading-relaxed mb-8">
-              These case studies show the problem, the decisions I made, what I built, and what the available evidence can—and cannot—tell us.
-            </p>
-            <Link prefetch={false} href="/work" className="font-display text-xs font-black uppercase tracking-[0.2em] text-ivory hover:text-accent transition-colors flex items-center gap-2 group">
-              Explore all work <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </Link>
-          </div>
+    <section id="work" className="site-gutter pb-16 md:pb-24">
+      <div className="mx-auto max-w-[var(--layout-max)]">
+        <div className="mb-6 flex items-center justify-between gap-4 border-t border-border pt-5">
+          <h2 className="editorial-kicker">01 / Selected work</h2>
+          <Link prefetch={false} href="/work" className="text-sm text-accent underline underline-offset-4">All projects ↗</Link>
         </div>
-
-        <div className="grid grid-cols-1 gap-16 md:gap-12">
-          {PROJECTS.length === 0 ? (
-            <div className="border border-border p-8 md:p-12">
-              <h3 className="font-display text-2xl font-bold mb-4">Evidence before claims</h3>
-              <p className="max-w-2xl text-muted leading-relaxed">I publish work when there is enough substance to explain the decisions, implementation, and what has been learned.</p>
-            </div>
-          ) : PROJECTS.map((project, _i) => (
-            <div
-              key={project.id}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center group"
-            >
-              <div className={cn(
-                "lg:col-span-7 relative aspect-video overflow-hidden bg-navy rounded-xl border border-border",
-                _i % 2 === 1 ? "lg:order-2" : ""
-              )}>
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 58vw"
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
-                    <span className="font-display text-2xl md:text-4xl font-bold text-white/30">{project.title}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className={cn(
-                "lg:col-span-5",
-                _i % 2 === 1 ? "lg:order-1" : ""
-              )}>
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="font-display text-accent text-xs font-black uppercase tracking-[0.16em]">
-                    {project.role}
-                  </span>
-                  <div className="h-[1px] w-8 bg-accent/30" />
-                </div>
-
-                <h3 className="font-display text-4xl md:text-5xl font-bold tracking-tighter mb-6 group-hover:text-accent transition-colors">
-                  <Link prefetch={false} href={`/work/${project.slug}`}>{project.title}</Link>
-                </h3>
-
-                <p className="text-muted text-lg font-body mb-8 leading-relaxed">
-                  {project.summary}
-                </p>
-
-                <div className="flex flex-wrap gap-3 mb-10">
-                  {project.technologies.map(t => (
-                    <span key={t} className="px-3 py-1 bg-white/5 border border-border rounded-full text-xs font-display font-bold text-muted uppercase tracking-wider">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4">
-                  <Link prefetch={false} href={`/work/${project.slug}`} className="inline-flex items-center gap-3 px-8 py-4 border border-accent/30 text-accent font-display font-black text-xs uppercase tracking-widest hover:bg-accent hover:text-midnight transition-all duration-500">
-                    Read Case Study <ArrowUpRight size={14} />
-                  </Link>
-                  {project.links?.live && (
-                    <a
-                      href={project.links.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 py-4 text-muted hover:text-ivory font-display font-bold text-xs uppercase tracking-widest transition-colors"
-                    >
-                      Visit Live Project <ArrowUpRight size={14} />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        {aeem && <article>
+          <Link prefetch={false} href={`/work/${aeem.slug}`} className="editorial-project-image block" aria-label="Explore the AEEM case study">
+            <Image src="/assets/aeem-live-home.webp" alt="The working AEEM homepage: its education mission, navigation and paths to impact and participation" width={1356} height={931} sizes="(max-width: 768px) 100vw, 1152px" className="h-auto w-full" />
+          </Link>
+          <div className="mt-7 grid gap-6 md:grid-cols-12">
+            <div className="md:col-span-3"><p className="editorial-kicker text-accent">AEEM / Education</p><p className="mt-3 text-sm text-muted">Working website<br />Product thinking · UX · Development</p></div>
+            <div className="md:col-span-6"><h3 className="text-3xl font-semibold leading-tight tracking-tight md:text-4xl"><Link prefetch={false} href={`/work/${aeem.slug}`}>Making an organisation’s work easier to understand.</Link></h3><p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">An education movement with work to show, reports to share and people who wanted to get involved. I brought those journeys into one place.</p></div>
+            <div className="flex flex-col items-start gap-4 md:col-span-3 md:items-end"><Link prefetch={false} href={`/work/${aeem.slug}`} className="editorial-link">Explore the case study ↗</Link>{aeem.links?.live && <a href={aeem.links.live} target="_blank" rel="noopener noreferrer" className="text-sm text-muted underline underline-offset-4">Visit the working website ↗</a>}</div>
+          </div>
+        </article>}
+        {others.map(project => <article key={project.slug} className="mt-12 grid gap-4 border-t border-border pt-6 md:grid-cols-12">
+          <p className="editorial-kicker text-muted md:col-span-3">02 / In development</p>
+          <div className="md:col-span-6"><h3 className="text-2xl font-semibold tracking-tight"><Link prefetch={false} href={`/work/${project.slug}`}>{project.title}</Link></h3><p className="mt-3 text-sm leading-relaxed text-muted">{project.summary}</p></div>
+          <Link prefetch={false} href={`/work/${project.slug}`} className="text-sm text-accent underline underline-offset-4 md:col-span-3 md:text-right">Read the development notes ↗</Link>
+        </article>)}
       </div>
     </section>
   );
 };
-
-function cn(...classes: (string | boolean | undefined | null)[]) {
-  return classes.filter(Boolean).join(' ');
-}

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { AEEMCaseStudy } from '@/components/AEEMCaseStudy';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
@@ -34,6 +35,19 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
+
+  if (project.slug === 'aeem-digital-presence') {
+    return <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
+        '@context': 'https://schema.org', '@type': 'CreativeWork',
+        name: project.title, description: project.summary,
+        url: `https://alhajikallon.com/work/${project.slug}`,
+        creator: { '@id': 'https://alhajikallon.com/#person' },
+        isPartOf: { '@id': 'https://alhajikallon.com/#website' },
+      }) }} />
+      <AEEMCaseStudy source={project.body ?? project.description} liveUrl={project.links.live} />
+    </>;
+  }
 
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-accent/30">
