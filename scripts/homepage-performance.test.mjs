@@ -10,10 +10,10 @@ test('homepage hero stays server-rendered without Framer Motion client runtime',
   assert.doesNotMatch(heroSource, /<motion\./);
 });
 
-test('desktop-only homepage portrait is not preloaded on mobile viewports', () => {
+test('supporting homepage portrait stays small and is not preloaded', () => {
   assert.match(heroSource, /src=["']\/assets\/kallon1\.png["']/);
   assert.doesNotMatch(heroSource, /\bpriority\b/);
-  assert.match(heroSource, /sizes="\(min-width: 1024px\) 42vw, 1px"/);
+  assert.match(heroSource, /sizes="56px"/);
   assert.match(heroSource, /loading="lazy"/);
 });
 
@@ -223,10 +223,10 @@ test('published project, writing, and knowledge pages expose typed structured da
 
 const homepageSource = await readFile(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
 
-test('homepage presents case-study evidence before the process sections', () => {
+test('homepage presents case-study evidence before the personal perspective', () => {
   const hero = homepageSource.indexOf('<Hero />');
   const work = homepageSource.indexOf('<FeaturedWork />');
-  const process = homepageSource.indexOf('<PracticeOverview />');
+  const process = homepageSource.indexOf('id="perspective-heading"');
   assert.ok(hero >= 0 && work > hero && process > work);
 });
 
@@ -297,7 +297,7 @@ test('homepage links avoid route prefetch until visitors navigate', async () => 
 
 test('homepage imports server-rendered sections without next/dynamic overhead', async () => {
   assert.doesNotMatch(homepageSource, /import dynamic from ['"]next\/dynamic['"]/);
-  const sections = ['ImpactCards', 'Timeline', 'FeaturedWork', 'ThoughtLeadership', 'NewsletterCTA', 'Footer'];
+  const sections = ['Hero', 'FeaturedWork', 'Footer'];
   for (const name of sections) {
     assert.ok(homepageSource.includes('import { ' + name + ' } from '+String.fromCharCode(39)+'@/components/' + name + String.fromCharCode(39)));
     const source = await readFile(new URL('../src/components/' + name + '.tsx', import.meta.url), 'utf8');

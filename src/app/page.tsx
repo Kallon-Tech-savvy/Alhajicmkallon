@@ -1,85 +1,34 @@
+import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
-import { VisitorPath } from '@/components/VisitorPath';
-import { PracticeOverview } from '@/components/PracticeOverview';
-
-// The following sections remain server-rendered; no client lazy loader is necessary.
-import { ImpactCards } from '@/components/ImpactCards';
-import { Timeline } from '@/components/Timeline';
 import { FeaturedWork } from '@/components/FeaturedWork';
-import { ThoughtLeadership } from '@/components/ThoughtLeadership';
-import { NewsletterCTA } from '@/components/NewsletterCTA';
 import { Footer } from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen">
+    <main className="editorial-page min-h-screen">
       <Navbar />
       <Hero />
-      {/* Show evidence before explaining the approach: one clear reading path. */}
       <FeaturedWork />
-      <PracticeOverview />
-      <ImpactCards />
-      <Timeline />
-      <ThoughtLeadership />
-
-      {/* ── Terminal Quote Section ──────────────────────────────────── */}
-      <section className="section-space site-gutter relative overflow-hidden bg-[var(--color-midnight)] border-t border-[var(--color-border)]">
-        
-        {/* Watermark */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none font-[family-name:var(--font-jetbrains-mono)] text-[28vw] font-black text-white/[0.012] whitespace-nowrap"
-          aria-hidden
-        >
-          VALUES
-        </div>
-
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="reveal-in">
-            {/* Terminal panel chrome */}
-            <div className="terminal-panel" data-title="philosophy.log">
-              <div className="p-8 md:p-12">
-                
-                {/* Prompt line */}
-                <p className="font-[family-name:var(--font-jetbrains-mono)] text-xs mb-6 text-[var(--color-muted)]">
-                  <span className="text-accent">alhaji@kallon</span>
-                  <span>:~$&nbsp;</span>
-                  <span className="text-[var(--color-ivory)]">cat ./professional_philosophy.md</span>
-                </p>
-
-                {/* The quote */}
-                <blockquote className="font-[family-name:var(--font-jetbrains-mono)] text-xl md:text-2xl lg:text-3xl leading-relaxed mb-8 text-[var(--color-ivory)]">
-                  <span className="text-accent mr-[0.5em]">&gt;</span>
-                  &quot;A product does not earn its place because it exists. It earns it by solving a problem people care about—and by showing that it does.&quot;
-                </blockquote>
-
-                {/* Attribution */}
-                <div className="flex items-center gap-4">
-                  <div className="h-px flex-1 bg-[var(--color-border)]" />
-                  <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.16em] text-[var(--color-accent)]">
-                    — Alhaji C M Kallon, Design Engineer
-                  </span>
-                </div>
-              </div>
+      <section className="site-gutter border-t border-border py-16 md:py-24" aria-labelledby="perspective-heading">
+        <div className="mx-auto grid max-w-[var(--layout-max)] gap-8 md:grid-cols-12">
+          <p className="editorial-kicker text-accent md:col-span-3">02 / Perspective</p>
+          <div className="md:col-span-9">
+            <h2 id="perspective-heading" className="max-w-3xl text-3xl font-medium leading-tight tracking-tight md:text-5xl">The circumstances matter<br />as much as the interface.</h2>
+            <div className="mt-8 grid gap-6 text-base leading-relaxed text-muted md:grid-cols-2">
+              <p>My work is shaped by life in Sierra Leone and by the organisations I work with. In AEEM, the challenge was helping people understand the mission, inspect the work and find their way into it.</p>
+              <p>I’m interested in the choices that make a product useful: what to explain, what to leave out and what needs testing. I share those choices so other developers can examine and learn from the work.</p>
             </div>
-
-            {/* Mantra as system command */}
-            <div className="mt-8 flex items-center gap-3 reveal-in">
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-accent">
-                $
-              </span>
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm text-[var(--color-muted)]">
-                question --decide --build --learn
-              </span>
-              <span className="cursor-blink" />
-            </div>
+            <Link prefetch={false} href="/about" className="editorial-link mt-8 inline-flex">More about my practice ↗</Link>
           </div>
         </div>
       </section>
-
-      <VisitorPath />
-
-      <NewsletterCTA />
+      <section className="site-gutter border-t border-border py-12 md:py-16" aria-label="Writing and enquiries">
+        <div className="mx-auto grid max-w-[var(--layout-max)] gap-8 md:grid-cols-2">
+          <div><p className="editorial-kicker text-muted">For fellow developers</p><h2 className="mt-3 text-2xl font-semibold">Notes worth sharing.</h2><p className="mt-3 max-w-md text-muted">Practical guides and reflections on design, technology and the decisions behind a working product.</p><Link prefetch={false} href="/writing" className="editorial-link mt-5 inline-flex">Read the writing ↗</Link></div>
+          <div className="border-t border-border pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0"><p className="editorial-kicker text-muted">For organisations</p><h2 className="mt-3 text-2xl font-semibold">Start with what needs to change.</h2><p className="mt-3 max-w-md text-muted">You don’t need a finished brief. Tell me what is happening, who it affects and what a better outcome would look like.</p><Link prefetch={false} href="/contact" className="editorial-link mt-5 inline-flex">Talk through your project ↗</Link></div>
+        </div>
+      </section>
       <Footer />
     </main>
   );

@@ -80,7 +80,8 @@ test('production CSS includes the registered application palette and font utilit
 
 test('shared text, action and menu colours meet their contrast budgets', async () => {
   const source = await readFile(path.join(projectRoot, 'src/app/globals.css'), 'utf8');
-  const colours = Object.fromEntries([...source.matchAll(/--ui-([a-z-]+):\s*(#[0-9A-Fa-f]{6});/g)].map((match) => [match[1], match[2]]));
+  const root = source.match(/:root\s*\{([^}]+)\}/)[1];
+  const colours = Object.fromEntries([...root.matchAll(/--ui-([a-z-]+):\s*(#[0-9A-Fa-f]{6});/g)].map((match) => [match[1], match[2]]));
   function luminance(hex) {
     const values = [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16) / 255).map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
     return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
@@ -90,5 +91,20 @@ test('shared text, action and menu colours meet their contrast budgets', async (
     const [low, high] = [luminance(colours[foreground]), luminance(colours[background])].sort((a,b) => a-b);
     const ratio = (high + 0.05) / (low + 0.05);
     assert.ok(ratio >= 4.5, `${foreground} on ${background}: ${ratio.toFixed(2)}:1 is below 4.5:1`);
+  }
+});
+
+
+test('editorial text and primary action meet contrast budgets on each paper surface', async () => {
+  const css = await readFile(path.join(projectRoot, 'src/app/globals.css'), 'utf8');
+  const palette = css.match(/\.editorial-page\s*\{([^}]+)\}/)[1];
+  const colours = Object.fromEntries([...palette.matchAll(/--ui-([a-z-]+):\s*(#[0-9A-Fa-f]{6});/g)].map(m => [m[1], m[2]]));
+  function light(hex) {
+    const v = [1,3,5].map(i => parseInt(hex.slice(i,i+2),16)/255).map(v => v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4);
+    return v[0]*.2126+v[1]*.7152+v[2]*.0722;
+  }
+  for (const fg of ['text','muted','accent']) for (const bg of ['background','surface','elevated']) {
+    const [a,b] = [light(colours[fg]),light(colours[bg])].sort((a,b)=>a-b);
+    assert.ok((b+.05)/(a+.05) >= 4.5, `${fg} on ${bg} needs 4.5:1`);
   }
 });
