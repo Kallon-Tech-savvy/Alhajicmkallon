@@ -11,9 +11,9 @@ test('course publishes twelve substantial lessons with usable checkpoints and cr
   for(const lesson of index){
     const text=await readFile(new URL(`../content/knowledge/${lesson.slug}.md`,import.meta.url),'utf8');
     assert.match(text,/status: "published"/);
-    assert.match(text,/## Start with a person/);
-    assert.match(text,/## (Break it deliberately|Walk through the difficult moments)/);
-    assert.match(text,/## (Check your reasoning|Review with a rubric)/);
+    assert.match(text,/## Problem and scope/);
+    assert.match(text,/## (Failure analysis|Walk through the difficult moments)/);
+    assert.match(text,/## (Assessment)/);
     assert.match(text,/## Sources/);
     assert.ok(text.split(/\s+/).length>=300,`${lesson.slug} needs a complete lesson`);
     for(const match of text.matchAll(/\]\(\/knowledge\/([^\)#]+)\)/g)) if(match[1]!=='protocols') await readFile(new URL(`../content/knowledge/${match[1]}.md`,import.meta.url));

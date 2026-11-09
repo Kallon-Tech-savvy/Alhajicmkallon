@@ -4,7 +4,7 @@ title: "Separate identity, permission and trust"
 category: "Protocol course · Lesson 08"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Trace sessions, OAuth and OIDC, then test that one studio cannot read another studio’s gallery."
 status: "published"
 kind: "knowledge"
@@ -14,11 +14,11 @@ objectives: ["Explain authentication and resource authorization separately", "Bu
 sources: ["https://www.rfc-editor.org/rfc/rfc9700.html", "https://openid.net/specs/openid-connect-core-1_0.html", "https://www.rfc-editor.org/rfc/rfc8725.html", "https://www.w3.org/TR/webauthn-3/"]
 ---
 
-## Start with a person
+## Problem and scope
 
 Mohamed trusts Augusta with photographs that may never be public. “He is signed in” does not answer “May he read this gallery?” Permissions are part of that relationship of trust.
 
-## The idea
+## Core concepts
 
 Authentication establishes an identity or credential. Authorization decides whether that identity may perform a particular action on a particular resource. OAuth supports delegated access; OIDC adds identity assertions for sign-in. An ID token is not a general-purpose replacement for an API access token. JWT is a token format: decoding its claims does not verify its signature or grant access.
 
@@ -41,13 +41,25 @@ Draw the browser, application server, identity provider and database. For each a
 
 Study a passkey registration and authentication ceremony. WebAuthn uses public-key credentials and origin-bound challenges; recovery and lost-device handling still require design. For mTLS, explain why authenticating a client service does not itself authorize every business action.
 
-## Break it deliberately
+## Failure analysis
 
 Test no credentials, expired credentials in a real test identity provider, wrong studio, a changed resource id and a viewer attempting an owner action. Never use actual client records. Record the expected status and whether any private data was returned.
 
-## Check your reasoning
+## Assessment
 
 Ready when your test matrix contains both allowed and denied cases and names the server-side check for every sensitive operation. An authorization failure should not erase Mohamed’s form input or casually reveal another person’s private information.
+
+## Permission is a relationship between caller, action and resource
+
+A role label is not a complete permission decision. An editor in studio A should not automatically edit studio B. The effective rule usually combines authenticated identity, membership, allowed action and resource ownership. The server must evaluate that relationship for every sensitive operation, including downloads and subscriptions that are easy to overlook.
+
+### Worked reasoning
+
+A gallery lookup constrained by both gallery id and authorized studio prevents a caller from obtaining another studio’s record merely by changing the URL. For updates, the same constraint belongs in the mutation or transaction; checking ownership earlier and later updating by id alone can introduce a race or an inconsistent boundary. Test access at the operation that reads or changes the data.
+
+### Apply the distinction
+
+Write an authorization predicate in plain language, then translate it into a server query and negative tests. Include membership removal during an active session and a viewer attempting an owner-only mutation.
 
 ## Sources
 

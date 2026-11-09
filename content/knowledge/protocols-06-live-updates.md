@@ -4,7 +4,7 @@ title: "Make live updates survive a disconnect"
 category: "Protocol course · Lesson 06"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Compare polling, SSE and WebSocket through the experience of waiting for photographs to finish processing."
 status: "published"
 kind: "knowledge"
@@ -14,11 +14,11 @@ objectives: ["Choose a suitable update channel", "Design reconnection and duplic
 sources: ["https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events", "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"]
 ---
 
-## Start with a person
+## Problem and scope
 
 Mohamed watches an upload reach 80 percent, then his connection drops. A progress bar that resets to zero can make him feel his work disappeared. Before adding animation, decide what state the server actually knows and how the interface recovers it.
 
-## The idea
+## Core concepts
 
 Polling periodically asks for state. SSE sends a stream of text events from server to browser over HTTP. WebSocket supports bidirectional messages over a persistent connection. Use the simplest option that meets the interaction: a progress feed does not automatically require a two-way channel.
 
@@ -40,13 +40,25 @@ Define a server-owned job id, current progress snapshot and monotonically meanin
 
 For an optional WebSocket extension, define message types for join, progress and comment. Authenticate the connection, authorize the gallery subscription, bound message size and test reconnect. The local lab does not supply a WebSocket server; choose an official or maintained implementation if extending it.
 
-## Break it deliberately
+## Failure analysis
 
 Disconnect after the second event. Replay one event twice. Deliver progress after a job has completed. Your reducer must not show 150 percent or undo a confirmed completion. Test that switching galleries removes the previous subscription.
 
-## Check your reasoning
+## Assessment
 
 Ready when you can show a reconnect transcript and explain your choice among polling, SSE and WebSocket. Write honest microcopy for “reconnecting” and “last confirmed progress.” A temporarily disconnected person deserves useful information, not a silent spinner.
+
+## A live connection is not durable state
+
+A connection describes a current communication channel. It does not by itself provide persistent history, recovery or agreement about the latest state. Event order within one connection is not enough to resolve events from different connections or workers. Define identifiers and versions at the level of the job or resource whose state matters.
+
+### Worked reasoning
+
+Assume a client last observed job version 8, disconnects and receives version 10 after reconnecting. If events are state snapshots, replacing local state with version 10 may be sufficient. If they are incremental operations, missing version 9 may prevent correct reconstruction. Choose either bounded replay or a fresh snapshot based on that distinction, not on the presence of an event id alone.
+
+### Apply the distinction
+
+Specify whether each message is a snapshot, a delta or a notification to refetch. Test an older version arriving after a newer version. The interface must not move a completed job back into processing.
 
 ## Sources
 

@@ -4,7 +4,7 @@ title: "Make HTTP responses mean something"
 category: "Protocol course · Lesson 02"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Practise methods, status codes, headers and validation using a runnable local API, then translate technical outcomes into honest interface messages."
 status: "published"
 kind: "knowledge"
@@ -14,11 +14,11 @@ objectives: ["Inspect a real HTTP exchange", "Separate HTTP failure from a netwo
 sources: ["https://www.rfc-editor.org/rfc/rfc9110.html", "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"]
 ---
 
-## Start with a person
+## Problem and scope
 
 Mohamed presses Save and sees “Done.” But the server rejected the request. A cheerful message has made the product less trustworthy. We need to distinguish the button press, the request and the confirmed outcome.
 
-## The idea
+## Core concepts
 
 A request includes a method, target and headers, sometimes a body. A response includes a status, headers and sometimes a body. GET should retrieve without requesting a state change. POST can create a resource; it is not automatically safe to repeat. A successful fetch promise can still contain an HTTP error response.
 
@@ -51,13 +51,25 @@ Write a small TypeScript function that fetches /galleries with the fictional Aut
 
 Keep four interface states: loading, success with items, success without items and failure. State which error information belongs in a developer log and which helps a visitor.
 
-## Break it deliberately
+## Failure analysis
 
 Remove the header, stop the server, and replace a saved JSON fixture with malformed data. These represent different failures. Do not expose raw stack traces to Mohamed. Keep useful context and a next action: “Your changes were not confirmed. Check your connection and try again.” Only say changes were not saved when you know that.
 
-## Check your reasoning
+## Assessment
 
 Ready when your function rejects HTTP errors, malformed JSON and wrong data shapes, and handles a successful empty list without an error banner. Explain why receiving a response is different from completing the person’s goal.
+
+## HTTP outcomes and application outcomes
+
+Transport success, HTTP success and business success are separate conditions. A response can arrive intact with status 400. A 200 response can contain a malformed representation. A valid representation can describe an operation that is accepted but incomplete. Client code must check the relevant conditions in order rather than treating a resolved promise as a completed task.
+
+### Worked reasoning
+
+For gallery creation, a 201 response identifies a created resource. A 202 response would instead indicate acceptance for processing; the contract would need a way to inspect completion. If an email notification is a later step, gallery creation success does not prove the email was delivered. Represent those states separately in the interface and in tests.
+
+### Apply the distinction
+
+Build an outcome matrix with columns for connection, status, representation and business state. Include malformed JSON on 200, a valid error on 400, a connection timeout and an accepted background job.
 
 ## Sources
 

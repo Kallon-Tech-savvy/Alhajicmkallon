@@ -4,7 +4,7 @@ title: "Handle the request that may already have succeeded"
 category: "Protocol course · Lesson 09"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Reproduce a timeout after a write, then use idempotency and bounded retries to avoid duplicate work."
 status: "published"
 kind: "knowledge"
@@ -14,11 +14,11 @@ objectives: ["Distinguish a missing response from a failed write", "Test retry b
 sources: ["https://www.rfc-editor.org/rfc/rfc9110.html"]
 ---
 
-## Start with a person
+## Problem and scope
 
 Augusta taps Create gallery. The request times out. She taps again because the interface offers no other explanation. Two galleries appear. The system has turned uncertainty into extra work for her.
 
-## The idea
+## Core concepts
 
 A client timeout means the client stopped waiting; the server may already have committed. Aborting fetch does not roll back remote work. Idempotent method semantics concern intended effects; a POST operation needs an explicitly designed deduplication contract if retries must not create duplicates.
 
@@ -42,13 +42,25 @@ List retryable situations for your operation, a total time budget, maximum attem
 
 For a multi-step workflow, assign time budgets to the caller, API and downstream dependencies. A retry loop that outlives the person’s action creates hidden work and confusion.
 
-## Break it deliberately
+## Failure analysis
 
 Send two identical creation requests concurrently. Lose the response after the write. Restart the process before retrying. Document which guarantees the lab satisfies and which it cannot. Next, design a database uniqueness constraint and transaction that closes those gaps.
 
-## Check your reasoning
+## Assessment
 
 Ready when you can demonstrate one operation producing one intended result under a retry and explain the storage assumptions. Write the uncertain state honestly: “The result is not confirmed yet. Check the gallery list before creating another.”
+
+## Idempotency requires an atomic decision
+
+Deduplication must survive the same failure modes as the operation it protects. An in-memory map disappears on restart. A check followed by an independent insert can race under concurrent requests. A production design normally needs a durable uniqueness boundary scoped to the caller and operation, and a defined response when an equivalent request is still executing.
+
+### Worked reasoning
+
+For a create operation, persist a key, a request fingerprint, execution state and result reference. A repeated equivalent request returns the recorded outcome or a documented pending response. Reusing the key for different input returns a conflict. Expiry must account for the longest supported retry window: deleting the key too soon makes an old retry look like new work.
+
+### Apply the distinction
+
+Explain the transaction boundary for concurrent requests. Then repeat the test after a process restart. If your guarantee depends on a database uniqueness constraint, show the constraint and the conflict-handling path.
 
 ## Sources
 

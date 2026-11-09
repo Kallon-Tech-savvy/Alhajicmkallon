@@ -4,7 +4,7 @@ title: "Follow a request without getting lost"
 category: "Protocol course · Lesson 01"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Understand what a protocol promises, trace DNS, transport, TLS and HTTP, and build a debugging map before writing more code."
 status: "published"
 kind: "knowledge"
@@ -14,13 +14,12 @@ objectives: ["Distinguish a protocol from an API and data format", "Find the lay
 sources: ["https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview", "https://www.rfc-editor.org/rfc/rfc9293.html", "https://www.rfc-editor.org/rfc/rfc8446.html"]
 ---
 
-## Start with a person
+## Problem and scope
 
 Augusta is a fictional photographer. Mohamed is her client. He opens a gallery link on a patchy connection and sees a spinner. He does not know whether the gallery is missing, his connection is failing or his photographs are private. Our job is to investigate before telling him to try again.
 
-If the vocabulary feels crowded, that is understandable. You are learning several layers at once. Keep one question in view: what happened between asking for something and receiving it?
 
-## The idea
+## Core concepts
 
 A protocol is an agreed set of rules for communication: message shapes, meaning and what participants do next. An API exposes capabilities. JSON is a data format. REST is an architectural style. They solve related but different problems.
 
@@ -47,17 +46,25 @@ On Windows PowerShell use curl.exe if curl is an alias. The expected response is
 
 The lab is intentionally HTTP on loopback, so it does not exercise public DNS or TLS. For those layers, inspect a normal HTTPS website in browser developer tools: request URL, timing and certificate information. Do not disable certificate verification.
 
-## Break it deliberately
+## Failure analysis
 
 Stop the lab and repeat the request. Compare connection refused with a 404 response from a running server at /missing. The first cannot establish the connection; the second reached an HTTP server that answered. Record the difference without guessing about the application’s internals.
 
-## Check your reasoning
+## Assessment
 
 Save a request map with six labels: name, connection, secure channel, HTTP, application and permission. For each, write one possible failure and one observation you could collect. Ready to continue when you can explain why a certificate error and a missing gallery need different investigations.
 
-## A note to carry forward
+## The request as a sequence of boundaries
 
-Instead of “It is broken,” try “The server was reachable and returned 404; I have not yet checked whether the gallery exists.” Precision gives you a next step and gives another person something useful to work with.
+A gallery request crosses systems with different responsibilities. DNS resolution produces records, not a guarantee that a service is healthy. A transport connection establishes a communication path, not permission to read a resource. A valid TLS exchange protects the channel, not the application’s business rules. HTTP carries the request and response; the application determines the result.
+
+### Worked reasoning
+
+Suppose the browser receives a 403 response. You can establish that an HTTP-speaking component answered. You cannot establish that the gallery handler ran: a proxy or security layer may have generated the response. The next useful observation is the response origin and a correlated server-side record. Replacing DNS records would be an unsupported intervention.
+
+### Apply the distinction
+
+Compare three observations: no resolved address, connection refused, and HTTP 404. For each, identify the last boundary supported by evidence. Do not infer later stages from an earlier success.
 
 ## Sources
 
