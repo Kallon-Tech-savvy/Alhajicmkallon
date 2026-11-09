@@ -1,12 +1,13 @@
 import Link from 'next/link';
+import { PROTOCOL_SLUGS } from '@/lib/protocol-course';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { KNOWLEDGE_ENTRIES } from '@/lib/content';
 import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
 export const metadata = {
-  title: 'Learn frontend development: beginner to junior developer',
-  description: 'Practical HTML, CSS, JavaScript, TypeScript and delivery guides, organised by starting point. Read a clear answer, try an exercise and check your understanding.',
+  title: 'Practical development guides and software protocol course',
+  description: 'Practical development guides and a 12-part software protocol course covering HTTP, APIs, identity, events, safe AI tools and debugging.',
   alternates: { canonical: '/knowledge' },
 };
 
@@ -21,14 +22,14 @@ export default function KnowledgePage() {
     <main className="min-h-screen bg-midnight text-ivory">
       <Navbar />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
-        '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Frontend development learning hub',
+        '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Development and software protocols learning hub',
         url: 'https://alhajikallon.com/knowledge', description: metadata.description,
-        mainEntity: { '@type': 'ItemList', itemListElement: KNOWLEDGE_ENTRIES.map((entry, i) => ({ '@type': 'ListItem', position: i + 1, name: entry.title, url: `https://alhajikallon.com/knowledge/${entry.slug}` })) },
+        mainEntity: { '@type': 'ItemList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Software protocols: a practical course', url: 'https://alhajikallon.com/knowledge/protocols' }, ...KNOWLEDGE_ENTRIES.map((entry, i) => ({ '@type': 'ListItem', position: i + 2, name: entry.title, url: `https://alhajikallon.com/knowledge/${entry.slug}` }))] },
       }) }} />
       <section className="page-intro site-gutter border-b border-border">
         <div className="mx-auto max-w-[var(--layout-max)]">
           <p className="mb-5 text-xs font-semibold tracking-normal text-[var(--color-accent)]">Knowledge hub · Learn by building</p>
-          <h1 className="page-title max-w-4xl font-bold leading-tight tracking-tight">A clearer next step in frontend development.</h1>
+          <h1 className="page-title max-w-4xl font-bold leading-tight tracking-tight">A clearer next step in development.</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--color-muted)]">Choose where you are today. Each guide gives you a direct explanation, a practical exercise, common mistakes and primary sources to explore.</p>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--color-muted)]">Experience levels overlap: a junior developer can still need a beginner explanation. Start with the skill you want to practise.</p>
           <nav aria-label="Choose a learning path" className="mt-9 grid gap-4 md:grid-cols-3">
@@ -36,10 +37,11 @@ export default function KnowledgePage() {
           </nav>
         </div>
       </section>
-      <div className="site-container py-12">
+      <section className="site-container py-12" aria-labelledby="protocol-course-title"><div className="grid gap-7 rounded-lg border border-border bg-surface p-6 md:grid-cols-12 md:p-8"><div className="md:col-span-8"><p className="editorial-kicker text-muted">A complete learning path · 12 lessons</p><h2 id="protocol-course-title" className="mt-3 text-3xl font-medium tracking-tight">Software protocols, with people in mind.</h2><p className="mt-4 max-w-2xl leading-relaxed text-muted">Trace a request, design an API, recover from failure and protect private data. Follow one realistic gallery workflow through practical labs, thoughtful explanations and checkpoints you can verify.</p><p className="mt-3 text-sm text-muted">From foundations to junior practice. Core labs run locally without paid services or API keys.</p></div><div className="flex items-center md:col-span-4 md:justify-end"><Link prefetch={false} href="/knowledge/protocols" className="editorial-link">Explore the protocol course →</Link></div></div></section>
+      <div className="site-container pb-12">
         {paths.map((path) => <section id={path.id} key={path.id} className="scroll-mt-28 border-b border-border py-10 first:pt-0">
           <h2 className="text-3xl font-semibold tracking-tight">{path.title}</h2><p className="mb-7 mt-3 max-w-2xl leading-relaxed text-[var(--color-muted)]">{path.description}</p>
-          <ol className="grid gap-4 md:grid-cols-2">{KNOWLEDGE_ENTRIES.filter((entry) => entry.level === path.id).map((entry, i) => <li key={entry.slug}><Link prefetch={false} href={`/knowledge/${entry.slug}`} className="group block h-full rounded-xl border border-border p-6 transition-colors hover:border-[var(--color-accent)]"><p className="text-xs tracking-normal text-[var(--color-accent)]">Step {i + 1} · {entry.category}</p><h3 className="mt-3 text-xl font-semibold group-hover:text-[var(--color-accent)]">{entry.title}</h3><p className="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">{entry.excerpt}</p><p className="mt-5 text-xs text-[var(--color-muted)]">{entry.readTime} · Published <time dateTime={entry.date}>{entry.date}</time></p><span className="mt-4 inline-block text-sm text-[var(--color-accent)]">Read and practise →</span></Link></li>)}</ol>
+          <ol className="grid gap-4 md:grid-cols-2">{KNOWLEDGE_ENTRIES.filter((entry) => entry.level === path.id && !PROTOCOL_SLUGS.has(entry.slug)).map((entry, i) => <li key={entry.slug}><Link prefetch={false} href={`/knowledge/${entry.slug}`} className="group block h-full rounded-xl border border-border p-6 transition-colors hover:border-[var(--color-accent)]"><p className="text-xs tracking-normal text-[var(--color-accent)]">Step {i + 1} · {entry.category}</p><h3 className="mt-3 text-xl font-semibold group-hover:text-[var(--color-accent)]">{entry.title}</h3><p className="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">{entry.excerpt}</p><p className="mt-5 text-xs text-[var(--color-muted)]">{entry.readTime} · Published <time dateTime={entry.date}>{entry.date}</time></p><span className="mt-4 inline-block text-sm text-[var(--color-accent)]">Read and practise →</span></Link></li>)}</ol>
         </section>)}
         <aside className="mt-10 max-w-3xl text-sm leading-relaxed text-[var(--color-muted)]"><h2 className="mb-3 text-lg font-semibold text-ivory">How this library is curated</h2><p>Guides focus on one useful question, make prerequisites visible and link to primary documentation. Exercises are suggestions for practice, not proof of professional competence. Source links support further study; they do not imply endorsement.</p><p className="mt-3">See the ideas applied in <Link prefetch={false} href="/work" className="text-[var(--color-accent)] underline underline-offset-4">project case studies</Link>, or <Link prefetch={false} href="/contact" className="text-[var(--color-accent)] underline underline-offset-4">suggest a correction or topic</Link>.</p></aside>
       </div>
