@@ -240,7 +240,7 @@ export default function ContactPage() {
 
                   {(status === 'error' || status === 'fallback') && (
                     <div role="status" aria-live="polite" className="space-y-3 text-center">
-                      <p className={`font-body text-sm leading-relaxed ${status === 'error' ? 'text-red-300' : 'text-amber-200'}`}>
+                      <p className={`font-body text-sm leading-relaxed ${status === 'error' ? 'text-danger' : 'text-warning'}`}>
                         {statusMessage || 'The message could not be sent. Please try again or use the email draft fallback.'}
                       </p>
                       <button

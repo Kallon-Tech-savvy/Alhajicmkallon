@@ -17,7 +17,7 @@ export const ThoughtLeadership = () => {
           </div>
           <Link prefetch={false}
             href="/writing"
-            className="px-10 py-5 border border-border text-ivory font-display font-black text-xs uppercase tracking-widest hover:bg-white/5 transition-all flex items-center gap-3"
+            className="px-10 py-5 border border-border text-ivory font-display font-black text-xs uppercase tracking-widest hover:bg-navy transition-all flex items-center gap-3"
           >
             All Articles <BookOpen size={18} />
           </Link>

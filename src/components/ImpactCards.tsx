@@ -52,7 +52,7 @@ export const ImpactCards = () => {
               className="glass p-8 rounded-2xl group relative overflow-hidden"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${area.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
-              <div className="mb-6 w-fit rounded-xl bg-white/5 p-3 transition-colors group-hover:bg-pride-blue/10">
+              <div className="mb-6 w-fit rounded-xl bg-surface p-3 transition-colors group-hover:bg-pride-blue/10">
                 {area.icon}
               </div>
               <h3 className="mb-3 font-display text-xl font-semibold text-ivory">{area.title}</h3>

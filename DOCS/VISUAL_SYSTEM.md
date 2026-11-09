@@ -2,10 +2,10 @@
 
 Use the semantic palette in `src/app/globals.css`. Tailwind v4 registers the utility names through `@theme inline`; runtime aliases also support existing inline styles. Do not add a separate palette to a page.
 
-- Background: midnight. Content panels: surface. Raised controls: navy.
-- Body text: ivory. Supporting text: muted. Links and focus indicators: accent.
-- Prominent actions: `ui-primary` (pale blue with dark text). Compact chat actions use the darker blue fill with light text.
-- Navigation shares the page background (midnight), cards (surface), raised areas (navy), text (ivory/muted), borders and accent. The active mobile link uses accent with midnight text. Keep backgrounds opaque so scrolled content does not alter their colour.
+- Background: warm paper (`midnight` legacy utility). Content panels: pale paper (`surface`). Raised controls: deeper paper (`navy`).
+- Body text: charcoal (`ivory` legacy utility). Supporting text: muted ink. Links and focus indicators: blue accent.
+- Prominent actions: `ui-primary` (dark blue with paper text). Compact chat actions use the darker blue fill with light text.
+- Navigation shares the paper page background (midnight), cards (surface), raised areas (navy), text (ivory/muted), borders and accent. The active mobile link uses accent with midnight text. Keep backgrounds opaque so scrolled content does not alter their colour.
 - Success, warning and danger are status colours, not competing decorative accents.
 
 Align wide page containers to `--layout-max` (72rem). Preserve narrower article/reading containers. Use `page-intro` below the fixed navigation, `section-space` for content sections, `page-title` for route headings and `section-title` for large section headings. Use 1–1.5rem gaps within controls and cards; larger gaps separate content groups. The homepage hero is the intentional display-size exception.

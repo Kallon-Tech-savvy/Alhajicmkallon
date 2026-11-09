@@ -86,7 +86,7 @@ test('shared text, action and menu colours meet their contrast budgets', async (
     const values = [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16) / 255).map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
     return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
   }
-  for (const [foreground, background] of [['text','background'], ['text','surface'], ['muted','surface'], ['muted','elevated'], ['accent','elevated'], ['text','elevated'], ['muted','background'], ['background','accent'], ['text','action']]) {
+  for (const [foreground, background] of [['text','background'], ['text','surface'], ['muted','surface'], ['muted','elevated'], ['accent','elevated'], ['text','elevated'], ['muted','background'], ['background','accent'], ['background','action']]) {
     assert.ok(colours[foreground] && colours[background], 'Missing contrast token');
     const [low, high] = [luminance(colours[foreground]), luminance(colours[background])].sort((a,b) => a-b);
     const ratio = (high + 0.05) / (low + 0.05);
@@ -97,7 +97,7 @@ test('shared text, action and menu colours meet their contrast budgets', async (
 
 test('editorial text and primary action meet contrast budgets on each paper surface', async () => {
   const css = await readFile(path.join(projectRoot, 'src/app/globals.css'), 'utf8');
-  const palette = css.match(/\.editorial-page\s*\{([^}]+)\}/)[1];
+  const palette = css.match(/:root\s*\{([^}]+)\}/)[1];
   const colours = Object.fromEntries([...palette.matchAll(/--ui-([a-z-]+):\s*(#[0-9A-Fa-f]{6});/g)].map(m => [m[1], m[2]]));
   function light(hex) {
     const v = [1,3,5].map(i => parseInt(hex.slice(i,i+2),16)/255).map(v => v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4);

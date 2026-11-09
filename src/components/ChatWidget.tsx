@@ -219,7 +219,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
                 className={`max-w-[85%] px-4 py-2.5 rounded-lg text-sm font-body leading-relaxed whitespace-pre-wrap break-words ${
                   m.role === 'user'
                     ? 'ml-auto bg-[var(--color-pride-blue)] text-white'
-                    : 'mr-auto bg-white/[0.04] text-ivory/90 border border-border'
+                    : 'mr-auto bg-surface text-ivory/90 border border-border'
                 }`}
               >
                 {renderMessageContent(m.content)}

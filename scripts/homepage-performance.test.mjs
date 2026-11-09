@@ -42,15 +42,15 @@ test('visitor path is server-rendered and exposes all three journeys without cli
 const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
 
 test('work page communicates product thinking and the project evidence journey', () => {
-  assert.match(workPageSource, /FROM PROBLEM/);
-  assert.match(workPageSource, /TO PRODUCT/);
+  assert.match(workPageSource, /From problem/);
+  assert.match(workPageSource, /to product/);
   assert.match(workPageSource, /context, the choices, what I built, and what the evidence says so far/);
 });
 
 test('work page keeps case-study and live-project paths distinct and safe', () => {
-  assert.match(workPageSource, /Read case study/);
-  assert.match(workPageSource, /Visit live project/);
-  assert.match(workPageSource, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(workPageSource, /<FeaturedWork \/>/);
+  assert.match(featuredWorkSource, /Visit the working website/);
+  assert.match(featuredWorkSource, /target="_blank" rel="noopener noreferrer"/);
 });
 
 const navbarSource = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');

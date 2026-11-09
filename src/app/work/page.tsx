@@ -1,64 +1,15 @@
-import React from 'react';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
-import { MagneticButton } from '@/components/MagneticButton';
-import { PROJECTS } from '@/lib/content';
+import { FeaturedWork } from '@/components/FeaturedWork';
+
+export const metadata = { title: 'Selected work', description: 'Working products and development notes: the context, the choices, what I built, and what the evidence says so far.', alternates: { canonical: '/work' } };
 
 export default function WorkPage() {
-  return (
-    <main className="min-h-screen bg-midnight text-ivory selection:bg-accent/30">
-      <Navbar />
-      <section className="page-intro site-gutter relative overflow-hidden">
-        <div className="max-w-[var(--layout-max)] mx-auto relative z-10">
-          <Reveal variant="fade" as="span" className="font-display text-accent text-xs font-bold tracking-[0.16em] uppercase mb-6 block">
-            Selected work
-          </Reveal>
-          <Reveal variant="up" delay={100} as="h1" className="page-title font-display tracking-tighter mb-12 uppercase">
-            FROM PROBLEM <br /><span className="text-gradient">TO PRODUCT</span>
-          </Reveal>
-          <p className="max-w-2xl text-muted text-lg font-body leading-relaxed">
-            I look beyond the interface to the problem behind it. These case studies explain the context, the choices, what I built, and what the evidence says so far—including what still needs testing.
-          </p>
-        </div>
-        <div aria-hidden="true" className="absolute top-1/2 right-0 text-white/[0.01] font-display text-[30vw] font-black leading-none pointer-events-none select-none">WORK</div>
-      </section>
-
-      <section className="section-space site-gutter pb-24">
-        <div className="max-w-[var(--layout-max)] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {PROJECTS.length ? PROJECTS.map((project) => (
-            <article key={project.id} id={project.id} className="border border-border p-8 rounded-xl">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <p className="text-accent text-xs uppercase tracking-widest">{project.role}</p>
-                <span className="text-xs uppercase tracking-widest text-muted border border-border px-2 py-1">{project.links?.live ? 'Live website' : project.role.toLowerCase().includes('in progress') ? 'In progress' : 'Case study'}</span>
-              </div>
-              <h2 className="font-display text-3xl font-bold mb-4"><Link href={`/work/${project.slug}`} className="hover:text-accent transition-colors">{project.title}</Link></h2>
-              <p className="text-muted leading-relaxed mb-6">{project.summary}</p>
-              <div className="flex flex-wrap gap-2 mb-6">{project.technologies.map((technology) => <span key={technology} className="text-xs border border-border px-3 py-1 rounded-full">{technology}</span>)}</div>
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-                <Link href={`/work/${project.slug}`} className="inline-flex items-center gap-2 text-accent underline underline-offset-4 hover:text-ivory transition-colors">Read case study <ArrowUpRight size={14} /></Link>
-                {project.links?.live && <a href={project.links.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-muted underline underline-offset-4 hover:text-ivory transition-colors">Visit live project <ArrowUpRight size={14} /></a>}
-              </div>
-            </article>
-          )) : (
-            <div className="md:col-span-2 border border-border p-8 md:p-12">
-              <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">The work comes first</h2>
-              <p className="max-w-2xl text-muted leading-relaxed">I add case studies when there is enough substance to explain the work honestly. I would rather show the limits of the evidence than claim results I have not measured.</p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="section-space bg-navy/10 site-gutter text-center border-t border-border relative overflow-hidden">
-        <Reveal variant="scale" className="max-w-3xl mx-auto space-y-8 relative z-10 p-10 md:p-14 rounded-xl glass-frost">
-          <h2 className="section-title font-display text-4xl md:text-6xl font-bold tracking-tighter uppercase leading-none">Have a <span className="text-gradient">problem?</span></h2>
-          <p className="text-muted text-lg font-body max-w-xl mx-auto font-light">Bring an early idea, a product that needs improving, or a problem you are not sure how to solve. We can work out the most useful next step together.</p>
-          <MagneticButton href="/contact" className="inline-flex px-10 py-5 bg-accent text-midnight font-display font-black text-xs uppercase tracking-widest hover:bg-ivory transition-colors duration-300 shadow-xl rounded-xl ui-primary">Talk through the problem</MagneticButton>
-        </Reveal>
-      </section>
-      <Footer />
-    </main>
-  );
+  return <main className="min-h-screen bg-midnight text-ivory"><Navbar />
+    <header className="page-intro site-gutter"><div className="mx-auto max-w-[var(--layout-max)]"><p className="editorial-kicker mb-6 text-accent">Selected work</p><h1 className="page-title">From problem<br /><span className="text-accent">to product.</span></h1><p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">Working products and development notes. Explore the context, the choices, what I built, and what the evidence says so far.</p></div></header>
+    <FeaturedWork />
+    <section className="site-gutter border-t border-border py-12"><div className="mx-auto flex max-w-[var(--layout-max)] flex-wrap items-center justify-between gap-6"><h2 className="text-2xl font-semibold">Have a problem worth working on?</h2><Link prefetch={false} href="/contact" className="editorial-link">Talk through the problem ↗</Link></div></section>
+    <Footer />
+  </main>;
 }

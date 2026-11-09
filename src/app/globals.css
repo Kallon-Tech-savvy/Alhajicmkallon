@@ -11,20 +11,20 @@
   --color-pride-blue: var(--ui-action);
   --color-border: var(--ui-border);
   --color-gold: var(--ui-accent); /* Compatibility for existing accent utilities. */
-  --color-green: #8FE0B5;
-  --color-magenta: #FFB4BD;
+  --color-green: #1F6040;
+  --color-magenta: #8C2835;
   --color-blue: var(--ui-accent);
-  --color-danger: #FFB4BD;
-  --color-success: #8FE0B5;
-  --color-warning: #F3D390;
-  --ui-background: #0B1018;
-  --ui-surface: #131C29;
-  --ui-elevated: #1B293C;
-  --ui-text: #F4F0E8;
-  --ui-muted: #BBC7D8;
-  --ui-accent: #A8C9FF;
-  --ui-action: #1D5FD1;
-  --ui-border: #667994;
+  --color-danger: #8C2835;
+  --color-success: #1F6040;
+  --color-warning: #785711;
+  --ui-background: #F4F1EA;
+  --ui-surface: #EAE6DC;
+  --ui-elevated: #DEDACF;
+  --ui-text: #20221F;
+  --ui-muted: #575D57;
+  --ui-accent: #174E72;
+  --ui-action: #174E72;
+  --ui-border: #8A8D82;
   --layout-max: 72rem;
   --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --section-space: clamp(3rem, 6vw, 5rem);
@@ -45,12 +45,12 @@
   --color-pride-blue: var(--ui-action);
   --color-border: var(--ui-border);
   --color-gold: var(--ui-accent); /* Compatibility for existing accent utilities. */
-  --color-green: #8FE0B5;
-  --color-magenta: #FFB4BD;
+  --color-green: #1F6040;
+  --color-magenta: #8C2835;
   --color-blue: var(--ui-accent);
-  --color-danger: #FFB4BD;
-  --color-success: #8FE0B5;
-  --color-warning: #F3D390;
+  --color-danger: #8C2835;
+  --color-success: #1F6040;
+  --color-warning: #785711;
   --font-body: var(--font-inter), ui-sans-serif, system-ui;
   --font-display: var(--font-inter), ui-sans-serif, system-ui;
   --font-mono: var(--font-jetbrains-mono), monospace;
@@ -166,7 +166,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 11px;
   color: var(--color-muted);
-  background: rgba(20, 20, 20, 0.5);
+  background: var(--ui-elevated);
   border-bottom: 1px solid var(--color-border);
   letter-spacing: 2px;
 }
@@ -487,24 +487,8 @@ h1, h2, h3, h4 {
 :where(a, button, summary) { -webkit-tap-highlight-color: transparent; }
 #mobile-navigation :focus-visible { outline-color: var(--ui-accent); }
 
-/* Editorial portfolio pilot: Homepage and AEEM. Other routes retain their palette. */
+/* Shared editorial system across every route and overlay. */
 .editorial-page {
-  --ui-background: #F4F1EA;
-  --ui-surface: #EAE6DC;
-  --ui-elevated: #DEDACF;
-  --ui-text: #20221F;
-  --ui-muted: #575D57;
-  --ui-accent: #174E72;
-  --ui-action: #174E72;
-  --ui-border: #8A8D82;
-  --color-midnight: var(--ui-background);
-  --color-surface: var(--ui-surface);
-  --color-navy: var(--ui-elevated);
-  --color-ivory: var(--ui-text);
-  --color-muted: var(--ui-muted);
-  --color-accent: var(--ui-accent);
-  --color-pride-blue: var(--ui-action);
-  --color-border: var(--ui-border);
   color: var(--ui-text);
   background: var(--ui-background);
   font-family: var(--font-inter), ui-sans-serif, system-ui;
@@ -531,3 +515,8 @@ h1, h2, h3, h4 {
 }
 
 .editorial-page .cursor-text-blink { display: none; }
+
+.page-intro { padding-top: clamp(7.5rem, 11vw, 9rem); padding-bottom: clamp(2rem, 4vw, 3.5rem); }
+.page-title { font-size: clamp(2.5rem, 5.5vw, 5rem); font-weight: 600; line-height: 1.06; letter-spacing: -.045em; }
+.text-gradient { background: none; -webkit-text-fill-color: currentColor; color: var(--ui-accent); }
+.glass, .glass-frost, .glass-frost-light, .glass-frost-bar { backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: var(--panel-radius); box-shadow: none; }

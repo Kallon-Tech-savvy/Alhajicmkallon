@@ -10,7 +10,7 @@ export type WritingListItem = Pick<Article, 'slug' | 'title' | 'excerpt' | 'cate
 export function ArticleFilters({ entries }: { entries: WritingListItem[] }) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All topics');
-  const categories = useMemo(() => ['All topics', ...Array.from(new Set(entries.map((entry) => entry.category)))], []);
+  const categories = useMemo(() => ['All topics', ...Array.from(new Set(entries.map((entry) => entry.category)))], [entries]);
   const filtered = entries.filter((entry) => {
     const term = query.trim().toLocaleLowerCase();
     const matchesQuery = !term || [entry.title, entry.excerpt, entry.category, ...entry.topics].some((value) => value.toLocaleLowerCase().includes(term));
