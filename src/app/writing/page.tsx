@@ -18,8 +18,8 @@ export default function WritingPage() {
       <Navbar />
       <section className="page-intro site-gutter relative overflow-hidden">
         <div className="max-w-[var(--layout-max)] mx-auto relative z-10">
-          <span className="font-display text-accent text-xs font-bold tracking-[0.16em] uppercase mb-6 block">Journal & Reflections</span>
-          <h1 className="page-title font-display mb-6">Notes from<br /><span className="text-accent">the work.</span></h1>
+          <span className="font-display text-accent text-xs font-bold tracking-normal mb-6 block">Journal & Reflections</span>
+          <h1 className="page-title font-display mb-6">Notes from<br /><span>the work.</span></h1>
           <p className="max-w-2xl text-muted text-lg font-body leading-relaxed">A growing collection of essays and considered notes. Only published entries are searchable and visible.</p>
         </div>
       </section>

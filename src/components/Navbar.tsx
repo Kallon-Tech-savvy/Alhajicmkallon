@@ -18,18 +18,7 @@ export function Navbar() {
           aria-label="Alhaji Kallon — Home"
           className="group flex select-none items-center gap-2"
         >
-          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-[var(--color-accent)] md:text-sm">
-            alhaji
-          </span>
-          <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-ivory transition-colors group-hover:text-accent md:text-sm">
-            kallon
-          </span>
-          <span
-            aria-hidden="true"
-            className="cursor-text-blink font-[family-name:var(--font-jetbrains-mono)] text-xs font-semibold text-accent md:text-sm"
-          >
-            █
-          </span>
+          <span className="text-sm font-medium tracking-tight text-ivory">Alhaji Kallon</span>
         </Link>
 
         <div className="flex items-center gap-2"><div className="hidden lg:block"><ThemeSelect /></div><NavbarInteractions /></div>

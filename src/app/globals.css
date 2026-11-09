@@ -33,7 +33,7 @@
   --layout-max: 72rem;
   --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --section-space: clamp(3rem, 6vw, 5rem);
-  --panel-radius: 0.875rem;
+  --panel-radius: 0.5rem;
   --background: var(--ui-background);
   --foreground: var(--ui-text);
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -106,7 +106,7 @@
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
   border: 1px solid var(--ui-accent);
-  border-radius: 999px;
+  border-radius: .375rem;
   background: var(--ui-accent);
   color: var(--ui-background);
   font-size: 0.875rem;
@@ -516,9 +516,9 @@ h1, h2, h3, h4 {
   font-family: var(--font-inter), ui-sans-serif, system-ui;
 }
 .editorial-hero { padding-top: 7.5rem; }
-.editorial-kicker { font-size: .75rem; line-height: 1.6; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
-.editorial-headline { font-size: clamp(2.9rem, 6.4vw, 6rem); font-weight: 600; line-height: 1.04; letter-spacing: -.055em; }
-.editorial-case-title { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+.editorial-kicker { font-size: .8125rem; line-height: 1.6; font-weight: 500; letter-spacing: .015em; text-transform: none; }
+.editorial-headline { font-size: clamp(2.5rem, 5.1vw, 4.75rem); font-weight: 500; line-height: 1.12; letter-spacing: -.04em; }
+.editorial-case-title { font-size: clamp(2.4rem, 5vw, 4.5rem); }
 .editorial-link { display: inline-flex; align-items: center; gap: .75rem; min-height: 2.75rem; padding-block: .5rem; font-size: .875rem; font-weight: 600; color: var(--ui-accent); border-bottom: 1px solid var(--ui-accent); text-decoration: none; }
 .editorial-link:hover { color: var(--ui-text); border-color: var(--ui-text); }
 .editorial-project-image { overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-surface); padding: clamp(.5rem, 2vw, 1.5rem); }
@@ -539,6 +539,6 @@ h1, h2, h3, h4 {
 .editorial-page .cursor-text-blink { display: none; }
 
 .page-intro { padding-top: clamp(7.5rem, 11vw, 9rem); padding-bottom: clamp(2rem, 4vw, 3.5rem); }
-.page-title { font-size: clamp(2.5rem, 5.5vw, 5rem); font-weight: 600; line-height: 1.06; letter-spacing: -.045em; }
+.page-title { font-size: clamp(2.25rem, 4.5vw, 4rem); font-weight: 500; line-height: 1.14; letter-spacing: -.035em; }
 .text-gradient { background: none; -webkit-text-fill-color: currentColor; color: var(--ui-accent); }
 .glass, .glass-frost, .glass-frost-light, .glass-frost-bar { backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: var(--panel-radius); box-shadow: none; }

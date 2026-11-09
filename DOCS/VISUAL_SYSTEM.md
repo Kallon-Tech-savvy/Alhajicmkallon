@@ -17,3 +17,7 @@ After a production build, `npm run test:browser-bundle` verifies that essential 
 ## Theme preference
 
 The navigation offers Light, Dark and System (default). The small pre-paint bootstrap sets `data-theme` on the root; global semantic tokens supply both palettes, including status text and action foregrounds. The saved choice uses local storage; System responds to OS changes and choices sync between tabs. Chat stays loaded after first use so closing and reopening preserves the conversation in memory. Clear chat or reload removes it.
+
+## Restraint pass
+
+Use sentence-case navigation and small labels, moderate display sizes, medium heading weights and simple corners. Reserve blue for links, focus and actions. Avoid decorative glow, floating-control lift, repetitive numbered section labels and competing slogan lines. Keep meaningful loading feedback and visible focus states.
