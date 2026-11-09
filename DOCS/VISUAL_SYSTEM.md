@@ -13,3 +13,7 @@ Align wide page containers to `--layout-max` (72rem). Preserve narrower article/
 Use Inter for headings and prose (`font-display`, `font-body`), and JetBrains Mono for code and terminal details. Labels should be at least 0.75rem with moderate letter spacing. Use `ui-field` for form inputs and `ui-panel` for standalone elevated surfaces. Keep visible focus rings and explicit non-colour state labels.
 
 After a production build, `npm run test:browser-bundle` verifies that essential theme utilities were emitted and that the core text/surface combinations meet a 4.5:1 contrast budget. This checks tokens, not every possible image overlay or browser rendering; retain visual QA for those cases.
+
+## Theme preference
+
+The navigation offers Light, Dark and System (default). The small pre-paint bootstrap sets `data-theme` on the root; global semantic tokens supply both palettes, including status text and action foregrounds. The saved choice uses local storage; System responds to OS changes and choices sync between tabs. Chat stays loaded after first use so closing and reopening preserves the conversation in memory. Clear chat or reload removes it.

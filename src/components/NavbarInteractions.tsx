@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { ThemeSelect } from './ThemeSelect';
 import { usePathname } from 'next/navigation';
 import { cycleNavigationFocus } from '@/lib/navigation-focus.mjs';
 
@@ -114,7 +115,7 @@ export function NavbarInteractions() {
       }
       if (event.key === 'Tab') {
         const button = menuButtonRef.current;
-        const menuLinks = Array.from(menuPanelRef.current?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? []);
+        const menuLinks = Array.from(menuPanelRef.current?.querySelectorAll<HTMLElement>('a[href], select') ?? []);
         const focusable: HTMLElement[] = button ? [button, ...menuLinks] : menuLinks;
         cycleNavigationFocus(event, focusable, document.activeElement);
       }
@@ -203,7 +204,7 @@ export function NavbarInteractions() {
           className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-[var(--color-midnight)] px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-28 text-[var(--color-ivory)] lg:hidden"
         >
           <div className="mx-auto w-full max-w-lg">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">Navigation</p>
+          <div className="mb-4 flex items-center justify-between gap-3"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">Navigation</p><ThemeSelect /></div>
           <h2 className="mb-6 mt-2 text-3xl font-bold tracking-tight text-[var(--color-ivory)]">Explore the site</h2>
           <div className="space-y-2">
             {LINKS.map(({ name, href }) => {

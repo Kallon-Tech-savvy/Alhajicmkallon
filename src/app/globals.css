@@ -11,12 +11,12 @@
   --color-pride-blue: var(--ui-action);
   --color-border: var(--ui-border);
   --color-gold: var(--ui-accent); /* Compatibility for existing accent utilities. */
-  --color-green: #1F6040;
-  --color-magenta: #8C2835;
+  --color-green: var(--ui-success);
+  --color-magenta: var(--ui-danger);
   --color-blue: var(--ui-accent);
-  --color-danger: #8C2835;
-  --color-success: #1F6040;
-  --color-warning: #785711;
+  --color-danger: var(--ui-danger);
+  --color-success: var(--ui-success);
+  --color-warning: var(--ui-warning);
   --ui-background: #F4F1EA;
   --ui-surface: #EAE6DC;
   --ui-elevated: #DEDACF;
@@ -25,6 +25,11 @@
   --ui-accent: #174E72;
   --ui-action: #174E72;
   --ui-border: #8A8D82;
+  --ui-on-action: #F4F1EA;
+  --ui-success: #1F6040;
+  --ui-danger: #8C2835;
+  --ui-warning: #785711;
+  color-scheme: light;
   --layout-max: 72rem;
   --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --section-space: clamp(3rem, 6vw, 5rem);
@@ -32,6 +37,23 @@
   --background: var(--ui-background);
   --foreground: var(--ui-text);
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The editorial hierarchy stays the same in both colour schemes. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ui-background: #161A1C;
+  --ui-surface: #202629;
+  --ui-elevated: #2C3438;
+  --ui-text: #F4F1EA;
+  --ui-muted: #BEC5C4;
+  --ui-accent: #A0D4F2;
+  --ui-action: #A0D4F2;
+  --ui-on-action: #161A1C;
+  --ui-border: #73817F;
+  --ui-success: #8FE0B5;
+  --ui-danger: #FFB4BD;
+  --ui-warning: #F3D390;
 }
 
 /* Tailwind v4 must register these names to emit bg-midnight, text-muted, etc. */
@@ -45,12 +67,12 @@
   --color-pride-blue: var(--ui-action);
   --color-border: var(--ui-border);
   --color-gold: var(--ui-accent); /* Compatibility for existing accent utilities. */
-  --color-green: #1F6040;
-  --color-magenta: #8C2835;
+  --color-green: var(--ui-success);
+  --color-magenta: var(--ui-danger);
   --color-blue: var(--ui-accent);
-  --color-danger: #8C2835;
-  --color-success: #1F6040;
-  --color-warning: #785711;
+  --color-danger: var(--ui-danger);
+  --color-success: var(--ui-success);
+  --color-warning: var(--ui-warning);
   --font-body: var(--font-inter), ui-sans-serif, system-ui;
   --font-display: var(--font-inter), ui-sans-serif, system-ui;
   --font-mono: var(--font-jetbrains-mono), monospace;

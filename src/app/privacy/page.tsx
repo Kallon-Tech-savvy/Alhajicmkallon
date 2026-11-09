@@ -44,6 +44,10 @@ export default function PrivacyPage() {
             </p>
           </section>
           <section>
+            <h2 className="mb-3 text-xl font-semibold text-ivory">Theme and chat</h2>
+            <p>Your colour-theme preference is stored in this browser. Chat messages stay in page memory until you clear the chat or reload. Published FAQ answers can be handled locally by the server; other questions and recent conversation history may be sent to OpenAI for moderation and an answer. Avoid sending confidential or sensitive information. The assistant cannot send an enquiry on your behalf.</p>
+          </section>
+          <section>
             <h2 className="mb-3 text-xl font-semibold text-ivory">Contact and enquiries</h2>
             <p>
               If you voluntarily contact me, I use the details you provide to respond to your

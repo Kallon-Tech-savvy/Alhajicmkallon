@@ -1,3 +1,4 @@
+import { ThemeSelect } from './ThemeSelect';
 import Link from 'next/link';
 import { NavbarInteractions } from './NavbarInteractions';
 
@@ -31,7 +32,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        <NavbarInteractions />
+        <div className="flex items-center gap-2"><div className="hidden lg:block"><ThemeSelect /></div><NavbarInteractions /></div>
       </div>
     </nav>
   );
