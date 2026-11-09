@@ -8,6 +8,7 @@ const staticPages = [
   ['Selected work', '/work', 'Published project summaries and case studies.'],
   ['Writing', '/writing', 'Published essays and reflections.'],
   ['Knowledge hub', '/knowledge', 'Published learning notes and reference material.'],
+  ['Software protocol course', '/knowledge/protocols', 'Twelve practical lessons, a local lab and a capstone, from request tracing to reliable integrations.'],
   ['FAQ', '/faq', 'Answers about Alhaji’s work, approach, projects, and professional background.'],
   ['Contact', '/contact', 'Contact options for discussing a project.'],
 ] as const;

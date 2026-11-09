@@ -107,3 +107,20 @@ test('learning paths and lessons expose canonical, sourced learning content', as
   const { body: search } = await get('/api/search?q=semantic');
   assert.ok(JSON.parse(search).articles.some((article) => article.slug === 'semantic-html-for-beginners'));
 });
+
+test('protocol course is discoverable and provides linked lessons and a practice lab', async () => {
+  const { body: hub } = await get('/knowledge');
+  assert.match(hub, /href="\/knowledge\/protocols"/);
+  const { body: course } = await get('/knowledge/protocols');
+  assert.match(course, /"@type":"Course"/);
+  assert.match(course, /protocols-01-follow-a-request/);
+  assert.match(course, /protocols-12-capstone-review/);
+  assert.match(course, /\/downloads\/protocol-lab.mjs/);
+  const { body: first } = await get('/knowledge/protocols-01-follow-a-request');
+  assert.match(first, /Protocol course navigation/);
+  assert.match(first, /protocols-02-http-contract/);
+  const { body: lab } = await get('/downloads/protocol-lab.mjs');
+  assert.match(lab, /createProtocolLab/);
+  const { body: sitemap } = await get('/sitemap.xml');
+  assert.match(sitemap, /\/knowledge\/protocols</);
+});
