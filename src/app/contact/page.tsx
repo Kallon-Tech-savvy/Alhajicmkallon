@@ -75,12 +75,9 @@ export default function ContactPage() {
       <Navbar />
 
       <section className="page-intro site-gutter relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[40%] h-[55%] rounded-full blur-3xl bg-pride-blue/10" />
-        </div>
         <div className="max-w-[var(--layout-max)] mx-auto relative z-10">
           <Reveal variant="up" className="max-w-3xl">
-            <p className="font-display text-xs uppercase tracking-[0.16em] text-accent mb-5">
+            <p className="font-display text-xs tracking-normal text-accent mb-5">
               Start with the problem
             </p>
             <h1 className="page-title font-display tracking-[-0.03em] mb-4">
@@ -100,17 +97,17 @@ export default function ContactPage() {
           {/* Social Channels & Credentials */}
           <Reveal variant="up" delay={60} className="lg:col-span-5 space-y-12">
             <div>
-              <h2 className="font-display text-accent text-xs font-black uppercase tracking-[0.16em] mb-6">Email me directly</h2>
-              <div className="p-6 glass-frost-light rounded-xl flex items-center gap-4 group hover-lift">
+              <h2 className="font-display text-accent text-xs font-semibold tracking-normal mb-6">Email me directly</h2>
+              <div className="p-6 glass-frost-light rounded-xl flex items-center gap-4 group">
                 <div className="p-3 bg-accent/10 text-accent rounded-xl group-hover:bg-accent group-hover:text-midnight transition-colors duration-300">
                   <Mail size={20} />
                 </div>
                 <div>
-                  <div className="text-xs font-display font-bold uppercase tracking-widest text-muted mb-1">General enquiries</div>
+                  <div className="text-xs font-display font-medium text-muted mb-1">General enquiries</div>
                   <a href="mailto:info@alhajikallon.com" className="text-lg font-display font-bold hover:text-accent transition-colors duration-300 underline-grow">
                     info@alhajikallon.com
                   </a>
-                  <div className="mt-4 text-xs font-display font-bold uppercase tracking-widest text-muted mb-1">Development enquiries</div>
+                  <div className="mt-4 text-xs font-display font-medium text-muted mb-1">Development enquiries</div>
                   <a href="mailto:dev@alhajikallon.com" className="text-lg font-display font-bold hover:text-accent transition-colors duration-300 underline-grow">
                     dev@alhajikallon.com
                   </a>
@@ -132,7 +129,7 @@ export default function ContactPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between p-5 glass-frost-light hover:border-accent/20 hover-lift transition-colors duration-300 rounded-xl group"
+                      className="flex items-center justify-between p-5 glass-frost-light hover:border-accent/20 transition-colors duration-300 rounded-xl group"
                     >
                       <div className="flex items-center gap-4">
                         <div className="text-muted group-hover:text-accent transition-colors duration-300">{social.icon}</div>
@@ -151,13 +148,13 @@ export default function ContactPage() {
 
           {/* Optimized Interactive Form Container — frosted panel */}
           <Reveal variant="up" delay={120} className="lg:col-span-7">
-            <div className="glass-frost p-8 md:p-12 rounded-xl shadow-2xl">
+            <div className="glass-frost p-8 md:p-12 rounded-xl shadow-none">
               {status !== 'success' ? (
                 <form onSubmit={handleSubmit} className="space-y-8">
                   
                   {/* Step 1: Cognitive Ease Intent Selection */}
                   <div className="space-y-4">
-                    <label className="font-display text-xs font-black uppercase tracking-[0.16em] text-accent block">
+                    <label className="font-display text-xs font-semibold tracking-normal text-accent block">
                       What would you like to work on?
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -167,7 +164,7 @@ export default function ContactPage() {
                           type="button"
                           onClick={() => setSelectedIntent(option)}
                           aria-pressed={selectedIntent === option}
-                          className={`rounded-full px-4 py-2 text-xs font-display font-semibold tracking-[0.2em] uppercase transition-all duration-200 border tap-scale ${
+                          className={`rounded-md px-4 py-2 text-xs font-display font-semibold tracking-normal transition-all duration-200 border ${
                             selectedIntent === option
                               ? 'bg-pride-blue text-[var(--ui-on-action)] border-pride-blue'
                               : 'bg-transparent text-muted border-border hover:border-pride-blue/30 hover:text-ivory'
@@ -182,7 +179,7 @@ export default function ContactPage() {
                   {/* Input Fields Stack */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-1">
-                      <label htmlFor="contact-name" className="font-display text-xs font-bold uppercase tracking-widest text-muted">Your name</label>
+                      <label htmlFor="contact-name" className="font-display text-xs font-medium text-muted">Your name</label>
                       <input
                         id="contact-name"
                         name="name"
@@ -197,7 +194,7 @@ export default function ContactPage() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label htmlFor="contact-email" className="font-display text-xs font-bold uppercase tracking-widest text-muted">Your email</label>
+                      <label htmlFor="contact-email" className="font-display text-xs font-medium text-muted">Your email</label>
                       <input
                         id="contact-email"
                         name="email"
@@ -214,7 +211,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="contact-message" className="font-display text-xs font-bold uppercase tracking-widest text-muted">What would you like to change or achieve?</label>
+                    <label htmlFor="contact-message" className="font-display text-xs font-medium text-muted">What would you like to change or achieve?</label>
                     <textarea
                       required
                       id="contact-message"
@@ -231,7 +228,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="ui-primary w-full transition-colors tap-scale"
+                    className="ui-primary w-full transition-colors"
                   >
                     {status === 'loading' ? 'Sending message…' : (
                       <>Send message <Send size={14} /></>
@@ -253,7 +250,7 @@ export default function ContactPage() {
                           setStatus('fallback');
                           setStatusMessage('Your email app should open with a draft. This does not confirm delivery; send the draft to complete the message.');
                         }}
-                        className="rounded-full border border-border px-4 py-2 text-xs font-semibold text-ivory transition-colors hover:border-pride-blue hover:text-accent"
+                        className="rounded-md border border-border px-4 py-2 text-xs font-semibold text-ivory transition-colors hover:border-pride-blue hover:text-accent"
                       >
                         Open email draft instead
                       </button>
@@ -262,7 +259,7 @@ export default function ContactPage() {
                 </form>
               ) : (
                 <Reveal variant="scale" as="div" className="py-16 flex flex-col items-center text-center space-y-6">
-                  <div className="w-16 h-16 bg-pride-blue/15 text-accent rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 bg-pride-blue/15 text-accent rounded-md flex items-center justify-center shadow-lg">
                     <CheckCircle2 size={32} />
                   </div>
                   <div>
@@ -273,7 +270,7 @@ export default function ContactPage() {
                   </div>
                   <button
                     onClick={() => { setStatus('idle'); setStatusMessage(''); }}
-                    className="rounded-full px-6 py-3 border border-border text-muted font-display font-bold text-xs uppercase tracking-[0.16em] hover:border-pride-blue hover:text-accent transition-colors duration-300 tap-scale"
+                    className="rounded-md px-6 py-3 border border-border text-muted font-display font-bold text-xs tracking-normal hover:border-pride-blue hover:text-accent transition-colors duration-300"
                   >
                     Send Additional Message
                   </button>
