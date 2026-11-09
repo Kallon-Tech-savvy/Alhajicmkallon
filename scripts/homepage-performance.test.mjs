@@ -150,9 +150,9 @@ test('chat conversation UI is dynamically loaded only after the visitor opens ch
   assert.doesNotMatch(layoutSource, /import \{ ChatWidget \} from/);
   assert.match(chatLoaderSource, /dynamic\(/);
   assert.match(chatLoaderSource, /import\('\.\/ChatWidget'\)/);
-  assert.match(chatLoaderSource, /\{open && <ChatWidgetPanel initialOpen showLauncher=\{false\} onClose=\{closeChat\} \/>\}/);
+  assert.match(chatLoaderSource, /\{loaded && <ChatWidgetPanel initialOpen=\{open\} showLauncher=\{false\} onClose=\{closeChat\} \/>\}/);
   assert.match(chatWidgetSource, /showLauncher && <button/);
-  assert.match(chatWidgetSource, /if \(!open && initialOpen\) onClose\?\.\(\)/);
+  assert.match(chatWidgetSource, /const open = showLauncher \? localOpen : initialOpen/);
 });
 
 const globalCssSource = await readFile(new URL('../src/app/globals.css', import.meta.url), 'utf8');

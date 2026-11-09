@@ -169,7 +169,7 @@ export default function ContactPage() {
                           aria-pressed={selectedIntent === option}
                           className={`rounded-full px-4 py-2 text-xs font-display font-semibold tracking-[0.2em] uppercase transition-all duration-200 border tap-scale ${
                             selectedIntent === option
-                              ? 'bg-pride-blue text-white border-pride-blue'
+                              ? 'bg-pride-blue text-[var(--ui-on-action)] border-pride-blue'
                               : 'bg-transparent text-muted border-border hover:border-pride-blue/30 hover:text-ivory'
                           }`}
                         >
