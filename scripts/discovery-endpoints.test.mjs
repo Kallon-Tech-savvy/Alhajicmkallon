@@ -124,3 +124,12 @@ test('protocol course is discoverable and provides linked lessons and a practice
   const { body: sitemap } = await get('/sitemap.xml');
   assert.match(sitemap, /\/knowledge\/protocols</);
 });
+
+test('offline course downloads include complete standalone content and notebook', async () => {
+  const { body: guide } = await get('/downloads/protocol-course-offline.html');
+  assert.match(guide, /Software protocols: offline study guide/);
+  assert.equal((guide.match(/<article id="protocols-/g) || []).length, 12);
+  assert.match(guide, /createProtocolLab/);
+  const { body: notebook } = await get('/downloads/protocol-practice-notebook.md');
+  assert.equal((notebook.match(/^## \d+\./gm) || []).length, 12);
+});

@@ -44,3 +44,7 @@ prod_server.log
 
 # Vercel project metadata and local link configuration
 .vercel/
+
+# Built offline course snapshots (regenerated before dev/build)
+public/downloads/protocol-course-offline.html
+public/downloads/protocol-practice-notebook.md
