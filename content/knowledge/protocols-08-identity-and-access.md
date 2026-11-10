@@ -18,6 +18,18 @@ sources: ["https://www.rfc-editor.org/rfc/rfc9700.html", "https://openid.net/spe
 
 Mohamed trusts Augusta with photographs that may never be public. “He is signed in” does not answer “May he read this gallery?” Permissions are part of that relationship of trust.
 
+## Lab scope and pass criteria
+
+Practice mode: Run studio-isolation checks; identity and roles require extensions.
+
+### Expected result
+
+GET /galleries/gallery-a returns 200 with studio-a, 404 with studio-b and 401 without credentials. The denied replies contain no gallery title or owner record.
+
+### Evidence and limits
+
+Save status and denied response bodies. The public demo tokens can be copied by anyone. The lab has no sign-in, expiry, revocation, owner/viewer roles, OAuth, passkeys or membership changes. Those tests need your own test identity setup.
+
 ## Core concepts
 
 Authentication establishes an identity or credential. Authorization decides whether that identity may perform a particular action on a particular resource. OAuth supports delegated access; OIDC adds identity assertions for sign-in. An ID token is not a general-purpose replacement for an API access token. JWT is a token format: decoding its claims does not verify its signature or grant access.

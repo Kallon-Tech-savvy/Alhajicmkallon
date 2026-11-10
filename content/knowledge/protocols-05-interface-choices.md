@@ -18,6 +18,18 @@ sources: ["https://graphql.org/learn/", "https://grpc.io/docs/what-is-grpc/intro
 
 A developer you admire uses gRPC. A protocol choice is a response to constraints, not a ranking of engineering ability.
 
+## Lab scope and pass criteria
+
+Practice mode: Design exercise; no alternate protocol server supplied.
+
+### Expected result
+
+Produce four sketches for the same read task: an HTTP request, GraphQL query, JSON-RPC call and gRPC service/message definition. State the required client and server tooling for each.
+
+### Evidence and limits
+
+Save the sketches and decision record. The lab has no photo captions, GraphQL, JSON-RPC or gRPC endpoint. A sketch cannot demonstrate working interoperability, performance or authorization.
+
 ## Core concepts
 
 An HTTP resource API exposes operations through HTTP semantics. GraphQL lets clients select fields against a schema; query flexibility adds authorization and execution-cost questions. gRPC defines service methods and message contracts, commonly using Protocol Buffers and HTTP/2; browser access needs an appropriate integration such as gRPC-Web. JSON-RPC describes method-call envelopes, independently of the transport.

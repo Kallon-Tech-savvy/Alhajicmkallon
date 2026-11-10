@@ -18,6 +18,18 @@ sources: ["https://www.w3.org/TR/trace-context/", "https://opentelemetry.io/docs
 
 Mohamed reports “It did not save.” That is valuable information about his experience, even though it is not a diagnosis. A good investigation makes room for both: what he experienced and what the system can establish.
 
+## Lab scope and pass criteria
+
+Practice mode: Run local correlation; tracing requires instrumentation.
+
+### Expected result
+
+GET /failure returns 503. Its X-Request-ID header matches requestId in the JSON response and the completed-request log. Logs include method, path and status without the token or body.
+
+### Evidence and limits
+
+Save a sanitized matching pair. The 503 is deliberately generated, not an upstream outage. The fixture has no dependency call or distributed spans. A client-aborted delayed request may have no finish log even though its record exists; check stored state rather than treating a missing log as rollback.
+
 ## Core concepts
 
 A request id correlates one request’s observations. Distributed trace context connects related work across services; OTLP transports telemetry. Logs describe events, traces show related operations and metrics summarize patterns. No single dashboard explains every failure.

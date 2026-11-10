@@ -18,6 +18,18 @@ sources: ["https://www.rfc-editor.org/rfc/rfc9110.html"]
 
 Augusta taps Create gallery. The request times out. She taps again because the interface offers no other explanation. Two galleries appear. The system has turned uncertainty into extra work for her.
 
+## Lab scope and pass criteria
+
+Practice mode: Run the supplied timeout and retry fixture.
+
+### Expected result
+
+On a fresh start, a delayed create can time out at the client. Retrying the same key and title without delay returns 200 with the committed record. The list then contains the original gallery plus one new record. Reusing the key with a changed title returns 409.
+
+### Evidence and limits
+
+Save the timeout, retry id and list count. Restart and repeat to observe that deduplication history is gone. The fixture has no durable idempotency storage, automatic retry policy, jitter or Retry-After response. Do not count those as implemented.
+
 ## Core concepts
 
 A client timeout means the client stopped waiting; the server may already have committed. Aborting fetch does not roll back remote work. Idempotent method semantics concern intended effects; a POST operation needs an explicitly designed deduplication contract if retries must not create duplicates.

@@ -18,6 +18,18 @@ sources: ["https://spec.openapis.org/oas/v3.2.1.html", "https://www.rfc-editor.o
 
 Augusta needs to create a private gallery and let Mohamed know when his photographs are ready. The goal is not to display every protocol you learned. It is to complete that small journey without losing work, leaking access or misleading either person.
 
+## Lab scope and pass criteria
+
+Practice mode: Build your capstone; fixture behavior is only a baseline.
+
+### Expected result
+
+Another developer can follow your setup, create a gallery, reproduce a denied read and verify one retry outcome. For each claim, attach commands, environment, observed result and limits.
+
+### Evidence and limits
+
+Separate supplied-fixture results from your own implementation tests. Viewer access, real sessions, notifications, durable recovery and asynchronous jobs require extensions. Mark unbuilt behavior not yet demonstrated; a design document is not an executed test.
+
 ## Choose your scope
 
 Build a local gallery-creation client against your own extension of the lab. Keep one studio owner, one viewer, one resource and one asynchronous status. Use fictional records. If you need more time, stop at a documented HTTP workflow before adding events. A useful, well-tested slice is a valid capstone.
