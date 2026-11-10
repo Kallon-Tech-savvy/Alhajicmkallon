@@ -1,4 +1,5 @@
 import { CourseProgress } from '@/components/CourseProgress';
+import { ProtocolCourseNav } from '@/components/ProtocolCourseNav';
 import React from 'react';
 import { ProtocolLessonVisual } from '@/components/ProtocolLessonVisual';
 import { ProtocolInfographics } from '@/components/ProtocolInfographics';
@@ -60,10 +61,11 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
       <Navbar />
       <section className="page-intro site-gutter border-b border-border">
         <div className="max-w-4xl mx-auto">
-          <Link href="/knowledge" className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-10"><ArrowLeft size={14} /> Back to Knowledge Hub</Link>
+          <Link href={lessonIndex >= 0 ? '/knowledge/protocols' : '/knowledge'} className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-10"><ArrowLeft size={14} /> {lessonIndex >= 0 ? 'Back to protocol course' : 'Back to Knowledge Hub'}</Link>
           <Reveal variant="up"><p className="text-accent text-xs uppercase tracking-widest mb-5">{entry.category}</p><h1 className="page-title font-display font-bold tracking-tight leading-tight mb-7">{entry.title}</h1><p className="text-muted text-lg leading-relaxed">{entry.excerpt}</p></Reveal>
         </div>
       </section>
+      {lessonIndex >= 0 && <ProtocolCourseNav currentSlug={slug} />}
       <section className="section-space site-gutter border-b border-border"><div className="mx-auto max-w-4xl grid gap-7 md:grid-cols-2"><div><p className="text-sm text-[var(--color-muted)]">By Alhaji C. M. Kallon · <time dateTime={entry.date}>{entry.date}</time> · {entry.level} · {entry.readTime}</p><h2 className="mt-5 mb-2 font-semibold">Before you start</h2><ul className="list-disc pl-5 text-sm text-[var(--color-muted)]">{entry.prerequisites?.map((item) => <li key={item}>{item}</li>)}</ul><h2 className="mt-5 mb-2 font-semibold">What you will practise</h2><ul className="list-disc pl-5 text-sm text-[var(--color-muted)]">{entry.objectives?.map((item) => <li key={item}>{item}</li>)}</ul></div><nav aria-label="On this page"><h2 className="mb-3 font-semibold">On this page</h2><ul className="space-y-2 text-sm">{[...entry.content.matchAll(/^## (.+)$/gm)].map((match) => <li key={match[1]}><a className="text-[var(--color-accent)] underline underline-offset-4" href={'#' + match[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}>{match[1]}</a></li>)}</ul></nav></div></section>
       {lessonIndex === 0 && <ProtocolInfographics />}
       {lessonIndex > 0 && <ProtocolLessonVisual lessonIndex={lessonIndex} />}
