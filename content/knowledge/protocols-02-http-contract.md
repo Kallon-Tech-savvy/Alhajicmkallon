@@ -57,6 +57,38 @@ console.log(response.status, response.ok);
 
 Expect 503 and false, rather than assuming the promise will reject. Do not run relative examples on an unrelated website: they address the current origin.
 
+## Read a response before writing the interface
+
+The following is a shortened example of the lab's GET /failure exchange. Header order, casing and generated identifiers can differ. Date and transfer headers are omitted. REQUEST_ID stands for the generated value; it is not a literal value to send.
+
+```http
+GET /failure HTTP/1.1
+Host: 127.0.0.1:4310
+
+HTTP/1.1 503 Service Unavailable
+Content-Type: application/json
+Cache-Control: no-store
+X-Request-ID: REQUEST_ID
+
+{"error":"simulated_outage","requestId":"REQUEST_ID"}
+```
+
+Read it in order:
+
+- The GET target identifies the operation you requested. It does not tell you which internal component produced the answer.
+- 503 is an HTTP response, so this exchange reached an HTTP-speaking server. In this lab it is a deliberate simulation; it does not diagnose a real dependency outage.
+- Content-Type declares JSON. Parsing can still fail or produce an unexpected shape, so inspect the bytes and validate the parsed value.
+- Cache-Control: no-store tells caches not to store this response. It is not encryption or an access check.
+- X-Request-ID and the matching body field let you correlate this reply with the local server log. They are not credentials or proof of identity.
+
+Use the curl command above to capture your own exchange. Then stop the lab and repeat it. A connection error has no received HTTP status or JSON error body; do not invent a 503 for it in your client code.
+
+### Translate evidence into a useful state
+
+For this known simulated failure, the interface can say the service could not complete the request. For a timed-out mutation, it must instead say the result is unconfirmed until the stored state is checked. The same generic red banner cannot communicate both conditions accurately.
+
+Before continuing, answer: which line tells you the server answered, and which line proves an email was delivered? The status line supports the first claim. Nothing in this exchange supports the second.
+
 ## Build the next piece
 
 Write a small TypeScript function that fetches /galleries with the fictional Authorization header, accepts an AbortSignal, checks response.ok and parses JSON as unknown. Validate that the result is an array and that each item has a string id and title before displaying it. Types describe your expectations; they do not validate network bytes.
