@@ -30,7 +30,7 @@ test('local fixture demonstrates status, cache, access, validation, retries and 
   const token={Authorization:'Bearer studio-a'};
   try{
     let r=await fetch(`${base}/catalog`); assert.equal(r.status,200); assert.equal(r.headers.get('etag'),'"catalog-v1"');
-    r=await fetch(`${base}/catalog`,{headers:{'If-None-Match':'"catalog-v1"'}});assert.equal(r.status,304);
+    r=await fetch(`${base}/catalog`,{headers:{'If-None-Match':'"catalog-v1"'}});assert.equal(r.status,304);assert.equal(await r.text(),'');
     assert.equal((await fetch(`${base}/missing`)).status,404);
     r=await fetch(`${base}/failure`); assert.equal(r.status,503);
     assert.equal((await r.json()).requestId,r.headers.get('x-request-id'));
@@ -40,12 +40,16 @@ test('local fixture demonstrates status, cache, access, validation, retries and 
     r=await fetch(`${base}/galleries`,{headers:{Authorization:'Bearer studio-b'}});assert.deepEqual(await r.json(),[]);
     r=await fetch(`${base}/galleries`,{headers:token});assert.equal((await r.json()).length,1);assert.equal(r.headers.get('cache-control'),'no-store');
     r=await fetch(`${base}/galleries`,{method:'OPTIONS',headers:{Origin:'http://localhost:3000'}});assert.equal(r.status,204);assert.equal(r.headers.get('access-control-allow-origin'),'http://localhost:3000');
+    r=await fetch(`${base}/galleries`,{headers:{Origin:'http://localhost:3000'}});assert.equal(r.status,401);
     assert.equal((await fetch(`${base}/galleries`,{method:'OPTIONS',headers:{Origin:'https://example.invalid'}})).status,403);
     const options={method:'POST',headers:{...token,'Content-Type':'application/json','Idempotency-Key':'test-1'},body:JSON.stringify({title:'Portraits'})};
     const results=await Promise.all([fetch(`${base}/galleries`,options),fetch(`${base}/galleries`,options)]);
     assert.deepEqual(results.map(x=>x.status).sort(),[200,201]);
     const records=await Promise.all(results.map(x=>x.json()));assert.equal(records[0].id,records[1].id);
+    const created=results.find(x=>x.status===201);const replayed=results.find(x=>x.status===200);
+    assert.equal(created.headers.get('location'),`/galleries/${records[0].id}`);assert.equal(replayed.headers.get('location'),null);
     assert.equal((await fetch(`${base}/galleries`,{...options,body:JSON.stringify({title:'Changed'})})).status,409);
+    r=await fetch(`${base}${created.headers.get('location')}`,{headers:token});assert.equal((await r.json()).title,'Portraits');
     assert.equal((await fetch(`${base}/galleries`,{...options,body:'{broken'})).status,400);
     assert.equal((await fetch(`${base}/galleries`,{...options,body:JSON.stringify({title:''})})).status,400);
     assert.equal((await fetch(`${base}/galleries`,{...options,body:JSON.stringify({title:'x'.repeat(101)})})).status,400);

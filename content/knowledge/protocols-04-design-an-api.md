@@ -56,6 +56,51 @@ curl -i http://127.0.0.1:4310/galleries -H "Authorization: Bearer studio-a" -H "
 
 Expect 201, Location and a generated id. Omit title or send an empty title and expect 400. The server is a learning fixture, not a complete OpenAPI reference implementation.
 
+## Read creation, retrieval and replay as separate claims
+
+Run the creation command above with a fresh key. This shortened example replaces the generated identifier with GALLERY_ID and omits incidental headers. In your own response, use the actual returned id and Location value.
+
+```http
+POST /galleries HTTP/1.1
+Host: 127.0.0.1:4310
+Authorization: Bearer studio-a
+Content-Type: application/json
+Idempotency-Key: create-001
+
+{"title":"Augusta portraits"}
+
+HTTP/1.1 201 Created
+Content-Type: application/json
+Cache-Control: no-store
+Location: /galleries/GALLERY_ID
+
+{"id":"GALLERY_ID","studio":"studio-a","title":"Augusta portraits"}
+```
+
+There are three distinct contract decisions here:
+
+- The token selects the fictional caller context. A studio field in the body cannot change ownership in this fixture.
+- The idempotency key identifies one intended creation within that studio. It is not an authentication token, and another studio can use the same key for its own operation.
+- Location identifies the created resource in this fixture. Retrieve that path with the same demo token and check the returned id and title. Creation does not prove a notification was sent or that data survives a process restart.
+
+Repeat the identical POST. Expect 200 and the same record, rather than 201 and a new id. The fixture's replay response does not include Location; a client should not require a creation-only header on every successful replay. Compare the body id, not only the status.
+
+### Inspect a conflict without creating another gallery
+
+Change the title in gallery.json but keep create-001. The lab responds:
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+Cache-Control: no-store
+
+{"error":"key_reused_with_different_request"}
+```
+
+The key now refers to a different normalized title. The server refuses the mismatch; it does not update the original gallery. GET the original Location to verify its title remains unchanged. Restore gallery.json before running a same-operation retry later in the course.
+
+A new key is appropriate for a genuinely new user intention. Generating a new key automatically after an uncertain response could turn a retry into a second creation. Keep the operation identity stable until you reconcile its outcome.
+
 ## Failure analysis
 
 Create a fixture representing an older client that reads id and title. Add an optional description field to the response. Then rename title to name. Which change can the old client tolerate? Check with a parser rather than relying on “it should work.” Some strict consumers reject unknown fields too; compatibility depends on your actual contract.
