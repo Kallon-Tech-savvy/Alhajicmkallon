@@ -18,6 +18,18 @@ sources: ["https://spec.openapis.org/oas/v3.2.1.html"]
 
 A teammate should not need to ask you what every field means. A contract reduces that dependence. It also helps the person using the product: consistent rules make errors easier to explain and recover from.
 
+## Lab scope and pass criteria
+
+Practice mode: Run the creation request; write the contract and compatibility checks.
+
+### Expected result
+
+On a fresh start, the documented POST with a new key returns 201, Location and a gallery id. Repeating the same key and normalized title returns 200 with that id. An empty title returns 400.
+
+### Evidence and limits
+
+Save both replies and compare ids. The fixture ignores unknown body fields, including studio; ownership still comes from the demo token. It does not validate an OpenAPI document or supply an older-client compatibility test.
+
 ## Core concepts
 
 An HTTP API can use resource-oriented conventions without satisfying every REST constraint. Be precise about what you have built. OpenAPI describes an HTTP interface; documentation alone does not enforce runtime validation or authorization.

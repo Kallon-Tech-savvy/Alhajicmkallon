@@ -18,6 +18,18 @@ sources: ["https://www.rfc-editor.org/rfc/rfc9111.html", "https://developer.mozi
 
 Mohamed pays for mobile data. Downloading an unchanged public page repeatedly wastes it. Augusta also has private galleries that must not be reused across clients. “Make it faster” is incomplete without “for whom, and with what privacy boundary?”
 
+## Lab scope and pass criteria
+
+Practice mode: Run the supplied lab; use a frontend for browser enforcement.
+
+### Expected result
+
+GET /catalog returns ETag "catalog-v1". Sending that value as If-None-Match returns 304 with no response body. OPTIONS with Origin http://localhost:3000 returns 204; the disallowed origin returns 403.
+
+### Evidence and limits
+
+Save the headers and body length. curl shows server behavior but does not enforce CORS. A frontend at http://127.0.0.1:3000 is a different origin from the allowed http://localhost:3000. Browser JavaScript cannot read X-Request-ID unless the server also exposes that header; inspect it in Network or curl for this fixture.
+
 ## Core concepts
 
 A cache can reuse a response. Freshness says how long reuse is allowed; validation asks whether an older response still represents the resource. An ETag is a validator. If-None-Match can produce a 304 response with no representation body. Your existing cached body is still needed.

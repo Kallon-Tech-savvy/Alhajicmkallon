@@ -18,6 +18,18 @@ sources: ["https://www.rfc-editor.org/rfc/rfc9110.html", "https://developer.mozi
 
 Mohamed presses Save and sees “Done.” But the server rejected the request. A cheerful message has made the product less trustworthy. We need to distinguish the button press, the request and the confirmed outcome.
 
+## Lab scope and pass criteria
+
+Practice mode: Run the supplied lab; build the client separately.
+
+### Expected result
+
+GET /galleries without a token returns 401. With studio-a it returns 200 and one gallery on a fresh start. GET /failure returns 503 with simulated_outage.
+
+### Evidence and limits
+
+Save status and response headers. The loading, empty, success and error interface is your implementation; the lab does not render it. Studio-b has an empty gallery list on a fresh start.
+
 ## Core concepts
 
 A request includes a method, target and headers, sometimes a body. A response includes a status, headers and sometimes a body. GET should retrieve without requesting a state change. POST can create a resource; it is not automatically safe to repeat. A successful fetch promise can still contain an HTTP error response.

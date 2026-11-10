@@ -18,6 +18,18 @@ sources: ["https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/U
 
 Mohamed watches an upload reach 80 percent, then his connection drops. A progress bar that resets to zero can make him feel his work disappeared. Before adding animation, decide what state the server actually knows and how the interface recovers it.
 
+## Lab scope and pass criteria
+
+Practice mode: Run the stream; implement recovery separately.
+
+### Expected result
+
+GET /events with studio-a emits three progress events with ids 1, 2 and 3, then closes. Reconnecting starts the counter at 1 again, even if Last-Event-ID is supplied.
+
+### Evidence and limits
+
+Save two connection transcripts. This proves the fixture emits and restarts a stream, not that work resumes. The lab has no job snapshot, replay log, WebSocket endpoint or upload processor. Test duplicate and stale messages against your own reducer.
+
 ## Core concepts
 
 Polling periodically asks for state. SSE sends a stream of text events from server to browser over HTTP. WebSocket supports bidirectional messages over a persistent connection. Use the simplest option that meets the interaction: a progress feed does not automatically require a two-way channel.

@@ -18,6 +18,18 @@ sources: ["https://docs.github.com/en/webhooks/using-webhooks/validating-webhook
 
 A payment provider sends the same notification twice. Augusta should not send two receipts or unlock the wrong client gallery. A retry is a normal integration condition; your receiver should be designed for it.
 
+## Lab scope and pass criteria
+
+Practice mode: Build a separate extension; no webhook receiver supplied.
+
+### Expected result
+
+For your receiver, a valid synthetic signature is accepted; changing one signed byte is rejected. Concurrent duplicate delivery must produce one recorded business effect under your stated storage assumptions.
+
+### Evidence and limits
+
+Save the payload fixture, test commands, statuses and effect count. The supplied lab cannot produce these results: it has no webhook endpoint, signature verifier, inbox or worker. Mark crash recovery unproven until you repeat the test with durable storage and restart the worker.
+
 ## Core concepts
 
 A webhook is usually an HTTP notification sent to a receiving endpoint. Verify authenticity according to that provider’s exact contract. GitHub’s example uses an HMAC-SHA256 signature header and the original payload bytes. Other providers use different headers, timestamp rules and verification schemes. Do not invent a universal webhook verifier.

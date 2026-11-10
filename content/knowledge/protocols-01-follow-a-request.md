@@ -19,6 +19,18 @@ sources: ["https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview", "
 Augusta is a fictional photographer. Mohamed is her client. He opens a gallery link on a patchy connection and sees a spinner. He does not know whether the gallery is missing, his connection is failing or his photographs are private. Our job is to investigate before telling him to try again.
 
 
+## Lab scope and pass criteria
+
+Practice mode: Run the supplied lab.
+
+### Expected result
+
+On a fresh start, GET /catalog returns 200 and a public sample gallery; GET /missing returns 404. After stopping the process, the same address cannot establish a connection.
+
+### Evidence and limits
+
+Save the response status and the stopped-server error separately. Neither request tests public DNS, TLS or the availability of a deployed service.
+
 ## Core concepts
 
 A protocol is an agreed set of rules for communication: message shapes, meaning and what participants do next. An API exposes capabilities. JSON is a data format. REST is an architectural style. They solve related but different problems.

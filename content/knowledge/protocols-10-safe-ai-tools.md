@@ -18,6 +18,18 @@ sources: ["https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture", 
 
 Augusta wants to ask “Which galleries are waiting for feedback?” She does not intend to give an assistant permission to expose every client’s photographs. Useful assistance begins with a narrow task and a clear boundary.
 
+## Lab scope and pass criteria
+
+Practice mode: Build and test an ordinary function first; model connection optional.
+
+### Expected result
+
+Your list_pending_galleries function returns only permitted fields and studio records, rejects invalid page bounds and preserves access rules when a title contains hostile instructions.
+
+### Evidence and limits
+
+Save function tests and sanitized outputs. The lab has no pending-status field, paging contract, MCP server, AI connection or agent handoff. Define synthetic pending records in your extension; no paid model or API key is required for these boundary tests.
+
 ## Core concepts
 
 MCP connects AI applications with tools and context through defined interfaces. Its architecture distinguishes the host, client and server. It uses JSON-RPC message semantics with supported transports. It does not decide your product’s authorization policy or make model output trustworthy.
