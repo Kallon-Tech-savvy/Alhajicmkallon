@@ -4,7 +4,7 @@ title: "Choose HTTP, GraphQL, gRPC or JSON-RPC deliberately"
 category: "Protocol course · Lesson 05"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Compare contracts using the same gallery task and learn when extra infrastructure earns its place."
 status: "published"
 kind: "knowledge"
@@ -14,11 +14,11 @@ objectives: ["Separate API style from transport and serialization", "Write a jus
 sources: ["https://graphql.org/learn/", "https://grpc.io/docs/what-is-grpc/introduction/", "https://www.jsonrpc.org/specification"]
 ---
 
-## Start with a person
+## Problem and scope
 
-A developer you admire uses gRPC. You feel behind because your application uses HTTP and JSON. Pause there. A protocol choice is a response to constraints, not a measure of your seniority.
+A developer you admire uses gRPC. A protocol choice is a response to constraints, not a ranking of engineering ability.
 
-## The idea
+## Core concepts
 
 An HTTP resource API exposes operations through HTTP semantics. GraphQL lets clients select fields against a schema; query flexibility adds authorization and execution-cost questions. gRPC defines service methods and message contracts, commonly using Protocol Buffers and HTTP/2; browser access needs an appropriate integration such as gRPC-Web. JSON-RPC describes method-call envelopes, independently of the transport.
 
@@ -40,13 +40,25 @@ For gRPC, sketch a GalleryService with GetGallery and explicit request/response 
 
 Write five headings: user task, constraints, candidate options, chosen option and evidence that would change your mind. Compare browser support, deployment skills, payload needs, caching, operational visibility and who owns each client. Choose one contract for a small gallery product and one for a service-to-service media pipeline.
 
-## Break it deliberately
+## Failure analysis
 
 Imagine a GraphQL client requests deeply nested relationships, an RPC response arrives with an unexpected id, and an old client sees an unknown enum value. Describe the boundary that catches each failure. These are prompts for implementation tests, not claims that one option is inherently unsafe.
 
-## Check your reasoning
+## Assessment
 
 Ready when you can defend your choice without saying “modern,” “enterprise” or “fast” as the entire explanation. Name one cost you accepted and one requirement that would make you reconsider.
+
+## Choose an interface by the cost of its guarantees
+
+Comparisons are useful only when the workload and operating constraints are held constant. A smaller payload may reduce transfer cost while increasing server execution cost. Generated types may improve client ergonomics while adding build and versioning work. Flexible queries may reduce endpoint proliferation while requiring explicit limits on query cost.
+
+### Worked reasoning
+
+For a browser displaying one gallery and ten captions, an HTTP endpoint may be sufficient. GraphQL becomes a candidate when independently evolving views need substantially different related data. gRPC becomes a candidate when service contracts, streaming or tooling justify its runtime requirements. JSON-RPC fits method-oriented exchanges but still needs a transport, authentication and error policy. None is an automatic upgrade.
+
+### Apply the distinction
+
+Choose two measurable constraints, such as browser compatibility and maximum accepted query cost. Reject any candidate that cannot meet them with your team’s available deployment and debugging tools.
 
 ## Sources
 

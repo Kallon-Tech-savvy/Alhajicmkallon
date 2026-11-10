@@ -4,7 +4,7 @@ title: "Prove a small integration works for a person"
 category: "Protocol course · Lesson 12"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Bring the course together in a gallery workflow with a contract, negative tests, recovery behavior and an honest review of remaining risks."
 status: "published"
 kind: "knowledge"
@@ -14,7 +14,7 @@ objectives: ["Demonstrate a complete integration with failure evidence", "Explai
 sources: ["https://spec.openapis.org/oas/v3.2.1.html", "https://www.rfc-editor.org/rfc/rfc9700.html", "https://www.w3.org/TR/trace-context/"]
 ---
 
-## Start with a person
+## Problem and scope
 
 Augusta needs to create a private gallery and let Mohamed know when his photographs are ready. The goal is not to display every protocol you learned. It is to complete that small journey without losing work, leaking access or misleading either person.
 
@@ -41,17 +41,23 @@ Ask a peer to create a gallery while you observe without coaching. If no peer is
 
 Do not measure success only by a green HTTP status. Can Augusta tell whether her work was confirmed? Does Mohamed understand why access is denied? Can someone using a keyboard reach the retry action? Does a duplicate event repeat a notification?
 
-## Review with a rubric
+## Assessment
 
 For each area, write “demonstrated,” “partly demonstrated” or “not yet demonstrated,” with evidence: contract clarity, access boundary, duplicate handling, cancellation/recovery, observability and interface honesty. Do not average away a failed permission boundary with a polished interface.
 
 Ready to complete when your happy path works, denied paths return no private data, retry evidence matches your stated guarantees, and another developer can reproduce the setup. Name remaining gaps explicitly. If a guarantee depends on an unbuilt database constraint, it is not demonstrated yet.
 
-## Reflect before adding more
+## Completion is a set of demonstrated claims
 
-Write one page: what confused you at the start, the experiment that changed your understanding, a decision you would make differently and the next smallest test. Keep your failed attempts: they show how your reasoning improved.
+A capstone should separate implemented behavior from design intent. A diagram of durable storage is not evidence of restart recovery. A screenshot of a successful request is not evidence of authorization. Passing a fixture test demonstrates behavior under the fixture’s assumptions, not every condition that a deployed system will encounter.
 
-Return to the [course overview](/knowledge/protocols) whenever you need a map. Choose the lesson that addresses the uncertainty in front of you; rereading is part of engineering, not a setback.
+### Worked reasoning
+
+Write each claim in a form that can be falsified: a different studio cannot retrieve the gallery; retrying one creation key does not create a second record; a disconnected viewer can recover the latest confirmed state. Attach the exact test, environment and observed result. If the system uses memory-only storage, mark recovery after restart as not demonstrated rather than describing it as reliable.
+
+### Apply the distinction
+
+Review the highest-consequence failure first. A failed isolation test blocks a claim that the workflow protects private galleries, regardless of how many interface or happy-path tests pass. End with the smallest experiment that would resolve the most consequential remaining uncertainty.
 
 ## Sources
 

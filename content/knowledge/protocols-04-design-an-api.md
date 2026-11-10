@@ -4,7 +4,7 @@ title: "Design an API another developer can trust"
 category: "Protocol course · Lesson 04"
 topics: ["Protocols", "APIs", "Practical engineering"]
 date: "2026-11-09"
-readTime: "10–15 min reading · 60–90 min practice"
+readTime: "15–20 min reading · practice at your own pace"
 excerpt: "Turn a gallery-creation journey into a documented contract with validation, clear errors and compatibility tests."
 status: "published"
 kind: "knowledge"
@@ -14,11 +14,11 @@ objectives: ["Write a small OpenAPI contract", "Test an older client against a c
 sources: ["https://spec.openapis.org/oas/v3.2.1.html"]
 ---
 
-## Start with a person
+## Problem and scope
 
 A teammate should not need to ask you what every field means. A contract reduces that dependence. It also helps the person using the product: consistent rules make errors easier to explain and recover from.
 
-## The idea
+## Core concepts
 
 An HTTP API can use resource-oriented conventions without satisfying every REST constraint. Be precise about what you have built. OpenAPI describes an HTTP interface; documentation alone does not enforce runtime validation or authorization.
 
@@ -44,17 +44,25 @@ curl -i http://127.0.0.1:4310/galleries -H "Authorization: Bearer studio-a" -H "
 
 Expect 201, Location and a generated id. Omit title or send an empty title and expect 400. The server is a learning fixture, not a complete OpenAPI reference implementation.
 
-## Break it deliberately
+## Failure analysis
 
 Create a fixture representing an older client that reads id and title. Add an optional description field to the response. Then rename title to name. Which change can the old client tolerate? Check with a parser rather than relying on “it should work.” Some strict consumers reject unknown fields too; compatibility depends on your actual contract.
 
-## Check your reasoning
+## Assessment
 
 Save the contract, example requests and tests for success, empty title, missing token and unknown field policy. Ready when another developer can implement the client without asking you what a successful creation looks like.
 
-## Human checkpoint
+## A contract includes behavior, not only fields
 
-A first contract is allowed to be small. Two clearly defined operations teach more than twenty endpoints with unexplained errors. Ask a peer which sentence made them pause, then improve that sentence.
+A schema defines admissible structure. A usable contract also defines ownership, operation semantics, error handling, concurrency and compatibility. A title field can pass structural validation while the caller is forbidden to create a gallery in the requested studio. Keep those checks distinct so an error tells the client which category of failure occurred.
+
+### Worked reasoning
+
+Treat studio identity as trusted server context derived from validated credentials. The request body supplies a title, not an authoritative owner. If a caller adds a studio field, define whether the server rejects unknown fields or ignores them. Either choice must be documented and tested; silently using that field would let the caller influence the permission boundary.
+
+### Apply the distinction
+
+Describe one operation using six headings: caller, input, invariants, state change, response and retry behavior. Then implement a client using only that description. Every unanswered question is a contract gap.
 
 ## Sources
 
