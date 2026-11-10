@@ -1,3 +1,4 @@
+import { CourseProgress } from '@/components/CourseProgress';
 import React from 'react';
 import { ProtocolLessonVisual } from '@/components/ProtocolLessonVisual';
 import { ProtocolInfographics } from '@/components/ProtocolInfographics';
@@ -67,6 +68,7 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
       {lessonIndex === 0 && <ProtocolInfographics />}
       {lessonIndex > 0 && <ProtocolLessonVisual lessonIndex={lessonIndex} />}
       <section className="section-space site-gutter"><article className="max-w-3xl mx-auto font-body text-base md:text-lg"><MarkdownContent source={entry.content} /></article></section>
+      {lessonIndex >= 0 && <CourseProgress lessons={PROTOCOL_LESSONS.map(({ slug, title }) => ({ slug, title }))} currentSlug={slug} />}
       {lessonIndex >= 0 && <nav aria-label="Protocol course navigation" className="site-gutter border-t border-border py-10"><div className="mx-auto max-w-3xl"><p className="text-sm text-muted">Lesson {lessonIndex + 1} of {PROTOCOL_LESSONS.length}</p><Link prefetch={false} href="/knowledge/protocols" className="mt-3 inline-block text-sm text-accent underline underline-offset-4">Course overview and glossary</Link><div className="mt-6 grid gap-5 sm:grid-cols-2">{previous && <Link prefetch={false} href={`/knowledge/${previous.slug}`} className="rounded-lg border border-border p-4 text-sm leading-relaxed hover:bg-surface">← Previous: {previous.title}</Link>}{next && <Link prefetch={false} href={`/knowledge/${next.slug}`} className="rounded-lg border border-border p-4 text-sm leading-relaxed hover:bg-surface">Next: {next.title} →</Link>}{!next && <Link prefetch={false} href="/knowledge/protocols" className="editorial-link">Return to the course →</Link>}</div></div></nav>}
       <Footer />
     </main>
