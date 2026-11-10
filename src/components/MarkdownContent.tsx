@@ -31,10 +31,16 @@ function renderInline(source: string): InlinePart[] {
 
 export function MarkdownContent({ source }: { source: string }) {
   const blocks = source.trim().split(/(```[\s\S]*?```)/).flatMap((block) => block.startsWith('```') ? [block] : block.split(/\n\s*\n/)).filter((block) => block.trim());
-  return <div className="space-y-6">{blocks.map((block, index) => {
+  return <div className="reading-content min-w-0 space-y-6">{blocks.map((block, index) => {
     if (block.startsWith('```')) {
       const code = block.replace(/^```[^\n]*\n/, '').replace(/\n```$/, '');
-      return <pre key={index} className="overflow-x-auto rounded-xl border border-border bg-surface p-5 text-sm leading-relaxed"><code>{code}</code></pre>;
+      const language = block.match(/^```([^\n]*)/)?.[1].trim().toLowerCase() ?? '';
+      const labels: Record<string, string> = { js: 'JavaScript', javascript: 'JavaScript', ts: 'TypeScript', typescript: 'TypeScript', tsx: 'TSX', jsx: 'JSX', sh: 'Terminal', bash: 'Terminal', shell: 'Terminal', json: 'JSON', http: 'HTTP exchange', css: 'CSS', html: 'HTML', sql: 'SQL', yaml: 'YAML', yml: 'YAML' };
+      const label = labels[language] ?? 'Code';
+      return <figure key={index} className="code-example min-w-0 max-w-full rounded-xl border border-border bg-surface">
+        <figcaption className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3 text-xs text-muted"><span className="font-semibold text-ivory">{label}</span><span>Long lines scroll horizontally</span></figcaption>
+        <pre tabIndex={0} role="region" aria-label={`${label} example ${index + 1}, horizontally scrollable`} className="max-w-full overflow-x-auto rounded-b-xl p-4 text-sm leading-relaxed md:p-5"><code>{code}</code></pre>
+      </figure>;
     }
     const lines = block.split('\n');
     const heading = lines.length === 1 ? lines[0].match(/^(#{1,4})\s+(.+)$/) : null;
