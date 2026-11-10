@@ -30,6 +30,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResults>(EMPTY_RESULTS);
   const [searchStatus, setSearchStatus] = useState<SearchStatus>('idle');
+  const [retryKey, setRetryKey] = useState(0);
   const dialogRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -78,7 +79,10 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
     if (!isOpen || !normalized) return;
 
     const controller = new AbortController();
+    let active = true;
+    let requestTimeout: number | undefined;
     const timer = window.setTimeout(async () => {
+      requestTimeout = window.setTimeout(() => controller.abort(), 8000);
       try {
         const response = await fetch(`/api/search?q=${encodeURIComponent(normalized)}`, {
           signal: controller.signal,
@@ -86,28 +90,32 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         });
         if (!response.ok) throw new Error('Search is temporarily unavailable');
         const payload: SearchResults = await response.json();
-        if (!controller.signal.aborted) {
+        if (active) {
           setResults(payload);
           setSearchStatus('success');
         }
       } catch {
-        if (!controller.signal.aborted) {
+        if (active) {
           setResults(EMPTY_RESULTS);
           setSearchStatus('error');
         }
+      } finally {
+        window.clearTimeout(requestTimeout);
       }
     }, 220);
 
     return () => {
+      active = false;
       window.clearTimeout(timer);
+      window.clearTimeout(requestTimeout);
       controller.abort();
     };
-  }, [query, isOpen]);
+  }, [query, isOpen, retryKey]);
 
   const { projects: filteredProjects, articles: filteredArticles } = results;
 
   return isOpen ? (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-24 pb-6 px-4">
+        <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 sm:pt-20">
           <div
             className="fixed inset-0 bg-midnight/95 backdrop-blur-xl"
             onClick={onClose}
@@ -119,9 +127,9 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             role="dialog"
             aria-modal="true"
             aria-labelledby="global-search-title"
-            className="relative w-full max-w-2xl bg-surface border border-border rounded-2xl shadow-xl overflow-hidden "
+            className="ui-panel relative flex max-h-[calc(100dvh-2rem)] w-full max-w-2xl flex-col border border-border rounded-2xl shadow-xl overflow-hidden sm:max-h-[calc(100dvh-6rem)]"
           >
-            <div className="p-6 border-b border-border flex items-center space-x-4">
+            <div className="shrink-0 p-4 sm:p-6 border-b border-border flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent" aria-hidden="true">
                 <Search size={20} />
               </div>
@@ -129,8 +137,12 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               <input
                 ref={inputRef}
                 aria-label="Search projects and articles"
+                aria-describedby="search-guidance"
+                type="search"
+                autoComplete="off"
+                spellCheck={false}
                 className="min-w-0 flex-1 bg-transparent border-none outline-none text-ivory placeholder-muted font-display text-xl py-2 font-bold"
-                placeholder="Search anything..."
+                placeholder="Search the site…"
                 value={query}
                 maxLength={120}
                 onChange={(e) => {
@@ -144,22 +156,27 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 type="button"
                 onClick={onClose}
                 aria-label="Close search"
-                className="p-2 hover:bg-navy rounded-full text-muted transition-colors"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center hover:bg-navy rounded-full text-muted transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar" aria-live="polite" aria-busy={searchStatus === 'loading'}>
+            <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-2 sm:px-6">
+              <p id="search-guidance" className="text-xs text-muted">Search case studies, writing and practical guides.</p>
+              {query && <button type="button" onClick={() => { setQuery(''); setResults(EMPTY_RESULTS); setSearchStatus('idle'); inputRef.current?.focus(); }} className="min-h-11 shrink-0 px-2 text-sm font-medium text-accent underline underline-offset-4">Clear</button>}
+            </div>
+            <div className="min-h-0 flex-1 p-4 sm:p-6 overflow-y-auto overscroll-contain custom-scrollbar" aria-live="polite" aria-busy={searchStatus === 'loading'}>
               {query.trim() === '' ? (
                 <div className="space-y-8">
                   <div>
-                    <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Popular Categories</h3>
+                    <h3 className="text-sm font-medium text-muted mb-4 px-2">Browse directly</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
                         { icon: <Code size={18} />, label: 'Case Studies', href: '/work', color: 'text-accent' },
                         { icon: <FileText size={18} />, label: 'Writing', href: '/writing', color: 'text-accent' },
                         { icon: <BookOpen size={18} />, label: 'Knowledge', href: '/knowledge', color: 'text-accent' },
+                        { icon: <BookOpen size={18} />, label: 'Protocol course', href: '/knowledge/protocols', color: 'text-accent' },
                         { icon: <ArrowRight size={18} />, label: 'About Alhaji', href: '/about', color: 'text-accent' },
                       ].map((item) => (
                         <Link
@@ -172,17 +189,18 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                           <div className="p-2 bg-surface rounded-lg mr-4 group-hover:scale-110 transition-transform" aria-hidden="true">
                             {item.icon}
                           </div>
-                          <div className="text-sm font-display font-bold text-ivory uppercase tracking-widest">{item.label}</div>
+                          <div className="text-sm font-medium text-ivory">{item.label}</div>
                         </Link>
                       ))}
                     </div>
                   </div>
                 </div>
               ) : searchStatus === 'loading' ? (
-                <p role="status" className="py-12 text-center text-sm text-muted">Searching published work and writing…</p>
+                <p role="status" className="py-8 text-center text-sm text-muted">Searching published work, writing and guides…</p>
               ) : searchStatus === 'error' ? (
                 <div role="alert" className="py-12 text-center text-sm text-ivory">
-                  <p>Search could not be completed. Please change your query or browse directly.</p>
+                  <p>Search didn’t finish. Your query is still here.</p>
+                  <button type="button" onClick={() => { setSearchStatus('loading'); setResults(EMPTY_RESULTS); setRetryKey(key => key + 1); }} className="ui-primary mt-5">Try search again</button>
                   <div className="mt-5 flex flex-wrap justify-center gap-4">
                     <Link href="/work" prefetch={false} onClick={onClose} className="text-[var(--color-accent)] underline underline-offset-4">Work</Link>
                     <Link href="/writing" prefetch={false} onClick={onClose} className="text-[var(--color-accent)] underline underline-offset-4">Writing</Link>
@@ -191,13 +209,14 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                 </div>
               ) : (
                 <div className="space-y-8">
+                  {searchStatus === 'success' && filteredProjects.length + filteredArticles.length > 0 && <p role="status" className="text-sm text-muted">{filteredProjects.length + filteredArticles.length} result{filteredProjects.length + filteredArticles.length === 1 ? '' : 's'} for “{query.trim()}”</p>}
                   {filteredProjects.length > 0 && (
                     <div>
                       <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Projects</h3>
                       <div className="space-y-2">
                         {filteredProjects.map(p => (
                           <Link key={p.id} href={p.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-navy transition-colors group">
-                            <div className="text-sm font-display font-bold text-ivory group-hover:text-accent uppercase tracking-widest">{p.title}</div>
+                            <div className="text-base font-medium leading-relaxed text-ivory group-hover:text-accent">{p.title}</div>
                             <div className="text-xs text-muted mt-1">{p.summary}</div>
                           </Link>
                         ))}
@@ -207,11 +226,11 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
                   {filteredArticles.length > 0 && (
                     <div>
-                      <h3 className="text-xs font-display font-bold uppercase tracking-[0.16em] text-muted mb-4 px-2">Articles</h3>
+                      <h3 className="text-sm font-medium text-muted mb-4 px-2">Writing and guides</h3>
                       <div className="space-y-2">
                         {filteredArticles.map((a) => (
                           <Link key={a.slug} href={a.href} prefetch={false} onClick={onClose} className="block p-4 rounded-xl hover:bg-navy transition-colors group">
-                            <div className="text-sm font-display font-bold text-ivory group-hover:text-accent uppercase tracking-widest">{a.title}</div>
+                            <div className="text-base font-medium leading-relaxed text-ivory group-hover:text-accent">{a.title}</div>
                             <div className="text-xs text-muted mt-1">{a.excerpt}</div>
                           </Link>
                         ))}
@@ -220,15 +239,17 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                   )}
 
                   {searchStatus === 'success' && filteredProjects.length === 0 && filteredArticles.length === 0 && (
-                    <div className="py-20 text-center">
-                      <p className="text-muted italic font-body text-muted">No results found for &quot;{query}&quot;</p>
+                    <div className="py-8 text-center">
+                      <p className="text-ivory">No results for “{query.trim()}”.</p>
+                      <p className="mt-3 text-sm text-muted">Try a shorter topic, such as HTTP, CSS or AEEM, or browse the learning hub.</p>
+                      <Link href="/knowledge" prefetch={false} onClick={onClose} className="editorial-link mt-5">Browse practical guides →</Link>
                     </div>
                   )}
                 </div>
               )}
             </div>
 
-            <div className="p-4 bg-surface border-t border-border flex justify-between items-center px-6">
+            <div className="shrink-0 p-4 bg-surface border-t border-border flex justify-between items-center px-6">
               <div className="flex items-center space-x-4 text-xs text-muted uppercase tracking-[0.2em] font-display font-bold">
                 <span><kbd className="bg-navy px-2 py-1 rounded text-ivory">ESC</kbd> to close</span>
               </div>
