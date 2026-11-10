@@ -541,4 +541,74 @@ h1, h2, h3, h4 {
 .page-intro { padding-top: clamp(7.5rem, 11vw, 9rem); padding-bottom: clamp(2rem, 4vw, 3.5rem); }
 .page-title { font-size: clamp(2.25rem, 4.5vw, 4rem); font-weight: 500; line-height: 1.14; letter-spacing: -.035em; }
 .text-gradient { background: none; -webkit-text-fill-color: currentColor; color: var(--ui-accent); }
-.glass, .glass-frost, .glass-frost-light, .glass-frost-bar { backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: var(--panel-radius); box-shadow: none; }
+.glass, .glass-frost, .glass-frost-light, .glass-frost-bar { backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: var(--panel-radius); }
+
+/* Faded liquid: static colour fields and bounded chrome, never a moving reading surface. */
+:root {
+  --panel-radius: 1rem;
+  --liquid-wash: color-mix(in srgb, var(--ui-accent) 11%, transparent);
+  --liquid-soft: color-mix(in srgb, var(--ui-success) 7%, transparent);
+  --liquid-highlight: color-mix(in srgb, var(--ui-text) 5%, transparent);
+  --liquid-shadow: color-mix(in srgb, var(--ui-text) 9%, transparent);
+}
+:root[data-theme="dark"] {
+  --liquid-wash: color-mix(in srgb, var(--ui-accent) 8%, transparent);
+  --liquid-soft: color-mix(in srgb, var(--ui-success) 5%, transparent);
+  --liquid-highlight: color-mix(in srgb, var(--ui-text) 4%, transparent);
+  --liquid-shadow: #00000030;
+}
+.page-intro, .editorial-hero {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 92% 8%, var(--liquid-wash), transparent 62%),
+    radial-gradient(ellipse at 8% 95%, var(--liquid-soft), transparent 58%),
+    var(--ui-background);
+}
+.page-intro::after, .editorial-hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  inset: 24% 5% 10% 48%;
+  border-radius: 60% 40% 52% 48% / 48% 58% 42% 52%;
+  border: 1px solid var(--liquid-highlight);
+  background: linear-gradient(145deg, var(--liquid-highlight), transparent 65%);
+}
+.liquid-navigation {
+  background: var(--ui-background);
+  box-shadow: 0 4px 22px var(--liquid-shadow);
+}
+@supports (backdrop-filter: blur(12px)) {
+  .liquid-navigation {
+    background: color-mix(in srgb, var(--ui-background) 96%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+.liquid-menu {
+  background:
+    radial-gradient(ellipse at top right, var(--liquid-wash), transparent 65%),
+    var(--ui-background);
+  box-shadow: 0 16px 40px var(--liquid-shadow);
+}
+.ui-panel, .glass, .glass-frost, .glass-frost-light, .glass-frost-bar {
+  background: linear-gradient(145deg, var(--liquid-highlight), transparent 65%), var(--ui-surface);
+  box-shadow: inset 0 1px 0 var(--liquid-highlight), 0 8px 24px var(--liquid-shadow);
+}
+.editorial-project-image { border-radius: var(--panel-radius); }
+.ui-primary { border-radius: .875rem; }
+:where(a, button, summary) {
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.ui-primary:hover { box-shadow: 0 4px 14px var(--liquid-shadow); }
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .liquid-navigation { background: var(--ui-background); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .page-intro, .editorial-hero, .liquid-menu { background: var(--ui-background); }
+  .page-intro::after, .editorial-hero::after { display: none; }
+  .ui-panel, .glass, .glass-frost, .glass-frost-light, .glass-frost-bar { background: var(--ui-surface); box-shadow: none; }
+}
+@media print {
+  .page-intro, .editorial-hero, .liquid-menu { background: none; }
+  .page-intro::after, .editorial-hero::after { display: none; }
+}
