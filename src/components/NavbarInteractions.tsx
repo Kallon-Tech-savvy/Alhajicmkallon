@@ -3,14 +3,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import dynamic from 'next/dynamic';
+import { InteractionLoading, InteractionLoadingContext } from './InteractionLoading';
 import Link from 'next/link';
 import { ThemeSelect } from './ThemeSelect';
 import { usePathname } from 'next/navigation';
 import { cycleNavigationFocus } from '@/lib/navigation-focus.mjs';
 
-const GlobalSearch = dynamic(() => import('./GlobalSearch').then((module) => module.GlobalSearch), {
-  ssr: false,
-});
+const loadSearch = () => import('./GlobalSearch').then((module) => module.GlobalSearch);
+const preloadSearch = () => {
+  void loadSearch().catch(() => {});
+};
+const GlobalSearch = dynamic(loadSearch, { ssr: false, loading: InteractionLoading });
 
 const LINKS = [
   { name: 'Home', href: '/' },
@@ -208,6 +211,9 @@ export function NavbarInteractions() {
           type="button"
           onClick={() => setIsSearchOpen(true)}
           className="ui-icon-button"
+          onPointerEnter={preloadSearch}
+          onFocus={preloadSearch}
+          onPointerDown={preloadSearch}
           aria-label="Search (Ctrl or Command K)"
         >
           <NavIcon name="search" size={16} />
@@ -229,6 +235,9 @@ export function NavbarInteractions() {
             setIsMobileMenuOpen(false);
             setIsSearchOpen(true);
           }}
+          onPointerEnter={preloadSearch}
+          onFocus={preloadSearch}
+          onPointerDown={preloadSearch}
           aria-label="Search site"
           className="ui-icon-button"
         >
@@ -361,7 +370,14 @@ export function NavbarInteractions() {
         )}
 
       {isSearchOpen &&
-        createPortal(<GlobalSearch isOpen={isSearchOpen} onClose={closeSearch} />, document.body)}
+        createPortal(
+          <InteractionLoadingContext.Provider
+            value={{ kind: 'search', open: isSearchOpen, onClose: closeSearch }}
+          >
+            <GlobalSearch isOpen={isSearchOpen} onClose={closeSearch} />
+          </InteractionLoadingContext.Provider>,
+          document.body,
+        )}
     </>
   );
 }

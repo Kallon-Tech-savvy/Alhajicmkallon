@@ -44,3 +44,29 @@ Before deployment, verify a configured non-production environment with a separat
 namespace: FAQ answer, non-FAQ answer, sixth-request 429, storage-outage 503, and
 provider-timeout behavior. Unit tests use provider/REST fakes; no live Redis service
 or paid OpenAI account is required to run them.
+
+## Cloudflare Workers runtime
+
+These settings must be runtime variables/secrets on the Worker serving the custom
+domain, in the active environment; build-only variables are insufficient. After
+changing configuration, deploy a new Worker version and confirm the custom domain
+routes to it.
+
+The app reads server secrets through `process.env`. Cloudflare requires
+`nodejs_compat` and `nodejs_compat_populate_process_env`. The latter is enabled by
+default for compatibility dates on or after `2025-04-01`; on older dates add it
+explicitly to the existing deployment configuration. Do not replace your adapter's
+other compatibility flags. See [Cloudflare's process.env documentation](https://developers.cloudflare.com/workers/runtime-apis/nodejs/process/).
+
+Set `CHAT_CLIENT_IP_HEADER=cf-connecting-ip` when Cloudflare is the trusted ingress.
+This identifies quota buckets; it does not connect Redis or enable secret access.
+Use the Upstash **REST** HTTPS URL and REST token, with write/script permissions,
+not a `redis://` connection string or a read-only token.
+
+To verify without an AI call, send `Show me his case studies` from the chat. This
+built-in FAQ still checks Redis. A 503 here points to quota storage; a successful
+FAQ does not yet verify the OpenAI key. Worker logs emit `chat_unavailable` with
+safe codes: `quota_configuration` (missing/invalid REST settings), `quota_network`
+(connection failure), `quota_http` (includes status, such as 401/403), or
+`quota_response` (invalid Redis reply). Check those logs before rotating keys.
+Logs intentionally exclude upstream bodies, URLs, visitor text, and credentials.
