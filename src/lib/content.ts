@@ -1,4 +1,5 @@
 import 'server-only';
+import { rankSearchEntries } from './search-relevance';
 
 /**
  * Public content catalogue.
@@ -96,17 +97,18 @@ export function getArticleBySlug(slug: string) {
 }
 
 export function searchPublishedContent(query: string) {
-  const normalized = query.trim().toLocaleLowerCase();
-  if (!normalized) return { projects: [], articles: [] };
-
   return {
-    projects: PROJECTS.filter((project) =>
-      [project.title, project.summary, project.description, ...project.topics, ...project.technologies]
-        .some((value) => value.toLocaleLowerCase().includes(normalized)),
-    ),
-    articles: ARTICLES.filter((article) =>
-      [article.title, article.excerpt, article.category, ...article.topics, article.content]
-        .some((value) => value.toLocaleLowerCase().includes(normalized)),
-    ),
+    projects: rankSearchEntries(PROJECTS, query, project => ({
+      title: project.title,
+      summary: project.summary,
+      metadata: [...project.topics, ...project.technologies],
+      body: project.description,
+    })),
+    articles: rankSearchEntries(ARTICLES, query, article => ({
+      title: article.title,
+      summary: article.excerpt,
+      metadata: [article.category, ...article.topics],
+      body: article.content,
+    })),
   };
 }
