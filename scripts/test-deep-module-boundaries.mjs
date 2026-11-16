@@ -19,14 +19,12 @@ function runBoundaries(label) {
   if (files.length === 0) throw new Error("Boundary scan found no source files under src/.");
 
   const args = [
-    "--yes",
-    "--package=dependency-cruiser@17.3.7",
-    "depcruise",
+    "node_modules/dependency-cruiser/bin/dependency-cruise.mjs",
     "--config", ".dependency-cruiser.cjs",
     "--output-type", "err-long",
     ...files,
   ];
-  const result = spawnSync("npx", args, {
+  const result = spawnSync(process.execPath, args, {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   });

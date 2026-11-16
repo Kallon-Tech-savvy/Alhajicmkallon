@@ -9,6 +9,7 @@ function text(value) {
   return value.replace(/<[^>]*>/g, ' ').replace(/&(?:nbsp|amp|quot|apos|lt|gt);/g, entity => ({'&nbsp;':' ', '&amp;':'&', '&quot;':'"', '&apos;':"'", '&lt;':'<', '&gt;':'>'})[entity]).replace(/\s+/g, ' ').trim();
 }
 
+/** @returns {Array<{ title: string, href: string, excerpt: string, date: string | null }>} */
 export function parseSubstackFeed(xml) {
   if (new TextEncoder().encode(xml).byteLength > MAX_FEED_BYTES || /<!DOCTYPE|<!ENTITY/i.test(xml)) throw new Error('Unsupported feed');
   const data = new XMLParser({ ignoreAttributes: true, processEntities: false, parseTagValue: false }).parse(xml);

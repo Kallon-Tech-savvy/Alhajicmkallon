@@ -19,11 +19,9 @@ if (files.length === 0) {
 }
 
 const result = spawnSync(
-  "npx",
+  process.execPath,
   [
-    "--yes",
-    "--package=dependency-cruiser@17.3.7",
-    "depcruise",
+    "node_modules/dependency-cruiser/bin/dependency-cruise.mjs",
     "--config", ".dependency-cruiser.cjs",
     "--output-type", "err-long",
     ...files,

@@ -1,4 +1,4 @@
-import { FAQ_ENTRIES } from './Knowledgebase';
+import { FAQ_ENTRIES } from './knowledge';
 
 /**
  * Local, zero-cost, zero-latency first pass matcher.
@@ -9,10 +9,10 @@ export function matchFaq(message: string): string | null {
 
   for (const entry of FAQ_ENTRIES) {
     let score = 0;
-    
+
     for (const keyword of entry.triggerKeywords) {
       const lowerKeyword = keyword.toLowerCase();
-      
+
       if (lowerKeyword.includes(' ')) {
         // Multi-word phrases remain safe with standard substring checks
         if (text.includes(lowerKeyword)) score += 1;
@@ -22,7 +22,7 @@ export function matchFaq(message: string): string | null {
         if (regex.test(text)) score += 1;
       }
     }
-    
+
     if (score >= entry.minMatches && (!best || score > best.score)) {
       best = { answer: entry.answer, score };
     }

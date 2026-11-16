@@ -1,0 +1,3 @@
+.next/
+node_modules/
+src/packages/content/lib/generated-content.ts

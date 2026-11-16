@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchPublishedContent } from '@/lib/content';
+import { searchPublishedContent } from '@/packages/content/server';
 
 // Return a strictly limited public projection. Do not send full Markdown
 // bodies or the generated catalogue to the browser.

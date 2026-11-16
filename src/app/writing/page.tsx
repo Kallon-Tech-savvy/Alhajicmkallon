@@ -4,7 +4,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { NewsletterCTA } from '@/components/NewsletterCTA';
 import { ArticleFilters } from '@/components/ArticleFilters';
-import { JOURNAL_ENTRIES } from '@/lib/content';
+import { JOURNAL_ENTRIES } from '@/packages/content/server';
 
 export const metadata = {
   title: 'Writing & Ideas',

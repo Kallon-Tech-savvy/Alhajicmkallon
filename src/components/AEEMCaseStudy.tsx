@@ -4,7 +4,7 @@ import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { MarkdownContent } from './MarkdownContent';
 
-export function AEEMCaseStudy({ source, liveUrl }: { source: string; liveUrl: string }) {
+export function AEEMCaseStudy({ source, liveUrl }: { source: string; liveUrl?: string }) {
   const sections = [...source.matchAll(/^## (.+)$/gm)].map(match => ({ title: match[1], id: match[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') }));
   return <main className="editorial-page min-h-screen">
     <Navbar />
@@ -13,7 +13,7 @@ export function AEEMCaseStudy({ source, liveUrl }: { source: string; liveUrl: st
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5"><Link prefetch={false} href="/work" className="text-sm text-accent underline underline-offset-4">← Selected work</Link><p className="editorial-kicker text-muted">Case study / 01</p></div>
         <div className="grid gap-8 pt-10 md:grid-cols-12 md:pt-14">
           <div className="md:col-span-8"><p className="editorial-kicker mb-5 text-accent">AEEM · Education · Sierra Leone</p><h1 className="editorial-headline editorial-case-title">Good work needs<br />a clearer way in.</h1></div>
-          <div className="flex flex-col justify-end md:col-span-4"><p className="text-lg leading-relaxed text-muted">A website for understanding the organisation, exploring its documented activities and finding a way to participate.</p><a href={liveUrl} target="_blank" rel="noopener noreferrer" className="editorial-link mt-6 self-start">Visit the working website ↗</a></div>
+          <div className="flex flex-col justify-end md:col-span-4"><p className="text-lg leading-relaxed text-muted">A website for understanding the organisation, exploring its documented activities and finding a way to participate.</p>{liveUrl && <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="editorial-link mt-6 self-start">Visit the working website ↗</a>}</div>
         </div>
         <dl className="mt-10 grid gap-6 border-t border-border pt-6 text-sm md:grid-cols-3"><div><dt className="editorial-kicker text-muted">My contribution</dt><dd className="mt-2 leading-relaxed">Product thinking, content, UX and web development</dd></div><div><dt className="editorial-kicker text-muted">Product status</dt><dd className="mt-2">Live and in use</dd></div><div><dt className="editorial-kicker text-muted">Evidence available</dt><dd className="mt-2 leading-relaxed">Working product and core-team feedback. Public outcomes not yet measured.</dd></div></dl>
       </div>
