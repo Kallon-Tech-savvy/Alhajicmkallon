@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRedisQuotaStore } from '../server';
+import { ChatQuotaError, createRedisQuotaStore } from '../server';
 
 const signal = new AbortController().signal;
 test('Redis adapter uses a single authenticated atomic command and forwards cancellation', async () => {
@@ -49,6 +49,33 @@ test('Redis storage errors and malformed replies fail closed', async () => {
   await assert.rejects(store.consume('key', 1, 60, signal));
   assert.throws(
     () => createRedisQuotaStore({ url: 'http://redis.example', token: 'test' }),
-    /HTTPS/,
+    /quota_configuration/,
   );
+});
+
+test('quota diagnostics distinguish faults without retaining upstream secrets', async () => {
+  for (const [fetcher, code, status] of [
+    [
+      async () => {
+        throw new Error('secret upstream details');
+      },
+      'quota_network',
+      undefined,
+    ],
+    [async () => new Response('secret response', { status: 401 }), 'quota_http', 401],
+    [async () => new Response('not json'), 'quota_response', undefined],
+  ] as const) {
+    const store = createRedisQuotaStore({
+      url: 'https://redis.example',
+      token: 'secret-token',
+      fetcher,
+    });
+    await assert.rejects(store.consume('visitor-key', 5, 60, signal), (error: unknown) => {
+      assert.ok(error instanceof ChatQuotaError);
+      assert.equal(error.code, code);
+      assert.equal(error.status, status);
+      assert.doesNotMatch(JSON.stringify(error), /secret|visitor|redis.example/);
+      return true;
+    });
+  }
 });

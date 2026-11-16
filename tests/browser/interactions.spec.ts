@@ -185,3 +185,41 @@ test('productive overlays remain usable at 320px', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(chat).not.toBeVisible();
 });
+
+for (const kind of ['search', 'chat'] as const) {
+  test(`${kind} responds immediately and stays dismissed while its code downloads`, async ({ page }) => {
+    await page.goto('/');
+    const trigger = page.getByRole('button', {
+      name: kind === 'chat' ? 'Ask a question about Alhaji' : 'Search (Ctrl or Command K)',
+      exact: true,
+    });
+    // Wait for hydration, then hold optional JS downloads to simulate a cold connection.
+    await expect(trigger).toBeVisible();
+    await expect.poll(() => trigger.evaluate((element) =>
+      Object.keys(element).some((key) => key.startsWith('__reactProps'))
+    )).toBe(true);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => { release = resolve; });
+    await page.route('**/_next/static/**/*.js', async (route) => {
+      await held;
+      await route.continue();
+    });
+    try {
+      // DOM click deliberately skips pointer/focus preloading so the cold path is exercised.
+      await trigger.evaluate((element: HTMLButtonElement) => element.click());
+      const pending = page.getByRole('dialog', { name: `Loading ${kind}` });
+      await expect(pending).toBeVisible({ timeout: 1500 });
+      await expect(pending.getByRole('button', { name: 'Close', exact: true })).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(pending).not.toBeVisible();
+    } finally {
+      release();
+    }
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByRole('dialog')).not.toBeVisible();
+    await trigger.click();
+    await expect(page.getByRole('dialog', {
+      name: kind === 'chat' ? 'Ask about Alhaji' : 'Search this website', exact: true,
+    })).toBeVisible();
+  });
+}

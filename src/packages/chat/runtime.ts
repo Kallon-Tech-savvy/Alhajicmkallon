@@ -1,7 +1,12 @@
 import 'server-only';
 import { createHmac } from 'node:crypto';
 import OpenAI from 'openai';
-import { createChatService, createMemoryQuotaStore, createRedisQuotaStore } from './server';
+import {
+  ChatQuotaError,
+  createChatService,
+  createMemoryQuotaStore,
+  createRedisQuotaStore,
+} from './server';
 import type { ChatProvider, ChatService, QuotaStore } from './server';
 
 let service: ChatService | undefined;
@@ -15,7 +20,7 @@ function configuredQuota(): QuotaStore {
   // Missing shared storage must never silently enable a per-instance AI budget.
   return {
     consume: async () => {
-      throw new Error('Shared chat quota storage is not configured.');
+      throw new ChatQuotaError('quota_configuration');
     },
   };
 }
@@ -58,11 +63,21 @@ export const answerChat: ChatService = async (input) => {
       provider: configuredProvider(),
       namespace: process.env.CHAT_QUOTA_NAMESPACE || 'alhajikallon:chat:v1',
       // Do not log provider payloads, visitor messages, or credentials.
-      onError: () => console.error('Chat service or quota storage is unavailable.'),
+      onError: logChatError,
     });
     return service(input);
-  } catch {
-    console.error('Chat configuration is unavailable.');
+  } catch (error) {
+    logChatError(error);
     return { status: 503, body: { error: 'The chat service is currently unavailable.' } };
   }
 };
+
+/** Emit only fixed diagnostic codes and HTTP status, never upstream error contents. */
+function logChatError(error: unknown) {
+  console.error('chat_unavailable', {
+    code: error instanceof ChatQuotaError ? error.code : 'chat_configuration_or_provider',
+    ...(error instanceof ChatQuotaError && error.status !== undefined
+      ? { status: error.status }
+      : {}),
+  });
+}

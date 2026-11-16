@@ -1,5 +1,16 @@
 import type { QuotaStore } from './contracts';
 
+/** Safe diagnostic fields only; never retain a Redis URL, token, or response body. */
+export class ChatQuotaError extends Error {
+  constructor(
+    public readonly code: 'quota_configuration' | 'quota_network' | 'quota_http' | 'quota_response',
+    public readonly status?: number,
+  ) {
+    super(code);
+    this.name = 'ChatQuotaError';
+  }
+}
+
 // One atomic operation. Denied requests do not extend the window or spend quota.
 const CONSUME_SCRIPT = `
 local count = tonumber(redis.call('GET', KEYS[1]) or '0')
@@ -20,28 +31,44 @@ export function createRedisQuotaStore({
   token: string;
   fetcher?: typeof fetch;
 }): QuotaStore {
-  const endpoint = new URL(url);
+  let endpoint: URL;
+  try {
+    endpoint = new URL(url.trim());
+  } catch {
+    throw new ChatQuotaError('quota_configuration');
+  }
   if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password) {
-    throw new Error('Chat Redis must use an HTTPS REST endpoint.');
+    throw new ChatQuotaError('quota_configuration');
   }
   return {
     async consume(key, limit, windowSeconds, signal) {
-      const response = await fetcher(endpoint, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify([
-          'EVAL',
-          CONSUME_SCRIPT,
-          '1',
-          key,
-          String(limit),
-          String(windowSeconds),
-        ]),
-        cache: 'no-store',
-        signal,
-      });
-      if (!response.ok) throw new Error('Chat quota storage is unavailable.');
-      const payload: unknown = await response.json();
+      let response: Response;
+      try {
+        response = await fetcher(endpoint, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify([
+            'EVAL',
+            CONSUME_SCRIPT,
+            '1',
+            key,
+            String(limit),
+            String(windowSeconds),
+          ]),
+          cache: 'no-store',
+          signal,
+        });
+      } catch (error) {
+        if (signal.aborted) throw error;
+        throw new ChatQuotaError('quota_network');
+      }
+      if (!response.ok) throw new ChatQuotaError('quota_http', response.status);
+      let payload: unknown;
+      try {
+        payload = await response.json();
+      } catch {
+        throw new ChatQuotaError('quota_response');
+      }
       const result =
         typeof payload === 'object' && payload !== null && 'result' in payload
           ? payload.result
@@ -53,7 +80,7 @@ export function createRedisQuotaStore({
         !Number.isInteger(result[1]) ||
         result[1] < 0
       ) {
-        throw new Error('Chat quota storage returned an invalid result.');
+        throw new ChatQuotaError('quota_response');
       }
       return { allowed: result[0] === 1, retryAfterSeconds: result[1] };
     },
