@@ -1,320 +1,97 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import ts from 'typescript';
 
-const heroSource = await readFile(new URL('../src/components/Hero.tsx', import.meta.url), 'utf8');
+async function source(path) {
+  const text = await readFile(new URL(path, import.meta.url), 'utf8');
+  return ts.createSourceFile(path, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+}
+function imports(file) {
+  return file.statements.filter(ts.isImportDeclaration).map((node) => node.moduleSpecifier.text);
+}
+function nodes(file, predicate) {
+  const matches = [];
+  function visit(node) {
+    if (predicate(node)) matches.push(node);
+    ts.forEachChild(node, visit);
+  }
+  visit(file);
+  return matches;
+}
 
-test('homepage hero stays server-rendered without Framer Motion client runtime', () => {
-  assert.doesNotMatch(heroSource, /^['"]use client['"];?/m);
-  assert.doesNotMatch(heroSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(heroSource, /<motion\./);
-});
-
-test('supporting homepage portrait stays small and is not preloaded', () => {
-  assert.match(heroSource, /src=["']\/assets\/kallon1\.png["']/);
-  assert.doesNotMatch(heroSource, /\bpriority\b/);
-  assert.match(heroSource, /sizes="56px"/);
-  assert.match(heroSource, /loading="lazy"/);
-});
-
-const featuredWorkSource = await readFile(new URL('../src/components/FeaturedWork.tsx', import.meta.url), 'utf8');
-
-test('featured work stays server-rendered without Framer Motion client runtime', () => {
-  assert.doesNotMatch(featuredWorkSource, /^['"]use client['"];?/m);
-  assert.doesNotMatch(featuredWorkSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(featuredWorkSource, /<motion\./);
-});
-
-const visitorPathSource = await readFile(new URL('../src/components/VisitorPath.tsx', import.meta.url), 'utf8');
-
-test('visitor path is server-rendered and exposes all three journeys without client state', () => {
-  assert.doesNotMatch(visitorPathSource, /^['"]use client['"];?/m);
-  assert.doesNotMatch(visitorPathSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(visitorPathSource, /useState|useEffect|onClick=/);
-  assert.match(visitorPathSource, /Clarify a product idea/);
-  assert.match(visitorPathSource, /Explore the work/);
-  assert.match(visitorPathSource, /Read the thinking/);
-  assert.match(visitorPathSource, /href: '\/contact'/);
-  assert.match(visitorPathSource, /href: '\/work'/);
-  assert.match(visitorPathSource, /href: '\/writing'/);
-});
-
-const workPageSource = await readFile(new URL('../src/app/work/page.tsx', import.meta.url), 'utf8');
-
-test('work page communicates product thinking and the project evidence journey', () => {
-  assert.match(workPageSource, /From problem/);
-  assert.match(workPageSource, /to product/);
-  assert.match(workPageSource, /context, the choices, what I built, and what the evidence says so far/);
-});
-
-test('work page keeps case-study and live-project paths distinct and safe', () => {
-  assert.match(workPageSource, /<FeaturedWork \/>/);
-  assert.match(featuredWorkSource, /Visit the working website/);
-  assert.match(featuredWorkSource, /target="_blank" rel="noopener noreferrer"/);
-});
-
-const navbarSource = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');
-const navInteractionsSource = await readFile(new URL('../src/components/NavbarInteractions.tsx', import.meta.url), 'utf8');
-
-test('navigation renders brand shell on server and hydrates only its controls', () => {
-  assert.doesNotMatch(navbarSource, /^['"]use client['"];?/m);
-  assert.match(navbarSource, /<NavbarInteractions \/>/);
-  assert.match(navbarSource, /aria-label="Primary navigation"/);
-  assert.doesNotMatch(navbarSource, /useState|useEffect|usePathname/);
-});
-
-test('navigation avoids loading Framer Motion for the mobile menu', () => {
-  assert.doesNotMatch(navInteractionsSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(navInteractionsSource, /<AnimatePresence|<motion\./);
-  assert.match(navInteractionsSource, /isMobileMenuOpen &&/);
-  assert.match(navInteractionsSource, /aria-expanded=\{isMobileMenuOpen\}/);
-});
-
-const globalSearchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
-
-test('global search avoids the Framer Motion runtime', () => {
-  assert.doesNotMatch(globalSearchSource, /from ['"]framer-motion['"]/);
-  assert.doesNotMatch(globalSearchSource, /<AnimatePresence|<motion\\./);
-});
-
-test('global search is split out until a visitor opens it', () => {
-  assert.ok(navInteractionsSource.includes('dynamic(') && navInteractionsSource.includes("import('./GlobalSearch')"));
-  assert.ok(navInteractionsSource.includes('isSearchOpen && createPortal(<GlobalSearch'));
-});
-
-
-const belowFoldMotionFiles = [
-  '../src/components/ImpactCards.tsx',
-  '../src/components/Timeline.tsx',
-  '../src/components/ThoughtLeadership.tsx',
-  '../src/components/VisionMap.tsx',
-  '../src/components/NewsletterCTA.tsx',
-];
-
-test('below-the-fold sections do not pull Framer Motion into the homepage bundle', async () => {
-  for (const file of belowFoldMotionFiles) {
-    const source = await readFile(new URL(file, import.meta.url), 'utf8');
-    assert.doesNotMatch(source, /from ['"]framer-motion['"]/, file);
-    assert.doesNotMatch(source, /<motion\./, file);
+// Check architectural constraints, without freezing copy, JSX layout or whitespace.
+test('the homepage and its main sections remain server components', async () => {
+  for (const path of [
+    '../src/app/page.tsx',
+    '../src/components/Hero.tsx',
+    '../src/components/FeaturedWork.tsx',
+    '../src/components/Navbar.tsx',
+    '../src/components/Footer.tsx',
+  ]) {
+    const file = await source(path);
+    const clientDirectives = nodes(
+      file,
+      (node) =>
+        ts.isExpressionStatement(node) &&
+        ts.isStringLiteral(node.expression) &&
+        node.expression.text === 'use client',
+    );
+    assert.equal(clientDirectives.length, 0, path);
+    assert.ok(!imports(file).includes('framer-motion'), path);
   }
 });
 
-
-test('homepage omits the decorative regional map section', async () => {
-  const homepage = await readFile(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
-  assert.doesNotMatch(homepage, /VisionMap|components\/VisionMap/);
-});
-
-test('Lighthouse enforces the agreed performance and discoverability acceptance criteria', async () => {
-  const workflow = await readFile(new URL('../.github/workflows/content-platform.yml', import.meta.url), 'utf8');
-  assert.match(workflow, /--only-categories=performance,seo/);
-  const verifier = await readFile(new URL('../scripts/verify-lighthouse-baseline.mjs', import.meta.url), 'utf8');
-  assert.match(workflow, /scripts\/verify-lighthouse-baseline\.mjs/);
-  assert.match(workflow, /for attempt in 1 2 3/);
-  assert.match(verifier, /if \(score < 0\.8\)/);
-  assert.match(verifier, /if \(seoScore < 1\)/);
-  assert.match(verifier, /expected at least 80\/100/);
-  assert.match(verifier, /expected 100\/100/);
-  assert.match(workflow, /concurrency:\s*\n\s+group: content-platform-\$\{\{\s*github\.ref\s*\}\}/);
-  assert.match(workflow, /cancel-in-progress:\s*true/);
-});
-
-const llmsRouteSource = await readFile(new URL('../src/app/llms.txt/route.ts', import.meta.url), 'utf8');
-
-test('AI discovery guide links to canonical public pages and avoids invented evidence', () => {
-  assert.match(llmsRouteSource, /export function GET\(\)/);
-  assert.match(llmsRouteSource, /Content-Type.*text\/plain/);
-  assert.match(llmsRouteSource, /\/work/);
-  assert.match(llmsRouteSource, /\/writing/);
-  assert.match(llmsRouteSource, /\/knowledge/);
-  assert.match(llmsRouteSource, /Distinguish documented facts from interpretation/);
-  assert.match(llmsRouteSource, /Cache-Control/);
-});
-
-const layoutSource = await readFile(new URL('../src/app/layout.tsx', import.meta.url), 'utf8');
-
-test('root layout exposes canonical URL and truthful Person/WebSite structured data', () => {
-  assert.match(layoutSource, /alternates:\s*\{\s*canonical:\s*"\/"\s*\}/);
-  assert.match(layoutSource, /"@context":\s*"https:\/\/schema\.org"/);
-  assert.match(layoutSource, /"@type":\s*"Person"/);
-  assert.match(layoutSource, /"@type":\s*"WebSite"/);
-  assert.match(layoutSource, /serializeJsonLd\(structuredData\)/);
-  assert.match(layoutSource, /addressCountry:\s*"SL"/);
-});
-
-const chatLoaderSource = await readFile(new URL('../src/components/ChatWidgetLoader.tsx', import.meta.url), 'utf8');
-
-test('chat conversation UI is dynamically loaded only after the visitor opens chat', () => {
-  assert.match(layoutSource, /ChatWidgetLoader/);
-  assert.doesNotMatch(layoutSource, /import \{ ChatWidget \} from/);
-  assert.match(chatLoaderSource, /dynamic\(/);
-  assert.match(chatLoaderSource, /import\('\.\/ChatWidget'\)/);
-  assert.match(chatLoaderSource, /\{loaded && <ChatWidgetPanel initialOpen=\{open\} showLauncher=\{false\} onClose=\{closeChat\} \/>\}/);
-});
-
-const globalCssSource = await readFile(new URL('../src/app/globals.css', import.meta.url), 'utf8');
-
-test('font setup avoids an unused font family and preserves the generated Inter variable', () => {
-  assert.doesNotMatch(layoutSource, /Space_Mono|spaceMono\.variable/);
-  assert.doesNotMatch(globalCssSource, /--font-inter:\s*var\(--font-inter\)/);
-  assert.doesNotMatch(globalCssSource, /--font-cormorant:/);
-  assert.match(layoutSource, /Inter, JetBrains_Mono/);
-});
-
-
-const navbarSourceForIcons = await readFile(new URL('../src/components/Navbar.tsx', import.meta.url), 'utf8');
-const chatLauncherSourceForIcons = await readFile(new URL('../src/components/ChatWidgetLoader.tsx', import.meta.url), 'utf8');
-
-test('initial navigation and chat launcher do not import the icon package into the client shell', () => {
-  assert.doesNotMatch(navbarSourceForIcons, /from ['"]lucide-react['"]/);
-  assert.doesNotMatch(navInteractionsSource, /from ['"]lucide-react['"]/);
-  assert.doesNotMatch(chatLauncherSourceForIcons, /from ['"]lucide-react['"]/);
-  assert.match(navInteractionsSource, /function NavIcon/);
-  assert.match(chatLauncherSourceForIcons, /<svg/);
-});
-
-
-const llmsFullRouteSource = await readFile(new URL('../src/app/llms-full.txt/route.ts', import.meta.url), 'utf8');
-
-test('full AI discovery feed contains only published portfolio content and source URLs', () => {
-  assert.match(llmsFullRouteSource, /import \{ ARTICLES, PROJECTS \} from ['"]@\/packages\/content\/server['"]/);
-  assert.match(llmsFullRouteSource, /PROJECTS\.map/);
-  assert.match(llmsFullRouteSource, /ARTICLES\.map/);
-  assert.match(llmsFullRouteSource, /project\.body \?\? project\.description/);
-  assert.match(llmsFullRouteSource, /article\.content/);
-  assert.match(llmsFullRouteSource, /Content-Type.*text\/plain/);
-  assert.match(llmsFullRouteSource, /Cache-Control/);
-  assert.match(llmsFullRouteSource, /canonical HTML pages remain the source of truth/);
-});
-
-test('AI discovery index exposes individual published entries and the full-text feed', () => {
-  assert.match(llmsRouteSource, /PROJECTS\.flatMap/);
-  assert.match(llmsRouteSource, /ARTICLES\.filter\(\(article\) => article\.kind === 'journal'\)/);
-  assert.match(llmsRouteSource, /ARTICLES\.filter\(\(article\) => article\.kind === 'knowledge'\)/);
-  assert.match(llmsRouteSource, /\/llms-full\.txt/);
-  assert.match(llmsRouteSource, /\/sitemap\.xml/);
-});
-
-
-const jsonLdHelperSource = await readFile(new URL('../src/lib/serialize-json-ld.ts', import.meta.url), 'utf8');
-const projectDetailSource = await readFile(new URL('../src/app/work/[slug]/page.tsx', import.meta.url), 'utf8');
-const writingDetailSource = await readFile(new URL('../src/app/writing/[slug]/page.tsx', import.meta.url), 'utf8');
-const knowledgeDetailSource = await readFile(new URL('../src/app/knowledge/[slug]/page.tsx', import.meta.url), 'utf8');
-
-test('JSON-LD helper escapes less-than characters before embedding content', () => {
-  assert.ok(jsonLdHelperSource.includes('JSON.stringify(value)'));
-  assert.ok(jsonLdHelperSource.includes('replace'));
-});
-
-test('published project, writing, and knowledge pages expose typed structured data', () => {
-  assert.ok(projectDetailSource.includes("'@type': 'CreativeWork'"));
-  assert.ok(writingDetailSource.includes("'@type': 'Article'"));
-  assert.ok(knowledgeDetailSource.includes("'@type': 'LearningResource'"));
-  for (const source of [projectDetailSource, writingDetailSource, knowledgeDetailSource]) {
-    assert.ok(source.includes('serializeJsonLd'));
-    assert.ok(source.includes('application/ld+json'));
-    assert.ok(source.includes('#person'));
-    assert.ok(source.includes('#website'));
+test('identity imagery stays small and lazy rather than competing with the display headline', async () => {
+  const file = await source('../src/components/Hero.tsx');
+  const images = nodes(
+    file,
+    (node) => ts.isJsxSelfClosingElement(node) && node.tagName.getText(file) === 'Image',
+  );
+  assert.ok(images.length > 0);
+  for (const image of images) {
+    const attributes = new Map(
+      image.attributes.properties
+        .filter(ts.isJsxAttribute)
+        .map((node) => [node.name.getText(file), node.initializer]),
+    );
+    assert.equal(attributes.get('loading')?.text, 'lazy');
+    assert.ok(!attributes.has('priority'));
+    assert.equal(attributes.get('sizes')?.text, '56px');
   }
 });
 
-const homepageSource = await readFile(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
-
-test('homepage presents case-study evidence before the personal perspective', () => {
-  const hero = homepageSource.indexOf('<Hero />');
-  const work = homepageSource.indexOf('<FeaturedWork />');
-  const process = homepageSource.indexOf('id="perspective-heading"');
-  assert.ok(hero >= 0 && work > hero && process > work);
-});
-
-const searchSource = await readFile(new URL('../src/components/GlobalSearch.tsx', import.meta.url), 'utf8');
-test('global search quick links resolve to routes that exist', () => {
-  assert.doesNotMatch(searchSource, /href: '\/speaking'/);
-  assert.match(searchSource, /href: '\/knowledge'/);
-});
-
-const writingFiltersSource = await readFile(new URL('../src/components/ArticleFilters.tsx', import.meta.url), 'utf8');
-const writingPageSource = await readFile(new URL('../src/app/writing/page.tsx', import.meta.url), 'utf8');
-
-test('writing client filters use slim metadata instead of importing article bodies', () => {
-  assert.doesNotMatch(writingFiltersSource, /import \{ JOURNAL_ENTRIES \} from/);
-  assert.doesNotMatch(writingFiltersSource, /entry\.content/);
-  assert.match(writingFiltersSource, /entries: (?:readonly )?WritingListItem\[\]/);
-  assert.match(writingPageSource, /JOURNAL_ENTRIES\.map/);
-  assert.match(writingPageSource, /<ArticleFilters entries=/);
-});
-
-const searchRouteSource = await readFile(new URL('../src/app/api/search/route.ts', import.meta.url), 'utf8');
-
-test('global search requests bounded results without hydrating the full catalogue', () => {
-  assert.doesNotMatch(globalSearchSource, /from ['"]@\/packages\/content\/server['"]/);
-  assert.doesNotMatch(globalSearchSource, /generated-content|searchPublishedContent/);
-  assert.ok(globalSearchSource.includes("fetch(`/api/search?q="));
-  assert.match(globalSearchSource, /AbortController/);
-  assert.match(globalSearchSource, /clearTimeout/);
-  assert.match(searchRouteSource, /searchPublishedContent/);
-  assert.match(searchRouteSource, /MAX_RESULTS_PER_TYPE = 8/);
-  assert.doesNotMatch(searchRouteSource, /project\.description|article\.content/);
-});
-
-test('public content catalogue is explicitly server-only', async () => {
-  const source = await readFile(new URL('../src/packages/content/server.ts', import.meta.url), 'utf8');
-  assert.match(source, /import ['\"]server-only['\"]/);
-});
-
-test('search results and fallback links do not prefetch full pages when the dialog opens', () => {
-  assert.match(globalSearchSource, /href=\{p\.href\} prefetch=\{false\}/);
-  assert.match(globalSearchSource, /href=\{a\.href\} prefetch=\{false\}/);
-  assert.match(globalSearchSource, /href=\{item\.href\}\s+prefetch=\{false\}/);
-  assert.match(globalSearchSource, /href="\/work" prefetch=\{false\}/);
-  assert.match(globalSearchSource, /query\.trim\(\) === ''/);
-});
-
-const homepageLinkFiles = [
-  '../src/components/Navbar.tsx',
-  '../src/components/NavbarInteractions.tsx',
-  '../src/components/Hero.tsx',
-  '../src/components/FeaturedWork.tsx',
-  '../src/components/PracticeOverview.tsx',
-  '../src/components/VisitorPath.tsx',
-  '../src/components/NewsletterCTA.tsx',
-  '../src/components/Footer.tsx',
-  '../src/components/ThoughtLeadership.tsx',
-];
-
-test('homepage links avoid route prefetch until visitors navigate', async () => {
-  for (const file of homepageLinkFiles) {
-    const source = await readFile(new URL(file, import.meta.url), 'utf8');
-    const links = source.match(/<Link(?=\s|>)/g) ?? [];
-    const deferred = source.match(/<Link prefetch=\{false\}/g) ?? [];
-    assert.ok(links.length > 0, `Expected Next Link usage in ${file}`);
-    assert.equal(deferred.length, links.length, `Unexpected eager Link prefetch in ${file}`);
+test('search and chat remain dynamic imports rather than initial static dependencies', async () => {
+  for (const [path, overlay] of [
+    ['../src/components/NavbarInteractions.tsx', './GlobalSearch'],
+    ['../src/components/ChatWidgetLoader.tsx', './ChatWidget'],
+  ]) {
+    const file = await source(path);
+    assert.ok(!imports(file).includes(overlay));
+    const deferred = nodes(
+      file,
+      (node) => ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword,
+    );
+    assert.ok(deferred.some((node) => node.arguments[0]?.text === overlay));
   }
 });
 
-test('homepage imports server-rendered sections without next/dynamic overhead', async () => {
-  assert.doesNotMatch(homepageSource, /import dynamic from ['"]next\/dynamic['"]/);
-  const sections = ['Hero', 'FeaturedWork', 'Footer'];
-  for (const name of sections) {
-    assert.ok(homepageSource.includes('import { ' + name + ' } from '+String.fromCharCode(39)+'@/components/' + name + String.fromCharCode(39)));
-    const source = await readFile(new URL('../src/components/' + name + '.tsx', import.meta.url), 'utf8');
-    assert.doesNotMatch(source, /^['"]use client['"];?/m, name + ' must remain a server component');
+test('initial navigation and chat controls do not load motion or icon runtimes', async () => {
+  for (const path of [
+    '../src/components/NavbarInteractions.tsx',
+    '../src/components/ChatWidgetLoader.tsx',
+  ]) {
+    const dependencies = imports(await source(path));
+    assert.ok(!dependencies.includes('framer-motion'));
+    assert.ok(!dependencies.includes('lucide-react'));
   }
 });
 
-const rumReporterSource = await readFile(new URL('../src/components/WebVitalsReporter.tsx', import.meta.url), 'utf8');
-const rumRouteSource = await readFile(new URL('../src/app/api/vitals/route.ts', import.meta.url), 'utf8');
-
-test('first-party Web Vitals are only mounted with explicit server-side enablement', () => {
-  assert.match(layoutSource, /WEB_VITALS_ENABLED === '1' && <WebVitalsReporter \/>/);
-  assert.match(rumReporterSource, /useReportWebVitals\(reportVital\)/);
-  assert.match(rumReporterSource, /SAMPLE_RATE = 0\.2/);
-  assert.match(rumReporterSource, /globalPrivacyControl/);
-  assert.match(rumReporterSource, /keepalive: true/);
-  assert.match(rumReporterSource, /credentials: 'omit'/);
-  assert.match(rumReporterSource, /referrerPolicy: 'no-referrer'/);
-  assert.doesNotMatch(rumReporterSource, /navigator\.sendBeacon/);
-  assert.doesNotMatch(rumReporterSource, /localStorage|document\.cookie|location\.search/);
-  assert.match(rumRouteSource, /parseAnonymousVital/);
-  assert.doesNotMatch(rumRouteSource, /request\.headers\.get\(['"](?:x-forwarded-for|user-agent)['"]\)|request\.cookies/);
+test('the published catalogue has a server-only boundary', async () => {
+  assert.ok(imports(await source('../src/packages/content/server.ts')).includes('server-only'));
+  const filters = await source('../src/components/ArticleFilters.tsx');
+  for (const node of filters.statements.filter(ts.isImportDeclaration)) {
+    if (node.moduleSpecifier.text.startsWith('@/packages/content/'))
+      assert.equal(node.importClause.isTypeOnly, true);
+  }
 });

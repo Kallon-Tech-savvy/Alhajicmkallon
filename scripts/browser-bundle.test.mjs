@@ -111,7 +111,7 @@ test('editorial text and primary action meet contrast budgets on each paper surf
 
 test('dark surfaces, status text and action labels retain readable contrast', async () => {
   const css = await readFile(path.join(projectRoot, 'src/app/globals.css'), 'utf8');
-  const block = css.match(/:root\[data-theme="dark"\]\s*\{([^}]+)\}/)[1];
+  const block = css.match(/:root\[data-theme=["']dark["']\]\s*\{([^}]+)\}/)[1];
   const colours = Object.fromEntries([...block.matchAll(/--ui-([a-z-]+):\s*(#[0-9A-Fa-f]{6});/g)].map(m => [m[1],m[2]]));
   function light(hex) {
     const v=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);

@@ -1,32 +1,125 @@
+import { Arrow } from './SwissMarks';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PROJECTS } from '@/packages/content/server';
 
 export const FeaturedWork = () => {
-  const aeem = PROJECTS.find(project => project.slug === 'aeem-digital-presence');
-  const others = PROJECTS.filter(project => project.slug !== 'aeem-digital-presence');
+  const aeem = PROJECTS.find((project) => project.slug === 'aeem-digital-presence');
+  const others = PROJECTS.filter((project) => project.slug !== 'aeem-digital-presence');
+
   return (
-    <section id="work" className="site-gutter pb-16 md:pb-24">
+    <section id="work" className="swiss-work site-gutter" aria-labelledby="work-heading">
       <div className="mx-auto max-w-[var(--layout-max)]">
-        <div className="mb-6 flex items-center justify-between gap-4 border-t border-border pt-5">
-          <h2 className="editorial-kicker">Selected work</h2>
-          <Link prefetch={false} href="/work" className="text-sm text-accent underline underline-offset-4">All projects ↗</Link>
-        </div>
-        {aeem && <article>
-          <Link prefetch={false} href={`/work/${aeem.slug}`} className="editorial-project-image block" aria-label="Explore the AEEM case study">
-            <Image src="/assets/aeem-live-home.webp" alt="The working AEEM homepage: its education mission, navigation and paths to impact and participation" width={1356} height={931} sizes="(max-width: 768px) 100vw, 1152px" className="h-auto w-full" />
-          </Link>
-          <div className="mt-7 grid gap-6 md:grid-cols-12">
-            <div className="md:col-span-3"><p className="editorial-kicker text-accent">AEEM · Education</p><p className="mt-3 text-sm text-muted">Working website<br />Product thinking · UX · Development</p></div>
-            <div className="md:col-span-6"><h3 className="text-3xl font-medium leading-tight tracking-tight md:text-4xl"><Link prefetch={false} href={`/work/${aeem.slug}`}>Making an organisation’s work easier to understand.</Link></h3><p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">An education movement with work to show, reports to share and people who wanted to get involved. I brought those journeys into one place.</p></div>
-            <div className="flex flex-col items-start gap-4 md:col-span-3 md:items-end"><Link prefetch={false} href={`/work/${aeem.slug}`} className="editorial-link">Explore the case study ↗</Link>{aeem.links?.live && <a href={aeem.links.live} target="_blank" rel="noopener noreferrer" className="text-sm text-muted underline underline-offset-4">Visit the working website ↗</a>}</div>
+        <div className="swiss-section-heading">
+          <div>
+            <p className="swiss-meta section-index">01 / Selected work</p>
+            <h2 id="work-heading">
+              Thinking made
+              <br />
+              <span className="text-accent">tangible.</span>
+            </h2>
           </div>
-        </article>}
-        {others.map(project => <article key={project.slug} className="mt-12 grid gap-4 border-t border-border pt-6 md:grid-cols-12">
-          <p className="editorial-kicker text-muted md:col-span-3">In development</p>
-          <div className="md:col-span-6"><h3 className="text-2xl font-semibold tracking-tight"><Link prefetch={false} href={`/work/${project.slug}`}>{project.title}</Link></h3><p className="mt-3 text-sm leading-relaxed text-muted">{project.summary}</p></div>
-          <Link prefetch={false} href={`/work/${project.slug}`} className="text-sm text-accent underline underline-offset-4 md:col-span-3 md:text-right">Read the development notes ↗</Link>
-        </article>)}
+          <Link prefetch={false} href="/work" className="swiss-text-link">
+            All projects{' '}
+            <span aria-hidden="true">
+              <Arrow />
+            </span>
+          </Link>
+        </div>
+
+        {aeem && (
+          <article className="work-feature">
+            <Link
+              prefetch={false}
+              href={`/work/${aeem.slug}`}
+              className="work-canvas"
+              aria-label="Explore the AEEM case study"
+            >
+              <div className="work-canvas-top" aria-hidden="true">
+                <span>AEEM / EDUCATION & COMMUNITY</span>
+                <span>01 — WORKING WEBSITE</span>
+              </div>
+              <div className="work-browser">
+                <div className="work-browser-chrome" aria-hidden="true">
+                  <span>● ● ●</span>
+                  <span>aeem-w.vercel.app</span>
+                  <span>
+                    <Arrow />
+                  </span>
+                </div>
+                <Image
+                  src="/assets/aeem-live-home.webp"
+                  alt="The working AEEM homepage: its education mission, navigation and paths to impact and participation"
+                  width={1356}
+                  height={931}
+                  sizes="(max-width: 768px) 90vw, 950px"
+                  className="h-auto w-full"
+                />
+              </div>
+              <span className="work-open" aria-hidden="true">
+                <Arrow />
+              </span>
+            </Link>
+            <div className="work-caption">
+              <div>
+                <p className="swiss-meta text-accent">AEEM</p>
+                <p className="mt-2 text-sm text-muted">Product thinking / UX / Development</p>
+              </div>
+              <div>
+                <h3>
+                  <Link prefetch={false} href={`/work/${aeem.slug}`}>
+                    Good work deserves
+                    <br />a clearer way in.
+                  </Link>
+                </h3>
+                <p className="mt-4 text-muted">
+                  Bringing an education organisation’s mission, activities and opportunities to
+                  participate into one place.
+                </p>
+              </div>
+              <div className="work-links">
+                <Link prefetch={false} href={`/work/${aeem.slug}`} className="swiss-text-link">
+                  Explore the case study <Arrow />
+                </Link>
+                {aeem.links?.live && (
+                  <a
+                    href={aeem.links.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="swiss-secondary-link"
+                  >
+                    Visit the working website <Arrow />
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        )}
+
+        {others.map((project) => (
+          <article key={project.slug} className="work-row">
+            <div>
+              <p className="swiss-meta text-muted">02 / In development</p>
+              <span className="work-status">Development notes</span>
+            </div>
+            <div>
+              <h3>
+                <Link prefetch={false} href={`/work/${project.slug}`}>
+                  {project.title}
+                </Link>
+              </h3>
+              <p className="mt-3 max-w-xl text-muted">{project.summary}</p>
+            </div>
+            <Link
+              prefetch={false}
+              href={`/work/${project.slug}`}
+              className="work-row-arrow"
+              aria-label={`Read the development notes for ${project.title}`}
+            >
+              <Arrow />
+            </Link>
+          </article>
+        ))}
       </div>
     </section>
   );
