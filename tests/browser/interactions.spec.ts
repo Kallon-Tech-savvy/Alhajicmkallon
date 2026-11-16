@@ -87,7 +87,9 @@ test('contact email fallback preserves the draft and does not claim delivery', a
     route.fulfill({ status: 503, json: { error: 'Test outage' } }),
   );
   await page.goto('/contact');
-  await page.getByRole('button', { name: 'Improve a product', exact: true }).click();
+  const intent = page.getByRole('button', { name: 'Improve a product', exact: true });
+  await intent.click();
+  await expect(intent).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('textbox', { name: 'Your name', exact: true }).fill('Test Visitor');
   await page.getByRole('textbox', { name: 'Your email', exact: true }).fill('visitor@example.com');
   const message = page.getByRole('textbox', { name: 'What would you like to change or achieve?' });
@@ -100,6 +102,22 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   await expect(page.getByRole('heading', { name: 'Message received' })).not.toBeVisible();
   expect(errors).toEqual([]);
 });
+
+function contrastRatio(first: string, second: string): number {
+  const luminance = (colour: string) => {
+    const values = colour
+      .match(/[\d.]+/g)!
+      .slice(0, 3)
+      .map(Number)
+      .map((value) => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      });
+    return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
+  };
+  const [low, high] = [luminance(first), luminance(second)].sort((a, b) => a - b);
+  return (high + 0.05) / (low + 0.05);
+}
 
 for (const { width, scheme } of [
   { width: 320, scheme: 'light' },
@@ -118,6 +136,15 @@ for (const { width, scheme } of [
       );
       expect(overflow, `Horizontal overflow on ${route}`).toBeLessThanOrEqual(1);
       await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+      const masthead = page.getByRole('navigation', { name: 'Primary navigation', exact: true });
+      const colours = await masthead.evaluate((element) => ({
+        background: getComputedStyle(element).backgroundColor,
+        text: getComputedStyle(element.querySelector('.brand-name')!).color,
+      }));
+      expect(
+        contrastRatio(colours.text, colours.background),
+        `Masthead text contrast on ${route}`,
+      ).toBeGreaterThanOrEqual(4.5);
     }
   });
 }
@@ -131,4 +158,30 @@ test('reduced motion leaves display content visible without entrance animation',
   await expect(heading).toBeVisible();
   expect(await heading.evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
   await expect(page.getByRole('link', { name: 'Explore the work', exact: false })).toBeVisible();
+});
+
+test('productive overlays remain usable at 320px', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto('/');
+  const searchTrigger = page.getByRole('button', { name: 'Search site', exact: true });
+  await searchTrigger.click();
+  const searchDialog = page.getByRole('dialog', { name: 'Search this website' });
+  await expect(searchDialog.getByRole('searchbox')).toBeFocused();
+  const searchBounds = (await searchDialog.boundingBox())!;
+  expect(searchBounds.x).toBeGreaterThanOrEqual(0);
+  expect(searchBounds.x + searchBounds.width).toBeLessThanOrEqual(320);
+  await page.keyboard.press('Escape');
+  await expect(searchTrigger).toBeFocused();
+
+  await page.getByRole('button', { name: 'Ask a question about Alhaji', exact: true }).click();
+  const chat = page.getByRole('dialog', { name: 'Ask about Alhaji' });
+  const input = chat.getByRole('textbox', { name: 'Your message' });
+  await expect(input).toBeFocused();
+  const bounds = (await chat.boundingBox())!;
+  expect(bounds.x).toBeGreaterThanOrEqual(0);
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(320);
+  expect(bounds.y + bounds.height).toBeLessThanOrEqual(700);
+  await expect(chat.getByRole('button', { name: 'Send message', exact: true })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(chat).not.toBeVisible();
 });

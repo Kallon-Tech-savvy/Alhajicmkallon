@@ -33,7 +33,7 @@ export function VisitorPath() {
     <section className="section-space border-t border-[var(--color-border)] bg-[var(--color-midnight)] site-gutter">
       <div className="mx-auto max-w-[var(--layout-max)]">
         <div className="mb-8 max-w-3xl">
-          <p className="mb-3 font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.16em] text-accent">
+          <p className="mb-3 font-[family-name:var(--font-plex-mono)] text-xs uppercase tracking-[0.16em] text-accent">
             Start where you are
           </p>
           <h2 className="font-display text-2xl font-black tracking-[-0.02em] text-ivory md:text-3xl">

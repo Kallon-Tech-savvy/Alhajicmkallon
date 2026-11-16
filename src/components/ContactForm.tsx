@@ -78,14 +78,16 @@ export function ContactForm() {
 
   return (
     <Reveal variant="up" delay={120} className="lg:col-span-7">
-      <div className="glass-frost p-8 md:p-12 rounded-xl shadow-none">
+      <div className="ui-form-panel">
         {status !== 'success' ? (
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Step 1: Cognitive Ease Intent Selection */}
-            <div className="space-y-4">
-              <label className="font-display text-xs font-semibold tracking-normal text-accent block">
-                What would you like to work on?
-              </label>
+            <div className="ui-form-heading">
+              <span className="ui-label">Project enquiry</span>
+              <h2>Tell me what you have in mind.</h2>
+              <p>Your name, email and message are required. The topic is optional.</p>
+            </div>
+            <fieldset>
+              <legend className="ui-label">What would you like to work on?</legend>
               <div className="flex flex-wrap gap-2">
                 {intentOptions.map((option) => (
                   <button
@@ -93,25 +95,17 @@ export function ContactForm() {
                     type="button"
                     onClick={() => setSelectedIntent(option)}
                     aria-pressed={selectedIntent === option}
-                    className={`rounded-md px-4 py-2 text-xs font-display font-semibold tracking-normal transition-all duration-200 border ${
-                      selectedIntent === option
-                        ? 'bg-pride-blue text-[var(--ui-on-action)] border-pride-blue'
-                        : 'bg-transparent text-muted border-border hover:border-pride-blue/30 hover:text-ivory'
-                    }`}
+                    className="ui-choice"
                   >
                     {option}
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
-            {/* Input Fields Stack */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-1">
-                <label
-                  htmlFor="contact-name"
-                  className="font-display text-xs font-medium text-muted"
-                >
+              <div className="space-y-2">
+                <label htmlFor="contact-name" className="ui-label">
                   Your name
                 </label>
                 <input
@@ -127,11 +121,8 @@ export function ContactForm() {
                   placeholder="Your name"
                 />
               </div>
-              <div className="space-y-1">
-                <label
-                  htmlFor="contact-email"
-                  className="font-display text-xs font-medium text-muted"
-                >
+              <div className="space-y-2">
+                <label htmlFor="contact-email" className="ui-label">
                   Your email
                 </label>
                 <input
@@ -149,11 +140,8 @@ export function ContactForm() {
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label
-                htmlFor="contact-message"
-                className="font-display text-xs font-medium text-muted"
-              >
+            <div className="space-y-2">
+              <label htmlFor="contact-message" className="ui-label">
                 What would you like to change or achieve?
               </label>
               <textarea
@@ -184,7 +172,11 @@ export function ContactForm() {
             </button>
 
             {(status === 'error' || status === 'fallback') && (
-              <div role="status" aria-live="polite" className="space-y-3 text-center">
+              <div
+                role="status"
+                aria-live="polite"
+                className={`ui-notice ${status === 'error' ? 'ui-notice-error' : ''}`}
+              >
                 <p
                   className={`font-body text-sm leading-relaxed ${status === 'error' ? 'text-danger' : 'text-warning'}`}
                 >
@@ -203,7 +195,7 @@ export function ContactForm() {
                       'Your email app should open with a draft. This does not confirm delivery; send the draft to complete the message.',
                     );
                   }}
-                  className="rounded-md border border-border px-4 py-2 text-xs font-semibold text-ivory transition-colors hover:border-pride-blue hover:text-accent"
+                  className="ui-ghost mt-3"
                 >
                   Open email draft instead
                 </button>
@@ -220,9 +212,7 @@ export function ContactForm() {
               <CheckCircle2 size={32} />
             </div>
             <div>
-              <h3 className="font-display text-2xl font-bold text-ivory uppercase tracking-tight">
-                Message received
-              </h3>
+              <h3 className="font-display text-2xl font-normal text-ivory">Message received</h3>
               <p className="text-muted font-body text-sm mt-2 max-w-xs leading-relaxed">
                 {statusMessage ||
                   'Your note has been received. I’ll follow up within a day or two with a thoughtful response.'}
@@ -233,7 +223,7 @@ export function ContactForm() {
                 setStatus('idle');
                 setStatusMessage('');
               }}
-              className="rounded-md px-6 py-3 border border-border text-muted font-display font-bold text-xs tracking-normal hover:border-pride-blue hover:text-accent transition-colors duration-300"
+              className="ui-secondary"
             >
               Send Additional Message
             </button>
