@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { PROJECTS } from '@/lib/content';
+import { PROJECTS } from '@/packages/content/server';
 
 export const FeaturedWork = () => {
   const aeem = PROJECTS.find(project => project.slug === 'aeem-digital-presence');

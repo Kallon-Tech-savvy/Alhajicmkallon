@@ -1,4 +1,4 @@
-import { KNOWLEDGE_CHUNKS, KnowledgeChunk } from './Knowledgebase';
+import { KNOWLEDGE_CHUNKS, KnowledgeChunk } from './knowledge';
 
 interface HistoryMessage {
   role: 'user' | 'assistant';
@@ -7,27 +7,57 @@ interface HistoryMessage {
 
 // Common conversational filler words that distort simple keyword matching
 const STOP_WORDS = new Set([
-  'a', 'about', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'can', 'do', 
-  'for', 'from', 'how', 'i', 'in', 'is', 'it', 'me', 'of', 'on', 'or', 
-  'please', 'tell', 'the', 'this', 'to', 'was', 'what', 'who', 'with', 'you', 'your'
+  'a',
+  'about',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'by',
+  'can',
+  'do',
+  'for',
+  'from',
+  'how',
+  'i',
+  'in',
+  'is',
+  'it',
+  'me',
+  'of',
+  'on',
+  'or',
+  'please',
+  'tell',
+  'the',
+  'this',
+  'to',
+  'was',
+  'what',
+  'who',
+  'with',
+  'you',
+  'your',
 ]);
 
 function tokenize(text: string): string[] {
   const rawTokens = text.toLowerCase().match(/[a-z0-9']+/g) ?? [];
-  return rawTokens.filter(token => !STOP_WORDS.has(token));
+  return rawTokens.filter((token) => !STOP_WORDS.has(token));
 }
 
 export function selectRelevantChunks(
   message: string,
   history: HistoryMessage[],
-  topK = 5
+  topK = 5,
 ): KnowledgeChunk[] {
   const recentUserContext = history
     .filter((h) => h.role === 'user')
     .slice(-2)
     .map((h) => h.content)
     .join(' ');
-    
+
   const queryText = `${message} ${recentUserContext}`.toLowerCase();
   const queryTokens = new Set(tokenize(queryText));
 
@@ -40,7 +70,7 @@ export function selectRelevantChunks(
       let score = 0;
       for (const rawKeyword of chunk.keywords) {
         const keyword = rawKeyword.toLowerCase();
-        
+
         if (keyword.includes(' ')) {
           // Multi-word phrase matching receives a massive boost for direct semantic matches
           if (queryText.includes(keyword)) score += 4;

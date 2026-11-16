@@ -69,16 +69,21 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
-    "test:security": "node --test scripts/chat-security.test.mjs scripts/chat-handler.test.mjs scripts/chat-knowledge.test.mjs",
+    "test:security": "node --import tsx --test scripts/chat-security.test.mjs src/packages/chat/tests/http.test.ts",
     "test:boundaries": "node scripts/test-deep-module-boundaries.mjs",
     "predev": "node scripts/build-content-index.mjs && node scripts/build-protocol-offline.mjs",
     "prebuild": "node scripts/build-content-index.mjs && node scripts/build-protocol-offline.mjs",
-    "test:content": "node --test scripts/build-content-index.test.mjs scripts/protocol-course.test.mjs scripts/course-progress.test.mjs scripts/protocol-offline.test.mjs scripts/search-relevance.test.mjs",
+    "test:content": "node --import tsx --test scripts/build-content-index.test.mjs scripts/protocol-course.test.mjs scripts/course-progress.test.mjs scripts/protocol-offline.test.mjs scripts/search-relevance.test.mjs src/packages/content/tests/*.test.ts",
     "test:contact": "node --test scripts/contact-form.test.mjs",
     "test:homepage-performance": "node --test scripts/homepage-performance.test.mjs scripts/navigation-focus.test.mjs scripts/theme.test.mjs",
     "test:browser-bundle": "node --test scripts/browser-bundle.test.mjs",
     "test:performance-report": "node --test scripts/report-main-thread.test.mjs scripts/verify-lighthouse-baseline.test.mjs",
-    "test:vitals": "node --test scripts/anonymous-vitals.test.mjs"
+    "test:vitals": "node --test scripts/anonymous-vitals.test.mjs",
+    "lint:boundaries": "node scripts/lint-deep-module-boundaries.mjs",
+    "test:chat": "node --import tsx --test src/packages/chat/tests/*.test.ts",
+    "format:check": "prettier --check src/packages/chat src/packages/content --ignore-path .prettierignore",
+    "test": "npm run test:chat && npm run test:security && npm run test:content && npm run test:contact && npm run test:homepage-performance && npm run test:performance-report && npm run test:vitals && node --test scripts/substack-feed.test.mjs",
+    "test:interactions": "playwright test"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -92,13 +97,20 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/react": "^16.3.3",
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dependency-cruiser": "^17.3.7",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "jsdom": "^31.0.1",
+    "prettier": "^3.10.1",
     "tailwindcss": "^4.3.2",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

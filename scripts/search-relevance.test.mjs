@@ -1,20 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import vm from 'node:vm';
-import ts from 'typescript';
+import { createContentCatalogue } from '../src/packages/content/catalogue.ts';
 
-function compile(path, modules = {}) {
-  const source = readFileSync(new URL(path, import.meta.url), 'utf8');
-  const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  const exports = {};
-  vm.runInNewContext(code, { exports, require: name => {
-    assert.ok(name in modules, `Unexpected dependency: ${name}`);
-    return modules[name];
-  } });
-  return exports;
+// Exercise ranking through the catalogue API rather than executing private code.
+function rankSearchEntries(entries, query, document) {
+  const projects = entries.map((entry, i) => {
+    const fields = document(entry);
+    return { id: entry.id, slug: `entry-${i}`, title: fields.title, summary: fields.summary,
+      topics: fields.metadata, technologies: [], description: fields.body,
+      role: 'Builder', status: 'published' };
+  });
+  const catalogue = createContentCatalogue({ projects, articles: [] });
+  return catalogue.searchPublishedContent(query).projects;
 }
-const { rankSearchEntries } = compile('../src/lib/search-relevance.ts');
 const doc = entry => ({ title: entry.title, summary: entry.summary ?? '', metadata: entry.metadata ?? [], body: entry.body ?? '' });
 const ids = results => Array.from(results, entry => entry.id);
 
@@ -67,7 +65,7 @@ test('published catalogue integration excludes drafts before ranking both conten
     { id: 'draft', slug: 'draft-api', title: 'API', status: 'draft', topics: [], technologies: [], summary: '', description: '' },
     { id: 'live', slug: 'api-project', title: 'API project', status: 'published', topics: [], technologies: [], summary: '', description: '' },
   ];
-  const catalogue = compile('../src/lib/content.ts', { 'server-only': {}, './search-relevance': { rankSearchEntries }, './generated-content': { generatedArticles: articles, generatedProjects: projects } });
+  const catalogue = createContentCatalogue({ articles, projects });
   assert.deepEqual(Array.from(catalogue.searchPublishedContent('HTTP').articles, entry => entry.slug), ['http-guide']);
   assert.deepEqual(ids(catalogue.searchPublishedContent('API').projects), ['live']);
 });

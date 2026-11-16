@@ -46,7 +46,7 @@ export const ImpactCards = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {impactAreas.map((area, i) => (
+          {impactAreas.map((area) => (
             <div
               key={area.title}     
               className="glass p-8 rounded-2xl group relative overflow-hidden"

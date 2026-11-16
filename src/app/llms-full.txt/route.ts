@@ -1,4 +1,4 @@
-import { ARTICLES, PROJECTS } from '@/lib/content';
+import { ARTICLES, PROJECTS } from '@/packages/content/server';
 
 const siteUrl = 'https://alhajikallon.com';
 

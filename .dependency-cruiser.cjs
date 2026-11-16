@@ -64,9 +64,9 @@ module.exports = {
     {
       name: "no-circular",
       comment:
-        "No dependency cycles within the deep-module packages. Scope to the packages root so unrelated application modules do not fail this package-boundary check.",
+        "No dependency cycles anywhere in application code.",
       severity: "error",
-      from: { path: `^${R}/` },
+      from: { path: "^src/" },
       to: { circular: true },
     },
   ],
@@ -74,7 +74,7 @@ module.exports = {
     doNotFollow: { path: "node_modules" },
     tsConfig: { fileName: "tsconfig.json" },
     enhancedResolveOptions: {
-      extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+      extensions: [".ts", ".tsx", ".mts", ".cts", ".mjs", ".cjs", ".js", ".jsx", ".json"],
     },
   },
 };

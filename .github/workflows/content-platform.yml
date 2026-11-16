@@ -33,6 +33,10 @@ jobs:
         run: node --test scripts/substack-feed.test.mjs
       - name: Test contact form fallback
         run: npm run test:contact
+      - name: Test chat service, quota adapters and conversation behavior
+        run: npm run test:chat
+      - name: Check package formatting
+        run: npm run format:check
       - name: Test chat request security
         run: npm run test:security
       - name: Test anonymous Web Vitals validation
@@ -67,6 +71,10 @@ jobs:
           exit 1
       - name: Test production crawl, search and AI discovery endpoints
         run: node --test scripts/discovery-endpoints.test.mjs
+      - name: Install Chromium for interaction tests
+        run: npx playwright install --with-deps chromium
+      - name: Test browser interactions
+        run: npm run test:interactions
       - name: Run three independent Lighthouse audits
         run: |
           mkdir -p lighthouse-reports

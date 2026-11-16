@@ -142,7 +142,6 @@ test('root layout exposes canonical URL and truthful Person/WebSite structured d
   assert.match(layoutSource, /addressCountry:\s*"SL"/);
 });
 
-const chatWidgetSource = await readFile(new URL('../src/components/ChatWidget.tsx', import.meta.url), 'utf8');
 const chatLoaderSource = await readFile(new URL('../src/components/ChatWidgetLoader.tsx', import.meta.url), 'utf8');
 
 test('chat conversation UI is dynamically loaded only after the visitor opens chat', () => {
@@ -151,8 +150,6 @@ test('chat conversation UI is dynamically loaded only after the visitor opens ch
   assert.match(chatLoaderSource, /dynamic\(/);
   assert.match(chatLoaderSource, /import\('\.\/ChatWidget'\)/);
   assert.match(chatLoaderSource, /\{loaded && <ChatWidgetPanel initialOpen=\{open\} showLauncher=\{false\} onClose=\{closeChat\} \/>\}/);
-  assert.match(chatWidgetSource, /showLauncher && <button/);
-  assert.match(chatWidgetSource, /const open = showLauncher \? localOpen : initialOpen/);
 });
 
 const globalCssSource = await readFile(new URL('../src/app/globals.css', import.meta.url), 'utf8');
@@ -180,7 +177,7 @@ test('initial navigation and chat launcher do not import the icon package into t
 const llmsFullRouteSource = await readFile(new URL('../src/app/llms-full.txt/route.ts', import.meta.url), 'utf8');
 
 test('full AI discovery feed contains only published portfolio content and source URLs', () => {
-  assert.match(llmsFullRouteSource, /import \{ ARTICLES, PROJECTS \} from ['"]@\/lib\/content['"]/);
+  assert.match(llmsFullRouteSource, /import \{ ARTICLES, PROJECTS \} from ['"]@\/packages\/content\/server['"]/);
   assert.match(llmsFullRouteSource, /PROJECTS\.map/);
   assert.match(llmsFullRouteSource, /ARTICLES\.map/);
   assert.match(llmsFullRouteSource, /project\.body \?\? project\.description/);
@@ -242,7 +239,7 @@ const writingPageSource = await readFile(new URL('../src/app/writing/page.tsx', 
 test('writing client filters use slim metadata instead of importing article bodies', () => {
   assert.doesNotMatch(writingFiltersSource, /import \{ JOURNAL_ENTRIES \} from/);
   assert.doesNotMatch(writingFiltersSource, /entry\.content/);
-  assert.match(writingFiltersSource, /entries: WritingListItem\[\]/);
+  assert.match(writingFiltersSource, /entries: (?:readonly )?WritingListItem\[\]/);
   assert.match(writingPageSource, /JOURNAL_ENTRIES\.map/);
   assert.match(writingPageSource, /<ArticleFilters entries=/);
 });
@@ -250,7 +247,7 @@ test('writing client filters use slim metadata instead of importing article bodi
 const searchRouteSource = await readFile(new URL('../src/app/api/search/route.ts', import.meta.url), 'utf8');
 
 test('global search requests bounded results without hydrating the full catalogue', () => {
-  assert.doesNotMatch(globalSearchSource, /from ['"]@\/lib\/content['"]/);
+  assert.doesNotMatch(globalSearchSource, /from ['"]@\/packages\/content\/server['"]/);
   assert.doesNotMatch(globalSearchSource, /generated-content|searchPublishedContent/);
   assert.ok(globalSearchSource.includes("fetch(`/api/search?q="));
   assert.match(globalSearchSource, /AbortController/);
@@ -261,7 +258,7 @@ test('global search requests bounded results without hydrating the full catalogu
 });
 
 test('public content catalogue is explicitly server-only', async () => {
-  const source = await readFile(new URL('../src/lib/content.ts', import.meta.url), 'utf8');
+  const source = await readFile(new URL('../src/packages/content/server.ts', import.meta.url), 'utf8');
   assert.match(source, /import ['\"]server-only['\"]/);
 });
 

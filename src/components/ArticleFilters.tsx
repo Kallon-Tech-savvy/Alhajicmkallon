@@ -2,12 +2,12 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import type { Article } from '@/lib/content';
+import type { Article } from '@/packages/content/types';
 
 // Only the fields used by the list and search controls cross the server/client boundary.
 export type WritingListItem = Pick<Article, 'slug' | 'title' | 'excerpt' | 'category' | 'date' | 'topics'>;
 
-export function ArticleFilters({ entries }: { entries: WritingListItem[] }) {
+export function ArticleFilters({ entries }: { entries: readonly WritingListItem[] }) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All topics');
   const categories = useMemo(() => ['All topics', ...Array.from(new Set(entries.map((entry) => entry.category)))], [entries]);

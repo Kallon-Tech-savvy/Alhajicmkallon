@@ -6,7 +6,7 @@ import { AEEMCaseStudy } from '@/components/AEEMCaseStudy';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
-import { getProjectBySlug, PROJECTS } from '@/lib/content';
+import { getProjectBySlug, PROJECTS } from '@/packages/content/server';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
@@ -45,7 +45,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         creator: { '@id': 'https://alhajikallon.com/#person' },
         isPartOf: { '@id': 'https://alhajikallon.com/#website' },
       }) }} />
-      <AEEMCaseStudy source={project.body ?? project.description} liveUrl={project.links.live} />
+      <AEEMCaseStudy source={project.body ?? project.description} liveUrl={project.links?.live} />
     </>;
   }
 

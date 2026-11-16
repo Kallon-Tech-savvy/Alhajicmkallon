@@ -10,7 +10,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
-import { getArticleBySlug, KNOWLEDGE_ENTRIES } from '@/lib/content';
+import { getArticleBySlug, KNOWLEDGE_ENTRIES } from '@/packages/content/server';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { serializeJsonLd } from '@/lib/serialize-json-ld';
 

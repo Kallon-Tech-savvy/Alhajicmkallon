@@ -7,7 +7,7 @@ import {
   isAllowedChatOrigin,
   isOversizedContentLength,
   readChatJson,
-} from '../src/lib/chat-request-security.mjs';
+} from '../src/packages/chat/http.ts';
 
 const config = { siteUrl: 'https://alhajikallon.com', nodeEnv: 'production' };
 

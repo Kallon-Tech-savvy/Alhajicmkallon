@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { ARTICLES, KNOWLEDGE_ENTRIES, PROJECTS } from '@/lib/content';
+import { ARTICLES, KNOWLEDGE_ENTRIES, PROJECTS } from '@/packages/content/server';
 
 const siteUrl = 'https://alhajikallon.com';
 

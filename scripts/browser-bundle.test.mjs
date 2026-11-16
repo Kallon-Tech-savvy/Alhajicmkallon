@@ -38,7 +38,7 @@ function contentSamples(entries) {
 }
 
 test('client JavaScript does not contain the published full-text catalogue', async () => {
-  const generated = await readFile(path.join(projectRoot, 'src/lib/generated-content.ts'), 'utf8');
+  const generated = await readFile(path.join(projectRoot, 'src/packages/content/lib/generated-content.ts'), 'utf8');
   const articles = parseGeneratedArray(generated, 'generatedArticles', 'generatedProjects');
   const projects = parseGeneratedArray(generated, 'generatedProjects');
   const markers = contentSamples([...articles, ...projects]);

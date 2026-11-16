@@ -48,3 +48,7 @@ prod_server.log
 # Built offline course snapshots (regenerated before dev/build)
 public/downloads/protocol-course-offline.html
 public/downloads/protocol-practice-notebook.md
+
+# Browser test artifacts
+/test-results/
+/playwright-report/

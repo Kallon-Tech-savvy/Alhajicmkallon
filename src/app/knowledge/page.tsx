@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { PROTOCOL_SLUGS } from '@/lib/protocol-course';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { KNOWLEDGE_ENTRIES } from '@/lib/content';
+import { KNOWLEDGE_ENTRIES } from '@/packages/content/server';
 import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
 export const metadata = {

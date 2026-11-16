@@ -1,4 +1,4 @@
-import { JOURNAL_ENTRIES } from '@/lib/content';
+import { JOURNAL_ENTRIES } from '@/packages/content/server';
 import { ArrowUpRight, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
@@ -24,7 +24,7 @@ export const ThoughtLeadership = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {JOURNAL_ENTRIES.length ? JOURNAL_ENTRIES.map((article, i) => (
+          {JOURNAL_ENTRIES.length ? JOURNAL_ENTRIES.map((article) => (
             <div
               key={article.slug}    
               className="glass p-8 rounded-xl group relative flex flex-col h-full hover:border-accent/30 transition-colors duration-500"

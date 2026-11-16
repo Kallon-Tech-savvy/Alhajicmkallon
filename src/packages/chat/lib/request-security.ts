@@ -5,7 +5,14 @@
  */
 export const MAX_CHAT_REQUEST_BYTES = 64 * 1024;
 
-export function isAllowedChatOrigin(origin, { siteUrl, previewUrl, nodeEnv } = {}) {
+export function isAllowedChatOrigin(
+  origin: string | null,
+  {
+    siteUrl,
+    previewUrl,
+    nodeEnv,
+  }: { siteUrl?: string; previewUrl?: string; nodeEnv?: string } = {},
+) {
   if (typeof origin !== 'string') return false;
   let parsed;
   try {
@@ -34,12 +41,14 @@ export function isAllowedChatOrigin(origin, { siteUrl, previewUrl, nodeEnv } = {
   return allowed.has(origin);
 }
 
-export function hasJsonContentType(contentType) {
-  return typeof contentType === 'string' &&
-    /^application\/json(?:\s*;\s*charset\s*=\s*utf-8)?$/i.test(contentType);
+export function hasJsonContentType(contentType: string | null) {
+  return (
+    typeof contentType === 'string' &&
+    /^application\/json(?:\s*;\s*charset\s*=\s*utf-8)?$/i.test(contentType)
+  );
 }
 
-export function isOversizedContentLength(header) {
+export function isOversizedContentLength(header: string | null) {
   if (header === null) return false;
   return !/^\d+$/.test(header) || Number(header) > MAX_CHAT_REQUEST_BYTES;
 }
@@ -52,7 +61,7 @@ export class ChatBodyTooLargeError extends Error {
 }
 
 /** Read incrementally so chunked requests cannot evade the body-size cap. */
-export async function readChatJson(request) {
+export async function readChatJson(request: Request): Promise<unknown> {
   if (!request.body) throw new SyntaxError('Missing JSON body');
   const reader = request.body.getReader();
   const decoder = new TextDecoder('utf-8', { fatal: true });
