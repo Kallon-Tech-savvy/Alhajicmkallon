@@ -1,64 +1,90 @@
-# Swiss visual system
+# Swiss × Carbon visual system
 
-The frontend uses a Swiss-inspired grid, large sans-serif typography, numbered
-sections, crisp rules and a small set of strong colours. The visual direction is
-energetic and editorial; reading pages retain comfortable type and line lengths.
+The interface blends the portfolio's Swiss editorial character with IBM Carbon's
+productive UI principles. Large type, numbered sections, geometric artwork and
+orange accents remain personal to the site. IBM Plex, blue actions, neutral layers,
+a dark masthead and consistent controls make task-focused surfaces more systematic.
 
-## Tokens and ownership
+This is a custom implementation informed by Carbon. It does not import Carbon React
+or claim full Carbon conformance or IBM affiliation.
 
-`src/app/globals.css` owns semantic colours, theme modes, typography, controls,
-reading styles and accessibility defaults. `src/styles/swiss.css` owns the masthead,
-homepage display compositions, project presentation and shared footer. Avoid adding
-page-level palettes or a second chain of theme overrides.
+## Ownership and tokens
 
-- Paper and ink: `--ui-background`, `--ui-text`, and their supporting surface tokens.
-- Action and focus: `--ui-accent`, `--ui-action`, `--ui-on-action`.
-- Display colours: fixed cobalt `--brand-blue`, vermilion `--brand-orange`, paper
-  `--brand-paper` and ink `--brand-ink`. Fixed blue fields always use paper text;
-  orange fields use ink. Do not use orange for small text on paper.
-- Status colours are separate semantic tokens for success, error and warning.
-- Corner radius: `--panel-radius`; Tailwind radius utilities reference this token.
-  Circular portraits and graphic motifs are deliberate exceptions.
+- `src/app/globals.css`: semantic theme tokens, spacing, typography, reading surfaces
+  and accessibility defaults.
+- `src/styles/components.css`: application controls, form panels, contextual fields,
+  selected/disabled/focus states, notices, shell links, search and chat.
+- `src/styles/swiss.css`: expressive homepage layouts, brand geometry, project
+  presentation and the shared masthead/footer composition.
 
-Both themes use the same layout. The saved Light/Dark/System preference is applied
-before paint, responds to system changes and syncs between tabs. Never use a fixed
-light-colour label on a semantic dark background or vice versa.
+Keep each component's styles in one place. Change shared tokens instead of adding
+a second page palette or a chain of theme overrides.
 
-## Layout and typography
+The light theme uses white, Gray 10 and Gray 20 surfaces; the dark theme uses Gray
+100, Gray 90 and Gray 80. `--ui-field-on-layer` gives fields a distinct contextual
+surface on form panels. `--ui-border` is for strong field boundaries;
+`--ui-border-subtle` divides tiles and layers. Blue 60 is the primary action colour.
+Blue 70 is used for light-theme links so they remain readable on raised surfaces;
+dark-theme links use Blue 40. Focus uses blue in light contexts and white in dark
+contexts. Status text uses the stronger palette tones needed for readable contrast.
 
-Align wide sections to `--layout-max` (78rem) and `--page-gutter`. Keep article text
-inside the existing reading columns. Inter is the display and body typeface;
-JetBrains Mono is for code. Use `page-intro` and `page-title` for route headers.
-Display text uses tight spacing and a large scale; body copy retains relaxed leading.
+The shell has an explicit inverse token context in both themes. Set both its
+background and text foreground: changing custom-property values alone does not
+change an inherited CSS `color`. The browser checks masthead contrast to protect
+this distinction.
 
-Use `swiss-meta` for compact uppercase labels, `swiss-button` for display actions,
-`swiss-text-link` for underlined editorial links, and `ui-primary`/`ui-field` for
-application controls. Keep labels meaningful and focus rings visible. Decorative
-symbols are hidden from assistive technology. Use the inline SVG marks in `SwissMarks.tsx` for arrows and asterisks; platform
-emoji must not replace the visual geometry.
+## Typography and layout
 
-The homepage shows the work before the practice and learning sections. Project
-status remains explicit: AEEM is a working website; MJ Studio is in development.
-Do not turn programme figures into website performance claims.
+Use IBM Plex Sans for body and display text, and IBM Plex Mono for code and compact
+technical labels. Both are served through Next's font pipeline. Avoid adding font
+families or component libraries to the initial client bundle.
 
-## Interaction and motion
+Expressive headings keep the Swiss scale with lighter Plex weights and less extreme
+tracking. Productive UI uses 14px control text, 12px labels and 48px actions. Article
+columns retain their comfortable width and long code samples scroll internally.
 
-The display headline has one short CSS entrance. Project previews, arrows, cards
-and the graphic poster respond to hover. There are no continuous marquees,
-scroll hijacking or motion libraries in the initial homepage runtime. Reduced
-motion disables animation and transitions. Content stays visible without JavaScript;
-Reveal wrappers may shift into place but never hide text while waiting for a script.
+Spacing follows the Carbon scale (2, 4, 8, 12, 16, 24, 32, 40, 48, 64, 80, 96px),
+with fixed 32px outer gutters and 16px gutters at small widths. The display hero uses
+a 16-column 12/4 split; subsequent compositions divide into halves and quarters.
+Existing reading layouts remain adapted to their content rather than being forced
+into a dense application grid. `--layout-max` bounds the portfolio at 82rem.
 
-Chat and search still load on demand. Navigation, keyboard focus, contact fallback,
-conversation retry and cancellation keep their existing behavior.
+## Components and interaction
 
-## Verification
+- Primary actions: blue, square, label left and action icon right. Hover/active
+  colours and an inset focus indicator are defined explicitly.
+- Ghost and icon actions: quiet default, visible hover and keyboard focus.
+- Fields: filled contextual surface, bottom rule, persistent label and inset focus.
+  Keep native required/type validation and associated labels.
+- Intent choices: native buttons with `aria-pressed`, selected fill and bottom rule.
+  A fieldset/legend groups the optional enquiry topic.
+- Notices: a coloured left rule with readable neutral body text; preserve entered
+  content on delivery failure or email fallback.
+- Search: opaque dialog above a dim backdrop, useful quick links and divided result
+  rows. Preserve focus containment, Escape, and return focus.
+- Chat: layered side panel, compact toolbar, structured suggestions and conversation
+  surfaces. Preserve retry, cancellation, draft restoration and explicit privacy text.
 
-- `npm run test:homepage-performance` checks server/client architecture without
-  depending on exact headlines or JSX formatting.
-- `npm run test:browser-bundle` checks production full-text exclusion, emitted theme
-  utilities and palette contrast.
-- `npm run test:interactions` checks search, chat, navigation, contact draft
-  preservation, reduced motion, and six main routes across four screen/theme pairs.
-- Inspect desktop, mobile and dark previews after changing typography or spacing.
-  Long code examples scroll inside their reading column, not across the page.
+Inline SVG marks in `SwissMarks.tsx` keep decorative arrows/asterisks consistent
+without copying IBM's logo or depending on emoji fonts. Project status stays explicit:
+AEEM is a working website; MJ Studio is in development.
+
+Controls use short productive transitions. Expressive display motion is limited to
+the headline entrance and restrained hover responses. Reduced motion disables both.
+Content stays visible without JavaScript. Search and chat continue to load on demand.
+
+## Verification and references
+
+Run the usual build, typecheck, lint, module-boundary and test commands. Production
+bundle checks cover full-text exclusion and theme contrast. Browser checks cover
+keyboard interactions, notices, selected state, inverse-header contrast, reduced
+motion and six routes across small/large light/dark viewports. Inspect screenshots
+of the hero, forms, search and chat after changing these shared styles.
+
+Official references used for this blend:
+
+- [Carbon 2x Grid](https://www.carbondesignsystem.com/building-blocks/foundations/2x-grid/overview)
+- [Carbon typography and IBM Plex](https://www.carbondesignsystem.com/building-blocks/foundations/typography/overview)
+- [Carbon colour tokens](https://www.carbondesignsystem.com/building-blocks/foundations/color/tokens)
+- [Text input specifications](https://www.carbondesignsystem.com/building-blocks/core/components/text-input/specifications)
+- [Button specifications](https://www.carbondesignsystem.com/building-blocks/core/components/button/specifications)

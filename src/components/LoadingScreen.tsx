@@ -54,11 +54,11 @@ export const LoadingScreen = () => {
 
           {/* Top bar */}
           <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-8 py-5 border-b border-[var(--color-border)]">
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+            <span className="font-[family-name:var(--font-plex-mono)] text-xs tracking-[0.16em] uppercase"
                   style={{ color: 'var(--color-muted)' }}>
               alhaji@kallon.dev
             </span>
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+            <span className="font-[family-name:var(--font-plex-mono)] text-xs tracking-[0.16em] uppercase"
                   style={{ color: 'var(--color-muted)' }}>
               v2.0.0
             </span>
@@ -67,7 +67,7 @@ export const LoadingScreen = () => {
           {/* Terminal output */}
           <div className="relative px-8 md:px-16 lg:px-24 max-w-3xl w-full">
             <div className="mb-8">
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+              <span className="font-[family-name:var(--font-plex-mono)] text-xs tracking-[0.16em] uppercase"
                     style={{ color: '#006BFF' }}>
                 ALHAJI KALLON / DESIGN ENGINEER
               </span>
@@ -86,7 +86,7 @@ export const LoadingScreen = () => {
                     <div className="h-3" />
                   ) : line.text === 'SYSTEM READY' ? (
                     <span
-                      className="font-[family-name:var(--font-jetbrains-mono)] text-lg md:text-2xl font-bold tracking-[0.15em]"
+                      className="font-[family-name:var(--font-plex-mono)] text-lg md:text-2xl font-bold tracking-[0.15em]"
                       style={{ color: '#006BFF', textShadow: '0 0 12px rgba(0,107,255,0.6)' }}
                     >
                       {line.text}
@@ -97,14 +97,14 @@ export const LoadingScreen = () => {
                   ) : (
                     <>
                       <span
-                        className="font-[family-name:var(--font-jetbrains-mono)] text-xs md:text-sm"
+                        className="font-[family-name:var(--font-plex-mono)] text-xs md:text-sm"
                         style={{ color: 'var(--color-muted)' }}
                       >
                         {line.text}
                       </span>
                       {line.status && (
                         <span
-                          className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-bold ml-8 shrink-0"
+                          className="font-[family-name:var(--font-plex-mono)] text-xs font-bold ml-8 shrink-0"
                           style={{ color: '#006BFF' }}
                         >
                           {line.status}
@@ -119,11 +119,11 @@ export const LoadingScreen = () => {
 
           {/* Bottom bar */}
           <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-8 py-5 border-t border-[var(--color-border)]">
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+            <span className="font-[family-name:var(--font-plex-mono)] text-xs tracking-[0.16em] uppercase"
                   style={{ color: 'var(--color-muted)' }}>
               Sierra Leone · West Africa
             </span>
-            <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs tracking-[0.16em] uppercase"
+            <span className="font-[family-name:var(--font-plex-mono)] text-xs tracking-[0.16em] uppercase"
                   style={{ color: 'var(--color-muted)' }}>
               Believe it. We build it.
             </span>

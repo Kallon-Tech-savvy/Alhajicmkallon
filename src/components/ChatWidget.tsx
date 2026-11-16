@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Arrow } from './SwissMarks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { MessageCircle, X, Send, Loader2, RotateCcw, Square } from 'lucide-react';
@@ -109,7 +110,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
           role="dialog"
           aria-labelledby="chat-title"
           aria-describedby="chat-description"
-          className="fixed bottom-24 right-4 z-[70] flex h-[min(38rem,calc(100dvh-8rem))] w-[calc(100vw-2rem)] max-w-md flex-col overflow-hidden rounded-xl border border-border bg-midnight text-ivory shadow-2xl sm:right-6"
+          className="ui-chat-panel fixed bottom-24 right-4 z-[70] flex h-[min(38rem,calc(100dvh-8rem))] w-[calc(100vw-2rem)] max-w-md flex-col overflow-hidden text-ivory sm:right-6"
         >
           <header className="flex shrink-0 items-start justify-between gap-3 border-b border-border p-4">
             <div>
@@ -126,12 +127,12 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
               type="button"
               onClick={close}
               aria-label="Close assistant"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded border border-border hover:bg-surface"
+              className="ui-icon-button shrink-0"
             >
               <X size={18} />
             </button>
           </header>
-          <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-border px-4 py-3 text-xs">
+          <div className="ui-chat-toolbar shrink-0">
             <Link href="/work" className="underline underline-offset-4">
               Case studies
             </Link>
@@ -145,7 +146,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
                 conversation.clearConversation();
                 inputRef.current?.focus();
               }}
-              className="ml-auto inline-flex min-h-8 items-center gap-1 text-muted disabled:opacity-50"
+              className="ui-ghost ml-auto min-h-12 px-0 text-xs"
             >
               <RotateCcw size={12} /> Clear chat
             </button>
@@ -173,9 +174,9 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
                       type="button"
                       disabled={loading}
                       onClick={() => void sendMessage(question)}
-                      className="min-h-11 rounded-lg border border-border bg-surface p-3 text-left text-sm hover:bg-navy"
+                      className="ui-choice ui-chat-suggestion"
                     >
-                      {question} <span aria-hidden="true">↗</span>
+                      {question} <Arrow />
                     </button>
                   ))}
                 </div>
@@ -184,11 +185,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
             {messages.map((message, i) => (
               <div
                 key={i}
-                className={
-                  message.role === 'user'
-                    ? 'ml-6 rounded-lg bg-pride-blue p-3 text-[var(--ui-on-action)]'
-                    : 'mr-3 rounded-lg border border-border bg-surface p-3'
-                }
+                className={message.role === 'user' ? 'ui-chat-user' : 'ui-chat-assistant'}
               >
                 <p className="mb-1 text-xs font-semibold">
                   {message.role === 'user' ? 'You' : 'Site assistant'}
@@ -205,7 +202,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
             )}
           </div>
           {error && (
-            <div role="alert" className="shrink-0 border-t border-border px-4 py-3 text-sm">
+            <div role="alert" className="ui-notice ui-notice-error mx-4 mb-3 shrink-0">
               <p className="text-danger">{error}</p>
               {retry && (
                 <button
@@ -256,7 +253,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
                     conversation.stop();
                   }}
                   aria-label="Stop reply"
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded bg-pride-blue text-[var(--ui-on-action)]"
+                  className="ui-primary min-w-12 shrink-0"
                 >
                   <Square size={16} />
                 </button>
@@ -265,7 +262,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
                   type="submit"
                   disabled={!input.trim()}
                   aria-label="Send message"
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded bg-pride-blue text-[var(--ui-on-action)] disabled:opacity-40"
+                  className="ui-primary min-w-12 shrink-0"
                 >
                   <Send size={16} />
                 </button>
