@@ -100,3 +100,35 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   await expect(page.getByRole('heading', { name: 'Message received' })).not.toBeVisible();
   expect(errors).toEqual([]);
 });
+
+for (const { width, scheme } of [
+  { width: 320, scheme: 'light' },
+  { width: 390, scheme: 'dark' },
+  { width: 768, scheme: 'light' },
+  { width: 1440, scheme: 'dark' },
+] as const) {
+  test(`shared layouts fit ${width}px in ${scheme} mode`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ colorScheme: scheme });
+    for (const route of ['/', '/work', '/about', '/knowledge', '/writing', '/contact']) {
+      await page.goto(route);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      expect(overflow, `Horizontal overflow on ${route}`).toBeLessThanOrEqual(1);
+      await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+    }
+  });
+}
+
+test('reduced motion leaves display content visible without entrance animation', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const heading = page.getByRole('heading', { level: 1 });
+  await expect(heading).toBeVisible();
+  expect(await heading.evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
+  await expect(page.getByRole('link', { name: 'Explore the work', exact: false })).toBeVisible();
+});

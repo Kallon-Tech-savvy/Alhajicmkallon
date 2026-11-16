@@ -34,7 +34,7 @@ export const PHILOSOPHY_CHUNK: KnowledgeChunk = {
   title: 'Approach and principles',
   keywords: ['approach', 'design', 'philosophy', 'principles', 'style'],
   content:
-    'Understand the problem, decide what is worth building, design the experience and develop it. Principles: evidence before claims, clarity before scope, useful over impressive, people in context, visible reasoning and continued learning. This website combines Swiss typographic hierarchy and grids with Japanese minimalism, warm paper or charcoal surfaces and a restrained blue accent.',
+    'Understand the problem, decide what is worth building, design the experience and develop it. Principles: evidence before claims, clarity before scope, useful over impressive, people in context, visible reasoning and continued learning. This website uses Swiss-inspired typographic grids, bold scale, cobalt-blue fields and vermilion accents, with light, dark and reduced-motion modes.',
 };
 export const PROJECT_CHUNKS: KnowledgeChunk[] = [
   {

@@ -23,7 +23,7 @@ export function ChatWidgetLoader() {
         aria-expanded={open}
         aria-controls="chat-panel"
         aria-label={open ? "Close chat" : "Ask a question about Alhaji"}
-        className="fixed bottom-6 right-6 z-50 min-h-12 rounded-lg border border-border bg-surface px-4 text-ivory flex items-center justify-center gap-2 shadow-sm transition-colors hover:bg-navy"
+        className="swiss-chat-launcher fixed bottom-6 right-6 z-50 min-h-12 rounded-lg border border-border bg-surface px-4 text-ivory flex items-center justify-center gap-2 shadow-sm transition-colors hover:bg-navy"
       >
         <svg
           width="22"

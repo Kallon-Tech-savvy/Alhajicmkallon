@@ -1,23 +1,64 @@
-# Application visual system
+# Swiss visual system
 
-Use the semantic palette in `src/app/globals.css`. Tailwind v4 registers the utility names through `@theme inline`; runtime aliases also support existing inline styles. Do not add a separate palette to a page.
+The frontend uses a Swiss-inspired grid, large sans-serif typography, numbered
+sections, crisp rules and a small set of strong colours. The visual direction is
+energetic and editorial; reading pages retain comfortable type and line lengths.
 
-- Background: warm paper (`midnight` legacy utility). Content panels: pale paper (`surface`). Raised controls: deeper paper (`navy`).
-- Body text: charcoal (`ivory` legacy utility). Supporting text: muted ink. Links and focus indicators: blue accent.
-- Prominent actions: `ui-primary` (dark blue with paper text). Compact chat actions use the darker blue fill with light text.
-- Navigation shares the paper page background (midnight), cards (surface), raised areas (navy), text (ivory/muted), borders and accent. The active mobile link uses accent with midnight text. Keep backgrounds opaque so scrolled content does not alter their colour.
-- Success, warning and danger are status colours, not competing decorative accents.
+## Tokens and ownership
 
-Align wide page containers to `--layout-max` (72rem). Preserve narrower article/reading containers. Use `page-intro` below the fixed navigation, `section-space` for content sections, `page-title` for route headings and `section-title` for large section headings. Use 1–1.5rem gaps within controls and cards; larger gaps separate content groups. The homepage hero is the intentional display-size exception.
+`src/app/globals.css` owns semantic colours, theme modes, typography, controls,
+reading styles and accessibility defaults. `src/styles/swiss.css` owns the masthead,
+homepage display compositions, project presentation and shared footer. Avoid adding
+page-level palettes or a second chain of theme overrides.
 
-Use Inter for headings and prose (`font-display`, `font-body`), and JetBrains Mono for code and terminal details. Labels should be at least 0.75rem with moderate letter spacing. Use `ui-field` for form inputs and `ui-panel` for standalone elevated surfaces. Keep visible focus rings and explicit non-colour state labels.
+- Paper and ink: `--ui-background`, `--ui-text`, and their supporting surface tokens.
+- Action and focus: `--ui-accent`, `--ui-action`, `--ui-on-action`.
+- Display colours: fixed cobalt `--brand-blue`, vermilion `--brand-orange`, paper
+  `--brand-paper` and ink `--brand-ink`. Fixed blue fields always use paper text;
+  orange fields use ink. Do not use orange for small text on paper.
+- Status colours are separate semantic tokens for success, error and warning.
+- Corner radius: `--panel-radius`; Tailwind radius utilities reference this token.
+  Circular portraits and graphic motifs are deliberate exceptions.
 
-After a production build, `npm run test:browser-bundle` verifies that essential theme utilities were emitted and that the core text/surface combinations meet a 4.5:1 contrast budget. This checks tokens, not every possible image overlay or browser rendering; retain visual QA for those cases.
+Both themes use the same layout. The saved Light/Dark/System preference is applied
+before paint, responds to system changes and syncs between tabs. Never use a fixed
+light-colour label on a semantic dark background or vice versa.
 
-## Theme preference
+## Layout and typography
 
-The navigation offers Light, Dark and System (default). The small pre-paint bootstrap sets `data-theme` on the root; global semantic tokens supply both palettes, including status text and action foregrounds. The saved choice uses local storage; System responds to OS changes and choices sync between tabs. Chat stays loaded after first use so closing and reopening preserves the conversation in memory. Clear chat or reload removes it.
+Align wide sections to `--layout-max` (78rem) and `--page-gutter`. Keep article text
+inside the existing reading columns. Inter is the display and body typeface;
+JetBrains Mono is for code. Use `page-intro` and `page-title` for route headers.
+Display text uses tight spacing and a large scale; body copy retains relaxed leading.
 
-## Restraint pass
+Use `swiss-meta` for compact uppercase labels, `swiss-button` for display actions,
+`swiss-text-link` for underlined editorial links, and `ui-primary`/`ui-field` for
+application controls. Keep labels meaningful and focus rings visible. Decorative
+symbols are hidden from assistive technology. Use the inline SVG marks in `SwissMarks.tsx` for arrows and asterisks; platform
+emoji must not replace the visual geometry.
 
-Use sentence-case navigation and small labels, moderate display sizes, medium heading weights and simple corners. Reserve blue for links, focus and actions. Avoid decorative glow, floating-control lift, repetitive numbered section labels and competing slogan lines. Keep meaningful loading feedback and visible focus states.
+The homepage shows the work before the practice and learning sections. Project
+status remains explicit: AEEM is a working website; MJ Studio is in development.
+Do not turn programme figures into website performance claims.
+
+## Interaction and motion
+
+The display headline has one short CSS entrance. Project previews, arrows, cards
+and the graphic poster respond to hover. There are no continuous marquees,
+scroll hijacking or motion libraries in the initial homepage runtime. Reduced
+motion disables animation and transitions. Content stays visible without JavaScript;
+Reveal wrappers may shift into place but never hide text while waiting for a script.
+
+Chat and search still load on demand. Navigation, keyboard focus, contact fallback,
+conversation retry and cancellation keep their existing behavior.
+
+## Verification
+
+- `npm run test:homepage-performance` checks server/client architecture without
+  depending on exact headlines or JSX formatting.
+- `npm run test:browser-bundle` checks production full-text exclusion, emitted theme
+  utilities and palette contrast.
+- `npm run test:interactions` checks search, chat, navigation, contact draft
+  preservation, reduced motion, and six main routes across four screen/theme pairs.
+- Inspect desktop, mobile and dark previews after changing typography or spacing.
+  Long code examples scroll inside their reading column, not across the page.
