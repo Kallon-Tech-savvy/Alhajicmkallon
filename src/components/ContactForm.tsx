@@ -120,7 +120,11 @@ export function ContactForm() {
           turnstileToken: captchaToken,
         }),
       });
-      const result = await response.json().catch(() => null);
+      const payload: unknown = await response.json().catch(() => null);
+      const result =
+        payload !== null && typeof payload === 'object' && !Array.isArray(payload)
+          ? (payload as { ok?: unknown; error?: unknown })
+          : null;
       if (response.ok && result?.ok === true) {
         setStatus('success');
         setStatusMessage('Your enquiry has been submitted for delivery. I’ll review it and respond when I can.');
