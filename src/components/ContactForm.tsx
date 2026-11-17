@@ -91,6 +91,7 @@ export function ContactForm() {
     'Clarify an idea',
     'Design and build a product',
     'Improve a product',
+    'Suggest a guide or correction',
     'Something else',
   ];
 
@@ -127,7 +128,7 @@ export function ContactForm() {
           : null;
       if (response.ok && result?.ok === true) {
         setStatus('success');
-        setStatusMessage('Your enquiry has been submitted for delivery. I’ll review it and respond when I can.');
+        setStatusMessage('Thank you. Your enquiry has been submitted for delivery. I’ll review it and respond when I can.');
         setFormData({ name: '', email: '', message: '' });
         setSelectedIntent('');
         setHoneypot('');
@@ -144,7 +145,7 @@ export function ContactForm() {
     } catch {
       setStatus('error');
       setStatusMessage(
-        'Delivery could not be confirmed. Your message is still here. Check your connection or open an email draft instead.',
+        'Something went wrong and delivery could not be confirmed. Your message is still here. Try again or email info@alhajikallon.com directly.',
       );
       resetVerification();
     }
@@ -163,12 +164,12 @@ export function ContactForm() {
         {status !== 'success' ? (
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="ui-form-heading">
-              <span className="ui-label">Project enquiry</span>
+              <span className="ui-label">Project enquiry or feedback</span>
               <h2>Tell me what you have in mind.</h2>
-              <p>Your name, email and message are required. The topic is optional.</p>
+              <p>Name, email and message are required. Choosing a topic is optional.</p>
             </div>
             <fieldset>
-              <legend className="ui-label">What would you like to work on?</legend>
+              <legend className="ui-label">What would you like to work on? (optional)</legend>
               <div className="flex flex-wrap gap-2">
                 {intentOptions.map((option) => (
                   <button
@@ -217,13 +218,17 @@ export function ContactForm() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="ui-field"
                   placeholder="you@company.com"
+                  aria-describedby="contact-email-help"
                 />
+                <p id="contact-email-help" className="text-xs text-muted">
+                  I’ll use this address to reply to you, and to acknowledge your enquiry if confirmations are enabled.
+                </p>
               </div>
             </div>
 
             <div className="space-y-2">
               <label htmlFor="contact-message" className="ui-label">
-                What would you like to change or achieve?
+                What are you trying to achieve?
               </label>
               <textarea
                 required
@@ -234,8 +239,12 @@ export function ContactForm() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="ui-field"
-                placeholder="What is happening now, who does it affect, and what would a better outcome look like? Share whatever you know; it is fine if the idea is still taking shape."
+                placeholder="What is happening now, who does it affect, and what would a better outcome look like?"
+                aria-describedby="contact-message-help"
               />
+              <p id="contact-message-help" className="text-xs text-muted">
+                Tell me what you know so far and where you need help.
+              </p>
             </div>
 
             <div className="absolute -left-[9999px]" aria-hidden="true">
@@ -267,10 +276,10 @@ export function ContactForm() {
               className="ui-primary w-full transition-colors"
             >
               {status === 'loading' ? (
-                'Sending message…'
+                'Sending…'
               ) : (
                 <>
-                  {turnstileSiteKey ? 'Send message' : 'Open email draft'} <Send size={14} />
+                  {turnstileSiteKey ? 'Send enquiry' : 'Open email draft'} <Send size={14} />
                 </>
               )}
             </button>
