@@ -65,8 +65,8 @@ export default function Home() {
                 the world they live in.
               </p>
               <p>
-                My perspective is shaped by life in Sierra Leone and by work with an organisation
-                like AEEM.
+                My perspective is shaped by life in Sierra Leone and by my work with AEEM,
+                where I initiated the website and later served as Chief Operating Officer.
               </p>
               <p>The balance I aim for: think clearly, design simply, build carefully.</p>
               <Link prefetch={false} href="/about" className="swiss-text-link">
@@ -133,7 +133,7 @@ export default function Home() {
               </span>
               <div>
                 <h3>Pass the knowledge on.</h3>
-                <p>Practical guides and a free 12-part course on how software systems communicate, stay secure and recover from failure.</p>
+                <p>Practical guides and a free 12-part course on how software systems talk to each other: HTTP, APIs, identity, events and debugging.</p>
               </div>
               <span className="explore-card-link">
                 Start learning <Arrow />
