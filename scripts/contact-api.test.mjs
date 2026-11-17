@@ -50,8 +50,9 @@ test('five verified-domain sender identities have unique labels and footer notes
 });
 
 test('rejects invalid topics, injected headers, malformed email and honeypot', () => {
-  assert.equal(CONTACT_INTENTS.length, 4);
+  assert.equal(CONTACT_INTENTS.length, 5);
   assert.equal(parseContactInput({ ...valid, intent: 'Unauthorized category' }), null);
+  assert.equal(parseContactInput({ ...valid, intent: 'Suggest a guide or correction' })?.intent, 'Suggest a guide or correction');
   assert.equal(parseContactInput({ ...valid, name: 'Aminata\nBcc: hidden' }), null);
   assert.equal(parseContactInput({ ...valid, email: 'user@example.com\nCc: another@example.com' }), null);
   assert.equal(parseContactInput({ ...valid, website: 'bot.example' }), null);
