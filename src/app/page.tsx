@@ -108,7 +108,7 @@ export default function Home() {
           </div>
           <div className="explore-grid">
             <Link prefetch={false} href="/writing" className="explore-card">
-              <span className="swiss-meta">Writing / Ideas & reflections</span>
+              <span className="swiss-meta">Writing / Notes & essays</span>
               <span className="explore-symbol" aria-hidden="true">
                 Aa
                 <span>
