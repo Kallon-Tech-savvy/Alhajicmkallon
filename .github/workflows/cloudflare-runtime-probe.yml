@@ -1,0 +1,46 @@
+name: Cloudflare runtime compatibility probe
+
+on:
+  push:
+    branches: [feat/resend-contact-email]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install locked project dependencies
+        run: npm ci
+      - name: Check Next.js compatibility with vinext
+        id: check
+        continue-on-error: true
+        run: npx --yes vinext check
+      - name: Initialize a temporary vinext Workers build (do not deploy)
+        run: npx --yes vinext init --platform=cloudflare --name alhajicmkallon --cdn-cache=none --data-cache=none --image-optimization=none
+      - name: Display proposed deployment scripts and config filenames
+        run: |
+          node -e 'const p=require("./package.json"); console.log(JSON.stringify({scripts:Object.fromEntries(Object.entries(p.scripts).filter(([k])=>k.includes("vinext")||k==="deploy"))},null,2))'
+          git status --short
+      - name: Build with vinext without publishing to Cloudflare
+        run: npm run build:vinext
+      - name: Upload generated deployment configuration for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-vinext-probe
+          path: |
+            package.json
+            package-lock.json
+            vite.config.ts
+            cloudflare.config.ts
+            tsconfig.json
+          if-no-files-found: warn
+          retention-days: 3
