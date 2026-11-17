@@ -33,7 +33,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
               </span>
             </Link>
           </div>
-        )>
+        )}
 
         {aeem && (
           <article className="work-feature">
@@ -100,7 +100,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
                   <p className="mt-3 text-sm text-muted">
                     The core team reviewed the pages positively; wider visitor outcomes are not yet measured.
                   </p>
-                )>
+                )}
               </div>
               <div className="work-links">
                 <Link prefetch={false} href={`/work/${aeem.slug}`} className="swiss-text-link">
