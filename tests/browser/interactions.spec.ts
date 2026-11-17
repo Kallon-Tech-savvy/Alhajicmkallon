@@ -278,3 +278,34 @@ test('Home retains its selected work heading and clear contact invitation', asyn
   await expect(page.getByRole('link', { name: /Start a conversation/ })).toHaveCount(2);
   await expect(page.getByRole('link', { name: 'Learn', exact: true })).toHaveCount(2);
 });
+
+test('Writing page has verified Substack fallback and no self-linking CTA', async ({ page }) => {
+  // The real external feed can fail; the curated article must remain visible.
+  await page.goto('/writing');
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content', 'https://alhajikallon.com/writing',
+  );
+  await expect(page.getByText('Sierra Leone’s Salone Pement Switch:', { exact: false })).toBeVisible();
+  await expect(page.locator('a[href="https://alhajicmkallon.substack.com/feed"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Follow on Substack|Read the latest notes/ })).toBeVisible();
+  await expect(page.locator('.footer-invitation')).toHaveCount(0);
+  const noteCount = await page.locator('a[href^="/writing/"]').count();
+  if (noteCount < 3) {
+    await expect(page.getByRole('searchbox', { name: 'Search notes' })).toHaveCount(0);
+  }
+});
+
+test('About, Contact, Learn and FAQ use their own metadata', async ({ page }) => {
+  for (const path of ['/about', '/contact', '/knowledge', '/faq']) {
+    await page.goto(path);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      'content', `https://alhajikallon.com${path}`,
+    );
+  }
+  await page.goto('/contact');
+  await expect(page.locator('.ui-form-panel')).toBeVisible();
+  await expect(page.locator('.footer-invitation')).toHaveCount(0);
+  await page.goto('/knowledge');
+  await expect(page.getByText('Protocols are the agreed rules', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Suggest a topic' })).toBeVisible();
+});
