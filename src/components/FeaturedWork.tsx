@@ -37,7 +37,7 @@ export const FeaturedWork = () => {
             >
               <div className="work-canvas-top" aria-hidden="true">
                 <span>AEEM / EDUCATION & COMMUNITY</span>
-                <span>01 — WORKING WEBSITE</span>
+                <span>Live website</span>
               </div>
               <div className="work-browser">
                 <div className="work-browser-chrome" aria-hidden="true">
@@ -49,7 +49,7 @@ export const FeaturedWork = () => {
                 </div>
                 <Image
                   src="/assets/aeem-live-home.webp"
-                  alt="The working AEEM homepage: its education mission, navigation and paths to impact and participation"
+                  alt="The AEEM homepage: mission, navigation, and clear paths to get involved"
                   width={1356}
                   height={931}
                   sizes="(max-width: 768px) 90vw, 950px"
@@ -73,8 +73,9 @@ export const FeaturedWork = () => {
                   </Link>
                 </h3>
                 <p className="mt-4 text-muted">
-                  Bringing an education organisation’s mission, activities and opportunities to
-                  participate into one place.
+                  Bringing AEEM’s mission, programmes and ways to take part into one clear website.
+                  The core team reviewed the pages and navigation positively; wider visitor outcomes
+                  have not yet been measured.
                 </p>
               </div>
               <div className="work-links">
@@ -88,7 +89,7 @@ export const FeaturedWork = () => {
                     rel="noopener noreferrer"
                     className="swiss-secondary-link"
                   >
-                    Visit the working website <Arrow />
+                    Visit the live website <Arrow />
                   </a>
                 )}
               </div>
@@ -99,24 +100,30 @@ export const FeaturedWork = () => {
         {others.map((project) => (
           <article key={project.slug} className="work-row">
             <div>
-              <p className="swiss-meta text-muted">02 / In development</p>
+              <p className="swiss-meta text-muted">In development</p>
               <span className="work-status">Development notes</span>
             </div>
             <div>
               <h3>
                 <Link prefetch={false} href={`/work/${project.slug}`}>
-                  {project.title}
+                  {project.slug === 'mj-studio-backend'
+                    ? 'Building the secure backend for a photography studio'
+                    : project.title}
                 </Link>
               </h3>
-              <p className="mt-3 max-w-xl text-muted">{project.summary}</p>
+              <p className="mt-3 max-w-xl text-muted">
+                {project.slug === 'mj-studio-backend'
+                  ? 'A system for studios to manage clients, galleries and deliveries safely. Permissions separate each studio’s data, related changes save together, and automated checks test key workflows.'
+                  : project.summary}
+              </p>
             </div>
             <Link
               prefetch={false}
               href={`/work/${project.slug}`}
-              className="work-row-arrow"
+              className="work-row-cta swiss-text-link"
               aria-label={`Read the development notes for ${project.title}`}
             >
-              <Arrow />
+              Read the development notes <Arrow />
             </Link>
           </article>
         ))}
