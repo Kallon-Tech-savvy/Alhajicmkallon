@@ -17,19 +17,19 @@ code, GitHub, or NEXT_PUBLIC_* variables.
 | Variable | Required | What it means |
 | --- | --- | --- |
 | RESEND_API_KEY | Yes, runtime secret | Resend API key with sending permission |
-| CONTACT_TO_EMAIL | Yes, runtime variable | A real inbox that receives general enquiries (not necessarily an @alhajikallon.com alias) |
-| CONTACT_DEV_TO_EMAIL | No, runtime variable | Separate real inbox for "Design and build" and "Improve a product"; defaults to CONTACT_TO_EMAIL |
+| CONTACT_TO_EMAIL | Yes, runtime secret | A real inbox that receives general enquiries (not necessarily an @alhajikallon.com alias) |
+| CONTACT_DEV_TO_EMAIL | No, optional runtime secret | Separate real inbox for "Design and build" and "Improve a product"; defaults to CONTACT_TO_EMAIL |
 | TURNSTILE_SECRET | Yes, runtime secret | Secret belonging to the already-created Turnstile widget; server only. `TURNSTILE_SECRET_KEY` is also supported as an alias. |
 | NEXT_PUBLIC_TURNSTILE_SITE_KEY | No | Optional public site-key override for staging; production's provided public site key is committed in the form component |
-| NEXT_PUBLIC_SITE_URL | Only for other trusted hosts | Exact HTTPS site origin to accept, such as a staging custom domain |
+| NEXT_PUBLIC_SITE_URL | Already defined in Worker config | Canonical origin; staging changes require explicitly separate configuration |
 | CONTACT_CONFIRMATION_ENABLED | No, defaults to off | Set to 1 to send a generic acknowledgement from noreply@ to the visitor, **after** the main enquiry is accepted |
 
 The public site key is already embedded in the component, so no build-time setting
 is required for production. The matching **private** widget secret must be present at
-runtime. For Cloudflare Workers, confirm runtime process.env support in your
-existing deployment configuration (nodejs_compat and appropriate compatibility
-date, as described in DOCS/CHAT_CONFIGURATION.md). Do not replace the existing
-Cloudflare/Next adapter configuration as part of this email change.
+runtime. The current vinext adapter uses a recent compatibility date to provide
+Node.js-compatible `process.env` access. Configure **runtime** secrets in the
+Worker, not merely build secrets. See [Cloudflare deployment](CLOUDFLARE_WORKERS.md)
+for the exact deployment and preview commands.
 
 ## Existing Turnstile widget (do not create a new one)
 
@@ -83,10 +83,10 @@ Official guide: https://developers.cloudflare.com/email-service/get-started/rout
 
 ## 3. Configure Turnstile and rate limits
 
-Create a Turnstile widget in Cloudflare, allowing the live domain and any
-explicit staging hostname. Add its site key and secret key to the environment.
-The page renders the widget only when the site key is present. If missing,
-visitors can still open a mailto draft; the server itself fails closed.
+Use the **existing** Turnstile widget already created for the live domain.
+Its public site key is embedded in the form, while its private matching secret
+must be added to the Cloudflare Worker as `TURNSTILE_SECRET`. A local/staging
+override can be configured explicitly; the server fails closed without a secret.
 
 The server verifies Turnstile with Siteverify and requires `success === true`,
 `action === "contact"`, and an exact match of the returned hostname to the
@@ -109,6 +109,7 @@ Run:
     npm run typecheck
     npm run lint
     npm run build
+    npm run build:vinext
     npm run test:interactions
 
 Use a staging Resend API key and inbox for a live end-to-end test:
