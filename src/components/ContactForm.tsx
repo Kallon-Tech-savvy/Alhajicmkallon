@@ -10,7 +10,7 @@ type TurnstileApi = {
   render: (element: HTMLElement, options: {
     sitekey: string;
     action: 'contact';
-    size: 'flexible';
+    size: 'compact' | 'flexible';
     theme: 'auto';
     callback: (token: string) => void;
     'expired-callback': () => void;
@@ -38,17 +38,33 @@ export function ContactForm() {
   const [captchaToken, setCaptchaToken] = useState('');
   const [honeypot, setHoneypot] = useState('');
   const [scriptReady, setScriptReady] = useState(false);
+  const [widgetSize, setWidgetSize] = useState<'compact' | 'flexible'>('flexible');
   const captchaElement = useRef<HTMLDivElement>(null);
   const captchaWidgetId = useRef<string | undefined>(undefined);
   const showForm = status !== 'success';
+
+  // Cloudflare's flexible widget has a 300px minimum width. Narrow mobile
+  // containers need the 150px compact widget instead of horizontal overflow.
+  useEffect(() => {
+    const element = captchaElement.current;
+    if (!showForm || !element) return;
+    const syncSize = () => {
+      setWidgetSize(element.getBoundingClientRect().width < 300 ? 'compact' : 'flexible');
+    };
+    syncSize();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(syncSize);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [showForm]);
 
   useEffect(() => {
     if (!turnstileSiteKey || !scriptReady || !showForm || !captchaElement.current || !window.turnstile) return;
     const id = window.turnstile.render(captchaElement.current, {
       sitekey: turnstileSiteKey,
       action: 'contact',
-      size: 'flexible',
-      theme: 'auto',
+      size: widgetSize,
+      theme: 'auto', 
       callback: setCaptchaToken,
       'expired-callback': () => setCaptchaToken(''),
       'error-callback': () => setCaptchaToken(''),
@@ -58,7 +74,7 @@ export function ContactForm() {
       window.turnstile?.remove(id);
       captchaWidgetId.current = undefined;
     };
-  }, [turnstileSiteKey, scriptReady, showForm]);
+  }, [turnstileSiteKey, scriptReady, showForm, widgetSize]);
 
   const resetVerification = () => {
     setCaptchaToken('');
