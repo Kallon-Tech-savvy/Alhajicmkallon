@@ -11,5 +11,8 @@ export default defineConfig([
     "build/**",
     "next-env.d.ts",
     "src/packages/content/lib/generated-content.ts",
+    ".cloudflare/**",
+    ".vinext/**",
+    "dist/**",
   ]),
 ]);
