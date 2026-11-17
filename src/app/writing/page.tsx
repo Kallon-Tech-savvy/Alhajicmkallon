@@ -22,9 +22,11 @@ export const metadata: Metadata = {
     description,
     url: 'https://alhajikallon.com/writing',
     type: 'website',
+    images: [{ url: '/assets/brand/alhaji-kallon-identity.jpg', width: 1280, height: 640 }],
   },
   twitter: {
     card: 'summary_large_image',
+    images: ['/assets/brand/alhaji-kallon-identity.jpg'],
     title: 'Writing: notes and essays | Alhaji C.M. Kallon',
     description,
   },
