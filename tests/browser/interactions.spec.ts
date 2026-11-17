@@ -248,3 +248,33 @@ test('desktop Learn navigates directly and mobile learning shortcuts remain keyb
   await expect(menu).not.toBeVisible();
   await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeFocused();
 });
+
+test('Work page has its own social metadata, evidence, and only one invitation', async ({ page }) => {
+  await page.goto('/work');
+
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content',
+    'https://alhajikallon.com/work',
+  );
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    'content',
+    'Selected work | Alhaji C.M. Kallon',
+  );
+  await expect(page.getByRole('heading', { name: 'From problem to product.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'All projects' })).toHaveCount(0);
+  await expect(page.locator('.work-evidence')).toHaveCount(2);
+  await expect(page.getByText('My role:', { exact: false })).toHaveCount(2);
+  await expect(page.getByText('What the evidence says so far:', { exact: false })).toHaveCount(2);
+  await expect(page.getByRole('link', { name: /Talk through the problem/ })).toBeVisible();
+  await expect(page.locator('.footer-invitation')).toHaveCount(0);
+});
+
+test('Home retains its selected work heading and clear contact invitation', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'A deliberate balance.' })).toBeVisible();
+  await expect(page.getByText('Design, engineering and curiosity, held in balance.')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'All projects' })).toBeVisible();
+  await expect(page.getByText('Build it to last.')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Start a conversation/ })).toHaveCount(2);
+  await expect(page.getByRole('link', { name: 'Learn', exact: true })).toHaveCount(2);
+});
