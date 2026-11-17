@@ -3,6 +3,7 @@ export const CONTACT_INTENTS = Object.freeze([
   'Clarify an idea',
   'Design and build a product',
   'Improve a product',
+  'Suggest a guide or correction',
   'Something else',
 ]);
 
