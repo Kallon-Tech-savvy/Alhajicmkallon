@@ -28,7 +28,7 @@ function request(body = valid, headers = {}) {
     body: typeof body === 'string' ? body : JSON.stringify(body),
   });
 }
-function fakeProvider({ captcha = { success: true, hostname: 'alhajikallon.com' }, emailStatus = 200 } = {}) {
+function fakeProvider({ captcha = { success: true, hostname: 'alhajikallon.com', action: 'contact' }, emailStatus = 200 } = {}) {
   const sends = [];
   const fetcher = async (url, options) => {
     if (url.includes('siteverify')) return Response.json(captcha);
@@ -96,14 +96,26 @@ test('missing secrets fail closed and send no email', async () => {
 
 test('invalid Turnstile response or hostname prevents delivery', async () => {
   for (const captcha of [
-    { success: false, hostname: 'alhajikallon.com' },
-    { success: true, hostname: 'attacker.example' },
+    { success: false, hostname: 'alhajikallon.com', action: 'contact' },
+    { success: true, hostname: 'attacker.example', action: 'contact' },
+    { success: true, hostname: 'alhajikallon.com', action: 'signup' },
+    { success: true, hostname: 'www.alhajikallon.com', action: 'contact' },
   ]) {
     const api = fakeProvider({ captcha });
     const handler = createContactHandler({ getEnv: () => env, fetcher: api.fetcher });
     assert.equal((await handler(request())).status, 422);
     assert.equal(api.sends.length, 0);
   }
+});
+
+test('Turnstile canonical secret name is accepted without exposing its value', async () => {
+  const api = fakeProvider();
+  const handler = createContactHandler({
+    getEnv: () => ({ ...env, TURNSTILE_SECRET_KEY: undefined, TURNSTILE_SECRET: 'server-only-key' }),
+    fetcher: api.fetcher,
+  });
+  assert.equal((await handler(request())).status, 200);
+  assert.equal(api.sends.length, 1);
 });
 
 test('valid enquiry sends only to configured development inbox, never visitor-controlled recipients', async () => {
