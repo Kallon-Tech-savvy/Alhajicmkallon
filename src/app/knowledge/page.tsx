@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     description: 'Practical development guides and a free 12-part software protocol course covering HTTP, APIs, identity, events, safe AI tools and debugging.',
     url: 'https://alhajikallon.com/knowledge',
     type: 'website',
+    images: [{ url: '/assets/brand/alhaji-kallon-identity.jpg', width: 1280, height: 640 }],
   },
   twitter: {
     title: 'Practical development guides and software protocol course | Alhaji C.M. Kallon',
     description: 'Practical development guides and a free 12-part software protocol course covering HTTP, APIs, identity, events, safe AI tools and debugging.',
     card: 'summary_large_image',
+    images: ['/assets/brand/alhaji-kallon-identity.jpg'],
   },
 };
 
