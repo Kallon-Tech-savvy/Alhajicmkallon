@@ -17,10 +17,10 @@ const NAV_LINKS = [
   { name: 'Privacy', href: '/privacy' },
 ];
 
-export const Footer = () => (
+export const Footer = ({ showInvitation = true }: { showInvitation?: boolean }) => (
   <footer className="swiss-footer site-gutter">
     <div className="mx-auto max-w-[var(--layout-max)]">
-      <div className="footer-invitation">
+      {showInvitation && <div className="footer-invitation">
         <div>
           <p className="swiss-meta">Have something in mind?</p>
           <h2>
@@ -42,7 +42,7 @@ export const Footer = () => (
             <Arrow />
           </span>
         </Link>
-      </div>
+      </div>}
       <div className="footer-details">
         <div>
           <Link prefetch={false} href="/" className="footer-name">
