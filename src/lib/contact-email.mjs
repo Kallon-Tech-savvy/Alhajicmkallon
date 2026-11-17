@@ -203,7 +203,8 @@ export function createContactHandler({
     // Fail closed: a missing secret never makes the form an unauthenticated email relay.
     const defaultInbox = env.CONTACT_TO_EMAIL;
     const developmentInbox = env.CONTACT_DEV_TO_EMAIL;
-    if (!env.RESEND_API_KEY || !env.TURNSTILE_SECRET_KEY || !isValidContactEmail(defaultInbox) ||
+    const turnstileSecret = env.TURNSTILE_SECRET || env.TURNSTILE_SECRET_KEY;
+    if (!env.RESEND_API_KEY || !turnstileSecret || !isValidContactEmail(defaultInbox) ||
         (developmentInbox && !isValidContactEmail(developmentInbox))) {
       return result(503, { error: 'The contact service is unavailable.' });
     }
@@ -213,7 +214,7 @@ export function createContactHandler({
       const response = await fetcher('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ secret: env.TURNSTILE_SECRET_KEY, response: enquiry.turnstileToken }),
+        body: new URLSearchParams({ secret: turnstileSecret, response: enquiry.turnstileToken }),
         signal: AbortSignal.timeout(8000),
       });
       if (!response.ok) throw new Error('Turnstile unavailable');
@@ -222,9 +223,13 @@ export function createContactHandler({
       logger.warn('contact_verification_unavailable');
       return result(503, { error: 'Verification is temporarily unavailable.' });
     }
+    // Both the widget action and the real site it was solved on must match
+    // this request. An allowed-but-different hostname is not sufficient.
     const verifiedHostname = verified?.hostname;
-    if (!verified?.success || typeof verifiedHostname !== 'string' ||
-        ![...permitted].some((allowed) => new URL(allowed).hostname === verifiedHostname)) {
+    const expectedHostname = new URL(origin).hostname;
+    if (verified?.success !== true ||
+        verified?.action !== 'contact' ||
+        verifiedHostname !== expectedHostname) {
       return result(422, { error: 'Verification expired or failed. Please retry.' });
     }
 
