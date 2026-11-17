@@ -31,7 +31,7 @@ test('chat preserves failed input, retries once, clears and stops a pending repl
       .catch(() => {});
   });
   await page.goto('/');
-  const launcher = page.getByRole('button', { name: 'Ask a question about Alhaji', exact: true });
+  const launcher = page.getByRole('button', { name: 'Ask about my work', exact: true });
   await launcher.click();
   const dialog = page.getByRole('dialog', { name: 'Ask about Alhaji' });
   const input = dialog.getByRole('textbox', { name: 'Your message' });
@@ -173,7 +173,7 @@ test('productive overlays remain usable at 320px', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(searchTrigger).toBeFocused();
 
-  await page.getByRole('button', { name: 'Ask a question about Alhaji', exact: true }).click();
+  await page.getByRole('button', { name: 'Ask about my work', exact: true }).click();
   const chat = page.getByRole('dialog', { name: 'Ask about Alhaji' });
   const input = chat.getByRole('textbox', { name: 'Your message' });
   await expect(input).toBeFocused();
@@ -190,7 +190,7 @@ for (const kind of ['search', 'chat'] as const) {
   test(`${kind} responds immediately and stays dismissed while its code downloads`, async ({ page }) => {
     await page.goto('/');
     const trigger = page.getByRole('button', {
-      name: kind === 'chat' ? 'Ask a question about Alhaji' : 'Search (Ctrl or Command K)',
+      name: kind === 'chat' ? 'Ask about my work' : 'Search (Ctrl or Command K)',
       exact: true,
     });
     // Wait for hydration, then hold optional JS downloads to simulate a cold connection.
