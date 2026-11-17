@@ -25,9 +25,7 @@ const LINKS = [
   { name: 'Contact', href: '/contact' },
 ] as const;
 
-const PRIMARY_LINKS = LINKS.filter(
-  ({ href }) => !['/', '/faq', '/contact', '/knowledge'].includes(href),
-);
+const PRIMARY_LINKS = LINKS.filter(({ href }) => !['/', '/faq', '/contact'].includes(href));
 
 function isActivePath(pathname: string, href: string) {
   return pathname === href || (href !== '/' && pathname.startsWith(href + '/'));
@@ -73,36 +71,15 @@ export function NavbarInteractions() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const closeSearch = useCallback(() => setIsSearchOpen(false), []);
-  const learningMenuRef = useRef<HTMLDetailsElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (learningMenuRef.current) learningMenuRef.current.open = false;
-  }, [pathname]);
-
-  useEffect(() => {
-    const closeLearningMenu = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && learningMenuRef.current?.open) {
-        learningMenuRef.current.open = false;
-        learningMenuRef.current.querySelector('summary')?.focus();
-      }
-    };
-    const onPointerDown = (event: PointerEvent) => {
-      if (learningMenuRef.current && !learningMenuRef.current.contains(event.target as Node))
-        learningMenuRef.current.open = false;
-    };
     const onResize = () => {
       if (window.innerWidth >= 1024) setIsMobileMenuOpen(false);
     };
-    window.addEventListener('keydown', closeLearningMenu);
-    document.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('keydown', closeLearningMenu);
-      document.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('resize', onResize);
-    };
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   useEffect(() => {
@@ -134,7 +111,11 @@ export function NavbarInteractions() {
       if (event.key === 'Tab') {
         const button = menuButtonRef.current;
         const menuLinks = Array.from(
-          menuPanelRef.current?.querySelectorAll<HTMLElement>('a[href], select') ?? [],
+          menuPanelRef.current?.querySelectorAll<HTMLElement>('a[href], select, summary') ?? [],
+        ).filter(
+          (element) =>
+            element.getClientRects().length > 0 &&
+            (element.tagName === 'SUMMARY' || !element.closest('details:not([open])')),
         );
         const focusable: HTMLElement[] = button ? [button, ...menuLinks] : menuLinks;
         cycleNavigationFocus(event, focusable, document.activeElement);
@@ -164,48 +145,6 @@ export function NavbarInteractions() {
             </Link>
           );
         })}
-        <details
-          ref={learningMenuRef}
-          className="relative"
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null))
-              event.currentTarget.open = false;
-          }}
-        >
-          <summary
-            className={
-              'ui-shell-link ' +
-              (isActivePath(pathname, '/knowledge')
-                ? 'text-[var(--color-accent)]'
-                : 'text-[var(--color-muted)]')
-            }
-          >
-            Learn
-          </summary>
-          <div className="liquid-menu absolute right-0 top-full mt-3 max-h-[calc(100dvh-7rem)] w-80 overflow-y-auto overscroll-contain rounded-xl border border-border bg-surface p-3 shadow-2xl">
-            <p className="px-3 py-2 text-xs text-[var(--color-muted)]">Choose your next step</p>
-            {[
-              ['Learning hub', '/knowledge', 'All guides and learning paths'],
-              ['Protocol course', '/knowledge/protocols', '12 practical lessons · Free to read'],
-              ['New to development', '/knowledge#beginner', 'HTML, CSS and first projects'],
-              ['Beyond the basics', '/knowledge#intermediate', 'JavaScript, APIs and TypeScript'],
-              ['Working as a junior', '/knowledge#junior', 'Delivery, testing and code review'],
-            ].map(([title, href, description]) => (
-              <Link
-                prefetch={false}
-                key={href}
-                href={href}
-                onClick={() => {
-                  if (learningMenuRef.current) learningMenuRef.current.open = false;
-                }}
-                className="block rounded-lg p-3 hover:bg-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"
-              >
-                <span className="block text-sm font-semibold text-ivory">{title}</span>
-                <span className="mt-1 block text-xs text-[var(--color-muted)]">{description}</span>
-              </Link>
-            ))}
-          </div>
-        </details>
         <span aria-hidden="true" className="mx-3 h-4 w-px bg-[var(--color-border)]" />
         <button
           type="button"
@@ -217,6 +156,7 @@ export function NavbarInteractions() {
           aria-label="Search (Ctrl or Command K)"
         >
           <NavIcon name="search" size={16} />
+          <span className="nav-search-label">Search</span>
         </button>
         <Link
           prefetch={false}
@@ -224,7 +164,7 @@ export function NavbarInteractions() {
           aria-current={pathname === '/contact' ? 'page' : undefined}
           className="ui-primary ml-3"
         >
-          Let&apos;s talk
+          Contact <span aria-hidden="true">↗︎</span>
         </Link>
       </div>
 
@@ -272,9 +212,9 @@ export function NavbarInteractions() {
                 <ThemeSelect />
               </div>
               <h2 className="mb-6 mt-2 text-3xl font-bold tracking-tight text-[var(--color-ivory)]">
-                Explore the site
+                Find your next step
               </h2>
-              <div className="space-y-2">
+              <div className="mobile-primary-links">
                 {LINKS.map(({ name, href }) => {
                   const current = isActivePath(pathname, href);
                   return (
@@ -303,46 +243,48 @@ export function NavbarInteractions() {
                   );
                 })}
               </div>
-              <div className="mt-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-navy)] p-4">
-                <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-muted)]">
-                  Learning paths
-                </h2>
-                <Link
-                  prefetch={false}
-                  href="/knowledge/protocols"
-                  aria-current={
-                    pathname === '/knowledge/protocols'
-                      ? 'page'
-                      : pathname.startsWith('/knowledge/protocols-')
-                        ? 'location'
-                        : undefined
-                  }
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="mb-3 block rounded-lg border border-border bg-surface px-3 py-4 text-accent hover:bg-midnight"
-                >
-                  <span className="block text-base font-semibold">Protocol course →</span>
-                  <span className="mt-1 block text-sm text-muted">
-                    12 practical lessons · Free to read
-                  </span>
-                </Link>
-                <div className="space-y-1">
-                  {[
-                    ['New to development', 'beginner'],
-                    ['Beyond the basics', 'intermediate'],
-                    ['Working as a junior', 'junior'],
-                  ].map(([title, id]) => (
-                    <Link
-                      prefetch={false}
-                      key={id}
-                      href={'/knowledge#' + id}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block min-h-12 rounded-lg px-2 py-3 text-base font-semibold text-[var(--color-accent)] hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"
-                    >
-                      {title} →
-                    </Link>
-                  ))}
+              <details className="mobile-learning">
+                <summary>
+                  Learning paths <span aria-hidden="true">+</span>
+                </summary>
+                <div className="pt-4">
+                  <Link
+                    prefetch={false}
+                    href="/knowledge/protocols"
+                    aria-current={
+                      pathname === '/knowledge/protocols'
+                        ? 'page'
+                        : pathname.startsWith('/knowledge/protocols-')
+                          ? 'location'
+                          : undefined
+                    }
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="mb-3 block rounded-lg border border-border bg-surface px-3 py-4 text-accent hover:bg-midnight"
+                  >
+                    <span className="block text-base font-semibold">Protocol course →</span>
+                    <span className="mt-1 block text-sm text-muted">
+                      12 practical lessons · Free to read
+                    </span>
+                  </Link>
+                  <div className="space-y-1">
+                    {[
+                      ['New to development', 'beginner'],
+                      ['Beyond the basics', 'intermediate'],
+                      ['Working as a junior', 'junior'],
+                    ].map(([title, id]) => (
+                      <Link
+                        prefetch={false}
+                        key={id}
+                        href={'/knowledge#' + id}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block min-h-12 rounded-lg px-2 py-3 text-base font-semibold text-[var(--color-accent)] hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"
+                      >
+                        {title} →
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </details>
               <div className="mt-7 border-t border-[var(--color-border)] pt-6">
                 <div className="flex flex-wrap gap-6 text-sm font-medium text-[var(--color-accent)] underline underline-offset-4">
                   <a href="https://x.com/alhajikallon" target="_blank" rel="noopener noreferrer">

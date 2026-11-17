@@ -53,9 +53,18 @@ export const metadata: Metadata = {
     siteName: 'Alhaji C.M. Kallon',
     type: 'website',
     locale: 'en_SL',
+    images: [
+      {
+        url: '/assets/brand/alhaji-kallon-identity.jpg',
+        width: 1280,
+        height: 640,
+        alt: 'Alhaji C M Kallon — A deliberate balance',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
+    images: ['/assets/brand/alhaji-kallon-identity.jpg'],
     title: 'Alhaji C.M. Kallon | Design Engineer',
     description:
       'I help founders, businesses and organisations turn unclear ideas into useful digital products.',

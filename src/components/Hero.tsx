@@ -20,32 +20,19 @@ export const Hero = () => (
 
       <div className="hero-composition">
         <h1 id="hero-title" className="hero-title">
-          Bold ideas.
+          A deliberate
           <br />
-          <span>Useful things.</span>
+          <span>balance.</span>
         </h1>
-        <div className="hero-poster" aria-hidden="true">
-          <div className="poster-top">
-            <span>AK / DESIGN ENGINEERING</span>
-            <span>001</span>
-          </div>
-          <svg className="poster-symbol" viewBox="0 0 240 240" fill="none">
-            <path
-              d="M0 80H240M0 160H240M80 0V240M160 0V240"
-              stroke="currentColor"
-              strokeOpacity=".2"
-            />
-            <circle cx="120" cy="120" r="80" fill="var(--brand-orange)" />
-            <path d="M67 173 173 67M69 67h104v104" stroke="var(--brand-paper)" strokeWidth="20" />
-            <circle cx="40" cy="40" r="9" fill="var(--brand-paper)" />
-            <path d="M190 204h28m-14-14v28" stroke="var(--brand-paper)" strokeWidth="2" />
-          </svg>
-          <div className="poster-bottom">
-            <span>THINK. SHAPE. BUILD.</span>
-            <span>
-              <Arrow />
-            </span>
-          </div>
+        <div className="hero-identity">
+          <Image
+            src="/assets/brand/alhaji-kallon-identity.jpg"
+            alt="Alhaji C M Kallon — illustrated portrait, navy wordmark and orange emblem. A deliberate balance."
+            width={1280}
+            height={640}
+            sizes="(max-width: 767px) 100vw, 55vw"
+            className="identity-artwork"
+          />
         </div>
       </div>
 

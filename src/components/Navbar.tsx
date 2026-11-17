@@ -11,12 +11,12 @@ export function Navbar() {
     >
       <div className="nav-inner mx-auto flex max-w-[var(--layout-max)] items-center justify-between">
         <Link prefetch={false} href="/" aria-label="Alhaji Kallon — Home" className="swiss-brand">
-          <span className="brand-mark" aria-hidden="true">
-            a<span>k</span>
+          <span className="brand-signature" aria-hidden="true">
+            AK
             <i />
           </span>
           <span className="brand-name">
-            Alhaji Kallon<span>Design engineer</span>
+            Alhaji C M Kallon<span>A deliberate balance</span>
           </span>
         </Link>
         <div className="flex items-center gap-3">

@@ -86,7 +86,7 @@ test('shared text, action and menu colours meet their contrast budgets', async (
     const values = [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16) / 255).map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
     return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
   }
-  for (const [foreground, background] of [['text','background'], ['text','surface'], ['muted','surface'], ['muted','elevated'], ['accent','elevated'], ['text','elevated'], ['muted','background'], ['background','accent'], ['background','action']]) {
+  for (const [foreground, background] of [['text','background'], ['text','surface'], ['muted','surface'], ['muted','elevated'], ['accent','elevated'], ['text','elevated'], ['muted','background'], ['background','accent'], ['on-action','action']]) {
     assert.ok(colours[foreground] && colours[background], 'Missing contrast token');
     const [low, high] = [luminance(colours[foreground]), luminance(colours[background])].sort((a,b) => a-b);
     const ratio = (high + 0.05) / (low + 0.05);
