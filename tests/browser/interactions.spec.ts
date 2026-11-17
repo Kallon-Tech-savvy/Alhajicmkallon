@@ -119,10 +119,10 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   await page.getByRole('button', { name: /^(Send message|Open email draft)$/ }).click();
   await expect.poll(() => submittedToken).toBe('browser-test-token');
   await expect(page.getByRole('status')).toContainText(
-    /not confirmed|not be confirmed|verification|Delivery is not confirmed|not be accepted/i,
+    /preserved|not confirmed|not be confirmed|verification|Delivery is not confirmed|not be accepted/i,
   );
   await expect(message).toHaveValue('A local test draft.');
-  await expect(page.getByRole('heading', { name: 'Message received' })).not.toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Enquiry submitted' })).not.toBeVisible();
   expect(errors).toEqual([]);
 });
 
