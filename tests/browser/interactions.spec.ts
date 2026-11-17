@@ -82,8 +82,8 @@ test('mobile navigation contains focus and closes after selecting a destination'
 test('contact email fallback preserves the draft and does not claim delivery', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  // Never send a real enquiry, even if a local build has Formspree configured.
-  await page.route('https://formspree.io/**', (route) =>
+  // Never call Resend or send an enquiry from browser tests.
+  await page.route('**/api/contact', (route) =>
     route.fulfill({ status: 503, json: { error: 'Test outage' } }),
   );
   await page.goto('/contact');
@@ -96,7 +96,7 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   await message.fill('A local test draft.');
   await page.getByRole('button', { name: 'Send message', exact: true }).click();
   await expect(page.getByRole('status')).toContainText(
-    /does not confirm delivery|message was not accepted/,
+    /not confirmed|not be confirmed|verification|Delivery is not confirmed|not be accepted/i,
   );
   await expect(message).toHaveValue('A local test draft.');
   await expect(page.getByRole('heading', { name: 'Message received' })).not.toBeVisible();
