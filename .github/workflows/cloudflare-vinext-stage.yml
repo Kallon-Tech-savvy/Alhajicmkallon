@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   stage:
-    if: ${{ github.event.head_commit.message == 'ci: stage tested vinext configuration' }}
+    if: "${{ github.event.head_commit.message == 'ci: stage tested vinext configuration' }}"
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
