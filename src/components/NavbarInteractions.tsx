@@ -164,7 +164,7 @@ export function NavbarInteractions() {
           aria-current={pathname === '/contact' ? 'page' : undefined}
           className="ui-primary ml-3"
         >
-          Contact <span aria-hidden="true">↗︎</span>
+          Let’s talk <span aria-hidden="true">↗︎</span>
         </Link>
       </div>
 
