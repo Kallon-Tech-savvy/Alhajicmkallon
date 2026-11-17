@@ -1,0 +1,88 @@
+name: Stage validated vinext adapter (temporary)
+
+on:
+  push:
+    branches: [feat/resend-contact-email]
+
+permissions:
+  contents: read
+
+jobs:
+  stage:
+    if: ${{ github.event.head_commit.message == 'ci: stage tested vinext configuration' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Check compatibility
+        run: npx --yes vinext check
+      - name: Initialize vinext in CI only
+        run: npx --yes vinext init --platform=cloudflare --name alhajicmkallon --cdn-cache=none --data-cache=none --image-optimization=none
+      - name: Add project-specific Workers configuration
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const tsconfig = JSON.parse(fs.readFileSync('tsconfig.json', 'utf8'));
+          if (!tsconfig.include.includes('.cloudflare/types')) tsconfig.include.push('.cloudflare/types');
+          fs.writeFileSync('tsconfig.json', JSON.stringify(tsconfig, null, 2) + '\n');
+
+          const eslint = fs.readFileSync('eslint.config.mjs', 'utf8');
+          if (!eslint.includes('".cloudflare/**"')) {
+            const updated = eslint.replace(
+              '"src/packages/content/lib/generated-content.ts",',
+              '"src/packages/content/lib/generated-content.ts",\n    ".cloudflare/**",\n    ".vinext/**",\n    "dist/**",',
+            );
+            if (updated === eslint) throw Error('Unable to update ESLint ignores safely');
+            fs.writeFileSync('eslint.config.mjs', updated);
+          }
+          let ignore = fs.readFileSync('.gitignore', 'utf8');
+          for (const line of ['.cloudflare/', '.vinext/', 'dist/']) {
+            if (!ignore.split(/\r?\n/).includes(line)) ignore += '\n' + line;
+          }
+          fs.writeFileSync('.gitignore', ignore.replace(/\n+$/, '\n'));
+
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          pkg.scripts['prebuild:vinext'] = pkg.scripts.prebuild;
+          pkg.scripts['deploy:vinext'] = 'npm run prebuild:vinext && vinext-cloudflare deploy';
+          fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+
+          const configPath = 'cloudflare.config.ts';
+          let config = fs.readFileSync(configPath, 'utf8');
+          // Required contact secrets remain server-side and cause a missing
+          // production binding to fail instead of silently sending without protection.
+          if (!config.includes('TURNSTILE_SECRET: bindings.secret()')) {
+            config = config.replace('      ASSETS: bindings.assets(),',
+              '      ASSETS: bindings.assets(),\n      RESEND_API_KEY: bindings.secret(),\n      TURNSTILE_SECRET: bindings.secret(),\n      CONTACT_TO_EMAIL: bindings.secret(),\n      CHAT_CLIENT_IP_HEADER: bindings.text("cf-connecting-ip"),\n      NEXT_PUBLIC_SITE_URL: bindings.text("https://alhajikallon.com"),');
+            fs.writeFileSync(configPath, config);
+          }
+          NODE
+      - name: Verify tests, TypeScript, lint and both builds
+        run: |
+          npm run test:contact
+          npm run typecheck
+          npm run lint
+          npm run build:vinext
+          npm run build
+      - name: Commit only validated runtime configuration
+        env:
+          PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .gitignore eslint.config.mjs tsconfig.json package.json package-lock.json vite.config.ts cloudflare.config.ts
+          if git diff --cached --quiet; then
+            echo "Nothing to stage"
+            exit 0
+          fi
+          git commit -m "chore(cloudflare): add tested vinext Worker adapter"
+          authorization=$(printf 'x-access-token:%s' "$PUSH_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $authorization" push origin HEAD:feat/resend-contact-email
