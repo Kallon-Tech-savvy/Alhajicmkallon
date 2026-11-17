@@ -1,5 +1,6 @@
 import { ThemeSelect } from './ThemeSelect';
 import Link from 'next/link';
+import Image from 'next/image';
 import { NavbarInteractions } from './NavbarInteractions';
 
 /** Static identity with a small client island for navigation controls. */
@@ -11,10 +12,14 @@ export function Navbar() {
     >
       <div className="nav-inner mx-auto flex max-w-[var(--layout-max)] items-center justify-between">
         <Link prefetch={false} href="/" aria-label="Alhaji Kallon — Home" className="swiss-brand">
-          <span className="brand-signature" aria-hidden="true">
-            AK
-            <i />
-          </span>
+          <Image
+            src="/assets/brand/portrait-logo.png"
+            alt=""
+            width={40}
+            height={40}
+            sizes="40px"
+            className="brand-logo"
+          />
           <span className="brand-name">
             Alhaji C M Kallon<span>A deliberate balance</span>
           </span>

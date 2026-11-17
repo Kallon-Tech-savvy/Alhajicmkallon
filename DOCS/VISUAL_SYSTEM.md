@@ -94,8 +94,8 @@ Official references used for this blend:
 The user-supplied identity is preserved at
 `public/assets/brand/alhaji-kallon-identity.jpg` and used in the homepage composition
 and social sharing metadata. Preserve the complete artwork and its 2:1 aspect
-ratio; do not stretch it or apply dark-mode inversion. The compact masthead uses
-live text with an orange slash so the name remains legible on narrow screens.
+ratio; do not stretch it or apply dark-mode inversion. The compact masthead pairs the supplied portrait mark with live text so the
+name remains legible on narrow screens.
 
 Navy `#042333`, warm ivory `#fffaf5`, and orange `#ff8500` now define the brand.
 Orange actions use navy labels; light-theme text links use a darker orange for
@@ -106,3 +106,14 @@ Mobile navigation includes every primary destination and a native Learning paths
 disclosure for course shortcuts. Search stays available in the masthead, with
 intent preloading and a dismissible loading state. Keep keyboard focus containment,
 Escape dismissal, active-page indications and no eager route prefetching.
+
+
+### Portrait logo and icons
+
+`public/assets/brand/portrait-original.jpg` preserves the second supplied artwork.
+Its unchanged composition is resized to a 128px PNG for the masthead, 48px browser
+icon, 180px Apple touch icon, and a multi-size 16/32/48px favicon. Next.js serves
+the browser icons through its file-based metadata conventions. Keep the logo
+visible in both themes; its adjacent name provides the home link's accessible
+identity, so the image has empty alternative text. At 320px, the tagline is hidden
+to keep the portrait, name, search and menu usable together.
