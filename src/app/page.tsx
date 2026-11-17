@@ -5,7 +5,20 @@ import { Hero } from '@/components/Hero';
 import { FeaturedWork } from '@/components/FeaturedWork';
 import { Footer } from '@/components/Footer';
 
-const PRACTICE = ['Find the real problem.', 'Make the experience clear.', 'Build it to work.'];
+const PRACTICE = [
+  {
+    title: 'Find the real problem.',
+    description: 'Talk to people, learn the constraints, and agree what success looks like.',
+  },
+  {
+    title: 'Make the experience clear.',
+    description: 'Shape the structure, words and design so people know what to do next.',
+  },
+  {
+    title: 'Build it to last.',
+    description: 'Engineer carefully, test, and check that it works in the conditions people use it in.',
+  },
+];
 
 export default function Home() {
   return (
@@ -22,7 +35,7 @@ export default function Home() {
           <span aria-hidden="true">
             <Asterisk />
           </span>
-          <span>Frontend engineering</span>
+          <span>Web engineering</span>
           <span aria-hidden="true">
             <Arrow />
           </span>
@@ -48,14 +61,14 @@ export default function Home() {
             </h2>
             <div className="perspective-copy">
               <p>
-                Good products start with understanding people. Their goals, their constraints, and
+                Good products start with understanding people: their goals, their constraints, and
                 the world they live in.
               </p>
               <p>
-                My perspective is shaped by life in Sierra Leone and work with organisations like
-                AEEM. I bring curiosity to the problem and care to the details, from the first
-                question to the working product.
+                My perspective is shaped by life in Sierra Leone and by work with an organisation
+                like AEEM.
               </p>
+              <p>The balance I aim for: think clearly, design simply, build carefully.</p>
               <Link prefetch={false} href="/about" className="swiss-text-link">
                 Meet the person behind the work <Arrow />
               </Link>
@@ -63,9 +76,12 @@ export default function Home() {
           </div>
           <ol className="practice-steps">
             {PRACTICE.map((step, index) => (
-              <li key={step}>
+              <li key={step.title}>
                 <span className="swiss-meta">0{index + 1}</span>
-                <h3>{step}</h3>
+                <div className="practice-step-copy">
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
                 <span aria-hidden="true">
                   <Arrow />
                 </span>
@@ -79,7 +95,7 @@ export default function Home() {
         <div className="mx-auto max-w-[var(--layout-max)]">
           <div className="swiss-section-heading">
             <div>
-              <p className="swiss-meta section-index">03 / Keep the curiosity going</p>
+              <p className="swiss-meta section-index">03 / Keep learning with me</p>
               <h2 id="explore-heading">
                 Made to be
                 <br />
@@ -87,7 +103,7 @@ export default function Home() {
               </h2>
             </div>
             <p className="max-w-sm text-muted">
-              Notes, experiments and practical guides. A little of what I’m learning along the way.
+              Notes, experiments and practical guides from what I’m learning along the way.
             </p>
           </div>
           <div className="explore-grid">
@@ -108,7 +124,7 @@ export default function Home() {
               </span>
             </Link>
             <Link prefetch={false} href="/knowledge" className="explore-card explore-card-blue">
-              <span className="swiss-meta">Knowledge / Learn by building</span>
+              <span className="swiss-meta">Learn / Learn by building</span>
               <span className="explore-symbol" aria-hidden="true">
                 &#123; &#125;
                 <span>
@@ -117,10 +133,10 @@ export default function Home() {
               </span>
               <div>
                 <h3>Pass the knowledge on.</h3>
-                <p>Practical guides and a free, 12-part protocol course.</p>
+                <p>Practical guides and a free 12-part course on how software systems communicate, stay secure and recover from failure.</p>
               </div>
               <span className="explore-card-link">
-                Find your next step <Arrow />
+                Start learning <Arrow />
               </span>
             </Link>
           </div>
