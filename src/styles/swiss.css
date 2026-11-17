@@ -87,28 +87,21 @@
   gap: 1rem;
   flex-shrink: 0;
 }
-.brand-mark {
-  position: relative;
-  display: flex;
-  align-items: center;
-  color: var(--ui-background);
-  background: var(--ui-text);
-  padding: 0 0.3rem 0.12rem;
-  font-weight: 600;
-  font-size: 1.875rem;
-  line-height: 1.1;
-  letter-spacing: -0.1em;
+.brand-signature {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 1.6rem;
+  font-weight: 650;
+  letter-spacing: -0.08em;
+  border-right: 1px solid var(--shell-border);
+  padding-right: 1rem;
 }
-.brand-mark span {
-  margin-right: 0.16rem;
-}
-.brand-mark i {
-  position: absolute;
-  width: 7px;
-  height: 7px;
+.brand-signature i {
+  width: 0.45rem;
+  height: 0.65rem;
+  margin-left: 0.3rem;
   background: var(--brand-orange);
-  right: -3px;
-  top: -3px;
+  transform: skew(-20deg);
 }
 .brand-name {
   font-size: 0.875rem;
@@ -176,50 +169,53 @@
   padding-block: var(--spacing-09);
 }
 .hero-title {
-  font-size: clamp(4rem, 8.5vw, 7rem);
+  font-size: clamp(3rem, 6.5vw, 6rem);
   line-height: 1;
   letter-spacing: -0.045em;
   font-weight: 500;
   text-wrap: initial;
   animation: title-arrive 0.6s var(--ease-premium) both;
-  grid-column: span 12;
+  grid-column: span 7;
 }
 .hero-title > span {
   color: var(--ui-accent);
 }
-.hero-poster {
+.hero-identity {
+  grid-column: span 9;
   width: 100%;
-  max-width: 256px;
-  justify-self: end;
-  background: var(--brand-blue);
-  color: var(--brand-paper);
-  padding: 1rem;
-  transform: none;
-  transition: none;
-  grid-column: span 4;
+  background: #fffaf5;
+  border-bottom: 4px solid var(--brand-orange);
 }
-.poster-top,
-.poster-bottom {
+.identity-artwork {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.nav-search-label {
+  font-size: 0.875rem;
+  margin-left: 0.35rem;
+}
+.mobile-primary-links > a {
+  border-radius: 0;
+  border-width: 0 0 1px;
+  padding-inline: 0.75rem;
+  min-height: 3.5rem;
+}
+.mobile-learning {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--ui-border);
+}
+.mobile-learning summary {
   display: flex;
   justify-content: space-between;
-  gap: 0.5rem;
-  font-size: clamp(0.45rem, 0.62vw, 0.625rem);
-  letter-spacing: 0.035em;
-  font-weight: 550;
+  cursor: pointer;
+  font-weight: 500;
+  min-height: 2rem;
+  align-items: center;
 }
-.poster-symbol {
-  display: block;
-  margin-block: 0.75rem;
-  width: 100%;
-  aspect-ratio: 1;
-  transition: transform var(--motion-moderate) var(--ease-premium);
-}
-.hero-poster:hover .poster-symbol {
-  transform: rotate(-8deg);
-}
-.poster-bottom {
-  border-top: 1px solid #ffffff55;
-  padding-top: 0.75rem;
+.mobile-learning[open] summary span {
+  transform: rotate(45deg);
 }
 .hero-bottom {
   display: grid;
@@ -703,9 +699,6 @@
   .swiss-brand {
     gap: 0.75rem;
   }
-  .brand-mark {
-    font-size: 1.9rem;
-  }
   .swiss-hero {
     padding-top: 6rem;
     padding-bottom: 2.5rem;
@@ -727,12 +720,6 @@
     grid-column: auto;
     font-size: clamp(2.5rem, 12.5vw, 5.5rem);
     letter-spacing: -0.04em;
-  }
-  .hero-poster {
-    width: 100%;
-    max-width: 260px;
-    justify-self: end;
-    display: none;
   }
   .hero-bottom {
     grid-template-columns: 1fr;
@@ -880,4 +867,30 @@
 }
 .explore-card-blue:hover {
   background: var(--ui-action-hover);
+}
+
+@media (max-width: 767px) {
+  .hero-composition {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .hero-title,
+  .hero-identity {
+    grid-column: 1;
+  }
+  .hero-title {
+    font-size: clamp(3.5rem, 12vw, 5rem);
+  }
+  .brand-signature {
+    display: none;
+  }
+  .swiss-brand {
+    gap: 0;
+  }
+  .nav-inner {
+    gap: 0.75rem;
+  }
+  .brand-name {
+    font-size: 0.875rem;
+  }
 }

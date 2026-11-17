@@ -41,12 +41,12 @@ export const Footer = () => (
       <div className="footer-details">
         <div>
           <Link prefetch={false} href="/" className="footer-name">
-            Alhaji C.M. Kallon
+            Alhaji C M Kallon
           </Link>
           <p className="mt-2 text-sm text-muted">
-            Independent design engineer.
+            A deliberate balance.
             <br />
-            From Freetown, with curiosity.
+            Design, engineering and curiosity.
           </p>
           <a href="mailto:info@alhajikallon.com" className="swiss-text-link mt-4">
             info@alhajikallon.com <Arrow />
@@ -78,7 +78,7 @@ export const Footer = () => (
         </div>
       </div>
       <div className="footer-colophon swiss-meta">
-        <span>© {new Date().getFullYear()} Alhaji C.M. Kallon</span>
+        <span>© {new Date().getFullYear()} Alhaji C M Kallon</span>
         <span>
           Thoughtfully designed. Carefully built.{' '}
           <span aria-hidden="true">

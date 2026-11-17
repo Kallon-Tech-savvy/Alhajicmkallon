@@ -55,6 +55,11 @@ test('identity imagery stays small and lazy rather than competing with the displ
         .filter(ts.isJsxAttribute)
         .map((node) => [node.name.getText(file), node.initializer]),
     );
+    if (attributes.get('src')?.text === '/assets/brand/alhaji-kallon-identity.jpg') {
+      assert.equal(attributes.get('sizes')?.text, '(max-width: 767px) 100vw, 55vw');
+      assert.ok(!attributes.has('priority'));
+      continue;
+    }
     assert.equal(attributes.get('loading')?.text, 'lazy');
     assert.ok(!attributes.has('priority'));
     assert.equal(attributes.get('sizes')?.text, '56px');

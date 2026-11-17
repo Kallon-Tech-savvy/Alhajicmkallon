@@ -223,3 +223,28 @@ for (const kind of ['search', 'chat'] as const) {
     })).toBeVisible();
   });
 }
+
+test('desktop Learn navigates directly and mobile learning shortcuts remain keyboard accessible', async ({ page }) => {
+  await page.goto('/');
+  const navigation = page.getByRole('navigation', { name: 'Primary navigation', exact: true });
+  await navigation.getByRole('link', { name: 'Learn', exact: true }).click();
+  await expect(page).toHaveURL(/\/knowledge$/);
+  await expect(navigation.getByRole('link', { name: 'Learn', exact: true })).toHaveAttribute('aria-current', 'page');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('button', { name: 'Open navigation menu' }).click();
+  const menu = page.getByRole('region', { name: 'Mobile navigation' });
+  await expect(menu.getByRole('link', { name: /Protocol course/ })).not.toBeVisible();
+  const paths = menu.locator('summary');
+  await paths.focus();
+  await paths.press('Tab');
+  await expect(menu.getByRole('link', { name: 'Twitter', exact: true })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(paths).toBeFocused();
+  await paths.press('Enter');
+  await expect(menu.getByRole('link', { name: /Protocol course/ })).toBeVisible();
+  await paths.press('Tab');
+  await expect(menu.getByRole('link', { name: /Protocol course/ })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(menu).not.toBeVisible();
+  await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeFocused();
+});

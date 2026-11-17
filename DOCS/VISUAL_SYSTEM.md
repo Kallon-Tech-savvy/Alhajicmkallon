@@ -88,3 +88,21 @@ Official references used for this blend:
 - [Carbon colour tokens](https://www.carbondesignsystem.com/building-blocks/foundations/color/tokens)
 - [Text input specifications](https://www.carbondesignsystem.com/building-blocks/core/components/text-input/specifications)
 - [Button specifications](https://www.carbondesignsystem.com/building-blocks/core/components/button/specifications)
+
+## Personal identity
+
+The user-supplied identity is preserved at
+`public/assets/brand/alhaji-kallon-identity.jpg` and used in the homepage composition
+and social sharing metadata. Preserve the complete artwork and its 2:1 aspect
+ratio; do not stretch it or apply dark-mode inversion. The compact masthead uses
+live text with an orange slash so the name remains legible on narrow screens.
+
+Navy `#042333`, warm ivory `#fffaf5`, and orange `#ff8500` now define the brand.
+Orange actions use navy labels; light-theme text links use a darker orange for
+contrast. IBM Plex typography, semantic tokens, and Swiss grid spacing remain.
+
+Desktop navigation exposes Work, About, Writing, Learn and Contact directly.
+Mobile navigation includes every primary destination and a native Learning paths
+disclosure for course shortcuts. Search stays available in the masthead, with
+intent preloading and a dismissible loading state. Keep keyboard focus containment,
+Escape dismissal, active-page indications and no eager route prefetching.
