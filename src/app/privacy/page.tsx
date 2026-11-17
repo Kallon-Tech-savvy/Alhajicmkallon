@@ -51,7 +51,12 @@ export default function PrivacyPage() {
             <h2 className="mb-3 text-xl font-semibold text-ivory">Contact and enquiries</h2>
             <p>
               If you voluntarily contact me, I use the details you provide to respond to your
-              enquiry. For questions about website privacy or your communication, email{' '}
+              enquiry. Contact form submissions use Cloudflare Turnstile for abuse checks and
+              Resend to send email to a configured inbox. Submitted details include your name,
+              email, enquiry topic and message. The form does not store submissions in a
+              separate site database, but the email service and recipient mailbox may retain
+              copies under their own policies. Optional acknowledgement emails are sent only
+              when enabled. For questions about website privacy or your communication, email{' '}
               <a className="text-[var(--color-accent)] underline underline-offset-4" href="mailto:info@alhajikallon.com">
                 info@alhajikallon.com
               </a>.
