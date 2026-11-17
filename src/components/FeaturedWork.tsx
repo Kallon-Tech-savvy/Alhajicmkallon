@@ -144,7 +144,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
                 <div className="work-evidence">
                   <p>
                     <strong>My role:</strong> Backend design and engineering using TypeScript,
-                    Express and Supabase. Team involvement has not been specified.
+                    Express and Supabase.
                   </p>
                   <p>
                     <strong>What the evidence says so far:</strong> Automated backend tests and
