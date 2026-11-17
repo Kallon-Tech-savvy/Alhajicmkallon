@@ -9,6 +9,8 @@ import { buildContactMailto } from '@/lib/contact-form.mjs';
 type TurnstileApi = {
   render: (element: HTMLElement, options: {
     sitekey: string;
+    action: 'contact';
+    size: 'flexible';
     theme: 'auto';
     callback: (token: string) => void;
     'expired-callback': () => void;
@@ -31,7 +33,8 @@ export function ContactForm() {
     message: '',
   });
 
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  // The site key is public. A build-time override is optional for staging.
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAAGF6eqlDlOmcJvuf';
   const [captchaToken, setCaptchaToken] = useState('');
   const [honeypot, setHoneypot] = useState('');
   const [scriptReady, setScriptReady] = useState(false);
@@ -43,6 +46,8 @@ export function ContactForm() {
     if (!turnstileSiteKey || !scriptReady || !showForm || !captchaElement.current || !window.turnstile) return;
     const id = window.turnstile.render(captchaElement.current, {
       sitekey: turnstileSiteKey,
+      action: 'contact',
+      size: 'flexible',
       theme: 'auto',
       callback: setCaptchaToken,
       'expired-callback': () => setCaptchaToken(''),
