@@ -39,7 +39,9 @@ Production integration tests require `npm start` in another terminal:
 node --test scripts/discovery-endpoints.test.mjs
 ```
 
-See [architecture and module ownership](DOCS/ARCHITECTURE.md),
+See [Cloudflare Workers deployment](DOCS/CLOUDFLARE_WORKERS.md),
+[Resend contact delivery and Cloudflare setup](DOCS/CONTACT_EMAIL.md),
+[architecture and module ownership](DOCS/ARCHITECTURE.md),
 [chat deployment configuration](DOCS/CHAT_CONFIGURATION.md), and
 [content authoring](DOCS/CONTENT_AUTHORING.md).
 

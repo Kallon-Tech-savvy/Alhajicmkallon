@@ -82,24 +82,47 @@ test('mobile navigation contains focus and closes after selecting a destination'
 test('contact email fallback preserves the draft and does not claim delivery', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  // Never send a real enquiry, even if a local build has Formspree configured.
-  await page.route('https://formspree.io/**', (route) =>
-    route.fulfill({ status: 503, json: { error: 'Test outage' } }),
+  // Simulate the existing widget. Never call Cloudflare or Resend in browser tests.
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/javascript',
+      body: `window.turnstile = {
+        render: function(el, config) {
+          if (config.sitekey !== '0x4AAAAAAGF6eqlDlOmcJvuf' || config.action !== 'contact') {
+            throw Error('Unexpected widget configuration');
+          }
+          config.callback('browser-test-token');
+          window.__turnstileTestReady = true;
+          return 'contact-test-widget';
+        },
+        reset: function() {},
+        remove: function() {}
+      };`,
+    }),
   );
+  let submittedToken = '';
+  await page.route('**/api/contact', (route) => {
+    const data = route.request().postDataJSON();
+    submittedToken = data.turnstileToken;
+    return route.fulfill({ status: 503, json: { error: 'Test outage' } });
+  });
   await page.goto('/contact');
+  await page.waitForFunction(() => (window as typeof window & { __turnstileTestReady?: boolean }).__turnstileTestReady === true);
   const intent = page.getByRole('button', { name: 'Improve a product', exact: true });
   await intent.click();
   await expect(intent).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('textbox', { name: 'Your name', exact: true }).fill('Test Visitor');
   await page.getByRole('textbox', { name: 'Your email', exact: true }).fill('visitor@example.com');
-  const message = page.getByRole('textbox', { name: 'What would you like to change or achieve?' });
+  const message = page.getByRole('textbox', { name: 'What are you trying to achieve?' });
   await message.fill('A local test draft.');
-  await page.getByRole('button', { name: 'Send message', exact: true }).click();
+  await page.getByRole('button', { name: /^(Send enquiry|Open email draft)$/ }).click();
+  await expect.poll(() => submittedToken).toBe('browser-test-token');
   await expect(page.getByRole('status')).toContainText(
-    /does not confirm delivery|message was not accepted/,
+    /preserved|not confirmed|not be confirmed|verification|Delivery is not confirmed|not be accepted/i,
   );
   await expect(message).toHaveValue('A local test draft.');
-  await expect(page.getByRole('heading', { name: 'Message received' })).not.toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Enquiry submitted' })).not.toBeVisible();
   expect(errors).toEqual([]);
 });
 

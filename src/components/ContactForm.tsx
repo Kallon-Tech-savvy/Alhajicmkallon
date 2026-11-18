@@ -1,9 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Script from 'next/script';
 import { Send, CheckCircle2 } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { buildContactMailto } from '@/lib/contact-form.mjs';
+
+type TurnstileApi = {
+  render: (element: HTMLElement, options: {
+    sitekey: string;
+    action: 'contact';
+    size: 'compact' | 'flexible';
+    theme: 'auto';
+    callback: (token: string) => void;
+    'expired-callback': () => void;
+    'error-callback': () => void;
+  }) => string;
+  reset: (id?: string) => void;
+  remove: (id?: string) => void;
+};
+declare global { interface Window { turnstile?: TurnstileApi } }
 
 export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'fallback'>(
@@ -17,77 +33,143 @@ export function ContactForm() {
     message: '',
   });
 
+  // The site key is public. A build-time override is optional for staging.
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAAGF6eqlDlOmcJvuf';
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [scriptReady, setScriptReady] = useState(false);
+  const [widgetSize, setWidgetSize] = useState<'compact' | 'flexible'>('flexible');
+  const captchaElement = useRef<HTMLDivElement>(null);
+  const captchaWidgetId = useRef<string | undefined>(undefined);
+  const showForm = status !== 'success';
+
+  // Cloudflare's flexible widget has a 300px minimum width. Narrow mobile
+  // containers need the 150px compact widget instead of horizontal overflow.
+  useEffect(() => {
+    const element = captchaElement.current;
+    if (!showForm || !element) return;
+    const syncSize = () => {
+      setWidgetSize(element.getBoundingClientRect().width < 300 ? 'compact' : 'flexible');
+    };
+    syncSize();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(syncSize);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [showForm]);
+
+  useEffect(() => {
+    if (!turnstileSiteKey || !scriptReady || !showForm || !captchaElement.current || !window.turnstile) return;
+    const id = window.turnstile.render(captchaElement.current, {
+      sitekey: turnstileSiteKey,
+      action: 'contact',
+      size: widgetSize,
+      theme: 'auto', 
+      callback: setCaptchaToken,
+      'expired-callback': () => setCaptchaToken(''),
+      'error-callback': () => setCaptchaToken(''),
+    });
+    captchaWidgetId.current = id;
+    return () => {
+      window.turnstile?.remove(id);
+      captchaWidgetId.current = undefined;
+    };
+  }, [turnstileSiteKey, scriptReady, showForm, widgetSize]);
+
+  const resetVerification = () => {
+    setCaptchaToken('');
+    window.turnstile?.reset(captchaWidgetId.current);
+  };
+
+  const openDraft = () => {
+    window.location.href = buildContactMailto({ ...formData, intent: selectedIntent });
+    setStatus('fallback');
+    setStatusMessage('Your email app should open with a draft. Delivery is not confirmed until you send it.');
+  };
+
   const intentOptions = [
     'Clarify an idea',
     'Design and build a product',
     'Improve a product',
+    'Suggest a guide or correction',
     'Something else',
   ];
 
-  const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('loading');
     setStatusMessage('');
 
-    if (!formspreeId) {
-      const mailtoLink = buildContactMailto({
-        ...formData,
-        intent: selectedIntent,
-      });
-
-      if (typeof window !== 'undefined') {
-        window.location.href = mailtoLink;
-      }
-
-      setStatus('fallback');
-      setStatusMessage(
-        'Your email app should open with a draft. This does not confirm delivery, so please send the draft or email info@alhajikallon.com for general enquiries or dev@alhajikallon.com for development. Your message remains in this form until you confirm it has been sent.',
-      );
+    if (!turnstileSiteKey) {
+      openDraft();
       return;
     }
-
+    if (!captchaToken) {
+      setStatus('error');
+      setStatusMessage('Please complete the verification before sending your message.');
+      return;
+    }
+    setStatus('loading');
     try {
-      const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, subject: `Inquiry: ${selectedIntent || 'General'}` }),
+        cache: 'no-store',
+        body: JSON.stringify({
+          ...formData,
+          intent: selectedIntent,
+          website: honeypot,
+          turnstileToken: captchaToken,
+        }),
       });
-
-      if (response.ok) {
+      const payload: unknown = await response.json().catch(() => null);
+      const result =
+        payload !== null && typeof payload === 'object' && !Array.isArray(payload)
+          ? (payload as { ok?: unknown; error?: unknown })
+          : null;
+      if (response.ok && result?.ok === true) {
         setStatus('success');
-        setStatusMessage(
-          'Thanks — your message has been sent. I’ll review it and reply with a useful next step.',
-        );
+        setStatusMessage('Thank you. Your enquiry has been submitted for delivery. I’ll review it and respond when I can.');
         setFormData({ name: '', email: '', message: '' });
         setSelectedIntent('');
+        setHoneypot('');
+        setCaptchaToken('');
       } else {
         setStatus('error');
         setStatusMessage(
-          'The message was not accepted. You can try again or open an email draft with your message preserved.',
+          typeof result?.error === 'string'
+            ? result.error + ' Your message has been preserved; try again or open an email draft.'
+            : 'The message could not be confirmed. Your message has been preserved; try again or open an email draft.',
         );
+        resetVerification();
       }
     } catch {
       setStatus('error');
       setStatusMessage(
-        'The message could not be sent. Check your connection, try again, or open an email draft with your message preserved.',
+        'Something went wrong and delivery could not be confirmed. Your message is still here. Try again or email info@alhajikallon.com directly.',
       );
+      resetVerification();
     }
   };
 
   return (
     <Reveal variant="up" delay={120} className="lg:col-span-7">
       <div className="ui-form-panel">
+        {turnstileSiteKey && (
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+            strategy="afterInteractive"
+            onReady={() => setScriptReady(true)}
+          />
+        )}
         {status !== 'success' ? (
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="ui-form-heading">
-              <span className="ui-label">Project enquiry</span>
+              <span className="ui-label">Project enquiry or feedback</span>
               <h2>Tell me what you have in mind.</h2>
-              <p>Your name, email and message are required. The topic is optional.</p>
+              <p>Name, email and message are required. Choosing a topic is optional.</p>
             </div>
             <fieldset>
-              <legend className="ui-label">What would you like to work on?</legend>
+              <legend className="ui-label">What would you like to work on? (optional)</legend>
               <div className="flex flex-wrap gap-2">
                 {intentOptions.map((option) => (
                   <button
@@ -136,13 +218,17 @@ export function ContactForm() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="ui-field"
                   placeholder="you@company.com"
+                  aria-describedby="contact-email-help"
                 />
+                <p id="contact-email-help" className="text-xs text-muted">
+                  I’ll use this address to reply to you, and to acknowledge your enquiry if confirmations are enabled.
+                </p>
               </div>
             </div>
 
             <div className="space-y-2">
               <label htmlFor="contact-message" className="ui-label">
-                What would you like to change or achieve?
+                What are you trying to achieve?
               </label>
               <textarea
                 required
@@ -153,9 +239,36 @@ export function ContactForm() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="ui-field"
-                placeholder="What is happening now, who does it affect, and what would a better outcome look like? Share whatever you know; it is fine if the idea is still taking shape."
+                placeholder="What is happening now, who does it affect, and what would a better outcome look like?"
+                aria-describedby="contact-message-help"
+              />
+              <p id="contact-message-help" className="text-xs text-muted">
+                Tell me what you know so far and where you need help.
+              </p>
+            </div>
+
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <label htmlFor="contact-website">Leave this field empty</label>
+              <input
+                id="contact-website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
               />
             </div>
+
+            {turnstileSiteKey ? (
+              <div>
+                <div ref={captchaElement} aria-label="Spam protection verification" />
+                <p className="mt-2 text-xs text-muted">Verification helps protect this form from spam.</p>
+              </div>
+            ) : (
+              <p className="text-sm text-muted">
+                Direct submission is not configured yet. You can still prepare an email draft below.
+              </p>
+            )}
 
             <button
               type="submit"
@@ -163,10 +276,10 @@ export function ContactForm() {
               className="ui-primary w-full transition-colors"
             >
               {status === 'loading' ? (
-                'Sending message…'
+                'Sending…'
               ) : (
                 <>
-                  Send message <Send size={14} />
+                  {turnstileSiteKey ? 'Send enquiry' : 'Open email draft'} <Send size={14} />
                 </>
               )}
             </button>
@@ -181,20 +294,11 @@ export function ContactForm() {
                   className={`font-body text-sm leading-relaxed ${status === 'error' ? 'text-danger' : 'text-warning'}`}
                 >
                   {statusMessage ||
-                    'The message could not be sent. Please try again or use the email draft fallback.'}
+                    'Your message has not been confirmed. Please retry or open an email draft.'}
                 </p>
                 <button
                   type="button"
-                  onClick={() => {
-                    window.location.href = buildContactMailto({
-                      ...formData,
-                      intent: selectedIntent,
-                    });
-                    setStatus('fallback');
-                    setStatusMessage(
-                      'Your email app should open with a draft. This does not confirm delivery; send the draft to complete the message.',
-                    );
-                  }}
+                  onClick={openDraft}
                   className="ui-ghost mt-3"
                 >
                   Open email draft instead
@@ -212,10 +316,10 @@ export function ContactForm() {
               <CheckCircle2 size={32} />
             </div>
             <div>
-              <h3 className="font-display text-2xl font-normal text-ivory">Message received</h3>
+              <h3 className="font-display text-2xl font-normal text-ivory">Enquiry submitted</h3>
               <p className="text-muted font-body text-sm mt-2 max-w-xs leading-relaxed">
                 {statusMessage ||
-                  'Your note has been received. I’ll follow up within a day or two with a thoughtful response.'}
+                  'Your enquiry has been submitted for delivery. I’ll respond when I can.'}
               </p>
             </div>
             <button

@@ -52,6 +52,8 @@ jobs:
         run: npm run lint
       - name: Check deployment wizard shell syntax
         run: bash -n scripts/wizard-vercel-deployment.sh
+      - name: Build Cloudflare Worker with vinext
+        run: npm run build:vinext
       - name: Production build
         run: npm run build
       - name: Verify browser bundle excludes published full-text content
