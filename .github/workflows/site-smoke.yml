@@ -19,5 +19,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Probe live public pages and safe GET-only API routes
+      - name: Probe live pages, API method gates and one quota-backed FAQ
         run: node --test scripts/live-site-smoke.test.mjs
