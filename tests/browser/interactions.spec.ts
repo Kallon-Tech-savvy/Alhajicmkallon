@@ -108,6 +108,8 @@ test('contact email fallback preserves the draft and does not claim delivery', a
     return route.fulfill({ status: 503, json: { error: 'Test outage' } });
   });
   await page.goto('/contact');
+  await expect(page.getByRole('button', { name: 'Open email draft instead', exact: true })).toBeVisible();
+  await expect(page.getByText('You will need to send it yourself.', { exact: false })).toBeVisible();
   await page.waitForFunction(() => (window as typeof window & { __turnstileTestReady?: boolean }).__turnstileTestReady === true);
   const intent = page.getByRole('button', { name: 'Improve a product', exact: true });
   await intent.click();
@@ -122,6 +124,7 @@ test('contact email fallback preserves the draft and does not claim delivery', a
     /preserved|not confirmed|not be confirmed|verification|Delivery is not confirmed|not be accepted/i,
   );
   await expect(message).toHaveValue('A local test draft.');
+  await expect(page.getByRole('button', { name: 'Open email draft instead', exact: true })).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Enquiry submitted' })).not.toBeVisible();
   expect(errors).toEqual([]);
 });
