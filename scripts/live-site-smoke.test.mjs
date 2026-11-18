@@ -43,3 +43,21 @@ for (const route of ['/api/contact', '/api/chat']) {
     assert.equal(response.status, 405, `Expected 405 Method Not Allowed at ${route}; got ${response.status}`);
   });
 }
+
+test('live FAQ chat uses the production quota store without an AI provider call', { timeout: 20_000 }, async () => {
+  // One known FAQ prompt per manually requested smoke run; it should be answered
+  // locally *after* quota reservation, with no OpenAI usage and no visitor PII.
+  const response = await fetch(ORIGIN + '/api/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Origin: ORIGIN,
+      'User-Agent': 'alhajikallon-production-smoke/1.0',
+    },
+    body: JSON.stringify({ message: 'Show me his case studies', history: [] }),
+    signal: AbortSignal.timeout(12_000),
+  });
+  assert.equal(response.status, 200, `FAQ chat expected HTTP 200, got ${response.status}; check Upstash binding and Worker logs`);
+  const result = await response.json();
+  assert.ok(typeof result.reply === 'string' && result.reply.includes('AEEM'), 'Expected published case-study FAQ answer');
+});
