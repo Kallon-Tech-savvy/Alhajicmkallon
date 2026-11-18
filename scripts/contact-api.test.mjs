@@ -95,6 +95,42 @@ test('missing secrets fail closed and send no email', async () => {
   assert.equal(api.sends.length, 0);
 });
 
+test('configuration failures log only affected setting names and no secrets or visitor details', async () => {
+  const cases = [
+    [{ ...env, TURNSTILE_SECRET_KEY: undefined }, ['TURNSTILE_SECRET']],
+    [{ ...env, RESEND_API_KEY: '' }, ['RESEND_API_KEY']],
+    [{ ...env, CONTACT_TO_EMAIL: 'not-an-email' }, ['CONTACT_TO_EMAIL']],
+    [{ ...env, CONTACT_DEV_TO_EMAIL: 'not-an-email' }, ['CONTACT_DEV_TO_EMAIL']],
+    [
+      { ...env, RESEND_API_KEY: '', TURNSTILE_SECRET_KEY: undefined, CONTACT_TO_EMAIL: '' },
+      ['RESEND_API_KEY', 'TURNSTILE_SECRET', 'CONTACT_TO_EMAIL'],
+    ],
+  ];
+  for (const [runtime, expected] of cases) {
+    const warnings = [];
+    const handler = createContactHandler({
+      getEnv: () => runtime,
+      fetcher: () => { throw Error('Configuration must fail before external calls'); },
+      logger: { warn: (...args) => warnings.push(args) },
+    });
+    const response = await handler(request());
+    assert.equal(response.status, 503);
+    assert.deepEqual(await response.json(), { error: 'The contact service is unavailable.' });
+    assert.deepEqual(warnings, [
+      ['contact_configuration_unavailable', { fields: expected }],
+    ]);
+    const logged = JSON.stringify(warnings);
+    assert.ok(!logged.includes(valid.name));
+    assert.ok(!logged.includes(valid.email));
+    assert.ok(!logged.includes(valid.message));
+    assert.ok(!logged.includes(valid.turnstileToken));
+    assert.ok(!logged.includes(env.RESEND_API_KEY));
+    assert.ok(!logged.includes(env.TURNSTILE_SECRET_KEY));
+    assert.ok(!logged.includes(env.CONTACT_TO_EMAIL));
+    assert.ok(!logged.includes(env.CONTACT_DEV_TO_EMAIL));
+  }
+});
+
 test('invalid Turnstile response or hostname prevents delivery', async () => {
   for (const captcha of [
     { success: false, hostname: 'alhajikallon.com', action: 'contact' },

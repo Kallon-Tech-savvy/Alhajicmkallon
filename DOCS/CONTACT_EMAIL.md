@@ -128,6 +128,40 @@ No tests contact the real Resend API. Provider calls and the existing
 Turnstile browser script are mocked. After deployment, verify the Cloudflare Worker on the custom domain
 has the required **runtime** secrets, not only build variables.
 
+### Diagnose a live 503 without exposing secrets
+
+If a well-formed submission returns **503** and the public error says
+`The contact service is unavailable.`, the server fails **before** Turnstile
+Siteverify. With the contact runtime diagnostic deployed, a matching
+`contact_configuration_unavailable` warning lists **only setting names** under
+`fields`; no secret values, recipient email addresses, or submitted form data
+are logged by that diagnostic.
+
+1. Open Cloudflare Dashboard > Workers & Pages > `alhajicmkallon` >
+   **Observability > Logs** (or enable real-time logs if unavailable).
+2. Open the existing GitHub **Public production route smoke** workflow and
+   manually run it against the latest production deployment. It sends only one
+   deliberately invalid Turnstile token; it **cannot send an email**.
+3. Filter Worker logs for `contact_configuration_unavailable`, and read only
+   the array of setting names in `fields`.
+4. In the Worker's **Settings > Variables and Secrets**, correct those settings.
+   Use **Secret** type for `RESEND_API_KEY` and `TURNSTILE_SECRET`; keep the
+   receiving inbox configuration private. Cloudflare requires **Deploy** after
+   changes for them to take effect. Do not paste the secret values into chat,
+   issues, screenshots or logs.
+5. Repeat the negative test: an invalid token should now return **422**
+   (`Verification expired or failed`). Then submit one genuine enquiry from
+   the browser and verify a delivered message in a working mailbox.
+
+A 422 response only establishes token rejection and readiness to attempt
+delivery; it does **not** prove Resend acceptance or inbox receipt. If the
+setting names are present and the test still returns 503, verify that the
+Worker version and secret bindings being edited are the ones serving
+`alhajikallon.com`.
+
+See [Cloudflare Workers real-time logs](https://developers.cloudflare.com/workers/observability/logs/real-time-logs/)
+and [Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/).
+
 ## 5. Source structure and responsibilities
 
 - src/components/ContactForm.tsx: browser form, Turnstile widget, success/error
