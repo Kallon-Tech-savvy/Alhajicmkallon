@@ -1,0 +1,23 @@
+name: Public production route smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [fix/cloudflare-chat-runtime-bindings]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Probe live public pages and safe GET-only API routes
+        run: node --test scripts/live-site-smoke.test.mjs
