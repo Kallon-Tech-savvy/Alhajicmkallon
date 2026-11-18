@@ -283,6 +283,19 @@ export function ContactForm() {
                 </>
               )}
             </button>
+            <div className="mt-3 text-center">
+              <button
+                type="button"
+                onClick={openDraft}
+                className="ui-ghost inline-flex items-center justify-center"
+                disabled={status === 'loading'}
+              >
+                Open email draft instead
+              </button>
+              <p className="mt-2 text-xs leading-relaxed text-muted">
+                This opens your email app with your message. You will need to send it yourself.
+              </p>
+            </div>
 
             {(status === 'error' || status === 'fallback') && (
               <div
@@ -296,13 +309,7 @@ export function ContactForm() {
                   {statusMessage ||
                     'Your message has not been confirmed. Please retry or open an email draft.'}
                 </p>
-                <button
-                  type="button"
-                  onClick={openDraft}
-                  className="ui-ghost mt-3"
-                >
-                  Open email draft instead
-                </button>
+
               </div>
             )}
           </form>
