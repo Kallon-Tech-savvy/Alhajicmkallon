@@ -9,9 +9,9 @@ import { MAX_MESSAGE_LENGTH } from '@/packages/chat/shared';
 import { useChatConversation } from '@/packages/chat/client';
 
 const SUGGESTIONS = [
-  'Show me his case studies',
-  'What is his approach?',
-  'How can I get in touch?',
+  'What does a design engineer do?',
+  'Can you help with my project?',
+  'Show me your best work',
 ];
 function MessageContent({ content }: { content: string }) {
   return content.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
@@ -97,7 +97,7 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
           onClick={() => setLocalOpen(!open)}
           aria-expanded={open}
           aria-controls="chat-panel"
-          aria-label={open ? 'Close chat' : 'Ask a question about Alhaji'}
+          aria-label={open ? 'Close chat' : 'Ask about my work'}
           className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-pride-blue text-[var(--ui-on-action)] shadow-xl"
         >
           {open ? <X size={22} /> : <MessageCircle size={22} />}
@@ -164,8 +164,8 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
               <div>
                 <p className="text-lg font-semibold">What would you like to know?</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Explore the work or find the right next step. For a personal response, use the
-                  contact form.
+                  Hi, I’m here to answer questions about Alhaji’s work and how he can help.
+                  What are you working on? For a personal response, use the contact form.
                 </p>
                 <div className="mt-5 grid gap-2">
                   {SUGGESTIONS.map((question) => (
