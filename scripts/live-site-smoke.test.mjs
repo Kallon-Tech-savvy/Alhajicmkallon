@@ -61,3 +61,29 @@ test('live FAQ chat uses the production quota store without an AI provider call'
   const result = await response.json();
   assert.ok(typeof result.reply === 'string' && result.reply.includes('AEEM'), 'Expected published case-study FAQ answer');
 });
+
+test('live contact endpoint rejects a deliberately invalid Turnstile token', { timeout: 20_000 }, async () => {
+  // Negative-only test: a fabricated token can never authorize sending email.
+  // 422 means the handler reached Siteverify; 503 can indicate missing runtime
+  // configuration or an unavailable verification provider.
+  const response = await fetch(ORIGIN + '/api/contact', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Origin: ORIGIN,
+      'User-Agent': 'alhajikallon-production-smoke/1.0',
+    },
+    body: JSON.stringify({
+      name: 'Smoke Test',
+      email: 'no-reply-smoke@example.invalid',
+      message: 'Please reject this test; its Turnstile token is deliberately invalid.',
+      intent: 'Something else',
+      website: '',
+      turnstileToken: 'invalid-test-token-do-not-accept',
+    }),
+    signal: AbortSignal.timeout(12_000),
+  });
+  assert.equal(response.status, 422, `Invalid Turnstile token must return HTTP 422, got ${response.status}`);
+  const result = await response.json();
+  assert.match(result.error || '', /verification/i);
+});
