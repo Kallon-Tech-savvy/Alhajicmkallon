@@ -114,7 +114,7 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   await expect(intent).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('textbox', { name: 'Your name', exact: true }).fill('Test Visitor');
   await page.getByRole('textbox', { name: 'Your email', exact: true }).fill('visitor@example.com');
-  const message = page.getByRole('textbox', { name: 'What would you like to change or achieve?' });
+  const message = page.getByRole('textbox', { name: 'What are you trying to achieve?' });
   await message.fill('A local test draft.');
   await page.getByRole('button', { name: /^(Send enquiry|Open email draft)$/ }).click();
   await expect.poll(() => submittedToken).toBe('browser-test-token');
