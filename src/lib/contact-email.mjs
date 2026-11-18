@@ -205,8 +205,17 @@ export function createContactHandler({
     const defaultInbox = env.CONTACT_TO_EMAIL;
     const developmentInbox = env.CONTACT_DEV_TO_EMAIL;
     const turnstileSecret = env.TURNSTILE_SECRET || env.TURNSTILE_SECRET_KEY;
-    if (!env.RESEND_API_KEY || !turnstileSecret || !isValidContactEmail(defaultInbox) ||
-        (developmentInbox && !isValidContactEmail(developmentInbox))) {
+    // Diagnostics never contain secret values, recipient addresses or visitor data.
+    // Only Cloudflare Worker logs receive the affected setting names.
+    const configurationIssues = [];
+    if (!env.RESEND_API_KEY) configurationIssues.push('RESEND_API_KEY');
+    if (!turnstileSecret) configurationIssues.push('TURNSTILE_SECRET');
+    if (!isValidContactEmail(defaultInbox)) configurationIssues.push('CONTACT_TO_EMAIL');
+    if (developmentInbox && !isValidContactEmail(developmentInbox)) {
+      configurationIssues.push('CONTACT_DEV_TO_EMAIL');
+    }
+    if (configurationIssues.length) {
+      logger.warn('contact_configuration_unavailable', { fields: configurationIssues });
       return result(503, { error: 'The contact service is unavailable.' });
     }
 
