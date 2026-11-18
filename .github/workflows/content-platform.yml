@@ -52,6 +52,8 @@ jobs:
         run: npm run lint
       - name: Check deployment wizard shell syntax
         run: bash -n scripts/wizard-vercel-deployment.sh
+      - name: Validate Cloudflare Worker runtime bindings
+        run: node --test scripts/workers-runtime-config.test.mjs
       - name: Build Cloudflare Worker with vinext
         run: npm run build:vinext
       - name: Production build

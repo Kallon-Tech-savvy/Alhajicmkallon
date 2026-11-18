@@ -60,12 +60,26 @@ the following **production Worker runtime secrets** (not build-only variables):
 | `UPSTASH_REDIS_REST_URL` | Existing chat integration | Redis REST endpoint |
 | `UPSTASH_REDIS_REST_TOKEN` | Existing chat integration | Redis REST authentication |
 
-The three required contact secrets are declared by name in
-`cloudflare.config.ts`, with **no values in Git**. They must be configured
-before deploying. Existing Worker secrets persist across deployments, but
-**plain-text variables that are not declared in `cloudflare.config.ts` can
-be removed by the vinext deploy command**. Review existing dashboard variables
-first and migrate sensitive existing ones to Worker secrets where appropriate.
+The three contact secrets and three production chat secrets are declared
+by name in `cloudflare.config.ts`, with **no values in Git**.
+
+**Before merging this binding patch:** confirm all six named secrets already
+exist on the `alhajicmkallon` **production Worker**. If any are missing, add
+the values through Cloudflare Workers & Pages > Settings > Variables and
+Secrets first, using the existing production OpenAI and Upstash credentials.
+A `bindings.secret()` declaration is **required at deploy time**: deploying
+without one of these six secrets can fail, even if only the other feature is
+being changed. Do not paste any values into GitHub or this guide.
+
+Existing Worker secrets persist across deployments, but **plain-text variables
+that are not declared in `cloudflare.config.ts` can be removed by the vinext
+deploy command**. Review existing dashboard variables before each runtime
+binding change. The optional `CONTACT_DEV_TO_EMAIL` and
+`CONTACT_CONFIRMATION_ENABLED` settings are **not yet declared** by this
+Worker config: do not assume setting them as plaintext dashboard variables
+makes them survive a future deployment. The default contact inbox remains
+`CONTACT_TO_EMAIL`, and acknowledgement emails remain off. Configure optional
+features separately after confirming their desired production binding model.
 
 The config declares `CHAT_CLIENT_IP_HEADER=cf-connecting-ip` and the canonical
 `NEXT_PUBLIC_SITE_URL=https://alhajikallon.com`. The public Turnstile site key
@@ -122,9 +136,16 @@ emails. On a staging Worker or the configured custom domain:
 2. Test Turnstile with a fresh token; reject a replayed or wrong-action token.
 3. Submit a general and development enquiry to a real inbox with correct
    `Reply-To`; inspect Resend delivery events and a real mailbox receipt.
-4. Test a missing-key failure (503), downstream provider rejection and the
+   Without `CONTACT_DEV_TO_EMAIL`, both enquiries go to the configured
+   `CONTACT_TO_EMAIL` address.
+4. Send the built-in FAQ prompt `Show me his case studies` through the
+   chat widget. This should use Upstash quota even if the answer is local.
+   Then test one non-FAQ AI prompt to validate `OPENAI_API_KEY`. A 503
+   on either requires checking Worker logs for `chat_unavailable` and
+   verifying the deployed Upstash/OpenAI secrets without exposing values.
+5. Test a missing-key failure (503), downstream provider rejection and the
    user's preserved draft fallback.
-5. Re-run mobile-width browser checks and Lighthouse; inspect images as
+6. Re-run mobile-width browser checks and Lighthouse; inspect images as
    described above. Do not merge solely because the build succeeds.
 
 Cloudflare's `process.env` support comes from the generated recent
