@@ -16,6 +16,13 @@ export const metadata: Metadata = {
       'Answers about Alhaji C.M. Kallon, his design engineering practice, services, projects and approach to building digital products.',
     url: `${siteUrl}/faq`,
     type: 'website',
+    images: [{ url: '/assets/brand/alhaji-kallon-identity.jpg', width: 1280, height: 640 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Frequently Asked Questions | Alhaji C.M. Kallon',
+    description: 'Answers about Alhaji C.M. Kallon’s design engineering services, process, experience and how to work with him.',
+    images: ['/assets/brand/alhaji-kallon-identity.jpg'],
   },
 };
 
@@ -26,17 +33,17 @@ const faqs = [
       {
         question: 'Who is Alhaji C.M. Kallon?',
         answer:
-          'Alhaji C.M. Kallon is a Sierra Leonean design engineer based in Freetown. He helps founders, businesses and organisations turn unclear ideas into useful digital products. His work brings together problem discovery, product thinking, experience design and software engineering.',
+          "Alhaji C.M. Kallon is a Sierra Leonean design engineer based in Freetown. He helps founders, businesses and organisations turn unclear ideas into digital products people can use, working from the first question about the problem through to a working product.",
       },
       {
         question: 'What does Alhaji Kallon do?',
         answer:
-          'Alhaji Kallon helps people understand what they need to build, why it matters, and how to turn that decision into a working digital product. He works across the process: understanding the problem, defining the product, designing its experience, and engineering a reliable, accessible and performant solution.',
+          "Alhaji Kallon helps people decide what to build, why it matters and how to turn that decision into a working product. His work connects understanding the problem, defining a product, designing the experience and engineering a reliable, accessible and fast solution.",
       },
       {
         question: 'What is a design engineer?',
         answer:
-          'A design engineer works across design and engineering, connecting how a product should work and feel with how it is actually built. In Alhaji Kallon’s work, this means translating product requirements and user needs into clear interfaces, thoughtful interactions and maintainable software.',
+          "A design engineer works on both sides of a product: how it should look and feel, and how it is built. In Alhaji’s work, that means connecting product requirements to clear interfaces and maintainable code without losing the reasoning between design and implementation.",
       },
       {
         question: 'Where is Alhaji Kallon based?',
@@ -56,22 +63,22 @@ const faqs = [
       {
         question: 'Who does Alhaji Kallon work with?',
         answer:
-          'He works with startup founders, business owners, nonprofits and community organisations. He is particularly interested in working with people who have an early-stage idea, an unclear business problem, or an existing digital product that needs a more considered direction.',
+          "Alhaji works with startup founders, business owners, nonprofits and community organisations. He is most useful when there is an early-stage idea, an unclear business problem or an existing product that needs clearer direction.",
       },
       {
         question: 'Can Alhaji Kallon help turn a business idea into a digital product?',
         answer:
-          'Yes. He can help clarify the underlying problem, identify the people the product should serve, shape its value proposition, decide which features are essential, design the experience and build the first working version. The process is guided by the project’s objectives, evidence, available resources and constraints.',
+          "Yes. He can clarify the problem, identify who the product is for, decide which features are essential, design the experience and build a first working version. The decisions are guided by the project’s goals, available evidence and resources.",
       },
       {
         question: 'Does Alhaji Kallon only develop websites?',
         answer:
-          'No. Although web development is an important part of his engineering work, his approach extends beyond implementing website designs. He considers the underlying problem, information structure, user journeys, essential features and the practical requirements of delivering a useful digital product.',
+          "No. Web development is part of his work, but he also helps with what comes before it: the problem, how information is structured, the user journey and the features that matter. That thinking often comes before any design or code.",
       },
       {
         question: 'What technologies does Alhaji Kallon use?',
         answer:
-          'His web development work includes React, TypeScript, Next.js and Vite. His backend and infrastructure experience includes Supabase and Cloudflare Workers. Technology choices depend on the product’s requirements, complexity, resources and long-term needs.',
+          "On the front end he uses React, TypeScript, Next.js and Vite. On the back end and infrastructure he uses Supabase, Express and Cloudflare Workers. Tool choices depend on what the product needs and what it will cost to maintain.",
       },
     ],
   },
@@ -81,17 +88,17 @@ const faqs = [
       {
         question: 'What is Alhaji Kallon’s product development process?',
         answer:
-          'His process has four connected stages: Discover (understand the problem, people and context), Define (clarify the problem, value proposition and what to build), Design (shape information, user journeys, interfaces and interactions), and Build (engineer and deliver a working product). The process is iterative, and learning during design or development can lead to revisiting earlier decisions.',
+          "Alhaji works in four connected stages: Discover — understand the problem, people and context; Define — decide what to build and why; Design — shape information, journeys and interfaces; Build — engineer and deliver a working product. These stages overlap; learning while building can send the work back to an earlier decision.",
       },
       {
         question: 'What is Alhaji Kallon’s approach to building digital products?',
         answer:
-          'He believes a product earns its place by solving a problem people care about and demonstrating that it does. His approach starts with questions about who the product serves, what those people are trying to accomplish, what evidence supports the opportunity and what the first version must prove. He distinguishes facts from assumptions, considers trade-offs and favours focused learning over building features without a clear purpose.',
+          "He believes a product earns its place by solving a problem people care about and showing that it does. He starts by asking who the product is for, what those people are trying to do and what the first version needs to prove. He separates facts from assumptions, weighs trade-offs and prefers focused learning to features without a clear purpose.",
       },
       {
         question: 'What makes Alhaji Kallon’s approach different?',
         answer:
-          'His work connects product decisions with design and engineering. Rather than treating development as simply implementing a list of requested features, he considers the underlying problem, the people affected, the value a solution should create and the practical constraints involved in delivering it.',
+          "He connects product decisions, design and engineering in one practice. On the AEEM project, that meant starting with how visitors understood the organisation before deciding how the website should be structured.",
       },
     ],
   },
@@ -106,23 +113,31 @@ const faqs = [
       {
         question: 'What projects has Alhaji Kallon worked on?',
         answer:
-          'His selected work includes a digital presence project for the Africa Education Empowerment Movement (AEEM), where he worked across content architecture, user experience and frontend development. He is also developing the backend foundation for MJ Studio, a photography-studio application, using TypeScript, Express and Supabase. MJ Studio is an in-progress project, not a completed launch.',
+          "His selected work includes AEEM, a digital presence for the Africa Education Empowerment Movement, covering content structure, experience design and development; and MJ Studio, an in-progress photography-studio backend built with TypeScript, Express and Supabase. MJ Studio is not presented as a finished launch.",
         links: [
           { label: 'Read the AEEM case study', href: '/work/aeem-digital-presence' },
-          { label: 'Read about MJ Studio', href: '/work/mj-studio-backend' },
+          { label: 'Read the MJ Studio notes', href: '/work/mj-studio-backend' },
           { label: 'Visit the live AEEM website', href: 'https://aeem-w.vercel.app' },
         ],
       },
       {
         question: 'What was Alhaji Kallon’s role in the AEEM website project?',
         answer:
-          'He worked on improving how AEEM communicates its work and how visitors understand and engage with the organisation. This included organising information about its mission and activities, improving access to resources, and making opportunities to volunteer, partner and support the organisation easier to discover.',
+          "He initiated the AEEM website as a volunteer, organised information about its mission and activities, improved access to resources and made participation routes easier to find. He later served as AEEM’s Chief Operating Officer. The core team reviewed the website positively, but wider visitor outcomes have not been measured.",
       },
     ],
   },
   {
     category: 'Availability and contact',
     items: [
+      {
+        question: 'Do I need a finished brief or technical knowledge to get started?',
+        answer: 'No. You do not need a finished brief or technical knowledge to start a conversation. Tell Alhaji what you are trying to achieve and what you know so far so the problem and next step can be clarified.',
+      },
+      {
+        question: 'How much does a project cost?',
+        answer: 'No fixed prices are published. Alhaji discusses the problem, likely scope and constraints before agreeing on project pricing. Send a short description through the contact page to start.',
+      },
       {
         question: 'Is Alhaji Kallon available for projects?',
         answer:
@@ -131,13 +146,13 @@ const faqs = [
       {
         question: 'How can I work with Alhaji Kallon?',
         answer:
-          'Start by exploring his portfolio and relevant case studies. If you have a project, idea or problem to discuss, use the contact page to explain what you are trying to achieve, who the product is for and where you need help.',
+          "Start with the contact page. Tell him what you are trying to achieve, who the product is for and where you need help. You do not need a finished brief.",
         links: [{ label: 'Contact Alhaji', href: '/contact' }],
       },
       {
         question: 'How can I contact Alhaji Kallon?',
         answer:
-          'For general enquiries, email info@alhajikallon.com. For development enquiries, email dev@alhajikallon.com. You can also use the contact page or connect with him through LinkedIn and GitHub.',
+          "For project and general enquiries, use the contact page or email info@alhajikallon.com. For technical or development questions, email dev@alhajikallon.com. You can also find him on LinkedIn and GitHub.",
         links: [
           { label: 'Contact page', href: '/contact' },
           { label: 'LinkedIn', href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b' },
@@ -180,7 +195,7 @@ export default function FAQPage() {
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
               <h1 className="page-title font-display tracking-tight">
-                Frequently asked
+                Frequently asked{' '}
                 <span className="block text-accent">questions.</span>
               </h1>
             </div>
@@ -295,7 +310,7 @@ export default function FAQPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
-      <Footer />
+      <Footer showInvitation={false} />
     </main>
   );
 }

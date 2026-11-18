@@ -31,7 +31,7 @@ test('chat preserves failed input, retries once, clears and stops a pending repl
       .catch(() => {});
   });
   await page.goto('/');
-  const launcher = page.getByRole('button', { name: 'Ask a question about Alhaji', exact: true });
+  const launcher = page.getByRole('button', { name: 'Ask about my work', exact: true });
   await launcher.click();
   const dialog = page.getByRole('dialog', { name: 'Ask about Alhaji' });
   const input = dialog.getByRole('textbox', { name: 'Your message' });
@@ -173,7 +173,7 @@ test('productive overlays remain usable at 320px', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(searchTrigger).toBeFocused();
 
-  await page.getByRole('button', { name: 'Ask a question about Alhaji', exact: true }).click();
+  await page.getByRole('button', { name: 'Ask about my work', exact: true }).click();
   const chat = page.getByRole('dialog', { name: 'Ask about Alhaji' });
   const input = chat.getByRole('textbox', { name: 'Your message' });
   await expect(input).toBeFocused();
@@ -190,7 +190,7 @@ for (const kind of ['search', 'chat'] as const) {
   test(`${kind} responds immediately and stays dismissed while its code downloads`, async ({ page }) => {
     await page.goto('/');
     const trigger = page.getByRole('button', {
-      name: kind === 'chat' ? 'Ask a question about Alhaji' : 'Search (Ctrl or Command K)',
+      name: kind === 'chat' ? 'Ask about my work' : 'Search (Ctrl or Command K)',
       exact: true,
     });
     // Wait for hydration, then hold optional JS downloads to simulate a cold connection.
@@ -247,4 +247,65 @@ test('desktop Learn navigates directly and mobile learning shortcuts remain keyb
   await page.keyboard.press('Escape');
   await expect(menu).not.toBeVisible();
   await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeFocused();
+});
+
+test('Work page has its own social metadata, evidence, and only one invitation', async ({ page }) => {
+  await page.goto('/work');
+
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content',
+    'https://alhajikallon.com/work',
+  );
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    'content',
+    'Selected work | Alhaji C.M. Kallon',
+  );
+  await expect(page.getByRole('heading', { name: 'From problem to product.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'All projects' })).toHaveCount(0);
+  await expect(page.locator('.work-evidence')).toHaveCount(2);
+  await expect(page.getByText('My role:', { exact: false })).toHaveCount(2);
+  await expect(page.getByText('What the evidence says so far:', { exact: false })).toHaveCount(2);
+  await expect(page.getByRole('link', { name: /Talk through the problem/ })).toBeVisible();
+  await expect(page.locator('.footer-invitation')).toHaveCount(0);
+});
+
+test('Home retains its selected work heading and clear contact invitation', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'A deliberate balance.' })).toBeVisible();
+  await expect(page.getByText('Design, engineering and curiosity, held in balance.')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'All projects' })).toBeVisible();
+  await expect(page.getByText('Build it to last.')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Start a conversation/ })).toHaveCount(2);
+  await expect(page.getByRole('link', { name: 'Learn', exact: true })).toHaveCount(2);
+});
+
+test('Writing page has verified Substack fallback and no self-linking CTA', async ({ page }) => {
+  // The real external feed can fail; the curated article must remain visible.
+  await page.goto('/writing');
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content', 'https://alhajikallon.com/writing',
+  );
+  await expect(page.getByText('Sierra Leone’s Salone Pement Switch:', { exact: false })).toBeVisible();
+  await expect(page.locator('a[href="https://alhajicmkallon.substack.com/feed"]')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Follow on Substack|Read the latest notes/ })).toBeVisible();
+  await expect(page.locator('.footer-invitation')).toHaveCount(0);
+  const noteCount = await page.locator('a[href^="/writing/"]').count();
+  if (noteCount < 3) {
+    await expect(page.getByRole('searchbox', { name: 'Search notes' })).toHaveCount(0);
+  }
+});
+
+test('About, Contact, Learn and FAQ use their own metadata', async ({ page }) => {
+  for (const path of ['/about', '/contact', '/knowledge', '/faq']) {
+    await page.goto(path);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      'content', `https://alhajikallon.com${path}`,
+    );
+  }
+  await page.goto('/contact');
+  await expect(page.locator('.ui-form-panel')).toBeVisible();
+  await expect(page.locator('.footer-invitation')).toHaveCount(0);
+  await page.goto('/knowledge');
+  await expect(page.getByText('Protocols are the agreed rules', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Suggest a topic' })).toBeVisible();
 });

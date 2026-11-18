@@ -24,7 +24,7 @@ const siteUrl = 'https://alhajikallon.com';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Alhaji C.M. Kallon | Design Engineer',
+    default: 'Alhaji C.M. Kallon | Design Engineer in Freetown, Sierra Leone',
     template: '%s | Alhaji C.M. Kallon',
   },
   description:
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'Alhaji C.M. Kallon | Design Engineer',
+    title: 'Alhaji C.M. Kallon | Design Engineer in Freetown, Sierra Leone',
     description:
-      'From understanding the problem to designing and engineering useful digital products.',
+      'I help founders, businesses and organisations turn unclear ideas into digital products people can use.',
     url: siteUrl,
     siteName: 'Alhaji C.M. Kallon',
     type: 'website',
@@ -58,16 +58,16 @@ export const metadata: Metadata = {
         url: '/assets/brand/alhaji-kallon-identity.jpg',
         width: 1280,
         height: 640,
-        alt: 'Alhaji C M Kallon — A deliberate balance',
+        alt: 'Alhaji C M Kallon: a deliberate balance of design, engineering and curiosity',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/assets/brand/alhaji-kallon-identity.jpg'],
-    title: 'Alhaji C.M. Kallon | Design Engineer',
+    title: 'Alhaji C.M. Kallon | Design Engineer in Freetown, Sierra Leone',
     description:
-      'I help founders, businesses and organisations turn unclear ideas into useful digital products.',
+      'I help founders, businesses and organisations turn unclear ideas into digital products people can use.',
   },
 };
 

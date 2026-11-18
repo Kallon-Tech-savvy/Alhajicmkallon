@@ -12,32 +12,37 @@ const NAV_LINKS = [
   { name: 'Work', href: '/work' },
   { name: 'About', href: '/about' },
   { name: 'Writing', href: '/writing' },
-  { name: 'Knowledge', href: '/knowledge' },
+  { name: 'Learn', href: '/knowledge' },
   { name: 'FAQ', href: '/faq' },
   { name: 'Privacy', href: '/privacy' },
 ];
 
-export const Footer = () => (
+export const Footer = ({ showInvitation = true }: { showInvitation?: boolean }) => (
   <footer className="swiss-footer site-gutter">
     <div className="mx-auto max-w-[var(--layout-max)]">
-      <div className="footer-invitation">
+      {showInvitation && <div className="footer-invitation">
         <div>
           <p className="swiss-meta">Have something in mind?</p>
           <h2>
-            Let’s make
+            Let’s talk
             <br />
-            it happen<span>.</span>
+            it through<span>.</span>
           </h2>
+          <p className="footer-invitation-copy">
+            Tell me what you’re trying to do. I’ll tell you honestly how I can help.
+          </p>
         </div>
         <Link
           prefetch={false}
           href="/contact"
-          className="footer-arrow"
-          aria-label="Let’s talk about your project"
+          className="footer-contact-link"
         >
-          <Arrow />
+          <span>Start a conversation</span>
+          <span className="footer-arrow" aria-hidden="true">
+            <Arrow />
+          </span>
         </Link>
-      </div>
+      </div>}
       <div className="footer-details">
         <div>
           <Link prefetch={false} href="/" className="footer-name">
@@ -80,7 +85,7 @@ export const Footer = () => (
       <div className="footer-colophon swiss-meta">
         <span>© {new Date().getFullYear()} Alhaji C M Kallon</span>
         <span>
-          Thoughtfully designed. Carefully built.{' '}
+          Designed and built by Alhaji in Freetown.{' '}
           <span aria-hidden="true">
             <Arrow />
           </span>
