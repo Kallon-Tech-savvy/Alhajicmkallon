@@ -83,7 +83,13 @@ test('live contact endpoint rejects a deliberately invalid Turnstile token', { t
     }),
     signal: AbortSignal.timeout(12_000),
   });
-  assert.equal(response.status, 422, `Invalid Turnstile token must return HTTP 422, got ${response.status}`);
-  const result = await response.json();
+  const result = await response.json().catch(() => ({}));
+  const diagnostic = [
+    'The contact service is unavailable.',
+    'Verification is temporarily unavailable.',
+    'Verification expired or failed. Please retry.',
+  ].includes(result.error) ? result.error : 'Unexpected error response (redacted)';
+  assert.equal(response.status, 422,
+    `Invalid Turnstile token expected HTTP 422, got ${response.status}; safe server diagnostic: ${diagnostic}`);
   assert.match(result.error || '', /verification/i);
 });
