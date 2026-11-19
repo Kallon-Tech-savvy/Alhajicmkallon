@@ -56,6 +56,16 @@ function validateCommon(metadata, filePath, type) {
   const topics = requireStringArray(metadata, 'topics', filePath);
   if (type === 'article') {
     requireString(metadata, 'category', filePath);
+    if (metadata.cover !== undefined) {
+      const cover = metadata.cover;
+      if (!cover || typeof cover !== 'object' || Array.isArray(cover)
+        || typeof cover.src !== 'string' || !/^\/assets\/[a-zA-Z0-9/_-]+\.(?:webp|png|jpe?g)$/.test(cover.src)
+        || typeof cover.alt !== 'string' || !cover.alt.trim()
+        || !Number.isInteger(cover.width) || cover.width < 1 || cover.width > 10000
+        || !Number.isInteger(cover.height) || cover.height < 1 || cover.height > 10000) {
+        throw new Error(filePath + ': cover requires a local asset, descriptive alt and valid dimensions');
+      }
+    }
     if (metadata.level && !['beginner', 'intermediate', 'junior'].includes(metadata.level)) throw new Error(filePath + ': invalid learning level');
     for (const key of ['prerequisites', 'objectives', 'sources']) requireStringArray(metadata, key, filePath);
     for (const source of metadata.sources ?? []) {
@@ -105,7 +115,7 @@ export async function buildContentIndex({ projectRoot = root, destination = path
       if (type === 'article') articles.push({
         slug: common.slug, title: common.title, category: metadata.category, topics: common.topics,
         date: metadata.date, readTime: metadata.readTime, excerpt: common.summary, content: body,
-        status: common.status, kind: metadata.kind, level: metadata.level,
+        status: common.status, kind: metadata.kind, level: metadata.level, cover: metadata.cover,
         prerequisites: metadata.prerequisites ?? [], objectives: metadata.objectives ?? [], sources: metadata.sources ?? [],
       });
       else projects.push({
