@@ -112,3 +112,25 @@ test('learning metadata is exported and invalid levels or sources fail the build
     await assert.rejects(buildContentIndex({ projectRoot, destination }), /sources must be HTTPS/);
   } finally { await rm(projectRoot, { recursive: true, force: true }); }
 });
+
+test('article covers preserve local assets and dimensions and reject unsafe or incomplete metadata', async () => {
+  const projectRoot = await mkdtemp(path.join(os.tmpdir(), 'article-cover-'));
+  try {
+    const folder = path.join(projectRoot, 'content', 'journal');
+    await mkdir(folder, { recursive: true });
+    const file = path.join(folder, 'essay.md');
+    const cover = { src: '/assets/writing/nothingness.webp', alt: 'Essay cover', width: 1229, height: 1536 };
+    const document = value => ['---', 'slug: nothingness', 'title: Nothingness', 'category: Personal essays', 'topics: ["Identity"]', 'date: "2026-11-19"', 'excerpt: On meaning.', 'status: published', 'kind: journal', 'cover: ' + JSON.stringify(value), '---', '', 'An unchanged **closing thought**.'].join('\n');
+    const destination = path.join(projectRoot, 'generated.ts');
+    await writeFile(file, document(cover));
+    await buildContentIndex({ projectRoot, destination });
+    const generated = await readFile(destination, 'utf8');
+    assert.match(generated, /nothingness.webp/);
+    assert.match(generated, /"width": 1229/);
+    assert.match(generated, /An unchanged \*\*closing thought\*\*/);
+    for (const invalid of [{ ...cover, src: 'https://example.com/image.webp' }, { ...cover, alt: '' }, { ...cover, width: 0 }, { ...cover, src: '/assets/../private.png' }]) {
+      await writeFile(file, document(invalid));
+      await assert.rejects(buildContentIndex({ projectRoot, destination }), /cover requires/);
+    }
+  } finally { await rm(projectRoot, { recursive: true, force: true }); }
+});

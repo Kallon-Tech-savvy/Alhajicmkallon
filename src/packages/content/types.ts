@@ -30,6 +30,12 @@ export interface Article {
   content: string;
   status: PublicationStatus;
   kind: 'journal' | 'knowledge';
+  cover?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
   level?: 'beginner' | 'intermediate' | 'junior';
   prerequisites?: string[];
   objectives?: string[];
