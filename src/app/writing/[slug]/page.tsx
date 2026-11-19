@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { SUBSTACK_URL } from '@/lib/public-channels';
+import { SUBSTACK_URL, SUBSTACK_ARTICLE_URLS } from '@/lib/public-channels';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
@@ -37,6 +37,8 @@ export default async function ArticleTemplate({ params }: PageProps) {
   const article = getArticleBySlug(slug);
   if (!article || article.kind !== 'journal') notFound();
 
+  const substackArticleUrl = SUBSTACK_ARTICLE_URLS[article.slug];
+
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-accent/30">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
@@ -71,7 +73,7 @@ export default async function ArticleTemplate({ params }: PageProps) {
       <section className="section-space site-gutter">
         <article className="max-w-3xl mx-auto font-body text-base md:text-lg"><MarkdownContent source={article.content} /></article>
       </section>
-      <aside className="site-gutter border-t border-border py-10" aria-label="More writing"><div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-5"><Link href="/writing" className="editorial-link">More writing on this site →</Link><a href={SUBSTACK_URL} className="editorial-link">Read my Substack ↗</a></div></aside>
+      <aside className="site-gutter border-t border-border py-10" aria-label="More writing"><div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-5"><Link href="/writing" className="editorial-link">More writing on this site →</Link><a href={substackArticleUrl ?? SUBSTACK_URL} className="editorial-link">{substackArticleUrl ? 'Read on Substack ↗' : 'Read my Substack ↗'}</a></div></aside>
       <Footer />
     </main>
   );
