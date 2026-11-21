@@ -46,8 +46,8 @@ export default function WorkPage() {
             <span>to product.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-            Real projects, with the reasoning behind them: the problem, the choices I made,
-            what I built, and what the evidence says so far.
+            Real projects, with the reasoning behind them: the problem, the choices I made, what I
+            built, and what the evidence says so far.
           </p>
         </div>
       </header>

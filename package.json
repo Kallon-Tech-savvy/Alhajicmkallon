@@ -34,7 +34,7 @@
     "test:vitals": "node --test scripts/anonymous-vitals.test.mjs",
     "lint:boundaries": "node scripts/lint-deep-module-boundaries.mjs",
     "test:chat": "node --import tsx --test src/packages/chat/tests/*.test.ts",
-    "format:check": "prettier --check src/packages/chat src/packages/content --ignore-path .prettierignore",
+    "format:check": "prettier --check src --ignore-path .prettierignore",
     "test": "npm run test:chat && npm run test:security && npm run test:content && npm run test:contact && npm run test:homepage-performance && npm run test:performance-report && npm run test:vitals && node --test scripts/substack-feed.test.mjs && node --test scripts/workers-runtime-config.test.mjs",
     "test:interactions": "playwright test",
     "dev:vinext": "vite dev --port 3001",
@@ -43,7 +43,8 @@
     "deploy:vinext": "npm run prebuild:vinext && vinext-cloudflare deploy",
     "prebuild:vinext": "node scripts/build-content-index.mjs && node scripts/build-protocol-offline.mjs",
     "preview:vinext": "npm run prebuild:vinext && vinext-cloudflare previews deploy",
-    "pretypecheck": "next typegen"
+    "pretypecheck": "next typegen",
+    "format:write": "prettier --write src --ignore-path .prettierignore"
   },
   "dependencies": {
     "@vinext/cloudflare": "^1.4.0",

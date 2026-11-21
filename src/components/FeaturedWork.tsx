@@ -87,18 +87,20 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
                 {isWorkPage ? (
                   <div className="work-evidence">
                     <p>
-                      <strong>My role:</strong> I initiated the website and worked on content structure,
-                      user experience and development. I later volunteered as Chief Operating Officer.
+                      <strong>My role:</strong> I initiated the website and worked on content
+                      structure, user experience and development. I later volunteered as Chief
+                      Operating Officer.
                     </p>
                     <p>
-                      <strong>What the evidence says so far:</strong> The core team reviewed the pages
-                      and navigation and responded positively. Wider visitor outcomes have not been
-                      systematically measured.
+                      <strong>What the evidence says so far:</strong> The core team reviewed the
+                      pages and navigation and responded positively. Wider visitor outcomes have not
+                      been systematically measured.
                     </p>
                   </div>
                 ) : (
                   <p className="mt-3 text-sm text-muted">
-                    The core team reviewed the pages positively; wider visitor outcomes are not yet measured.
+                    The core team reviewed the pages positively; wider visitor outcomes are not yet
+                    measured.
                   </p>
                 )}
               </div>

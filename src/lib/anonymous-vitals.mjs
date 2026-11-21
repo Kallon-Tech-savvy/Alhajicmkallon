@@ -1,6 +1,15 @@
 export const MAX_VITAL_BYTES = 256;
 const METRIC_NAMES = new Set(['LCP', 'CLS', 'INP', 'FCP', 'TTFB']);
-const SECTIONS = new Set(['home', 'work', 'writing', 'knowledge', 'about', 'contact', 'faq', 'other']);
+const SECTIONS = new Set([
+  'home',
+  'work',
+  'writing',
+  'knowledge',
+  'about',
+  'contact',
+  'faq',
+  'other',
+]);
 const VIEWPORTS = new Set(['small', 'large']);
 
 /** Accept only coarse non-identifying fields, never arbitrary URLs or metric IDs. */

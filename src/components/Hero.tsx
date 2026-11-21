@@ -57,8 +57,8 @@ export const Hero = () => (
         </div>
         <div className="hero-introduction">
           <p>
-            I help founders, businesses and organisations turn unclear ideas into digital
-            products people can use, from the first question to the working product.
+            I help founders, businesses and organisations turn unclear ideas into digital products
+            people can use, from the first question to the working product.
           </p>
           <div className="hero-actions">
             <Link prefetch={false} href="#work" className="swiss-button">

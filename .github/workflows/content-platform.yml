@@ -40,7 +40,7 @@ jobs:
         run: npm run test:contact
       - name: Test chat service, quota adapters and conversation behavior
         run: npm run test:chat
-      - name: Check package formatting
+      - name: Check application source formatting
         run: npm run format:check
       - name: Test chat request security
         run: npm run test:security

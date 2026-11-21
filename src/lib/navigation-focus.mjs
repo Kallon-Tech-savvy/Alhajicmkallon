@@ -8,9 +8,12 @@
 export function cycleNavigationFocus(event, controls, activeElement) {
   if (event.key !== 'Tab' || controls.length === 0) return false;
   const current = controls.findIndex((control) => control === activeElement);
-  const next = current < 0
-    ? (event.shiftKey ? controls.length - 1 : 0)
-    : (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length;
+  const next =
+    current < 0
+      ? event.shiftKey
+        ? controls.length - 1
+        : 0
+      : (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length;
   event.preventDefault();
   controls[next].focus();
   return true;

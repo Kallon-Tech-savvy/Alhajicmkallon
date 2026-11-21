@@ -37,44 +37,69 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   if (!project) notFound();
 
   if (project.slug === 'aeem-digital-presence') {
-    return <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
-        '@context': 'https://schema.org', '@type': 'CreativeWork',
-        name: project.title, description: project.summary,
-        url: `https://alhajikallon.com/work/${project.slug}`,
-        creator: { '@id': 'https://alhajikallon.com/#person' },
-        isPartOf: { '@id': 'https://alhajikallon.com/#website' },
-      }) }} />
-      <AEEMCaseStudy source={project.body ?? project.description} liveUrl={project.links?.live} />
-    </>;
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd({
+              '@context': 'https://schema.org',
+              '@type': 'CreativeWork',
+              name: project.title,
+              description: project.summary,
+              url: `https://alhajikallon.com/work/${project.slug}`,
+              creator: { '@id': 'https://alhajikallon.com/#person' },
+              isPartOf: { '@id': 'https://alhajikallon.com/#website' },
+            }),
+          }}
+        />
+        <AEEMCaseStudy source={project.body ?? project.description} liveUrl={project.links?.live} />
+      </>
+    );
   }
 
   return (
     <main className="min-h-screen bg-midnight text-ivory selection:bg-accent/30">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd({
-        '@context': 'https://schema.org',
-        '@type': 'CreativeWork',
-        name: project.title,
-        headline: project.title,
-        description: project.summary,
-        url: `https://alhajikallon.com/work/${project.slug}`,
-        creator: { '@id': 'https://alhajikallon.com/#person' },
-        keywords: project.topics,
-        genre: project.role,
-        isPartOf: { '@id': 'https://alhajikallon.com/#website' },
-      }) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd({
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            name: project.title,
+            headline: project.title,
+            description: project.summary,
+            url: `https://alhajikallon.com/work/${project.slug}`,
+            creator: { '@id': 'https://alhajikallon.com/#person' },
+            keywords: project.topics,
+            genre: project.role,
+            isPartOf: { '@id': 'https://alhajikallon.com/#website' },
+          }),
+        }}
+      />
       <Navbar />
       <section className="page-intro site-gutter border-b border-border">
         <div className="max-w-4xl mx-auto">
-          <Link href="/work" className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-10">
+          <Link
+            href="/work"
+            className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-10"
+          >
             <ArrowLeft size={14} /> Back to selected work
           </Link>
           <Reveal variant="up">
             <div className="flex flex-wrap items-center gap-3 mb-5">
               <p className="text-accent text-xs uppercase tracking-widest">{project.role}</p>
-              <span className="text-xs uppercase tracking-widest text-muted border border-border px-2 py-1">{project.links?.live ? 'Live website' : project.role.toLowerCase().includes('in progress') ? 'In progress' : 'Case study'}</span>
+              <span className="text-xs uppercase tracking-widest text-muted border border-border px-2 py-1">
+                {project.links?.live
+                  ? 'Live website'
+                  : project.role.toLowerCase().includes('in progress')
+                    ? 'In progress'
+                    : 'Case study'}
+              </span>
             </div>
-            <h1 className="page-title font-display font-bold tracking-tight leading-tight mb-7">{project.title}</h1>
+            <h1 className="page-title font-display font-bold tracking-tight leading-tight mb-7">
+              {project.title}
+            </h1>
             <p className="text-muted text-lg md:text-xl leading-relaxed">{project.summary}</p>
             {(project.links?.live || project.links?.source) && (
               <div className="flex flex-wrap gap-5 mt-8">
@@ -103,7 +128,12 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             {project.technologies.length > 0 && (
               <ul className="flex flex-wrap gap-2 mt-7" aria-label="Technologies">
                 {project.technologies.map((technology) => (
-                  <li key={technology} className="border border-border rounded-full px-3 py-1 text-xs text-muted">{technology}</li>
+                  <li
+                    key={technology}
+                    className="border border-border rounded-full px-3 py-1 text-xs text-muted"
+                  >
+                    {technology}
+                  </li>
                 ))}
               </ul>
             )}

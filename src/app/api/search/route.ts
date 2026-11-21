@@ -20,14 +20,14 @@ export function GET(request: NextRequest) {
   if (query.length > MAX_QUERY_LENGTH) {
     return NextResponse.json(
       { error: 'Search terms must be 120 characters or fewer.' },
-      { status: 400, headers: { 'Cache-Control': 'no-store' } }
+      { status: 400, headers: { 'Cache-Control': 'no-store' } },
     );
   }
 
   if (!query) {
     return NextResponse.json(
       { projects: [], articles: [] },
-      { headers: { 'Cache-Control': 'no-store' } }
+      { headers: { 'Cache-Control': 'no-store' } },
     );
   }
 
@@ -47,6 +47,6 @@ export function GET(request: NextRequest) {
         href: `${article.kind === 'knowledge' ? '/knowledge' : '/writing'}/${article.slug}`,
       })),
     },
-    { headers: { 'Cache-Control': 'no-store' } }
+    { headers: { 'Cache-Control': 'no-store' } },
   );
 }

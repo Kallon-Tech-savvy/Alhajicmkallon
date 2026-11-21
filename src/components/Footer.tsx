@@ -20,29 +20,27 @@ const NAV_LINKS = [
 export const Footer = ({ showInvitation = true }: { showInvitation?: boolean }) => (
   <footer className="swiss-footer site-gutter">
     <div className="mx-auto max-w-[var(--layout-max)]">
-      {showInvitation && <div className="footer-invitation">
-        <div>
-          <p className="swiss-meta">Have something in mind?</p>
-          <h2>
-            Let’s talk
-            <br />
-            it through<span>.</span>
-          </h2>
-          <p className="footer-invitation-copy">
-            Tell me what you’re trying to do. I’ll tell you honestly how I can help.
-          </p>
+      {showInvitation && (
+        <div className="footer-invitation">
+          <div>
+            <p className="swiss-meta">Have something in mind?</p>
+            <h2>
+              Let’s talk
+              <br />
+              it through<span>.</span>
+            </h2>
+            <p className="footer-invitation-copy">
+              Tell me what you’re trying to do. I’ll tell you honestly how I can help.
+            </p>
+          </div>
+          <Link prefetch={false} href="/contact" className="footer-contact-link">
+            <span>Start a conversation</span>
+            <span className="footer-arrow" aria-hidden="true">
+              <Arrow />
+            </span>
+          </Link>
         </div>
-        <Link
-          prefetch={false}
-          href="/contact"
-          className="footer-contact-link"
-        >
-          <span>Start a conversation</span>
-          <span className="footer-arrow" aria-hidden="true">
-            <Arrow />
-          </span>
-        </Link>
-      </div>}
+      )}
       <div className="footer-details">
         <div>
           <Link prefetch={false} href="/" className="footer-name">

@@ -4,7 +4,8 @@ import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Privacy and performance measurement',
-  description: 'How alhajikallon.com handles optional anonymous website-performance measurements and communication.',
+  description:
+    'How alhajikallon.com handles optional anonymous website-performance measurements and communication.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -25,12 +26,12 @@ export default function PrivacyPage() {
           <section>
             <h2 className="mb-3 text-xl font-semibold text-ivory">Website performance</h2>
             <p>
-              If enabled, approximately one in five page visits may send basic measurements such
-              as page loading speed, visual stability and responsiveness. These reports include
-              the metric name and value, a broad page category (such as Work or Writing), and
-              whether the viewport is small or large. They do not include your name, full page
-              URL, search terms, cookies or a persistent visitor identifier. Browsers signaling
-              Global Privacy Control or Do Not Track are excluded.
+              If enabled, approximately one in five page visits may send basic measurements such as
+              page loading speed, visual stability and responsiveness. These reports include the
+              metric name and value, a broad page category (such as Work or Writing), and whether
+              the viewport is small or large. They do not include your name, full page URL, search
+              terms, cookies or a persistent visitor identifier. Browsers signaling Global Privacy
+              Control or Do Not Track are excluded.
             </p>
           </section>
           <section>
@@ -38,28 +39,42 @@ export default function PrivacyPage() {
             <p>
               Performance reports go to this website’s own server and, when collection is enabled,
               appear in application logs. They are not sent to a third-party analytics SDK. The
-              hosting or security provider may independently process ordinary request metadata,
-              such as IP addresses, for delivering and protecting the website. Their retention
-              practices are separate from the anonymous application-level measurement.
+              hosting or security provider may independently process ordinary request metadata, such
+              as IP addresses, for delivering and protecting the website. Their retention practices
+              are separate from the anonymous application-level measurement.
             </p>
           </section>
           <section>
             <h2 className="mb-3 text-xl font-semibold text-ivory">Theme and chat</h2>
-            <p>Your colour-theme preference is stored in this browser. The protocol course also offers optional local progress: after you enable it, your last lesson and the lessons you explicitly mark practised are stored in this browser. This record is not transmitted to the server or synced to other devices. Use “Forget saved progress” in the course to remove the record and stop remembering. Chat messages stay in page memory until you clear the chat or reload. Published FAQ answers can be handled locally by the server; other questions and recent conversation history may be sent to OpenAI for moderation and an answer. Avoid sending confidential or sensitive information. The assistant cannot send an enquiry on your behalf.</p>
+            <p>
+              Your colour-theme preference is stored in this browser. The protocol course also
+              offers optional local progress: after you enable it, your last lesson and the lessons
+              you explicitly mark practised are stored in this browser. This record is not
+              transmitted to the server or synced to other devices. Use “Forget saved progress” in
+              the course to remove the record and stop remembering. Chat messages stay in page
+              memory until you clear the chat or reload. Published FAQ answers can be handled
+              locally by the server; other questions and recent conversation history may be sent to
+              OpenAI for moderation and an answer. Avoid sending confidential or sensitive
+              information. The assistant cannot send an enquiry on your behalf.
+            </p>
           </section>
           <section>
             <h2 className="mb-3 text-xl font-semibold text-ivory">Contact and enquiries</h2>
             <p>
               If you voluntarily contact me, I use the details you provide to respond to your
-              enquiry. Contact form submissions use Cloudflare Turnstile for abuse checks and
-              Resend to send email to a configured inbox. Submitted details include your name,
-              email, enquiry topic and message. The form does not store submissions in a
-              separate site database, but the email service and recipient mailbox may retain
-              copies under their own policies. Optional acknowledgement emails are sent only
-              when enabled. For questions about website privacy or your communication, email{' '}
-              <a className="text-[var(--color-accent)] underline underline-offset-4" href="mailto:info@alhajikallon.com">
+              enquiry. Contact form submissions use Cloudflare Turnstile for abuse checks and Resend
+              to send email to a configured inbox. Submitted details include your name, email,
+              enquiry topic and message. The form does not store submissions in a separate site
+              database, but the email service and recipient mailbox may retain copies under their
+              own policies. Optional acknowledgement emails are sent only when enabled. For
+              questions about website privacy or your communication, email{' '}
+              <a
+                className="text-[var(--color-accent)] underline underline-offset-4"
+                href="mailto:info@alhajikallon.com"
+              >
                 info@alhajikallon.com
-              </a>.
+              </a>
+              .
             </p>
           </section>
         </div>

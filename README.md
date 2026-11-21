@@ -82,3 +82,8 @@ Turnstile token, never a real enquiry or paid AI completion.
 override selects the fixed `0.7.5` patch release rather than downgrading vinext.
 Revisit it when Satori updates its pinned dependency. This is a private website
 package, not an npm library.
+
+
+Use `npm run format:write` to format application source. CI checks all of `src/`,
+including route JSX and JavaScript helpers; the generated content index remains
+excluded because its format is owned by the generator.

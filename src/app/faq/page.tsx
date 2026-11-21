@@ -21,7 +21,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Frequently Asked Questions | Alhaji C.M. Kallon',
-    description: 'Answers about Alhaji C.M. Kallon’s design engineering services, process, experience and how to work with him.',
+    description:
+      'Answers about Alhaji C.M. Kallon’s design engineering services, process, experience and how to work with him.',
     images: ['/assets/brand/alhaji-kallon-identity.jpg'],
   },
 };
@@ -33,17 +34,17 @@ const faqs = [
       {
         question: 'Who is Alhaji C.M. Kallon?',
         answer:
-          "Alhaji C.M. Kallon is a Sierra Leonean design engineer based in Freetown. He helps founders, businesses and organisations turn unclear ideas into digital products people can use, working from the first question about the problem through to a working product.",
+          'Alhaji C.M. Kallon is a Sierra Leonean design engineer based in Freetown. He helps founders, businesses and organisations turn unclear ideas into digital products people can use, working from the first question about the problem through to a working product.',
       },
       {
         question: 'What does Alhaji Kallon do?',
         answer:
-          "Alhaji Kallon helps people decide what to build, why it matters and how to turn that decision into a working product. His work connects understanding the problem, defining a product, designing the experience and engineering a reliable, accessible and fast solution.",
+          'Alhaji Kallon helps people decide what to build, why it matters and how to turn that decision into a working product. His work connects understanding the problem, defining a product, designing the experience and engineering a reliable, accessible and fast solution.',
       },
       {
         question: 'What is a design engineer?',
         answer:
-          "A design engineer works on both sides of a product: how it should look and feel, and how it is built. In Alhaji’s work, that means connecting product requirements to clear interfaces and maintainable code without losing the reasoning between design and implementation.",
+          'A design engineer works on both sides of a product: how it should look and feel, and how it is built. In Alhaji’s work, that means connecting product requirements to clear interfaces and maintainable code without losing the reasoning between design and implementation.',
       },
       {
         question: 'Where is Alhaji Kallon based?',
@@ -63,22 +64,22 @@ const faqs = [
       {
         question: 'Who does Alhaji Kallon work with?',
         answer:
-          "Alhaji works with startup founders, business owners, nonprofits and community organisations. He is most useful when there is an early-stage idea, an unclear business problem or an existing product that needs clearer direction.",
+          'Alhaji works with startup founders, business owners, nonprofits and community organisations. He is most useful when there is an early-stage idea, an unclear business problem or an existing product that needs clearer direction.',
       },
       {
         question: 'Can Alhaji Kallon help turn a business idea into a digital product?',
         answer:
-          "Yes. He can clarify the problem, identify who the product is for, decide which features are essential, design the experience and build a first working version. The decisions are guided by the project’s goals, available evidence and resources.",
+          'Yes. He can clarify the problem, identify who the product is for, decide which features are essential, design the experience and build a first working version. The decisions are guided by the project’s goals, available evidence and resources.',
       },
       {
         question: 'Does Alhaji Kallon only develop websites?',
         answer:
-          "No. Web development is part of his work, but he also helps with what comes before it: the problem, how information is structured, the user journey and the features that matter. That thinking often comes before any design or code.",
+          'No. Web development is part of his work, but he also helps with what comes before it: the problem, how information is structured, the user journey and the features that matter. That thinking often comes before any design or code.',
       },
       {
         question: 'What technologies does Alhaji Kallon use?',
         answer:
-          "On the front end he uses React, TypeScript, Next.js and Vite. On the back end and infrastructure he uses Supabase, Express and Cloudflare Workers. Tool choices depend on what the product needs and what it will cost to maintain.",
+          'On the front end he uses React, TypeScript, Next.js and Vite. On the back end and infrastructure he uses Supabase, Express and Cloudflare Workers. Tool choices depend on what the product needs and what it will cost to maintain.',
       },
     ],
   },
@@ -88,17 +89,17 @@ const faqs = [
       {
         question: 'What is Alhaji Kallon’s product development process?',
         answer:
-          "Alhaji works in four connected stages: Discover — understand the problem, people and context; Define — decide what to build and why; Design — shape information, journeys and interfaces; Build — engineer and deliver a working product. These stages overlap; learning while building can send the work back to an earlier decision.",
+          'Alhaji works in four connected stages: Discover — understand the problem, people and context; Define — decide what to build and why; Design — shape information, journeys and interfaces; Build — engineer and deliver a working product. These stages overlap; learning while building can send the work back to an earlier decision.',
       },
       {
         question: 'What is Alhaji Kallon’s approach to building digital products?',
         answer:
-          "He believes a product earns its place by solving a problem people care about and showing that it does. He starts by asking who the product is for, what those people are trying to do and what the first version needs to prove. He separates facts from assumptions, weighs trade-offs and prefers focused learning to features without a clear purpose.",
+          'He believes a product earns its place by solving a problem people care about and showing that it does. He starts by asking who the product is for, what those people are trying to do and what the first version needs to prove. He separates facts from assumptions, weighs trade-offs and prefers focused learning to features without a clear purpose.',
       },
       {
         question: 'What makes Alhaji Kallon’s approach different?',
         answer:
-          "He connects product decisions, design and engineering in one practice. On the AEEM project, that meant starting with how visitors understood the organisation before deciding how the website should be structured.",
+          'He connects product decisions, design and engineering in one practice. On the AEEM project, that meant starting with how visitors understood the organisation before deciding how the website should be structured.',
       },
     ],
   },
@@ -113,7 +114,7 @@ const faqs = [
       {
         question: 'What projects has Alhaji Kallon worked on?',
         answer:
-          "His selected work includes AEEM, a digital presence for the Africa Education Empowerment Movement, covering content structure, experience design and development; and MJ Studio, an in-progress photography-studio backend built with TypeScript, Express and Supabase. MJ Studio is not presented as a finished launch.",
+          'His selected work includes AEEM, a digital presence for the Africa Education Empowerment Movement, covering content structure, experience design and development; and MJ Studio, an in-progress photography-studio backend built with TypeScript, Express and Supabase. MJ Studio is not presented as a finished launch.',
         links: [
           { label: 'Read the AEEM case study', href: '/work/aeem-digital-presence' },
           { label: 'Read the MJ Studio notes', href: '/work/mj-studio-backend' },
@@ -123,7 +124,7 @@ const faqs = [
       {
         question: 'What was Alhaji Kallon’s role in the AEEM website project?',
         answer:
-          "He initiated the AEEM website as a volunteer, organised information about its mission and activities, improved access to resources and made participation routes easier to find. He later served as AEEM’s Chief Operating Officer. The core team reviewed the website positively, but wider visitor outcomes have not been measured.",
+          'He initiated the AEEM website as a volunteer, organised information about its mission and activities, improved access to resources and made participation routes easier to find. He later served as AEEM’s Chief Operating Officer. The core team reviewed the website positively, but wider visitor outcomes have not been measured.',
       },
     ],
   },
@@ -132,11 +133,13 @@ const faqs = [
     items: [
       {
         question: 'Do I need a finished brief or technical knowledge to get started?',
-        answer: 'No. You do not need a finished brief or technical knowledge to start a conversation. Tell Alhaji what you are trying to achieve and what you know so far so the problem and next step can be clarified.',
+        answer:
+          'No. You do not need a finished brief or technical knowledge to start a conversation. Tell Alhaji what you are trying to achieve and what you know so far so the problem and next step can be clarified.',
       },
       {
         question: 'How much does a project cost?',
-        answer: 'No fixed prices are published. Alhaji discusses the problem, likely scope and constraints before agreeing on project pricing. Send a short description through the contact page to start.',
+        answer:
+          'No fixed prices are published. Alhaji discusses the problem, likely scope and constraints before agreeing on project pricing. Send a short description through the contact page to start.',
       },
       {
         question: 'Is Alhaji Kallon available for projects?',
@@ -146,13 +149,13 @@ const faqs = [
       {
         question: 'How can I work with Alhaji Kallon?',
         answer:
-          "Start with the contact page. Tell him what you are trying to achieve, who the product is for and where you need help. You do not need a finished brief.",
+          'Start with the contact page. Tell him what you are trying to achieve, who the product is for and where you need help. You do not need a finished brief.',
         links: [{ label: 'Contact Alhaji', href: '/contact' }],
       },
       {
         question: 'How can I contact Alhaji Kallon?',
         answer:
-          "For project and general enquiries, use the contact page or email info@alhajikallon.com. For technical or development questions, email dev@alhajikallon.com. You can also find him on LinkedIn and GitHub.",
+          'For project and general enquiries, use the contact page or email info@alhajikallon.com. For technical or development questions, email dev@alhajikallon.com. You can also find him on LinkedIn and GitHub.',
         links: [
           { label: 'Contact page', href: '/contact' },
           { label: 'LinkedIn', href: 'https://linkedin.com/in/alhaji-c-m-k-8b79a225b' },
@@ -195,13 +198,12 @@ export default function FAQPage() {
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
               <h1 className="page-title font-display tracking-tight">
-                Frequently asked{' '}
-                <span className="block text-accent">questions.</span>
+                Frequently asked <span className="block text-accent">questions.</span>
               </h1>
             </div>
             <p className="max-w-xl text-base leading-relaxed text-muted lg:col-span-4">
-              Clear answers about who I am, the problems I help solve, how I
-              approach product work, and what it is like to work with me.
+              Clear answers about who I am, the problems I help solve, how I approach product work,
+              and what it is like to work with me.
             </p>
           </div>
         </div>
@@ -211,10 +213,9 @@ export default function FAQPage() {
         <div className="mx-auto max-w-5xl">
           <div className="mb-10 border-y border-border py-5">
             <p className="max-w-3xl text-sm leading-relaxed text-muted">
-              I’m Alhaji C.M. Kallon, a design engineer based in Freetown,
-              Sierra Leone. I help founders, businesses and organisations turn
-              unclear ideas into useful digital products through discovery,
-              product thinking, experience design and engineering.
+              I’m Alhaji C.M. Kallon, a design engineer based in Freetown, Sierra Leone. I help
+              founders, businesses and organisations turn unclear ideas into useful digital products
+              through discovery, product thinking, experience design and engineering.
             </p>
           </div>
 
@@ -287,21 +288,34 @@ export default function FAQPage() {
               Start with the problem.
             </h2>
             <p className="mb-7 max-w-2xl text-sm leading-relaxed text-muted">
-              You do not need a finished brief. Tell me what you are trying to
-              achieve, what you know so far and where you need help.
+              You do not need a finished brief. Tell me what you are trying to achieve, what you
+              know so far and where you need help.
             </p>
             <Link
               href="/contact"
               className="inline-flex items-center border border-pride-blue/50 bg-pride-blue/10 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-ivory transition-colors hover:bg-pride-blue/20"
             >
-              Discuss a project <span aria-hidden="true" className="ml-3">↗</span>
+              Discuss a project{' '}
+              <span aria-hidden="true" className="ml-3">
+                ↗
+              </span>
             </Link>
           </div>
 
           <p className="mt-10 text-xs text-muted">
-            Explore <Link href="/about" className="text-accent underline underline-offset-4">more about my background</Link>,{' '}
-            <Link href="/work" className="text-accent underline underline-offset-4">selected work</Link> and{' '}
-            <Link href="/writing" className="text-accent underline underline-offset-4">writing</Link>.
+            Explore{' '}
+            <Link href="/about" className="text-accent underline underline-offset-4">
+              more about my background
+            </Link>
+            ,{' '}
+            <Link href="/work" className="text-accent underline underline-offset-4">
+              selected work
+            </Link>{' '}
+            and{' '}
+            <Link href="/writing" className="text-accent underline underline-offset-4">
+              writing
+            </Link>
+            .
           </p>
         </div>
       </section>

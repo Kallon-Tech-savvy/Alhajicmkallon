@@ -2,9 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { once } from 'node:events';
+import { PROTOCOL_LESSONS } from '../src/lib/protocol-course.ts';
 import { createProtocolLab } from '../public/downloads/protocol-lab.mjs';
 
-const index = JSON.parse((await readFile(new URL('../src/lib/protocol-course.ts',import.meta.url),'utf8')).match(/= ([\s\S]+) as const;/)[1]);
+const index = PROTOCOL_LESSONS;
 test('course publishes twelve substantial lessons with usable checkpoints and cross-links',async()=>{
   assert.equal(index.length,12);
   assert.equal(new Set(index.map(x=>x.slug)).size,12);

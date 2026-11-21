@@ -12,12 +12,16 @@ function pageCategory(pathname: string) {
   if (pathname === '/') return 'home';
   const section = pathname.split('/')[1];
   return ['work', 'writing', 'knowledge', 'about', 'contact', 'faq'].includes(section)
-    ? section : 'other';
+    ? section
+    : 'other';
 }
 
 function reportVital(metric: { name: string; value: number; id: string }) {
   if (!included || !metrics.has(metric.name) || !Number.isFinite(metric.value)) return;
-  const privacy = navigator as Navigator & { globalPrivacyControl?: boolean; doNotTrack?: string | null };
+  const privacy = navigator as Navigator & {
+    globalPrivacyControl?: boolean;
+    doNotTrack?: string | null;
+  };
   if (privacy.globalPrivacyControl === true || privacy.doNotTrack === '1') return;
 
   // A Next metric may be updated; ignore exact duplicates without sending its ID.
@@ -27,9 +31,8 @@ function reportVital(metric: { name: string; value: number; id: string }) {
 
   const body = JSON.stringify({
     name: metric.name,
-    value: metric.name === 'CLS'
-      ? Math.round(metric.value * 1000) / 1000
-      : Math.round(metric.value),
+    value:
+      metric.name === 'CLS' ? Math.round(metric.value * 1000) / 1000 : Math.round(metric.value),
     section: pageCategory(window.location.pathname),
     viewport: window.matchMedia('(max-width: 767px)').matches ? 'small' : 'large',
   });
