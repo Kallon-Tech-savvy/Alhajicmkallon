@@ -5,21 +5,29 @@ import Script from 'next/script';
 import { Send, CheckCircle2 } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { buildContactMailto } from '@/lib/contact-form.mjs';
+import { CONTACT_INTENTS } from '@/lib/contact-intents.mjs';
 
 type TurnstileApi = {
-  render: (element: HTMLElement, options: {
-    sitekey: string;
-    action: 'contact';
-    size: 'compact' | 'flexible';
-    theme: 'auto';
-    callback: (token: string) => void;
-    'expired-callback': () => void;
-    'error-callback': () => void;
-  }) => string;
+  render: (
+    element: HTMLElement,
+    options: {
+      sitekey: string;
+      action: 'contact';
+      size: 'compact' | 'flexible';
+      theme: 'auto';
+      callback: (token: string) => void;
+      'expired-callback': () => void;
+      'error-callback': () => void;
+    },
+  ) => string;
   reset: (id?: string) => void;
   remove: (id?: string) => void;
 };
-declare global { interface Window { turnstile?: TurnstileApi } }
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
 
 export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'fallback'>(
@@ -42,6 +50,15 @@ export function ContactForm() {
   const captchaElement = useRef<HTMLDivElement>(null);
   const captchaWidgetId = useRef<string | undefined>(undefined);
   const showForm = status !== 'success';
+  const pendingRequest = useRef<AbortController | null>(null);
+
+  useEffect(
+    () => () => {
+      pendingRequest.current?.abort();
+      pendingRequest.current = null;
+    },
+    [],
+  );
 
   // Cloudflare's flexible widget has a 300px minimum width. Narrow mobile
   // containers need the 150px compact widget instead of horizontal overflow.
@@ -59,12 +76,19 @@ export function ContactForm() {
   }, [showForm]);
 
   useEffect(() => {
-    if (!turnstileSiteKey || !scriptReady || !showForm || !captchaElement.current || !window.turnstile) return;
+    if (
+      !turnstileSiteKey ||
+      !scriptReady ||
+      !showForm ||
+      !captchaElement.current ||
+      !window.turnstile
+    )
+      return;
     const id = window.turnstile.render(captchaElement.current, {
       sitekey: turnstileSiteKey,
       action: 'contact',
       size: widgetSize,
-      theme: 'auto', 
+      theme: 'auto',
       callback: setCaptchaToken,
       'expired-callback': () => setCaptchaToken(''),
       'error-callback': () => setCaptchaToken(''),
@@ -84,19 +108,14 @@ export function ContactForm() {
   const openDraft = () => {
     window.location.href = buildContactMailto({ ...formData, intent: selectedIntent });
     setStatus('fallback');
-    setStatusMessage('Your email app should open with a draft. Delivery is not confirmed until you send it.');
+    setStatusMessage(
+      'Your email app should open with a draft. Delivery is not confirmed until you send it.',
+    );
   };
-
-  const intentOptions = [
-    'Clarify an idea',
-    'Design and build a product',
-    'Improve a product',
-    'Suggest a guide or correction',
-    'Something else',
-  ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (pendingRequest.current) return;
     setStatusMessage('');
 
     if (!turnstileSiteKey) {
@@ -109,11 +128,16 @@ export function ContactForm() {
       return;
     }
     setStatus('loading');
+    const controller = new AbortController();
+    pendingRequest.current = controller;
+    // A hung network must not permanently disable retry and the email-draft fallback.
+    const deadline = window.setTimeout(() => controller.abort(), 30_000);
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         cache: 'no-store',
+        signal: controller.signal,
         body: JSON.stringify({
           ...formData,
           intent: selectedIntent,
@@ -122,13 +146,16 @@ export function ContactForm() {
         }),
       });
       const payload: unknown = await response.json().catch(() => null);
+      if (pendingRequest.current !== controller) return;
       const result =
         payload !== null && typeof payload === 'object' && !Array.isArray(payload)
           ? (payload as { ok?: unknown; error?: unknown })
           : null;
       if (response.ok && result?.ok === true) {
         setStatus('success');
-        setStatusMessage('Thank you. Your enquiry has been submitted for delivery. I’ll review it and respond when I can.');
+        setStatusMessage(
+          'Thank you. Your enquiry has been submitted for delivery. I’ll review it and respond when I can.',
+        );
         setFormData({ name: '', email: '', message: '' });
         setSelectedIntent('');
         setHoneypot('');
@@ -143,11 +170,15 @@ export function ContactForm() {
         resetVerification();
       }
     } catch {
+      if (pendingRequest.current !== controller) return;
       setStatus('error');
       setStatusMessage(
-        'Something went wrong and delivery could not be confirmed. Your message is still here. Try again or email info@alhajikallon.com directly.',
+        'Delivery could not be confirmed. Your message is still here. Check whether it arrived before resending, or open an email draft.',
       );
       resetVerification();
+    } finally {
+      window.clearTimeout(deadline);
+      pendingRequest.current = null;
     }
   };
 
@@ -171,11 +202,12 @@ export function ContactForm() {
             <fieldset>
               <legend className="ui-label">What would you like to work on? (optional)</legend>
               <div className="flex flex-wrap gap-2">
-                {intentOptions.map((option) => (
+                {CONTACT_INTENTS.map((option) => (
                   <button
                     key={option}
                     type="button"
                     onClick={() => setSelectedIntent(option)}
+                    disabled={status === 'loading'}
                     aria-pressed={selectedIntent === option}
                     className="ui-choice"
                   >
@@ -192,6 +224,7 @@ export function ContactForm() {
                 </label>
                 <input
                   id="contact-name"
+                  disabled={status === 'loading'}
                   name="name"
                   autoComplete="name"
                   type="text"
@@ -209,6 +242,7 @@ export function ContactForm() {
                 </label>
                 <input
                   id="contact-email"
+                  disabled={status === 'loading'}
                   name="email"
                   autoComplete="email"
                   type="email"
@@ -221,7 +255,8 @@ export function ContactForm() {
                   aria-describedby="contact-email-help"
                 />
                 <p id="contact-email-help" className="text-xs text-muted">
-                  I’ll use this address to reply to you, and to acknowledge your enquiry if confirmations are enabled.
+                  I’ll use this address to reply to you, and to acknowledge your enquiry if
+                  confirmations are enabled.
                 </p>
               </div>
             </div>
@@ -233,6 +268,7 @@ export function ContactForm() {
               <textarea
                 required
                 id="contact-message"
+                disabled={status === 'loading'}
                 name="message"
                 rows={5}
                 maxLength={5000}
@@ -262,7 +298,9 @@ export function ContactForm() {
             {turnstileSiteKey ? (
               <div>
                 <div ref={captchaElement} aria-label="Spam protection verification" />
-                <p className="mt-2 text-xs text-muted">Verification helps protect this form from spam.</p>
+                <p className="mt-2 text-xs text-muted">
+                  Verification helps protect this form from spam.
+                </p>
               </div>
             ) : (
               <p className="text-sm text-muted">
@@ -309,7 +347,6 @@ export function ContactForm() {
                   {statusMessage ||
                     'Your message has not been confirmed. Please retry or open an email draft.'}
                 </p>
-
               </div>
             )}
           </form>

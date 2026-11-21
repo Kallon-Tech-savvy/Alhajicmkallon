@@ -7,7 +7,7 @@ import {
   createMemoryQuotaStore,
   createRedisQuotaStore,
 } from './server';
-import type { ChatProvider, ChatService, QuotaStore } from './server';
+import type { ChatFailureStage, ChatProvider, ChatService, QuotaStore } from './server';
 
 let service: ChatService | undefined;
 const memoryQuota = createMemoryQuotaStore();
@@ -73,11 +73,19 @@ export const answerChat: ChatService = async (input) => {
 };
 
 /** Emit only fixed diagnostic codes and HTTP status, never upstream error contents. */
-function logChatError(error: unknown) {
+function logChatError(error: unknown, stage?: ChatFailureStage) {
   console.error('chat_unavailable', {
-    code: error instanceof ChatQuotaError ? error.code : 'chat_configuration_or_provider',
+    code:
+      error instanceof ChatQuotaError
+        ? error.code
+        : stage === 'provider_configuration'
+          ? 'provider_configuration'
+          : 'chat_configuration_or_provider',
+    ...(stage ? { stage } : {}),
     ...(error instanceof ChatQuotaError && error.status !== undefined
       ? { status: error.status }
-      : {}),
+      : error instanceof OpenAI.APIError && error.status !== undefined
+        ? { status: error.status }
+        : {}),
   });
 }

@@ -70,3 +70,10 @@ safe codes: `quota_configuration` (missing/invalid REST settings), `quota_networ
 (connection failure), `quota_http` (includes status, such as 401/403), or
 `quota_response` (invalid Redis reply). Check those logs before rotating keys.
 Logs intentionally exclude upstream bodies, URLs, visitor text, and credentials.
+
+
+Once FAQ requests succeed, a non-FAQ 503 can still mean the provider is missing.
+Logs now report `provider_configuration` when `OPENAI_API_KEY` is absent. Other
+service errors include a fixed `stage` (`visitor_quota`, `ai_quota`, `moderation`,
+`completion`) and, for recognized provider HTTP errors, a numeric status only.
+Never log full provider errors: they may contain sensitive request data.

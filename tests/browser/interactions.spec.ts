@@ -1,4 +1,27 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+async function mockTurnstile(page: Page) {
+  await page.route(
+    'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+    (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/javascript',
+        body: `window.turnstile = {
+        render: function(el, config) {
+          if (config.sitekey !== '0x4AAAAAAGF6eqlDlOmcJvuf' || config.action !== 'contact') {
+            throw Error('Unexpected widget configuration');
+          }
+          config.callback('browser-test-token');
+          window.__turnstileTestReady = true;
+          return 'contact-test-widget';
+        },
+        reset: function() {},
+        remove: function() {}
+      };`,
+      }),
+  );
+}
 
 test('search returns a published guide and restores focus when dismissed', async ({ page }) => {
   await page.goto('/');
@@ -83,24 +106,7 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   // Simulate the existing widget. Never call Cloudflare or Resend in browser tests.
-  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/javascript',
-      body: `window.turnstile = {
-        render: function(el, config) {
-          if (config.sitekey !== '0x4AAAAAAGF6eqlDlOmcJvuf' || config.action !== 'contact') {
-            throw Error('Unexpected widget configuration');
-          }
-          config.callback('browser-test-token');
-          window.__turnstileTestReady = true;
-          return 'contact-test-widget';
-        },
-        reset: function() {},
-        remove: function() {}
-      };`,
-    }),
-  );
+  await mockTurnstile(page);
   let submittedToken = '';
   await page.route('**/api/contact', (route) => {
     const data = route.request().postDataJSON();
@@ -108,9 +114,16 @@ test('contact email fallback preserves the draft and does not claim delivery', a
     return route.fulfill({ status: 503, json: { error: 'Test outage' } });
   });
   await page.goto('/contact');
-  await expect(page.getByRole('button', { name: 'Open email draft instead', exact: true })).toBeVisible();
-  await expect(page.getByText('You will need to send it yourself.', { exact: false })).toBeVisible();
-  await page.waitForFunction(() => (window as typeof window & { __turnstileTestReady?: boolean }).__turnstileTestReady === true);
+  await expect(
+    page.getByRole('button', { name: 'Open email draft instead', exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('You will need to send it yourself.', { exact: false }),
+  ).toBeVisible();
+  await page.waitForFunction(
+    () =>
+      (window as typeof window & { __turnstileTestReady?: boolean }).__turnstileTestReady === true,
+  );
   const intent = page.getByRole('button', { name: 'Improve a product', exact: true });
   await intent.click();
   await expect(intent).toHaveAttribute('aria-pressed', 'true');
@@ -124,7 +137,9 @@ test('contact email fallback preserves the draft and does not claim delivery', a
     /preserved|not confirmed|not be confirmed|verification|Delivery is not confirmed|not be accepted/i,
   );
   await expect(message).toHaveValue('A local test draft.');
-  await expect(page.getByRole('button', { name: 'Open email draft instead', exact: true })).toHaveCount(1);
+  await expect(
+    page.getByRole('button', { name: 'Open email draft instead', exact: true }),
+  ).toHaveCount(1);
   await expect(page.getByRole('heading', { name: 'Enquiry submitted' })).not.toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -213,7 +228,9 @@ test('productive overlays remain usable at 320px', async ({ page }) => {
 });
 
 for (const kind of ['search', 'chat'] as const) {
-  test(`${kind} responds immediately and stays dismissed while its code downloads`, async ({ page }) => {
+  test(`${kind} responds immediately and stays dismissed while its code downloads`, async ({
+    page,
+  }) => {
     await page.goto('/');
     const trigger = page.getByRole('button', {
       name: kind === 'chat' ? 'Ask about my work' : 'Search (Ctrl or Command K)',
@@ -221,12 +238,18 @@ for (const kind of ['search', 'chat'] as const) {
     });
     // Wait for hydration, then hold optional JS downloads to simulate a cold connection.
     await expect(trigger).toBeVisible();
-    await expect.poll(() => trigger.evaluate((element) =>
-      Object.keys(element).some((key) => key.startsWith('__reactProps'))
-    )).toBe(true);
+    await expect
+      .poll(() =>
+        trigger.evaluate((element) =>
+          Object.keys(element).some((key) => key.startsWith('__reactProps')),
+        ),
+      )
+      .toBe(true);
     let release!: () => void;
-    const held = new Promise<void>((resolve) => { release = resolve; });
-    await page.route('**/_next/static/**/*.js', async (route) => {
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await page.route(/\.(?:m?js)(?:\?.*)?$/, async (route) => {
       await held;
       await route.continue();
     });
@@ -244,18 +267,26 @@ for (const kind of ['search', 'chat'] as const) {
     await page.waitForLoadState('networkidle');
     await expect(page.getByRole('dialog')).not.toBeVisible();
     await trigger.click();
-    await expect(page.getByRole('dialog', {
-      name: kind === 'chat' ? 'Ask about Alhaji' : 'Search this website', exact: true,
-    })).toBeVisible();
+    await expect(
+      page.getByRole('dialog', {
+        name: kind === 'chat' ? 'Ask about Alhaji' : 'Search this website',
+        exact: true,
+      }),
+    ).toBeVisible();
   });
 }
 
-test('desktop Learn navigates directly and mobile learning shortcuts remain keyboard accessible', async ({ page }) => {
+test('desktop Learn navigates directly and mobile learning shortcuts remain keyboard accessible', async ({
+  page,
+}) => {
   await page.goto('/');
   const navigation = page.getByRole('navigation', { name: 'Primary navigation', exact: true });
   await navigation.getByRole('link', { name: 'Learn', exact: true }).click();
   await expect(page).toHaveURL(/\/knowledge$/);
-  await expect(navigation.getByRole('link', { name: 'Learn', exact: true })).toHaveAttribute('aria-current', 'page');
+  await expect(navigation.getByRole('link', { name: 'Learn', exact: true })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Open navigation menu' }).click();
   const menu = page.getByRole('region', { name: 'Mobile navigation' });
@@ -275,7 +306,9 @@ test('desktop Learn navigates directly and mobile learning shortcuts remain keyb
   await expect(page.getByRole('button', { name: 'Open navigation menu' })).toBeFocused();
 });
 
-test('Work page has its own social metadata, evidence, and only one invitation', async ({ page }) => {
+test('Work page has its own social metadata, evidence, and only one invitation', async ({
+  page,
+}) => {
   await page.goto('/work');
 
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
@@ -309,11 +342,16 @@ test('Writing page has verified Substack fallback and no self-linking CTA', asyn
   // The real external feed can fail; the curated article must remain visible.
   await page.goto('/writing');
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
-    'content', 'https://alhajikallon.com/writing',
+    'content',
+    'https://alhajikallon.com/writing',
   );
-  await expect(page.getByText('Sierra Leone’s Salone Pement Switch:', { exact: false })).toBeVisible();
+  await expect(
+    page.getByText('Sierra Leone’s Salone Pement Switch:', { exact: false }),
+  ).toBeVisible();
   await expect(page.locator('a[href="https://alhajicmkallon.substack.com/feed"]')).toBeVisible();
-  await expect(page.getByRole('link', { name: /Follow on Substack|Read the latest notes/ })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: /Follow on Substack|Read the latest notes/ }),
+  ).toBeVisible();
   await expect(page.locator('.footer-invitation')).toHaveCount(0);
   const noteCount = await page.locator('a[href^="/writing/"]').count();
   if (noteCount < 3) {
@@ -325,7 +363,8 @@ test('About, Contact, Learn and FAQ use their own metadata', async ({ page }) =>
   for (const path of ['/about', '/contact', '/knowledge', '/faq']) {
     await page.goto(path);
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
-      'content', `https://alhajikallon.com${path}`,
+      'content',
+      `https://alhajikallon.com${path}`,
     );
   }
   await page.goto('/contact');
@@ -334,4 +373,61 @@ test('About, Contact, Learn and FAQ use their own metadata', async ({ page }) =>
   await page.goto('/knowledge');
   await expect(page.getByText('Protocols are the agreed rules', { exact: false })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Suggest a topic' })).toBeVisible();
+});
+
+test('contact timeout preserves the draft and restores the email fallback', async ({ page }) => {
+  await mockTurnstile(page);
+  let posted = false;
+  await page.route('**/api/contact', () => {
+    posted = true;
+  });
+  await page.clock.install();
+  await page.goto('/contact');
+  await page.waitForFunction(
+    () =>
+      (window as typeof window & { __turnstileTestReady?: boolean }).__turnstileTestReady === true,
+  );
+  const name = page.getByRole('textbox', { name: 'Your name', exact: true });
+  const email = page.getByRole('textbox', { name: 'Your email', exact: true });
+  const message = page.getByRole('textbox', { name: 'What are you trying to achieve?' });
+  await name.fill('Test Visitor');
+  await email.fill('visitor@example.com');
+  await message.fill('Preserve this draft after the network stalls.');
+  await page.getByRole('button', { name: 'Send enquiry', exact: true }).click();
+  await expect.poll(() => posted).toBe(true);
+  await expect(message).toBeDisabled();
+  await page.clock.runFor(30_001);
+  await expect(page.getByRole('status')).toContainText('Delivery could not be confirmed');
+  await expect(message).toBeEnabled();
+  await expect(message).toHaveValue('Preserve this draft after the network stalls.');
+  await expect(name).toHaveValue('Test Visitor');
+  await expect(email).toHaveValue('visitor@example.com');
+  await expect(
+    page.getByRole('button', { name: 'Open email draft instead', exact: true }),
+  ).toBeEnabled();
+  await expect(page.getByRole('heading', { name: 'Enquiry submitted' })).not.toBeVisible();
+});
+
+test('contact acceptance clears the submitted draft and permits a fresh enquiry', async ({
+  page,
+}) => {
+  await mockTurnstile(page);
+  await page.route('**/api/contact', (route) => route.fulfill({ json: { ok: true } }));
+  await page.goto('/contact');
+  await page.waitForFunction(
+    () =>
+      (window as typeof window & { __turnstileTestReady?: boolean }).__turnstileTestReady === true,
+  );
+  await page.getByRole('textbox', { name: 'Your name', exact: true }).fill('Test Visitor');
+  await page.getByRole('textbox', { name: 'Your email', exact: true }).fill('visitor@example.com');
+  await page
+    .getByRole('textbox', { name: 'What are you trying to achieve?' })
+    .fill('A mocked successful enquiry.');
+  await page.getByRole('button', { name: 'Send enquiry', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Enquiry submitted' })).toBeVisible();
+  await page.getByRole('button', { name: 'Send Additional Message' }).click();
+  await expect(page.getByRole('textbox', { name: 'Your name', exact: true })).toHaveValue('');
+  await expect(page.getByRole('textbox', { name: 'What are you trying to achieve?' })).toHaveValue(
+    '',
+  );
 });

@@ -2,6 +2,7 @@
 export { createChatService } from './lib/service';
 export { ChatQuotaError, createMemoryQuotaStore, createRedisQuotaStore } from './lib/quota';
 export type {
+  ChatFailureStage,
   ChatProvider,
   ChatService,
   ChatResult,

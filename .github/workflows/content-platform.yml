@@ -26,6 +26,12 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      - name: Reject high and critical dependency advisories
+        run: npm audit --audit-level=high
+      - name: Verify committed content catalogue is current
+        run: |
+          node scripts/build-content-index.mjs
+          git diff --exit-code -- src/packages/content/lib/generated-content.ts
       - name: Test content parser
         run: npm run test:content
       - name: Test Substack integration
@@ -56,6 +62,13 @@ jobs:
         run: node --test scripts/workers-runtime-config.test.mjs
       - name: Build Cloudflare Worker with vinext
         run: npm run build:vinext
+      - name: Install Chromium for interaction tests
+        run: npx playwright install --with-deps chromium
+      - name: Test Cloudflare Worker browser interactions
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:3002
+          PLAYWRIGHT_SERVER_COMMAND: npm run start:vinext -- --host 127.0.0.1 --port 3002
+        run: npm run test:interactions
       - name: Production build
         run: npm run build
       - name: Verify browser bundle excludes published full-text content
@@ -74,8 +87,6 @@ jobs:
           exit 1
       - name: Test production crawl, search and AI discovery endpoints
         run: node --test scripts/discovery-endpoints.test.mjs
-      - name: Install Chromium for interaction tests
-        run: npx playwright install --with-deps chromium
       - name: Test browser interactions
         run: npm run test:interactions
       - name: Run three independent Lighthouse audits
