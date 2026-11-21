@@ -46,17 +46,18 @@ export default function WorkPage() {
             <span>to product.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-            Real projects, with the reasoning behind them: the problem, the choices I made,
-            what I built, and what the evidence says so far.
+            Start with the AEEM case study to see a live website and the decisions behind it.
+            The projects below are still in development; their notes explain what is built,
+            what has been checked and what remains uncertain.
           </p>
         </div>
       </header>
       <FeaturedWork variant="work" />
       <section className="site-gutter border-t border-border py-12">
         <div className="mx-auto flex max-w-[var(--layout-max)] flex-wrap items-center justify-between gap-6">
-          <h2 className="text-2xl font-semibold">Have a problem worth working on?</h2>
+          <h2 className="text-2xl font-semibold">Want help with a project?</h2>
           <Link prefetch={false} href="/contact" className="editorial-link">
-            Talk through the problem ↗
+            Describe your project
           </Link>
         </div>
       </section>

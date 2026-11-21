@@ -7,16 +7,22 @@ import { Footer } from '@/components/Footer';
 
 const PRACTICE = [
   {
-    title: 'Find the real problem.',
-    description: 'Talk to people, learn the constraints, and agree what success looks like.',
+    title: 'Understand what needs to change.',
+    disclosure: 'How we examine the problem',
+    description: 'Start with the people affected, the task they need to complete and what is getting in their way.',
+    detail: 'We examine the current process, what is known and what still needs checking. The aim is to agree which problem deserves attention and how we will recognise improvement.',
   },
   {
-    title: 'Make the experience clear.',
-    description: 'Shape the structure, words and design so people know what to do next.',
+    title: 'Make the next action clear.',
+    disclosure: 'How we check the experience',
+    description: 'Give people the information they need to choose, act and understand the result.',
+    detail: 'We work through the journey, labels, content and interface before adding detail. Early designs help us check whether people can complete the task and recover when something goes wrong.',
   },
   {
-    title: 'Build it to last.',
-    description: 'Engineer carefully, test, and check that it works in the conditions people use it in.',
+    title: 'Build, check and improve.',
+    disclosure: 'What we check before and after release',
+    description: 'Turn the agreed approach into working software and check it against the task it needs to support.',
+    detail: 'We consider access, data, errors, performance and the conditions people use the product in. What we observe after release informs what to improve next.',
   },
 ];
 
@@ -46,23 +52,23 @@ export default function Home() {
       <section className="swiss-perspective site-gutter" aria-labelledby="perspective-heading">
         <div className="mx-auto max-w-[var(--layout-max)]">
           <div className="perspective-heading">
-            <p className="swiss-meta">02 / The way I work</p>
+            <p className="swiss-meta">How I work</p>
             <span className="perspective-star" aria-hidden="true">
               <Asterisk />
             </span>
           </div>
           <div className="perspective-grid">
             <h2 id="perspective-heading">
-              Big on clarity.
+              People first.
               <br />
-              Grounded in
+              Decisions with
               <br />
-              <span>real life.</span>
+              <span>a reason.</span>
             </h2>
             <div className="perspective-copy">
               <p>
-                Good products start with understanding people: their goals, their constraints, and
-                the world they live in.
+                Before choosing a screen or a technology, I want to understand the task someone
+                needs to complete and the conditions they are working in.
               </p>
               <p>
                 My perspective is shaped by life in Sierra Leone and by my work with AEEM,
@@ -70,7 +76,7 @@ export default function Home() {
               </p>
               <p>The balance I aim for: think clearly, design simply, build carefully.</p>
               <Link prefetch={false} href="/about" className="swiss-text-link">
-                Meet the person behind the work <Arrow />
+                Read about my background and approach <Arrow />
               </Link>
             </div>
           </div>
@@ -81,10 +87,11 @@ export default function Home() {
                 <div className="practice-step-copy">
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
+                  <details className="mt-4 max-w-2xl">
+                    <summary className="cursor-pointer py-2 text-sm font-semibold text-[var(--brand-paper)] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">{step.disclosure}</summary>
+                    <p className="mt-3">{step.detail}</p>
+                  </details>
                 </div>
-                <span aria-hidden="true">
-                  <Arrow />
-                </span>
               </li>
             ))}
           </ol>
@@ -95,15 +102,15 @@ export default function Home() {
         <div className="mx-auto max-w-[var(--layout-max)]">
           <div className="swiss-section-heading">
             <div>
-              <p className="swiss-meta section-index">03 / Keep learning with me</p>
+              <p className="swiss-meta section-index">Writing and learning</p>
               <h2 id="explore-heading">
-                Made to be
+                Here to read
                 <br />
-                shared.
+                or learn?
               </h2>
             </div>
             <p className="max-w-sm text-muted">
-              Notes, experiments and practical guides from what I’m learning along the way.
+              Choose an essay to reflect on, a guide to practise with, or a glossary to look up an unfamiliar term.
             </p>
           </div>
           <div className="explore-grid">
@@ -116,11 +123,11 @@ export default function Home() {
                 </span>
               </span>
               <div>
-                <h3>Notes from the work.</h3>
-                <p>Design, technology and the decisions in between.</p>
+                <h3>Essays and reflections.</h3>
+                <p>Personal reflections on identity, ambition and meaning, alongside writing on technology and society.</p>
               </div>
               <span className="explore-card-link">
-                Read the writing <Arrow />
+                Browse essays <Arrow />
               </span>
             </Link>
             <Link prefetch={false} href="/knowledge" className="explore-card explore-card-blue">
@@ -132,11 +139,11 @@ export default function Home() {
                 </span>
               </span>
               <div>
-                <h3>Pass the knowledge on.</h3>
-                <p>Practical guides and a free 12-part course on how software systems talk to each other: HTTP, APIs, identity, events and debugging.</p>
+                <h3>Practise a skill. Understand a term.</h3>
+                <p>Short development guides, a glossary of design engineering, AI and API terms, and a free 12-part software protocol course.</p>
               </div>
               <span className="explore-card-link">
-                Start learning <Arrow />
+                Choose a guide or look up a term <Arrow />
               </span>
             </Link>
           </div>

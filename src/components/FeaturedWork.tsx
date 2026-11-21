@@ -21,13 +21,13 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
             <div>
               <p className="swiss-meta section-index">01 / Selected work</p>
               <h2 id="work-heading">
-                Thinking made
+                See the problem.
                 <br />
-                <span className="text-accent">tangible.</span>
+                <span className="text-accent">Follow the decisions.</span>
               </h2>
             </div>
             <Link prefetch={false} href="/work" className="swiss-text-link">
-              All projects{' '}
+              Browse all projects{' '}
               <span aria-hidden="true">
                 <Arrow />
               </span>
@@ -41,7 +41,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
               prefetch={false}
               href={`/work/${aeem.slug}`}
               className="work-canvas"
-              aria-label="Explore the AEEM case study"
+              aria-label="Read the AEEM website case study"
             >
               <div className="work-canvas-top" aria-hidden="true">
                 <span>AEEM / EDUCATION & COMMUNITY</span>
@@ -77,12 +77,12 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
               <div>
                 <h3>
                   <Link prefetch={false} href={`/work/${aeem.slug}`}>
-                    Good work deserves
-                    <br />a clearer way in.
+                    AEEM: a clearer way
+                    <br />to understand and take part.
                   </Link>
                 </h3>
                 <p className="mt-4 text-muted">
-                  Bringing AEEM’s mission, programmes and ways to take part into one clear website.
+                  One website for AEEM’s mission, programmes and ways to volunteer, partner or support. Read how I organised the content and built the journey.
                 </p>
                 {isWorkPage ? (
                   <div className="work-evidence">
@@ -104,7 +104,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
               </div>
               <div className="work-links">
                 <Link prefetch={false} href={`/work/${aeem.slug}`} className="swiss-text-link">
-                  Explore the case study <Arrow />
+                  Read the AEEM case study
                 </Link>
                 {aeem.links?.live && (
                   <a
@@ -113,7 +113,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
                     rel="noopener noreferrer"
                     className="swiss-secondary-link"
                   >
-                    Visit the live website <Arrow />
+                    Open the AEEM website (new tab)
                   </a>
                 )}
               </div>
@@ -160,7 +160,7 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
               className="work-row-cta swiss-text-link"
               aria-label={`Read the development notes for ${project.title}`}
             >
-              Read the development notes <Arrow />
+              Read project notes
             </Link>
           </article>
         ))}
