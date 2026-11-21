@@ -16,13 +16,21 @@ const preloadSearch = () => {
 const GlobalSearch = dynamic(loadSearch, { ssr: false, loading: InteractionLoading });
 
 const LINKS = [
-  { name: 'Home', href: '/' },
-  { name: 'Work', href: '/work' },
-  { name: 'About', href: '/about' },
-  { name: 'Writing', href: '/writing' },
-  { name: 'Learn', href: '/knowledge' },
-  { name: 'FAQ', href: '/faq' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Home', href: '/', description: 'What I do and where to start' },
+  { name: 'Work', href: '/work', description: 'Case studies, decisions and project evidence' },
+  { name: 'About', href: '/about', description: 'My background and how I work' },
+  { name: 'Writing', href: '/writing', description: 'Essays on life, technology and society' },
+  {
+    name: 'Learn',
+    href: '/knowledge',
+    description: 'Practical guides, a glossary and a free course',
+  },
+  { name: 'FAQ', href: '/faq', description: 'Answers about my work and approach' },
+  {
+    name: 'Contact',
+    href: '/contact',
+    description: 'Describe a project, ask a question or send feedback',
+  },
 ] as const;
 
 const PRIMARY_LINKS = LINKS.filter(({ href }) => !['/', '/faq', '/contact'].includes(href));
@@ -164,7 +172,7 @@ export function NavbarInteractions() {
           aria-current={pathname === '/contact' ? 'page' : undefined}
           className="ui-primary ml-3"
         >
-          Let’s talk <span aria-hidden="true">↗︎</span>
+          Contact me
         </Link>
       </div>
 
@@ -212,10 +220,10 @@ export function NavbarInteractions() {
                 <ThemeSelect />
               </div>
               <h2 className="mb-6 mt-2 text-3xl font-bold tracking-tight text-[var(--color-ivory)]">
-                Find your next step
+                Where would you like to go?
               </h2>
               <div className="mobile-primary-links">
-                {LINKS.map(({ name, href }) => {
+                {LINKS.map(({ name, href, description }) => {
                   const current = isActivePath(pathname, href);
                   return (
                     <Link
@@ -231,9 +239,14 @@ export function NavbarInteractions() {
                           : 'border-[var(--color-border)] bg-surface text-[var(--color-ivory)] hover:border-[var(--color-accent)] hover:bg-[var(--color-navy)]')
                       }
                     >
-                      <span>{name}</span>
+                      <span>
+                        <span className="block">{name}</span>
+                        <span className="mt-1 block text-sm font-normal leading-relaxed">
+                          {description}
+                        </span>
+                      </span>
                       {current ? (
-                        <span className="text-xs font-medium">Current</span>
+                        <span className="shrink-0 text-xs font-medium">You are here</span>
                       ) : (
                         <span aria-hidden="true" className="text-[var(--color-muted)]">
                           →
@@ -244,9 +257,7 @@ export function NavbarInteractions() {
                 })}
               </div>
               <details className="mobile-learning">
-                <summary>
-                  Learning paths <span aria-hidden="true">+</span>
-                </summary>
+                <summary>Course, glossary and learning paths</summary>
                 <div className="pt-4">
                   <Link
                     prefetch={false}
@@ -261,9 +272,20 @@ export function NavbarInteractions() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="mb-3 block rounded-lg border border-border bg-surface px-3 py-4 text-accent hover:bg-midnight"
                   >
-                    <span className="block text-base font-semibold">Protocol course →</span>
+                    <span className="block text-base font-semibold">Protocol course</span>
                     <span className="mt-1 block text-sm text-muted">
                       12 practical lessons · Free to read
+                    </span>
+                  </Link>
+                  <Link
+                    prefetch={false}
+                    href="/knowledge/essential-glossary"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="mb-3 block rounded-lg border border-border bg-surface px-3 py-4 text-accent hover:bg-midnight"
+                  >
+                    <span className="block text-base font-semibold">Essential glossary</span>
+                    <span className="mt-1 block text-sm text-muted">
+                      Look up design engineering, AI and API terms
                     </span>
                   </Link>
                   <div className="space-y-1">

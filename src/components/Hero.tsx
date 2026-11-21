@@ -25,7 +25,9 @@ export const Hero = () => (
             <br />
             <span>balance.</span>
           </h1>
-          <p className="hero-balance-line">Design, engineering and curiosity, held in balance.</p>
+          <p className="hero-balance-line">
+            Understand the problem. Design the experience. Build what helps.
+          </p>
         </div>
         <div className="hero-identity">
           <Image
@@ -52,23 +54,23 @@ export const Hero = () => (
           />
           <p>
             <strong>Alhaji C.M. Kallon</strong>
-            <span>I listen first, then design and build.</span>
+            <span>Design engineer, working from Freetown.</span>
           </p>
         </div>
         <div className="hero-introduction">
           <p>
-            I help founders, businesses and organisations turn unclear ideas into digital products
-            people can use, from the first question to the working product.
+            I work with organisations and founders to understand what is getting in people’s way,
+            decide what is worth solving, and design and build the software to support it.
           </p>
           <div className="hero-actions">
             <Link prefetch={false} href="#work" className="swiss-button">
-              Explore the work{' '}
+              See project case studies{' '}
               <span aria-hidden="true">
                 <Arrow direction="down-right" />
               </span>
             </Link>
             <Link prefetch={false} href="/contact" className="swiss-text-link">
-              Start a conversation{' '}
+              Describe your project{' '}
               <span aria-hidden="true">
                 <Arrow />
               </span>

@@ -36,22 +36,36 @@ export default function ContactPage() {
       <section className="page-intro site-gutter relative overflow-hidden">
         <div className="max-w-[var(--layout-max)] mx-auto relative z-10">
           <Reveal variant="up" className="max-w-3xl">
-            <p className="font-display text-xs tracking-normal text-accent mb-5">
-              Start with the problem
-            </p>
+            <p className="font-display text-xs tracking-normal text-accent mb-5">Contact</p>
             <h1 className="page-title font-display tracking-[-0.03em] mb-4">
-              Let’s make the <span className="text-ivory/80">next step clear.</span>
+              Tell me what <span className="text-ivory/80">needs to change.</span>
             </h1>
             <p className="text-base md:text-lg text-muted max-w-2xl leading-relaxed">
-              Have an early idea, a business problem, or an existing product that needs work? Tell
-              me what you want to achieve and what you know so far. You do not need a finished
-              brief. We can clarify the problem together.
+              An early idea, a difficult process or a product that needs work: start with what you
+              know. Tell me who it affects and what you want to improve; you do not need a finished
+              brief or technical language.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Main Grid */}
+      <section className="site-gutter" aria-labelledby="after-enquiry-heading">
+        <div className="mx-auto max-w-[var(--layout-max)]">
+          <details className="rounded-lg border border-border bg-surface p-5">
+            <summary
+              id="after-enquiry-heading"
+              className="cursor-pointer py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+            >
+              What happens after I send a message?
+            </summary>
+            <p className="mt-3 leading-relaxed text-muted">
+              I’ll read what you send and reply by email when I can. We can clarify what needs
+              attention and whether I can help; scope, fees and timing would be discussed before any
+              work is agreed.
+            </p>
+          </details>
+        </div>
+      </section>
       <section className="section-space site-gutter">
         <div className="max-w-[var(--layout-max)] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12">
           {/* The primary enquiry form comes first in the reading and tab order. */}
@@ -61,7 +75,7 @@ export default function ContactPage() {
           <Reveal variant="up" delay={60} className="lg:col-span-5 space-y-12">
             <div>
               <h2 className="font-display text-accent text-xs font-semibold tracking-normal mb-6">
-                Prefer email?
+                Email me directly
               </h2>
               <div className="p-6 glass-frost-light rounded-xl flex items-center gap-4 group">
                 <div className="p-3 bg-accent/10 text-accent rounded-xl group-hover:bg-accent group-hover:text-midnight transition-colors duration-300">
@@ -91,7 +105,9 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h2 className="mb-6 text-xs font-semibold text-accent">Find me elsewhere</h2>
+              <h2 className="mb-6 text-xs font-semibold text-accent">
+                Other places to find my work
+              </h2>
               <div className="grid grid-cols-1 gap-3">
                 {[
                   {
