@@ -86,8 +86,21 @@ export const KNOWLEDGE_CHUNKS = [
 ];
 export const FAQ_ENTRIES: FaqEntry[] = [
   {
+    id: 'design-engineering',
+    triggerKeywords: ['what does a design engineer do', 'what is a design engineer'],
+    minMatches: 1,
+    answer:
+      'A design engineer connects experience design and software engineering: understanding a problem, shaping how a product works and building it. Alhaji combines product discovery, interface design and frontend development. Read the About page for his approach or Work for published examples.',
+  },
+  {
     id: 'availability',
-    triggerKeywords: ['hire', 'available', 'freelance', 'contract work'],
+    triggerKeywords: [
+      'hire',
+      'available',
+      'freelance',
+      'contract work',
+      'can you help with my project',
+    ],
     minMatches: 1,
     answer:
       'To discuss a project or confirm availability, use the Contact page. Share the problem, intended users and any timing constraints. General enquiries go to info@alhajikallon.com; development enquiries go to dev@alhajikallon.com.',
@@ -115,7 +128,13 @@ export const FAQ_ENTRIES: FaqEntry[] = [
   },
   {
     id: 'past-work',
-    triggerKeywords: ['past work', 'case studies', 'see examples', 'portfolio examples'],
+    triggerKeywords: [
+      'past work',
+      'case studies',
+      'see examples',
+      'portfolio examples',
+      'show me your best work',
+    ],
     minMatches: 1,
     answer:
       'Start with the Work page: AEEM is a working education organisation website, with a case study covering the problem, decisions and evidence limitations. MJ Studio has backend development notes and is labelled in development. Programme participation figures are not website conversion results.',

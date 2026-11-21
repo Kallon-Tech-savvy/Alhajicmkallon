@@ -77,3 +77,10 @@ Logs now report `provider_configuration` when `OPENAI_API_KEY` is absent. Other
 service errors include a fixed `stage` (`visitor_quota`, `ai_quota`, `moderation`,
 `completion`) and, for recognized provider HTTP errors, a numeric status only.
 Never log full provider errors: they may contain sensitive request data.
+
+
+The three visible starter questions are shared with the service regression tests
+and have built-in FAQ answers. They still require healthy production Redis quota
+storage, but do not call OpenAI or reserve paid AI quota. Arbitrary non-FAQ questions
+still require the configured provider. The Worker config’s declared deploy-time
+secret requirements still apply.

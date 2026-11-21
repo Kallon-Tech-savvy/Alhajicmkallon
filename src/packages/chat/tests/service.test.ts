@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createChatService, createMemoryQuotaStore } from '../server';
 import type { ChatProvider, QuotaStore } from '../server';
-import { MAX_HISTORY_MESSAGES, MAX_MESSAGE_LENGTH } from '../shared';
+import { CHAT_STARTER_QUESTIONS, MAX_HISTORY_MESSAGES, MAX_MESSAGE_LENGTH } from '../shared';
 
 const question = { message: 'Describe the development process' };
 const call = (body: unknown = question) => ({ body, clientId: 'visitor' });
@@ -263,4 +263,23 @@ test('diagnostics distinguish missing AI configuration from failing operational 
     assert.equal(diagnostics.at(-1)?.error, failure);
     assert.doesNotMatch(JSON.stringify(response.body), /Sensitive upstream/);
   }
+});
+
+test('every visible starter succeeds without an AI provider or paid quota reservation', async () => {
+  const reservations: string[] = [];
+  const service = createChatService({
+    quota: {
+      consume: async (key) => {
+        reservations.push(key);
+        return { allowed: true, retryAfterSeconds: 0 };
+      },
+    },
+  });
+  for (const message of CHAT_STARTER_QUESTIONS) {
+    const result = await service(call({ message }));
+    assert.equal(result.status, 200, message);
+    assert.ok(result.body.reply?.trim());
+  }
+  assert.equal(reservations.length, CHAT_STARTER_QUESTIONS.length);
+  assert.ok(reservations.every((key) => key.includes(':ip:')));
 });
