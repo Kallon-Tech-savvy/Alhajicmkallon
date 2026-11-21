@@ -5,14 +5,9 @@ import { Arrow } from './SwissMarks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { MessageCircle, X, Send, Loader2, RotateCcw, Square } from 'lucide-react';
-import { MAX_MESSAGE_LENGTH } from '@/packages/chat/shared';
+import { CHAT_STARTER_QUESTIONS, MAX_MESSAGE_LENGTH } from '@/packages/chat/shared';
 import { useChatConversation } from '@/packages/chat/client';
 
-const SUGGESTIONS = [
-  'What does a design engineer do?',
-  'Can you help with my project?',
-  'Show me your best work',
-];
 function MessageContent({ content }: { content: string }) {
   return content.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
     part.startsWith('**') && part.endsWith('**') ? (
@@ -164,11 +159,11 @@ export function ChatWidget({ initialOpen = false, showLauncher = true, onClose }
               <div>
                 <p className="text-lg font-semibold">What would you like to know?</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Hi, I’m here to answer questions about Alhaji’s work and how he can help.
-                  What are you working on? For a personal response, use the contact form.
+                  Hi, I’m here to answer questions about Alhaji’s work and how he can help. What are
+                  you working on? For a personal response, use the contact form.
                 </p>
                 <div className="mt-5 grid gap-2">
-                  {SUGGESTIONS.map((question) => (
+                  {CHAT_STARTER_QUESTIONS.map((question) => (
                     <button
                       key={question}
                       type="button"

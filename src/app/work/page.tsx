@@ -46,9 +46,9 @@ export default function WorkPage() {
             <span>to product.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-            Start with the AEEM case study to see a live website and the decisions behind it.
-            The projects below are still in development; their notes explain what is built,
-            what has been checked and what remains uncertain.
+            Start with the AEEM case study to see a live website and the decisions behind it. The
+            projects below are still in development; their notes explain what is built, what has
+            been checked and what remains uncertain.
           </p>
         </div>
       </header>

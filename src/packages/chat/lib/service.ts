@@ -1,6 +1,12 @@
 import { MAX_HISTORY_MESSAGES, MAX_MESSAGE_LENGTH } from '../shared';
 import type { ChatMessage } from '../shared';
-import type { ChatProvider, ChatResult, ChatService, QuotaStore } from './contracts';
+import type {
+  ChatFailureStage,
+  ChatProvider,
+  ChatResult,
+  ChatService,
+  QuotaStore,
+} from './contracts';
 import { matchFaq } from './faq';
 import { buildSystemPrompt } from './prompt';
 import { selectRelevantChunks } from './retrieval';
@@ -54,7 +60,7 @@ export function createChatService({
   quota: QuotaStore;
   timeoutMs?: number;
   namespace?: string;
-  onError?: (error: unknown) => void;
+  onError?: (error: unknown, stage: ChatFailureStage) => void;
 }): ChatService {
   return async ({ body, clientId, signal: requestSignal }) => {
     const input = parseInput(body);
@@ -74,6 +80,7 @@ export function createChatService({
       controller.abort(new Error('Chat deadline exceeded.'));
     }, timeoutMs);
     const signal = controller.signal;
+    let stage: ChatFailureStage = 'visitor_quota';
 
     async function answer(): Promise<ChatResult> {
       signal.throwIfAborted();
@@ -87,7 +94,11 @@ export function createChatService({
       signal.throwIfAborted();
       const faq = matchFaq(message);
       if (faq) return { status: 200, body: { reply: faq } };
-      if (!provider) return UNAVAILABLE;
+      if (!provider) {
+        onError(undefined, 'provider_configuration');
+        return UNAVAILABLE;
+      }
+      stage = 'ai_quota';
       // Count reserved attempts, including failed/flagged calls. Never refund:
       // a provider may have processed a request even when its reply is lost.
       const budget = await quota.consume(`${namespace}:ai`, 300, 86_400, signal);
@@ -101,6 +112,7 @@ export function createChatService({
           retryAfterSeconds: budget.retryAfterSeconds,
         };
       signal.throwIfAborted();
+      stage = 'moderation';
       const flagged = await provider.moderate(message, signal);
       if (typeof flagged !== 'boolean') throw new Error('Invalid moderation response.');
       if (flagged)
@@ -110,6 +122,7 @@ export function createChatService({
         };
       signal.throwIfAborted();
       const context = selectRelevantChunks(message, history);
+      stage = 'completion';
       const reply = await provider.complete(
         [
           { role: 'system', content: buildSystemPrompt(context) },
@@ -139,7 +152,7 @@ export function createChatService({
       if (timedOut) return { status: 504, body: { error: 'The request timed out. Please retry.' } };
       if (requestSignal?.aborted)
         return { status: 499, body: { error: 'The request was cancelled.' } };
-      onError(error);
+      onError(error, stage);
       return UNAVAILABLE;
     } finally {
       clearTimeout(timer);

@@ -78,27 +78,31 @@ export const FeaturedWork = ({ variant = 'home' }: { variant?: 'home' | 'work' }
                 <h3>
                   <Link prefetch={false} href={`/work/${aeem.slug}`}>
                     AEEM: a clearer way
-                    <br />to understand and take part.
+                    <br />
+                    to understand and take part.
                   </Link>
                 </h3>
                 <p className="mt-4 text-muted">
-                  One website for AEEM’s mission, programmes and ways to volunteer, partner or support. Read how I organised the content and built the journey.
+                  One website for AEEM’s mission, programmes and ways to volunteer, partner or
+                  support. Read how I organised the content and built the journey.
                 </p>
                 {isWorkPage ? (
                   <div className="work-evidence">
                     <p>
-                      <strong>My role:</strong> I initiated the website and worked on content structure,
-                      user experience and development. I later volunteered as Chief Operating Officer.
+                      <strong>My role:</strong> I initiated the website and worked on content
+                      structure, user experience and development. I later volunteered as Chief
+                      Operating Officer.
                     </p>
                     <p>
-                      <strong>What the evidence says so far:</strong> The core team reviewed the pages
-                      and navigation and responded positively. Wider visitor outcomes have not been
-                      systematically measured.
+                      <strong>What the evidence says so far:</strong> The core team reviewed the
+                      pages and navigation and responded positively. Wider visitor outcomes have not
+                      been systematically measured.
                     </p>
                   </div>
                 ) : (
                   <p className="mt-3 text-sm text-muted">
-                    The core team reviewed the pages positively; wider visitor outcomes are not yet measured.
+                    The core team reviewed the pages positively; wider visitor outcomes are not yet
+                    measured.
                   </p>
                 )}
               </div>

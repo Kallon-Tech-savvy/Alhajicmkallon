@@ -9,20 +9,25 @@ const PRACTICE = [
   {
     title: 'Understand what needs to change.',
     disclosure: 'How we examine the problem',
-    description: 'Start with the people affected, the task they need to complete and what is getting in their way.',
-    detail: 'We examine the current process, what is known and what still needs checking. The aim is to agree which problem deserves attention and how we will recognise improvement.',
+    description:
+      'Start with the people affected, the task they need to complete and what is getting in their way.',
+    detail:
+      'We examine the current process, what is known and what still needs checking. The aim is to agree which problem deserves attention and how we will recognise improvement.',
   },
   {
     title: 'Make the next action clear.',
     disclosure: 'How we check the experience',
     description: 'Give people the information they need to choose, act and understand the result.',
-    detail: 'We work through the journey, labels, content and interface before adding detail. Early designs help us check whether people can complete the task and recover when something goes wrong.',
+    detail:
+      'We work through the journey, labels, content and interface before adding detail. Early designs help us check whether people can complete the task and recover when something goes wrong.',
   },
   {
     title: 'Build, check and improve.',
     disclosure: 'What we check before and after release',
-    description: 'Turn the agreed approach into working software and check it against the task it needs to support.',
-    detail: 'We consider access, data, errors, performance and the conditions people use the product in. What we observe after release informs what to improve next.',
+    description:
+      'Turn the agreed approach into working software and check it against the task it needs to support.',
+    detail:
+      'We consider access, data, errors, performance and the conditions people use the product in. What we observe after release informs what to improve next.',
   },
 ];
 
@@ -71,8 +76,8 @@ export default function Home() {
                 needs to complete and the conditions they are working in.
               </p>
               <p>
-                My perspective is shaped by life in Sierra Leone and by my work with AEEM,
-                where I initiated the website and later served as Chief Operating Officer.
+                My perspective is shaped by life in Sierra Leone and by my work with AEEM, where I
+                initiated the website and later served as Chief Operating Officer.
               </p>
               <p>The balance I aim for: think clearly, design simply, build carefully.</p>
               <Link prefetch={false} href="/about" className="swiss-text-link">
@@ -88,7 +93,9 @@ export default function Home() {
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                   <details className="mt-4 max-w-2xl">
-                    <summary className="cursor-pointer py-2 text-sm font-semibold text-[var(--brand-paper)] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">{step.disclosure}</summary>
+                    <summary className="cursor-pointer py-2 text-sm font-semibold text-[var(--brand-paper)] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+                      {step.disclosure}
+                    </summary>
                     <p className="mt-3">{step.detail}</p>
                   </details>
                 </div>
@@ -110,7 +117,8 @@ export default function Home() {
               </h2>
             </div>
             <p className="max-w-sm text-muted">
-              Choose an essay to reflect on, a guide to practise with, or a glossary to look up an unfamiliar term.
+              Choose an essay to reflect on, a guide to practise with, or a glossary to look up an
+              unfamiliar term.
             </p>
           </div>
           <div className="explore-grid">
@@ -124,7 +132,10 @@ export default function Home() {
               </span>
               <div>
                 <h3>Essays and reflections.</h3>
-                <p>Personal reflections on identity, ambition and meaning, alongside writing on technology and society.</p>
+                <p>
+                  Personal reflections on identity, ambition and meaning, alongside writing on
+                  technology and society.
+                </p>
               </div>
               <span className="explore-card-link">
                 Browse essays <Arrow />
@@ -140,7 +151,10 @@ export default function Home() {
               </span>
               <div>
                 <h3>Practise a skill. Understand a term.</h3>
-                <p>Short development guides, a glossary of design engineering, AI and API terms, and a free 12-part software protocol course.</p>
+                <p>
+                  Short development guides, a glossary of design engineering, AI and API terms, and
+                  a free 12-part software protocol course.
+                </p>
               </div>
               <span className="explore-card-link">
                 Choose a guide or look up a term <Arrow />

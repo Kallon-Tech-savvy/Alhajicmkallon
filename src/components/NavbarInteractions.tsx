@@ -20,9 +20,17 @@ const LINKS = [
   { name: 'Work', href: '/work', description: 'Case studies, decisions and project evidence' },
   { name: 'About', href: '/about', description: 'My background and how I work' },
   { name: 'Writing', href: '/writing', description: 'Essays on life, technology and society' },
-  { name: 'Learn', href: '/knowledge', description: 'Practical guides, a glossary and a free course' },
+  {
+    name: 'Learn',
+    href: '/knowledge',
+    description: 'Practical guides, a glossary and a free course',
+  },
   { name: 'FAQ', href: '/faq', description: 'Answers about my work and approach' },
-  { name: 'Contact', href: '/contact', description: 'Describe a project, ask a question or send feedback' },
+  {
+    name: 'Contact',
+    href: '/contact',
+    description: 'Describe a project, ask a question or send feedback',
+  },
 ] as const;
 
 const PRIMARY_LINKS = LINKS.filter(({ href }) => !['/', '/faq', '/contact'].includes(href));
@@ -231,7 +239,12 @@ export function NavbarInteractions() {
                           : 'border-[var(--color-border)] bg-surface text-[var(--color-ivory)] hover:border-[var(--color-accent)] hover:bg-[var(--color-navy)]')
                       }
                     >
-                      <span><span className="block">{name}</span><span className="mt-1 block text-sm font-normal leading-relaxed">{description}</span></span>
+                      <span>
+                        <span className="block">{name}</span>
+                        <span className="mt-1 block text-sm font-normal leading-relaxed">
+                          {description}
+                        </span>
+                      </span>
                       {current ? (
                         <span className="shrink-0 text-xs font-medium">You are here</span>
                       ) : (
@@ -244,9 +257,7 @@ export function NavbarInteractions() {
                 })}
               </div>
               <details className="mobile-learning">
-                <summary>
-                  Course, glossary and learning paths
-                </summary>
+                <summary>Course, glossary and learning paths</summary>
                 <div className="pt-4">
                   <Link
                     prefetch={false}
@@ -273,7 +284,9 @@ export function NavbarInteractions() {
                     className="mb-3 block rounded-lg border border-border bg-surface px-3 py-4 text-accent hover:bg-midnight"
                   >
                     <span className="block text-base font-semibold">Essential glossary</span>
-                    <span className="mt-1 block text-sm text-muted">Look up design engineering, AI and API terms</span>
+                    <span className="mt-1 block text-sm text-muted">
+                      Look up design engineering, AI and API terms
+                    </span>
                   </Link>
                   <div className="space-y-1">
                     {[

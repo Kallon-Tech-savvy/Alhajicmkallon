@@ -16,7 +16,9 @@ points only. Any nested folder is private, including `lib/` and `tests/`.
 
 The route only wires HTTP configuration to the runtime. The service owns validation,
 FAQ selection, quota reservations, moderation, context selection and completion.
-The provider contract hides the OpenAI SDK. One deadline covers the whole service
+The provider contract hides the OpenAI SDK. Operational diagnostics distinguish
+visitor quota, missing provider configuration, AI quota, moderation and completion,
+without logging visitor messages or upstream error bodies. One deadline covers the whole service
 operation, including storage and moderation. A request disconnect aborts the same
 signal passed to every external call. Failed moderation never reaches completion.
 
@@ -27,6 +29,16 @@ Tests use injectable providers and fetchers, not paid API calls or source rewrit
 Knowledge remains a curated editorial summary. When published biographical or
 project facts change, review `chat/lib/knowledge.ts` alongside the public pages.
 Do not treat manually curated chat answers as an independent source of facts.
+
+## Contact
+
+`contact-email.mjs` owns server-side validation, verification, rendering and
+Resend delivery. The API route only wires that handler. `contact-intents.mjs`
+is the browser-safe source of enquiry options and development-routing policy;
+the form and email-draft helper share it without importing server delivery code.
+The form bounds a submission to 30 seconds, freezes the submitted fields while
+pending, preserves drafts on failure and never treats a timeout as confirmed
+failure to deliver. In-flight work is aborted when the form unmounts.
 
 ## Content
 
@@ -62,3 +74,15 @@ private import and passes again after cleanup. The example package is its fixtur
 Prefer observable behavior tests through public entry points. Retain structural
 checks where they protect server/client separation and actual production bundle
 budgets. Avoid assertions tied to JSX whitespace, variable names or private state.
+
+
+Only retain shared components that have callers. The former custom cursor,
+loading curtain, magnetic controls and superseded homepage sections have been
+removed rather than maintained as unused alternatives. The historical `/gallery`
+URL redirects to `/work`, whose projects come from the published catalogue.
+
+
+The 56px homepage avatar uses a prepared 112px WebP rather than the full portrait.
+The current Worker adapter serves images without resizing, so selecting an
+appropriately sized source matters even when Next.js optimizes it locally.
+The full portrait remains available for larger uses.

@@ -4,10 +4,20 @@ import { ARTICLES, KNOWLEDGE_ENTRIES, PROJECTS } from '@/packages/content/server
 const siteUrl = 'https://alhajikallon.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '/about', '/work', '/writing', '/knowledge', '/knowledge/protocols', '/faq', '/contact', '/privacy'];
+  const routes = [
+    '',
+    '/about',
+    '/work',
+    '/writing',
+    '/knowledge',
+    '/knowledge/protocols',
+    '/faq',
+    '/contact',
+    '/privacy',
+  ];
   const staticPages = routes.map((route) => ({
     url: `${siteUrl}${route}`,
-    changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
+    changeFrequency: route === '' ? ('weekly' as const) : ('monthly' as const),
     priority: route === '' ? 1 : route === '/faq' ? 0.8 : 0.7,
   }));
   const projectPages = PROJECTS.map((project) => ({

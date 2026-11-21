@@ -133,3 +133,9 @@ test('offline course downloads include complete standalone content and notebook'
   const { body: notebook } = await get('/downloads/protocol-practice-notebook.md');
   assert.equal((notebook.match(/^## \d+\./gm) || []).length, 12);
 });
+
+test('legacy gallery redirects to the maintained published work catalogue', async () => {
+  const response = await fetch(new URL('/gallery', baseUrl), { redirect: 'manual' });
+  assert.equal(response.status, 308);
+  assert.equal(new URL(response.headers.get('location'), baseUrl).pathname, '/work');
+});

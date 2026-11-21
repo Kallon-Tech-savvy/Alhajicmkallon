@@ -154,13 +154,20 @@ an explicit `nodejs_compat` flag.
 
 ## 5. Dependency security
 
-Cloudflare's original Next-only install logged 26 npm audit findings
-(8 moderate, 17 high, 1 critical). The vinext migration install logged
-31 findings (12 moderate, 18 high, 1 critical). These warnings did **not**
-cause the preview-command failure. Review `npm audit --omit=dev` and a full
-`npm audit` before deploying, prioritizing reachable runtime packages.
-Do not run `npm audit fix --force` blindly because it can introduce breaking
-dependency upgrades.
+The end-to-end review found 22 npm advisory entries, including a critical Next.js
+advisory. Compatible updates to Next.js, its lint config, Vite and transitive
+dependencies reduced the audit to zero reported vulnerabilities. A scoped Satori
+`fflate` override uses the fixed patch release without downgrading vinext.
+CI rejects high and critical advisories; rerun `npm audit` because advisory data
+changes over time. Do not run `npm audit fix --force` blindly.
+
+CI also runs the browser interaction suite against the built Worker preview,
+then builds and checks Next.js separately. The preview tests mock AI and email
+calls, so they do not prove production keys, inbox delivery or OpenAI completion.
+The live review confirmed the FAQ chat worked, but the contact negative probe
+returned `503` with `The contact service is unavailable.` instead of the expected
+verification rejection. The production contact runtime configuration remains a
+release blocker; inspect `contact_configuration_unavailable` for setting names.
 
 For the contact-form feature and initial email setup, see
 [CONTACT_EMAIL.md](CONTACT_EMAIL.md).

@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MAX_VITAL_BYTES, parseAnonymousVital, readSmallVitalJson } from '@/lib/anonymous-vitals.mjs';
+import {
+  MAX_VITAL_BYTES,
+  parseAnonymousVital,
+  readSmallVitalJson,
+} from '@/lib/anonymous-vitals.mjs';
 
 export const runtime = 'nodejs';
 const NO_STORE = { 'Cache-Control': 'no-store' };
@@ -17,9 +21,14 @@ export async function POST(request: NextRequest) {
   if (origin && host) {
     try {
       const parsed = new URL(origin);
-      const local = host === 'localhost:3001' || host === '127.0.0.1:3001' ||
-        host === 'localhost:3000' || host === '127.0.0.1:3000';
-      sameOrigin = parsed.origin === origin && parsed.host === host &&
+      const local =
+        host === 'localhost:3001' ||
+        host === '127.0.0.1:3001' ||
+        host === 'localhost:3000' ||
+        host === '127.0.0.1:3000';
+      sameOrigin =
+        parsed.origin === origin &&
+        parsed.host === host &&
         (parsed.protocol === 'https:' || (local && parsed.protocol === 'http:'));
     } catch {
       sameOrigin = false;
@@ -31,7 +40,9 @@ export async function POST(request: NextRequest) {
   if (!sameOrigin || (fetchSite && fetchSite !== 'same-origin')) {
     return new NextResponse(null, { status: 403, headers: NO_STORE });
   }
-  if (!/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(request.headers.get('content-type') ?? '')) {
+  if (
+    !/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(request.headers.get('content-type') ?? '')
+  ) {
     return new NextResponse(null, { status: 415, headers: NO_STORE });
   }
 

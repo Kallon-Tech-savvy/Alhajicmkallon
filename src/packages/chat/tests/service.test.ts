@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createChatService, createMemoryQuotaStore } from '../server';
 import type { ChatProvider, QuotaStore } from '../server';
-import { MAX_HISTORY_MESSAGES, MAX_MESSAGE_LENGTH } from '../shared';
+import { CHAT_STARTER_QUESTIONS, MAX_HISTORY_MESSAGES, MAX_MESSAGE_LENGTH } from '../shared';
 
 const question = { message: 'Describe the development process' };
 const call = (body: unknown = question) => ({ body, clientId: 'visitor' });
@@ -220,4 +220,66 @@ test('memory quotas reserve atomically across service instances and expire at th
   assert.equal(responses.find((result) => result.status === 429)?.retryAfterSeconds, 86_400);
   now = 86_400_000;
   assert.equal((await first(call())).status, 200);
+});
+
+test('diagnostics distinguish missing AI configuration from failing operational stages', async () => {
+  const diagnostics: Array<{ error: unknown; stage: string }> = [];
+  const onError = (error: unknown, stage: string) => diagnostics.push({ error, stage });
+  const faqOnly = createChatService({ quota: createMemoryQuotaStore(), onError });
+  assert.equal((await faqOnly(call({ message: 'Show me his case studies' }))).status, 200);
+  assert.equal(diagnostics.length, 0);
+  assert.equal((await faqOnly(call())).status, 503);
+  assert.equal(diagnostics.pop()?.stage, 'provider_configuration');
+
+  for (const stage of ['visitor_quota', 'ai_quota', 'moderation', 'completion'] as const) {
+    const failure = new Error('Sensitive upstream content must not become a reply');
+    let reservations = 0;
+    const service = createChatService({
+      quota: {
+        consume: async () => {
+          reservations++;
+          if (
+            (stage === 'visitor_quota' && reservations === 1) ||
+            (stage === 'ai_quota' && reservations === 2)
+          )
+            throw failure;
+          return { allowed: true, retryAfterSeconds: 0 };
+        },
+      },
+      provider: {
+        moderate: async () => {
+          if (stage === 'moderation') throw failure;
+          return false;
+        },
+        complete: async () => {
+          throw failure;
+        },
+      },
+      onError,
+    });
+    const response = await service(call());
+    assert.equal(response.status, 503);
+    assert.equal(diagnostics.at(-1)?.stage, stage);
+    assert.equal(diagnostics.at(-1)?.error, failure);
+    assert.doesNotMatch(JSON.stringify(response.body), /Sensitive upstream/);
+  }
+});
+
+test('every visible starter succeeds without an AI provider or paid quota reservation', async () => {
+  const reservations: string[] = [];
+  const service = createChatService({
+    quota: {
+      consume: async (key) => {
+        reservations.push(key);
+        return { allowed: true, retryAfterSeconds: 0 };
+      },
+    },
+  });
+  for (const message of CHAT_STARTER_QUESTIONS) {
+    const result = await service(call({ message }));
+    assert.equal(result.status, 200, message);
+    assert.ok(result.body.reply?.trim());
+  }
+  assert.equal(reservations.length, CHAT_STARTER_QUESTIONS.length);
+  assert.ok(reservations.every((key) => key.includes(':ip:')));
 });

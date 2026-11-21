@@ -25,7 +25,9 @@ export const Hero = () => (
             <br />
             <span>balance.</span>
           </h1>
-          <p className="hero-balance-line">Understand the problem. Design the experience. Build what helps.</p>
+          <p className="hero-balance-line">
+            Understand the problem. Design the experience. Build what helps.
+          </p>
         </div>
         <div className="hero-identity">
           <Image
@@ -42,7 +44,7 @@ export const Hero = () => (
       <div className="hero-bottom">
         <div className="hero-person">
           <Image
-            src="/assets/kallon1.png"
+            src="/assets/kallon-avatar.webp"
             alt="Portrait of Alhaji C.M. Kallon, design engineer based in Freetown"
             width={56}
             height={56}

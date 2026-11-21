@@ -29,3 +29,7 @@ export type ChatService = (input: {
   clientId: string;
   signal?: AbortSignal;
 }) => Promise<ChatResult>;
+
+/** Only fixed operational stages may appear in diagnostics; never visitor content. */
+export type ChatFailureStage =
+  'visitor_quota' | 'provider_configuration' | 'ai_quota' | 'moderation' | 'completion';
