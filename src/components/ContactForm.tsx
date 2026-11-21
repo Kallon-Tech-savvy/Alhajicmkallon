@@ -165,11 +165,11 @@ export function ContactForm() {
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="ui-form-heading">
               <span className="ui-label">Project enquiry or feedback</span>
-              <h2>Tell me what you have in mind.</h2>
-              <p>Name, email and message are required. Choosing a topic is optional.</p>
+              <h2>Describe the situation in your own words.</h2>
+              <p>Your name, email and message are required. Choose a topic if it helps; it is fine to be unsure.</p>
             </div>
             <fieldset>
-              <legend className="ui-label">What would you like to work on? (optional)</legend>
+              <legend className="ui-label">What do you need help with? (optional)</legend>
               <div className="flex flex-wrap gap-2">
                 {intentOptions.map((option) => (
                   <button
@@ -188,7 +188,7 @@ export function ContactForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label htmlFor="contact-name" className="ui-label">
-                  Your name
+                  Your name (required)
                 </label>
                 <input
                   id="contact-name"
@@ -205,7 +205,7 @@ export function ContactForm() {
               </div>
               <div className="space-y-2">
                 <label htmlFor="contact-email" className="ui-label">
-                  Your email
+                  Your email (required)
                 </label>
                 <input
                   id="contact-email"
@@ -228,7 +228,7 @@ export function ContactForm() {
 
             <div className="space-y-2">
               <label htmlFor="contact-message" className="ui-label">
-                What are you trying to achieve?
+                What are you trying to achieve? (required)
               </label>
               <textarea
                 required
@@ -239,11 +239,11 @@ export function ContactForm() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="ui-field"
-                placeholder="What is happening now, who does it affect, and what would a better outcome look like?"
+                placeholder="Write your message here"
                 aria-describedby="contact-message-help"
               />
               <p id="contact-message-help" className="text-xs text-muted">
-                Tell me what you know so far and where you need help.
+                What is happening now? Who does it affect? What would you like to be different? A few sentences are enough to start; include any timing or budget limits you already know.
               </p>
             </div>
 
@@ -336,7 +336,7 @@ export function ContactForm() {
               }}
               className="ui-secondary"
             >
-              Send Additional Message
+              Write another message
             </button>
           </Reveal>
         )}

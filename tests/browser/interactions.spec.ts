@@ -114,8 +114,8 @@ test('contact email fallback preserves the draft and does not claim delivery', a
   const intent = page.getByRole('button', { name: 'Improve a product', exact: true });
   await intent.click();
   await expect(intent).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('textbox', { name: 'Your name', exact: true }).fill('Test Visitor');
-  await page.getByRole('textbox', { name: 'Your email', exact: true }).fill('visitor@example.com');
+  await page.getByRole('textbox', { name: 'Your name (required)', exact: true }).fill('Test Visitor');
+  await page.getByRole('textbox', { name: 'Your email (required)', exact: true }).fill('visitor@example.com');
   const message = page.getByRole('textbox', { name: 'What are you trying to achieve?' });
   await message.fill('A local test draft.');
   await page.getByRole('button', { name: /^(Send enquiry|Open email draft)$/ }).click();
@@ -183,7 +183,7 @@ test('reduced motion leaves display content visible without entrance animation',
   const heading = page.getByRole('heading', { level: 1 });
   await expect(heading).toBeVisible();
   expect(await heading.evaluate((element) => getComputedStyle(element).animationName)).toBe('none');
-  await expect(page.getByRole('link', { name: 'Explore the work', exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'See project case studies', exact: false })).toBeVisible();
 });
 
 test('productive overlays remain usable at 320px', async ({ page }) => {
@@ -287,21 +287,22 @@ test('Work page has its own social metadata, evidence, and only one invitation',
     'Selected work | Alhaji C.M. Kallon',
   );
   await expect(page.getByRole('heading', { name: 'From problem to product.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'All projects' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Browse all projects' })).toHaveCount(0);
   await expect(page.locator('.work-evidence')).toHaveCount(2);
   await expect(page.getByText('My role:', { exact: false })).toHaveCount(2);
   await expect(page.getByText('What the evidence says so far:', { exact: false })).toHaveCount(2);
-  await expect(page.getByRole('link', { name: /Talk through the problem/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Describe your project', exact: true })).toBeVisible();
   await expect(page.locator('.footer-invitation')).toHaveCount(0);
 });
 
 test('Home retains its selected work heading and clear contact invitation', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'A deliberate balance.' })).toBeVisible();
-  await expect(page.getByText('Design, engineering and curiosity, held in balance.')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'All projects' })).toBeVisible();
-  await expect(page.getByText('Build it to last.')).toBeVisible();
-  await expect(page.getByRole('link', { name: /Start a conversation/ })).toHaveCount(2);
+  await expect(page.getByRole('link', { name: 'See project case studies', exact: true })).toHaveAttribute('href', '#work');
+  await expect(page.getByRole('link', { name: 'Browse all projects' })).toBeVisible();
+  await expect(page.locator('.practice-steps details')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: 'Describe your project', exact: true })).toHaveAttribute('href', '/contact');
+  await expect(page.getByRole('link', { name: 'Open the contact form', exact: true })).toHaveAttribute('href', '/contact');
   await expect(page.getByRole('link', { name: 'Learn', exact: true })).toHaveCount(2);
 });
 
