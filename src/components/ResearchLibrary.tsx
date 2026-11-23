@@ -165,8 +165,8 @@ export function ResearchLibrary({ resources }: { resources: readonly ResearchRes
               Turn curiosity into a research brief.
             </h2>
             <p className="mt-4 max-w-xl text-muted">
-              A useful first step before searching: define what you want to learn, which
-              evidence could matter, and what might challenge your initial view.
+              A useful first step before searching: define what you want to learn, which evidence
+              could matter, and what might challenge your initial view.
             </p>
             <p className="mt-3 text-sm text-muted">
               Nothing is sent to a server. This simply creates a structured note you can copy.
@@ -324,7 +324,10 @@ export function ResearchLibrary({ resources }: { resources: readonly ResearchRes
         {filtered.length ? (
           <ul className="mt-5 grid gap-4 lg:grid-cols-2">
             {filtered.map((resource) => (
-              <li key={resource.id} className="flex min-w-0 flex-col border border-border bg-surface p-5 sm:p-6">
+              <li
+                key={resource.id}
+                className="flex min-w-0 flex-col border border-border bg-surface p-5 sm:p-6"
+              >
                 <article className="flex h-full flex-col">
                   <p className="editorial-kicker text-accent">
                     {resource.category} <span className="px-1 text-muted">/</span> {resource.kind}
@@ -350,8 +353,7 @@ export function ResearchLibrary({ resources }: { resources: readonly ResearchRes
                       rel="noopener noreferrer"
                       className="inline-flex min-h-11 items-center font-semibold text-accent underline underline-offset-4"
                     >
-                      Open original source ↗
-                      <span className="sr-only"> (opens in a new tab)</span>
+                      Open original source ↗<span className="sr-only"> (opens in a new tab)</span>
                     </a>
                     <button
                       type="button"
@@ -379,9 +381,9 @@ export function ResearchLibrary({ resources }: { resources: readonly ResearchRes
           </div>
         )}
         <p className="mt-5 max-w-3xl text-xs leading-relaxed text-muted">
-          Saved sources stay only in this browser when storage is available; they do not sync
-          to an account. The index is curated, not an automated academic search engine.
-          A publisher’s authority is not a substitute for checking the original evidence.
+          Saved sources stay only in this browser when storage is available; they do not sync to an
+          account. The index is curated, not an automated academic search engine. A publisher’s
+          authority is not a substitute for checking the original evidence.
         </p>
       </section>
     </>

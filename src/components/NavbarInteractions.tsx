@@ -25,7 +25,11 @@ const LINKS = [
     href: '/knowledge',
     description: 'Practical guides, a glossary and a free course',
   },
-  { name: 'Library', href: '/library', description: 'Research sources for articles, study and technical writing' },
+  {
+    name: 'Library',
+    href: '/library',
+    description: 'Research sources for articles, study and technical writing',
+  },
   { name: 'FAQ', href: '/faq', description: 'Answers about my work and approach' },
   {
     name: 'Contact',

@@ -56,7 +56,9 @@ export default function WritingPage() {
           </p>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
             Read the writing here, explore more essays on Substack, or use the{' '}
-            <a href="/library" className="text-accent underline underline-offset-4">research library</a>{' '}
+            <a href="/library" className="text-accent underline underline-offset-4">
+              research library
+            </a>{' '}
             to investigate a question for your own work.
           </p>
         </div>

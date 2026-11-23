@@ -179,8 +179,8 @@ export default function KnowledgePage() {
               Investigate an idea using real sources.
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
-              Explore research, datasets, technical standards and methods. Filter by topic,
-              save reading links and build a research brief before writing.
+              Explore research, datasets, technical standards and methods. Filter by topic, save
+              reading links and build a research brief before writing.
             </p>
           </div>
           <Link prefetch={false} href="/library" className="editorial-link">
