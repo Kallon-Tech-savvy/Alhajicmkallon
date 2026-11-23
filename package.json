@@ -26,7 +26,7 @@
     "test:boundaries": "node scripts/test-deep-module-boundaries.mjs",
     "predev": "node scripts/build-content-index.mjs && node scripts/build-protocol-offline.mjs",
     "prebuild": "node scripts/build-content-index.mjs && node scripts/build-protocol-offline.mjs && next typegen",
-    "test:content": "node --import tsx --test scripts/build-content-index.test.mjs scripts/protocol-course.test.mjs scripts/course-progress.test.mjs scripts/protocol-offline.test.mjs scripts/search-relevance.test.mjs src/packages/content/tests/*.test.ts",
+    "test:content": "node --import tsx --test scripts/build-content-index.test.mjs scripts/protocol-course.test.mjs scripts/course-progress.test.mjs scripts/protocol-offline.test.mjs scripts/search-relevance.test.mjs scripts/research-library.test.mjs src/packages/content/tests/*.test.ts",
     "test:contact": "node --test scripts/contact-form.test.mjs scripts/contact-api.test.mjs",
     "test:homepage-performance": "node --test scripts/homepage-performance.test.mjs scripts/navigation-focus.test.mjs scripts/theme.test.mjs",
     "test:browser-bundle": "node --test scripts/browser-bundle.test.mjs",

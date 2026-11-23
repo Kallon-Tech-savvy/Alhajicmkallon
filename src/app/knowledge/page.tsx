@@ -171,6 +171,23 @@ export default function KnowledgePage() {
           </Link>
         </div>
       </section>
+      <section className="site-container pb-12" aria-labelledby="research-library-title">
+        <div className="grid gap-5 border border-border bg-surface p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:p-8">
+          <div>
+            <p className="editorial-kicker text-accent">Research · Essays · Technical writing</p>
+            <h2 id="research-library-title" className="mt-3 text-2xl font-medium">
+              Investigate an idea using real sources.
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
+              Explore research, datasets, technical standards and methods. Filter by topic, save
+              reading links and build a research brief before writing.
+            </p>
+          </div>
+          <Link prefetch={false} href="/library" className="editorial-link">
+            Open the research library →
+          </Link>
+        </div>
+      </section>
       <div className="site-container pb-12">
         {paths.map((path) => (
           <section
