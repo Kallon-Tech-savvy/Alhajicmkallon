@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/writing',
     '/knowledge',
     '/knowledge/protocols',
+    '/library',
     '/faq',
     '/contact',
     '/privacy',
