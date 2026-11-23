@@ -97,15 +97,19 @@ export function ResearchLibrary({ resources }: { resources: readonly ResearchRes
   const [notice, setNotice] = useState('');
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem('research-library-saved-v1');
-      const ids: unknown = raw ? JSON.parse(raw) : [];
-      if (Array.isArray(ids)) {
-        setSaved(ids.filter((id): id is string => typeof id === 'string'));
+    // Restore browser-only preferences after the first paint, keeping SSR markup stable.
+    const frame = window.requestAnimationFrame(() => {
+      try {
+        const raw = window.localStorage.getItem('research-library-saved-v1');
+        const ids: unknown = raw ? JSON.parse(raw) : [];
+        if (Array.isArray(ids)) {
+          setSaved(ids.filter((id): id is string => typeof id === 'string'));
+        }
+      } catch {
+        // Storage can be unavailable; browsing and copying still work.
       }
-    } catch {
-      // Storage can be unavailable; browsing and copying still work.
-    }
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const kinds = useMemo(
