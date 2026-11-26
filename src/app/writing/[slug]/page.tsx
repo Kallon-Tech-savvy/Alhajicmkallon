@@ -31,6 +31,8 @@ export async function generateMetadata({ params }: PageProps) {
       title: article.title,
       description: article.excerpt,
       type: 'article',
+      url: `https://alhajikallon.com/writing/${article.slug}`,
+      authors: ['https://alhajikallon.com/about'],
       publishedTime: article.date,
       ...(article.cover
         ? {
@@ -68,11 +70,18 @@ export default async function ArticleTemplate({ params }: PageProps) {
         dangerouslySetInnerHTML={{
           __html: serializeJsonLd({
             '@context': 'https://schema.org',
-            '@type': 'Article',
+            '@type': 'BlogPosting',
+            '@id': `https://alhajikallon.com/writing/${article.slug}#article`,
+            mainEntityOfPage: `https://alhajikallon.com/writing/${article.slug}`,
             headline: article.title,
             description: article.excerpt,
             url: `https://alhajikallon.com/writing/${article.slug}`,
-            author: { '@id': 'https://alhajikallon.com/#person' },
+            author: {
+              '@type': 'Person',
+              '@id': 'https://alhajikallon.com/#person',
+              name: 'Alhaji C.M. Kallon',
+              url: 'https://alhajikallon.com/about',
+            },
             publisher: { '@id': 'https://alhajikallon.com/#person' },
             keywords: article.topics,
             datePublished: article.date,
@@ -102,7 +111,11 @@ export default async function ArticleTemplate({ params }: PageProps) {
               {article.excerpt}
             </p>
             <div className="mt-6 text-muted font-display text-xs uppercase tracking-widest">
-              By Alhaji C.M. Kallon · <time dateTime={article.date}>{article.date}</time>
+              By{' '}
+              <Link href="/about" className="hover:underline">
+                Alhaji C.M. Kallon
+              </Link>{' '}
+              · <time dateTime={article.date}>{article.date}</time>
               {article.readTime ? ` · ${article.readTime}` : ''}
             </div>
           </Reveal>

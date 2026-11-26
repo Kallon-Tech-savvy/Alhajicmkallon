@@ -36,6 +36,7 @@ export const metadata: Metadata = {
   keywords: [
     'Alhaji C.M. Kallon',
     'Alhaji Kallon',
+    'Alhaji C M Kallon',
     'design engineer',
     'product discovery',
     'product thinking',
@@ -79,7 +80,8 @@ const structuredData = {
       '@id': `${siteUrl}/#person`,
       name: 'Alhaji C.M. Kallon',
       alternateName: ['Alhaji Kallon', 'Alhaji C M Kallon', 'alhajikallon', 'cmkallon'],
-      url: siteUrl,
+      url: `${siteUrl}/about`,
+      mainEntityOfPage: { '@id': `${siteUrl}/about#profile` },
       image: `${siteUrl}/assets/kallon1.png`,
       jobTitle: 'Design Engineer',
       description:
@@ -108,6 +110,8 @@ const structuredData = {
       sameAs: [
         'https://linkedin.com/in/alhaji-c-m-k-8b79a225b',
         'https://github.com/Kallon-Tech-savvy',
+        'https://substack.com/@alhajicmkallon',
+        'https://www.facebook.com/profile.php?id=100072626448471',
       ],
     },
     {

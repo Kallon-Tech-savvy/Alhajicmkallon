@@ -46,7 +46,7 @@ export const Footer = ({ showInvitation = true }: { showInvitation?: boolean }) 
       <div className="footer-details">
         <div>
           <Link prefetch={false} href="/" className="footer-name">
-            Alhaji C M Kallon
+            Alhaji C.M. Kallon
           </Link>
           <p className="mt-2 text-sm text-muted">
             A deliberate balance.
@@ -83,7 +83,7 @@ export const Footer = ({ showInvitation = true }: { showInvitation?: boolean }) 
         </div>
       </div>
       <div className="footer-colophon swiss-meta">
-        <span>© {new Date().getFullYear()} Alhaji C M Kallon</span>
+        <span>© {new Date().getFullYear()} Alhaji C.M. Kallon</span>
         <span>
           Designed and built by Alhaji in Freetown.{' '}
           <span aria-hidden="true">

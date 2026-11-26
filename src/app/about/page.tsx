@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { serializeJsonLd } from '@/lib/serialize-json-ld';
 
 const siteUrl = 'https://alhajikallon.com';
 const aboutDescription =
@@ -87,6 +88,26 @@ const BACKGROUND = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-midnight text-ivory">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd({
+            '@context': 'https://schema.org',
+            '@type': 'ProfilePage',
+            '@id': `${siteUrl}/about#profile`,
+            url: `${siteUrl}/about`,
+            name: 'About Alhaji C.M. Kallon',
+            description: aboutDescription,
+            mainEntity: {
+              '@type': 'Person',
+              '@id': `${siteUrl}/#person`,
+              name: 'Alhaji C.M. Kallon',
+            },
+            isPartOf: { '@id': `${siteUrl}/#website` },
+            inLanguage: 'en',
+          }),
+        }}
+      />
       <Navbar />
       <header className="page-intro site-gutter border-b border-border">
         <div className="mx-auto max-w-[var(--layout-max)]">
