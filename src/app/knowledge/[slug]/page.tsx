@@ -63,7 +63,12 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
             teaches: entry.objectives,
             citation: entry.sources,
             datePublished: entry.date,
-            author: { '@id': 'https://alhajikallon.com/#person' },
+            author: {
+              '@type': 'Person',
+              '@id': 'https://alhajikallon.com/#person',
+              name: 'Alhaji C.M. Kallon',
+              url: 'https://alhajikallon.com/about',
+            },
             keywords: entry.topics,
             inLanguage: 'en',
             isPartOf: {
@@ -99,7 +104,7 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
         <div className="mx-auto max-w-4xl grid gap-7 md:grid-cols-2">
           <div>
             <p className="text-sm text-[var(--color-muted)]">
-              By Alhaji C. M. Kallon · <time dateTime={entry.date}>{entry.date}</time> ·{' '}
+              By <Link href="/about" className="hover:underline">Alhaji C.M. Kallon</Link> · <time dateTime={entry.date}>{entry.date}</time> ·{' '}
               {entry.level} · {entry.readTime}
             </p>
             <h2 className="mt-5 mb-2 font-semibold">
