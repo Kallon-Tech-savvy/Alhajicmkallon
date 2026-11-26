@@ -104,7 +104,11 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
         <div className="mx-auto max-w-4xl grid gap-7 md:grid-cols-2">
           <div>
             <p className="text-sm text-[var(--color-muted)]">
-              By <Link href="/about" className="hover:underline">Alhaji C.M. Kallon</Link> · <time dateTime={entry.date}>{entry.date}</time> ·{' '}
+              By{' '}
+              <Link href="/about" className="hover:underline">
+                Alhaji C.M. Kallon
+              </Link>{' '}
+              · <time dateTime={entry.date}>{entry.date}</time> ·{' '}
               {entry.level} · {entry.readTime}
             </p>
             <h2 className="mt-5 mb-2 font-semibold">
