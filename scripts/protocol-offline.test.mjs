@@ -24,3 +24,8 @@ test('same sources generate the same snapshot',async()=>{
  execFileSync(process.execPath,['scripts/build-protocol-offline.mjs']);
  assert.equal(await readFile('public/downloads/protocol-course-offline.html','utf8'),html);
 });
+
+test('offline snapshot is excluded from search without restricting readers',()=>{
+ assert.match(html,/<meta name="robots" content="noindex,follow">/);
+ assert.ok(html.includes('https://alhajikallon.com/knowledge/protocols'));
+});
