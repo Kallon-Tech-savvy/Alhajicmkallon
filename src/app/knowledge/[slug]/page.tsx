@@ -108,8 +108,7 @@ export default async function KnowledgeEntryPage({ params }: PageProps) {
               <Link href="/about" className="hover:underline">
                 Alhaji C.M. Kallon
               </Link>{' '}
-              · <time dateTime={entry.date}>{entry.date}</time> ·{' '}
-              {entry.level} · {entry.readTime}
+              · <time dateTime={entry.date}>{entry.date}</time> · {entry.level} · {entry.readTime}
             </p>
             <h2 className="mt-5 mb-2 font-semibold">
               {isGlossary ? 'How to use this reference' : 'Before you start'}
