@@ -139,3 +139,34 @@ test('legacy gallery redirects to the maintained published work catalogue', asyn
   assert.equal(response.status, 308);
   assert.equal(new URL(response.headers.get('location'), baseUrl).pathname, '/work');
 });
+
+
+test('priority author and editorial pages expose indexable canonical HTML and crawlable links', async () => {
+  const routes = ['/about', '/writing/nothingness', '/knowledge/essential-glossary'];
+  const { body: sitemap } = await get('/sitemap.xml');
+  for (const route of routes) {
+    const canonical = 'https://alhajikallon.com' + route;
+    const { response, body } = await get(route);
+    const canonicals = [...body.matchAll(/<link\b[^>]*\brel="canonical"[^>]*>/gi)];
+    assert.equal(canonicals.length, 1, route + ': exactly one canonical');
+    assert.ok(canonicals[0][0].includes('href="' + canonical + '"'), route + ': canonical mismatch');
+    assert.doesNotMatch(response.headers.get('x-robots-tag') ?? '', /\bnoindex\b/i);
+    for (const tag of body.matchAll(/<meta\b[^>]*\bname="(?:robots|googlebot)"[^>]*>/gi)) {
+      assert.doesNotMatch(tag[0], /\bnoindex\b/i, route + ': indexing directive');
+    }
+    assert.ok(sitemap.includes('<loc>' + canonical + '</loc>'), route + ': missing from sitemap');
+    assert.match(body, /<h1\b/i);
+    assert.match(body, /Alhaji C\.M\. Kallon/);
+  }
+  const { body: home } = await get('/');
+  const { body: writing } = await get('/writing');
+  const { body: knowledge } = await get('/knowledge');
+  assert.ok(home.includes('href="/about"'));
+  assert.ok(writing.includes('href="/writing/nothingness"'));
+  assert.ok(knowledge.includes('href="/knowledge/essential-glossary"'));
+});
+
+test('offline HTML is readable but marked noindex', async () => {
+  const { body } = await get('/downloads/protocol-course-offline.html');
+  assert.match(body, /<meta name="robots" content="noindex,follow">/);
+});
