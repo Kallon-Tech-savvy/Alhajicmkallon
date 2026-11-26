@@ -5,6 +5,7 @@ import './globals.css';
 import { ChatWidgetLoader } from '@/components/ChatWidgetLoader';
 import { WebVitalsReporter } from '@/components/WebVitalsReporter';
 import { serializeJsonLd } from '@/lib/serialize-json-ld';
+import { SUBSTACK_URL } from '@/lib/public-channels';
 
 const plexMono = IBM_Plex_Mono({
   weight: '400',
@@ -36,6 +37,7 @@ export const metadata: Metadata = {
   keywords: [
     'Alhaji C.M. Kallon',
     'Alhaji Kallon',
+    'Alhaji C M Kallon',
     'design engineer',
     'product discovery',
     'product thinking',
@@ -79,7 +81,8 @@ const structuredData = {
       '@id': `${siteUrl}/#person`,
       name: 'Alhaji C.M. Kallon',
       alternateName: ['Alhaji Kallon', 'Alhaji C M Kallon', 'alhajikallon', 'cmkallon'],
-      url: siteUrl,
+      url: `${siteUrl}/about`,
+      mainEntityOfPage: { '@id': `${siteUrl}/about#profile` },
       image: `${siteUrl}/assets/kallon1.png`,
       jobTitle: 'Design Engineer',
       description:
@@ -108,6 +111,7 @@ const structuredData = {
       sameAs: [
         'https://linkedin.com/in/alhaji-c-m-k-8b79a225b',
         'https://github.com/Kallon-Tech-savvy',
+        SUBSTACK_URL,
       ],
     },
     {
