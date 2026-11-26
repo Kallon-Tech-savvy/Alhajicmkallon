@@ -98,7 +98,11 @@ export default function AboutPage() {
             url: `${siteUrl}/about`,
             name: 'About Alhaji C.M. Kallon',
             description: aboutDescription,
-            mainEntity: { '@type': 'Person', '@id': `${siteUrl}/#person`, name: 'Alhaji C.M. Kallon' },
+            mainEntity: {
+              '@type': 'Person',
+              '@id': `${siteUrl}/#person`,
+              name: 'Alhaji C.M. Kallon',
+            },
             isPartOf: { '@id': `${siteUrl}/#website` },
             inLanguage: 'en',
           }),
