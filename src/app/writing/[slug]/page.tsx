@@ -111,7 +111,11 @@ export default async function ArticleTemplate({ params }: PageProps) {
               {article.excerpt}
             </p>
             <div className="mt-6 text-muted font-display text-xs uppercase tracking-widest">
-              By <Link href="/about" className="hover:underline">Alhaji C.M. Kallon</Link> · <time dateTime={article.date}>{article.date}</time>
+              By{' '}
+              <Link href="/about" className="hover:underline">
+                Alhaji C.M. Kallon
+              </Link>{' '}
+              · <time dateTime={article.date}>{article.date}</time>
               {article.readTime ? ` · ${article.readTime}` : ''}
             </div>
           </Reveal>
